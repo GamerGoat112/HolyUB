@@ -12,6 +12,7 @@
 		"javascript-obfuscator": "^4.0.0",
 		"material-design-icons-iconfont": "^6.5.0",
 		"modify-source-webpack-plugin": "^3.0.0",
+		"node-fetch": "^3.2.3",
 		"random-seed": "^0.3.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
@@ -19,6 +20,8 @@
 		"react-scripts": "^5.0.0",
 		"sass": "^1.49.9",
 		"tomp": "github:sysce/tomp",
+		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet",
+		"unzipper": "^0.10.11",
 		"web-vitals": "^2.1.4",
 		"webpack": "^5.70.0",
 		"webpack-obfuscator": "^3.5.1"
@@ -32,7 +35,8 @@
 		"*.{js,json}": "prettier --write"
 	},
 	"scripts": {
-		"build-tomp": "node ./node_modules/tomp/app.js build ./public/tomp/",
+		"build-tomp": "node ./build-scripts/tomp.mjs",
+		"build-uv": "node ./build-scripts/ultraviolet.mjs",
 		"start": "NODE_ENV=development craco start",
 		"build": "NODE_ENV=production craco build",
 		"test": "craco test",
