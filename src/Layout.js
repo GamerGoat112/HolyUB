@@ -110,6 +110,9 @@ export default class Layout extends Component {
 					</Link>
 					<div className="separator"></div>
 					<div className="collapsable" ref={this.collapsable}>
+						<Link to="/proxy.html" className="entry text">
+							<span>Proxy</span>
+						</Link>
 						<Link to="/theatre.html" className="entry text">
 							<span>Theatre</span>
 						</Link>

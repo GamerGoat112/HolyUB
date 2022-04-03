@@ -18,6 +18,9 @@ const Privacy = lazy(() =>
 const NotFound = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/NotFound.js')
 );
+const Proxy = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Proxy.js')
+);
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
@@ -31,6 +34,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Home layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/proxy.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Proxy layout={this.layout} />
 							</Suspense>
 						}
 					/>

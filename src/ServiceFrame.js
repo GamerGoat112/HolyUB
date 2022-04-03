@@ -161,12 +161,6 @@ export default class ServiceFrame extends SleepingComponent {
 	get iframe_window() {
 		return this.iframe.current.contentWindow;
 	}
-	/**
-	 * @returns {fetch}
-	 */
-	get client_fetch() {
-		return this.headless.current.contentWindow.fetch.bind(undefined);
-	}
 	add_fields(datalist, _fields) {
 		const fields = [..._fields];
 
@@ -192,20 +186,25 @@ export default class ServiceFrame extends SleepingComponent {
 
 			this.abort = new AbortController();
 
-			const outgoing = await this.client_fetch(
-				this.boot.binary(
-					`https://duckduckgo.com/ac/?` +
+			const outgoing = await fetch(new URL('v2/', bareCDN), {
+				headers: {
+					'x-bare-path':
+						'/ac/?' +
 						new URLSearchParams({
 							q: query,
 							kl: 'wt-wt',
-						})
-				),
-				{
-					signal: this.abort.signal,
-				}
-			);
+						}),
+					'x-bare-headers': JSON.stringify({
+						host: 'duckduckgo.com',
+					}),
+					'x-bare-host': 'duckduckgo.com',
+					'x-bare-port': '443',
+					'x-bare-protocol': 'https:',
+				},
+				signal: this.abort.signal,
+			});
 
-			if (outgoing.ok) {
+			if (outgoing.ok && outgoing.headers.get('x-bare-status') === '200') {
 				for (let { phrase } of await outgoing.json()) {
 					results.push(phrase);
 				}
