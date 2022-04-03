@@ -1,7 +1,4 @@
-import { Component } from 'react';
-import obfuscate from '../../obfuscate.js';
-import root from '../../root.js';
-import ProxyHelper from '../../ProxyHelper.js';
+import ProxyModule from '../../ProxyModule.js';
 
 /**
  * @callback UVEncode
@@ -26,9 +23,8 @@ import ProxyHelper from '../../ProxyHelper.js';
  * @property {UVDecode} decodeUrl
  */
 
-export default class NotFound extends Component {
+export default class UltraViolet extends ProxyModule {
 	scripts = new Map();
-	helper = new ProxyHelper();
 	load_script(src) {
 		if (this.scripts.has(src)) {
 			return Promise.resolve();
@@ -54,7 +50,7 @@ export default class NotFound extends Component {
 
 		return promise;
 	}
-	async componentDidMount() {
+	async _componentDidMount() {
 		await this.load_script('/uv/uv.bundle.js');
 		await this.load_script('/uv/uv.config.js');
 		/**
@@ -70,8 +66,11 @@ export default class NotFound extends Component {
 			updateViaCache: 'none',
 		});
 
-		this.helper.redirect(
-			`${config.prefix}${config.encodeUrl(this.helper.destination)}`
+		this.redirect(
+			new URL(
+				config.encodeUrl(this.destination),
+				new URL(config.prefix, global.location)
+			)
 		);
 	}
 	async componentWillUnmount() {
@@ -79,16 +78,5 @@ export default class NotFound extends Component {
 			script.remove();
 			this.scripts.delete(src);
 		}
-	}
-	render() {
-		root.dataset.page = 'proxy-script';
-
-		return (
-			<>
-				<main>
-					<p>Your {obfuscate(<>proxy</>)} is loading...</p>
-				</main>
-			</>
-		);
 	}
 }
