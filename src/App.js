@@ -21,7 +21,9 @@ const NotFound = lazy(() =>
 const Proxy = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxy.js')
 );
-
+const UltraViolet = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Proxies/UltraViolet.js')
+);
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
@@ -74,6 +76,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/proxies/uv.html"
+						element={
+							<Suspense fallback={<></>}>
+								<UltraViolet layout={this.layout} />
 							</Suspense>
 						}
 					/>

@@ -1,13 +1,14 @@
-@use './Segoe-UI.scss';
-@use './Navigation.scss';
-@use './Footer.scss';
-@use './Service.scss';
-@use './Home.scss';
-@use './Theatre.scss';
-@use './Support.scss';
-@use './Banner.scss';
-$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-@import '~material-design-icons-iconfont/src/material-design-icons';
+@use "./Segoe-UI.scss";
+@use "./Navigation.scss";
+@use "./Footer.scss";
+@use "./Service.scss";
+@use "./Home.scss";
+@use "./Proxy.scss";
+@use "./Theatre.scss";
+@use "./Support.scss";
+@use "./Banner.scss";
+$material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
+@import "~material-design-icons-iconfont/src/material-design-icons";
 
 html,
 body,
@@ -47,11 +48,11 @@ body,
 	--contrast-background: 0, 0, 0;
 	--contrast-text: #fff;
 	--shadow: #0004;
-	--grid: url('../Assets/light.svg');
-	--grid-inverted: url('../Assets/dark.svg');
+	--grid: url("../Assets/light.svg");
+	--grid-inverted: url("../Assets/dark.svg");
 }
 
-#root[data-theme='dark'] {
+#root[data-theme="dark"] {
 	--blue-link: #006cbe;
 	--background: #000;
 	--slate: #ddd;
@@ -64,8 +65,8 @@ body,
 	--contrast-background: 255, 255, 255;
 	--contrast-text: #000;
 	--shadow: #fff4;
-	--grid: url('../Assets/dark.svg');
-	--grid-inverted: url('../Assets/light.svg');
+	--grid: url("../Assets/dark.svg");
+	--grid-inverted: url("../Assets/light.svg");
 }
 
 * {

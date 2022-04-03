@@ -68,8 +68,11 @@ await Promise.all(promises);
 
 console.log('Extracted needed files from archive.');
 
-await cp(join(webroot, '..', 'uv.config.js'), join(uv_output, 'uv.config.js'));
+let copy = ['sw.js', 'uv.config.js'];
 
+for (let file of copy) {
+	await cp(join(webroot, '..', 'uv', file), join(uv_output, file));
+}
 console.log('Bundling UltraViolet...');
 
 const compiler = webpack({

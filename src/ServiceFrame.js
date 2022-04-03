@@ -214,7 +214,7 @@ export default class ServiceFrame extends SleepingComponent {
 		} catch (error) {
 			// likely abort error
 			if (error.message === 'Failed to fetch') {
-				console.error('Error fetching TOMP/Bare server.');
+				console.error('Error fetching Bare server.');
 			} else if (error.message !== 'The user aborted a request.') {
 				throw error;
 			}
@@ -235,10 +235,10 @@ export default class ServiceFrame extends SleepingComponent {
 			revoke_icon: true,
 		});
 	}
-	on_icon_error(event) {
+	on_icon_error() {
 		this.state.icon = GenericGlobeSVG;
 	}
-	on_icon_load(event) {
+	on_icon_load() {
 		if (this.state.revoke_icon) {
 			this.setState({
 				revoke_icon: false,

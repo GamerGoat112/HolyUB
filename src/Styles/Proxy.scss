@@ -1,0 +1,49 @@
+#root[data-page="proxy"] {
+	main {
+		> .omnibox {
+			margin: 20px auto;
+			width: 75%;
+			height: 50px;
+			display: flex;
+			flex-direction: row;
+
+			@media only screen and (max-width: 650px) {
+				width: 100%;
+			}
+
+			> * {
+				border: 1px solid var(--border);
+				border-radius: 5px;
+				outline: none;
+			}
+
+			> input {
+				width: 100%;
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+				padding: 0px 15px;
+				font-family: inherit;
+				border-right: 0px;
+				background: var(--background);
+				color: var(--subtle);
+			}
+
+			> button {
+				cursor: pointer;
+				border-top-left-radius: 0px;
+				border-bottom-left-radius: 0px;
+				width: 50px;
+				background: var(--blue);
+				color: #fff;
+
+				&:hover {
+					background-color: var(--blue-accent-hover);
+				}
+
+				&:active {
+					background-color: var(--blue-accent-active);
+				}
+			}
+		}
+	}
+}
