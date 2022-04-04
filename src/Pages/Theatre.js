@@ -156,18 +156,6 @@ export default class Theatre extends Component {
 
 		return (
 			<>
-				<div className="banner">
-					<span>
-						{obfuscate(
-							<>
-								The following titles were moved: Pokemon Red =&gt; Pokemon Fire
-								Red, Pokemon Green =&gt; Pokemon Leaf Green. You can export your
-								saved data on the original titles and import them in the renamed
-								ones.
-							</>
-						)}
-					</span>
-				</div>
 				<main>{categories}</main>
 			</>
 		);
