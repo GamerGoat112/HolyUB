@@ -27,6 +27,9 @@ const UltraViolet = lazy(() =>
 const Rammerhead = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxies/Rammerhead.js')
 );
+const Stomp = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Proxies/Stomp.js')
+);
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
@@ -95,6 +98,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Rammerhead layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/proxies/st.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Stomp layout={this.layout} />
 							</Suspense>
 						}
 					/>

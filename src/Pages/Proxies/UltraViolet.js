@@ -24,32 +24,6 @@ import ProxyModule from '../../ProxyModule.js';
  */
 
 export default class UltraViolet extends ProxyModule {
-	scripts = new Map();
-	load_script(src) {
-		if (this.scripts.has(src)) {
-			return Promise.resolve();
-		}
-
-		const script = document.createElement('script');
-		script.src = src;
-		script.async = true;
-
-		const promise = new Promise((resolve, reject) => {
-			script.addEventListener('load', () => {
-				resolve();
-			});
-
-			script.addEventListener('error', () => {
-				reject();
-			});
-		});
-
-		document.body.append(script);
-
-		this.scripts.set(src, script);
-
-		return promise;
-	}
 	async _componentDidMount() {
 		await this.load_script('/uv/uv.bundle.js');
 		await this.load_script('/uv/uv.config.js');
@@ -72,11 +46,5 @@ export default class UltraViolet extends ProxyModule {
 				new URL(config.prefix, global.location)
 			)
 		);
-	}
-	async componentWillUnmount() {
-		for (let [src, script] of this.scripts) {
-			script.remove();
-			this.scripts.delete(src);
-		}
 	}
 }

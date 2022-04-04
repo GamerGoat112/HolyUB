@@ -17,7 +17,7 @@ export class RammerheadAPI {
 
 		const promise = new Promise((resolve, reject) => {
 			request.addEventListener('error', () => {
-				reject('Cannot communicate with the server');
+				reject(new Error('Cannot communicate with the server'));
 			});
 
 			request.addEventListener('load', () => {
@@ -35,7 +35,7 @@ export class RammerheadAPI {
 
 		request.send();
 
-		return promise;
+		return await promise;
 	}
 	async needpassword(callback) {
 		const value = await this.get('needpassword');

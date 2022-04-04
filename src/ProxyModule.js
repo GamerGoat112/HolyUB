@@ -3,6 +3,32 @@ import obfuscate from './obfuscate.js';
 import root from './root.js';
 
 export default class ProxyModule extends Component {
+	scripts = new Map();
+	load_script(src) {
+		if (this.scripts.has(src)) {
+			return Promise.resolve();
+		}
+
+		const script = document.createElement('script');
+		script.src = src;
+		script.async = true;
+
+		const promise = new Promise((resolve, reject) => {
+			script.addEventListener('load', () => {
+				resolve();
+			});
+
+			script.addEventListener('error', () => {
+				reject();
+			});
+		});
+
+		document.body.append(script);
+
+		this.scripts.set(src, script);
+
+		return promise;
+	}
 	state = {};
 	get destination() {
 		const { hash } = global.location;
@@ -14,15 +40,22 @@ export default class ProxyModule extends Component {
 		return new URL(hash.slice(1));
 	}
 	redirect(url) {
-		global.location.assign(url);
+		global.location.replace(url);
 	}
 	async componentDidMount() {
 		try {
 			await this._componentDidMount();
 		} catch (error) {
+			console.error(error);
 			this.setState({
-				error,
+				error: error.stack,
 			});
+		}
+	}
+	async componentWillUnmount() {
+		for (let [src, script] of this.scripts) {
+			script.remove();
+			this.scripts.delete(src);
 		}
 	}
 	async possible_error(message) {
@@ -46,9 +79,9 @@ export default class ProxyModule extends Component {
 			let description;
 
 			if (this.state.possible_error === undefined) {
-				description = this.state.error.toString();
+				description = <pre>{this.state.error}</pre>;
 			} else {
-				description = this.state.possible_error;
+				description = <p>{this.state.possible_error}</p>;
 			}
 
 			return (

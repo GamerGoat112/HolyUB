@@ -19,7 +19,7 @@
 		"react-router-dom": "^6.2.2",
 		"react-scripts": "^5.0.0",
 		"sass": "^1.49.9",
-		"tomp": "github:sysce/tomp",
+		"stomp": "github:sysce/stomp",
 		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet",
 		"unzipper": "^0.10.11",
 		"web-vitals": "^2.1.4",
@@ -35,7 +35,7 @@
 		"*.{js,json}": "prettier --write"
 	},
 	"scripts": {
-		"build-tomp": "node ./build-scripts/tomp.mjs",
+		"build-stomp": "node ./build-scripts/stomp.mjs",
 		"build-uv": "node ./build-scripts/ultraviolet.mjs",
 		"start": "NODE_ENV=development craco start",
 		"build": "NODE_ENV=production craco build",
