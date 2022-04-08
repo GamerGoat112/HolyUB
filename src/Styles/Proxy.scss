@@ -1,5 +1,32 @@
 #root[data-page="proxy"] {
 	main {
+		> .expand {
+			display: flex;
+			flex-direction: column;
+
+			&[data-expanded="0"] {
+				.content {
+					display: none;
+				}
+			}
+
+			&[data-expanded="1"] {
+				.content {
+					display: flex;
+					flex-direction: column;
+				}
+			}
+
+			.title {
+				font-size: 24px;
+				cursor: pointer;
+				user-select: none;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+		}
+
 		> .omnibox {
 			margin: 20px auto;
 			width: 75%;

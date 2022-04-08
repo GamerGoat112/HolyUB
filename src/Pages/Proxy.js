@@ -3,7 +3,27 @@ import root from '../root.js';
 import { Component, createRef } from 'react';
 import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
 
-class Expand extends Component {}
+class Expand extends Component {
+	state = {
+		expanded: false,
+	};
+	render() {
+		return (
+			<div className="expand" data-expanded={Number(this.state.expanded)}>
+				<div
+					className="title"
+					onClick={() => this.setState({ expanded: !this.state.expanded })}
+				>
+					<span>{this.props.title}</span>
+					<div class="toggle material-icons">
+						{this.state.expanded ? 'expand_less' : 'expand_more'}
+					</div>
+				</div>
+				<div className="content">{this.props.children}</div>
+			</div>
+		);
+	}
+}
 
 export default class Proxies extends Component {
 	input = createRef();
@@ -51,7 +71,23 @@ export default class Proxies extends Component {
 							<SearchSVG />
 						</button>
 					</form>
-					<Expand></Expand>
+
+					<Expand title="Advanced Options">
+						<h3>{obfuscate(<>Manual Proxy</>)}</h3>
+						<label>
+							<input type="checkbox" name="Enabled"></input>
+							Enabled?
+						</label>
+						<br />
+						<label>
+							Proxy:
+							<select>
+								<option value="uv">Ultraviolet</option>
+								<option value="rh">Rammerhead</option>
+								<option value="st">Stomp</option>
+							</select>
+						</label>
+					</Expand>
 				</main>
 			</>
 		);
