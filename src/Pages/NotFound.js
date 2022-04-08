@@ -13,7 +13,7 @@ export default class NotFound extends Component {
 				<p>
 					If you typed in the URL yourself, please double-check the spelling.
 					<br />
-					If you got here from a lik within our site, please{' '}
+					If you got here from a link within our site, please{' '}
 					<Link to="/contact">Contact Us</Link>.
 				</p>
 			</main>
