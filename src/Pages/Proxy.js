@@ -3,6 +3,8 @@ import root from '../root.js';
 import { Component, createRef } from 'react';
 import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
 
+class Expand extends Component {}
+
 export default class Proxies extends Component {
 	input = createRef();
 	async componentDidMount() {
@@ -49,6 +51,7 @@ export default class Proxies extends Component {
 							<SearchSVG />
 						</button>
 					</form>
+					<Expand></Expand>
 				</main>
 			</>
 		);

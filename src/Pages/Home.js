@@ -1,9 +1,6 @@
-import TypeWriter from '../TypeWriter.js';
 import obfuscate from '../obfuscate.js';
 import root from '../root.js';
-import { Component, createRef } from 'react';
-import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
-import { Link } from 'react-router-dom';
+import { Component } from 'react';
 
 export default class Home extends Component {
 	render() {
@@ -11,7 +8,10 @@ export default class Home extends Component {
 
 		return (
 			<>
-				<main></main>
+				<main>
+					<h1>{obfuscate(<>End Internet Censorship.</>)}</h1>
+					<h2>{obfuscate(<>Privacy right at your fingertips.</>)}</h2>
+				</main>
 			</>
 		);
 	}
