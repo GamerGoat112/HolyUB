@@ -52,7 +52,7 @@ export class ObfuscateStyle extends Component {
 			`${junk_selector.join(',')}{position:absolute;z-index:-10;opacity:0}`
 		);
 		sheet.insertRule(
-			`.${string_class},.${string_class} s{text-decoration:none}`
+			`.${string_class},.${string_class} s{text-decoration:none;flex:none;}`
 		);
 		sheet.insertRule(`.${string_class}>s{display:inline-block}`);
 	}
