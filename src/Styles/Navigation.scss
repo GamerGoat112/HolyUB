@@ -104,7 +104,10 @@ nav {
 			left: 0px;
 			right: 0px;
 			margin: auto;
-			width: 50px;
+
+			:not(.text) {
+				width: 50px;
+			}
 		}
 
 		&[data-expanded="1"] {
@@ -166,6 +169,7 @@ nav {
 		height: var(--nav-height);
 		padding: 0px 15px;
 		color: inherit;
+		white-space: nowrap;
 
 		> svg,
 		> .material-icons {

@@ -3,7 +3,6 @@ import ServiceFrame from './ServiceFrame.js';
 import SearchBar from './SearchBar.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { Component, createRef } from 'react';
-import { ReactComponent as IconSVG } from './Assets/nav-icon.svg';
 import { Outlet, Link } from 'react-router-dom';
 import './Styles/App.scss';
 
@@ -105,8 +104,8 @@ export default class Layout extends Component {
 							<span></span>
 						</div>
 					</div>
-					<Link to="/" className="entry logo">
-						<IconSVG />
+					<Link to="/" className="entry logo text">
+						Holy Unblocker
 					</Link>
 					<div className="separator"></div>
 					<div className="collapsable" ref={this.collapsable}>
