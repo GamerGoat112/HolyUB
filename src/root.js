@@ -1,5 +1,7 @@
 import process from 'process';
 
+document.title = 'Holy Unblocker';
+
 let _bareCDN;
 let _rhApp;
 
