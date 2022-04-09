@@ -25,76 +25,31 @@ class Expand extends Component {
 	}
 }
 
-const default_settings = {
-	manual_enabled: false,
-	manual_target: 'uv',
-};
-
 export default class Proxies extends Component {
 	input = createRef();
-	storage_key = 'proxy';
 	state = {
-		settings: this.get_settings(),
 		omnibox_entries: [],
 	};
+	get layout() {
+		return this.props.layout.current;
+	}
+	get service_frame() {
+		return this.layout.service_frame.current;
+	}
 	async componentDidMount() {
 		await {};
 		this.on_input();
-		this.get_settings();
-	}
-	get_settings() {
-		if (localStorage[this.storage_key] === undefined) {
-			localStorage[this.storage_key] = '{}';
-		}
-
-		let parsed;
-
-		try {
-			parsed = JSON.parse(localStorage[this.storage_key]);
-		} catch (error) {
-			parsed = {};
-		}
-
-		const settings = {};
-		let update = false;
-
-		for (let key in default_settings) {
-			if (typeof parsed[key] === typeof default_settings[key]) {
-				settings[key] = parsed[key];
-			} else {
-				update = true;
-			}
-		}
-
-		if (update) {
-			localStorage[this.storage_key] = JSON.stringify(this.state.settings);
-		}
-
-		return settings;
-	}
-	async set_settings(settings = {}) {
-		await this.setState({
-			settings: {
-				...this.state.settings,
-				...settings,
-			},
-		});
-
-		localStorage[this.storage_key] = JSON.stringify(this.state.settings);
 	}
 	async on_input() {
 		this.setState({
-			omnibox_entries:
-				await this.props.layout.current.service_frame.current.omnibox_entries(
-					this.input.current.value
-				),
+			omnibox_entries: await this.service_frame.omnibox_entries(
+				this.input.current.value
+			),
 		});
 	}
 	search_submit(event) {
 		event.preventDefault();
-		this.props.layout.current.service_frame.current.proxy(
-			this.input.current.value
-		);
+		this.service_frame.proxy(this.input.current.value);
 		this.input.current.value = '';
 		this.on_input();
 	}
@@ -128,18 +83,26 @@ export default class Proxies extends Component {
 								type="checkbox"
 								name="Enabled"
 								onChange={event =>
-									this.set_settings({ manual_enabled: event.target.checked })
+									this.service_frame.settings.set(
+										'manual_enabled',
+										event.target.checked
+									)
 								}
-								checked={this.state.settings.manual_enabled}
+								defaultChecked={this.service_frame.settings.get(
+									'manual_enabled'
+								)}
 							></input>
 						</label>
 						<label>
 							Proxy:
 							<select
 								onChange={event =>
-									this.set_settings({ manual_target: event.target.value })
+									this.service_frame.settings.set(
+										'manual_target',
+										event.target.value
+									)
 								}
-								value={this.state.settings.manual_target}
+								defaultValue={this.service_frame.settings.get('manual_target')}
 							>
 								<option value="uv">Ultraviolet</option>
 								<option value="rh">Rammerhead</option>

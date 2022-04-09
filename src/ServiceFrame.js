@@ -5,8 +5,15 @@ import { createRef } from 'react';
 import { render } from 'react-dom';
 import process from 'process';
 import obfuscate from './obfuscate.js';
+import Settings from './Settings.js';
+
+const default_settings = {
+	manual_enabled: false,
+	manual_target: 'uv',
+};
 
 export default class ServiceFrame extends SleepingComponent {
+	settings = new Settings('service settings', default_settings);
 	state = {
 		title: '',
 		icon: GenericGlobeSVG,
