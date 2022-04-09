@@ -7,7 +7,7 @@ import obfuscate from './obfuscate.js';
 import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
-import proxy from './proxy.json';
+import proxyCompat from './proxy.json';
 
 const default_settings = {
 	proxy: 'auto',
@@ -45,14 +45,24 @@ export default class ServiceFrame extends SleepingComponent {
 			},
 		});
 	}
-	compatible_proxy(src) {}
+	compatible_proxy(src) {
+		const { host } = new URL(src);
+
+		for (let { domain, proxy } of proxyCompat.compatibility) {
+			if (host === domain || host.endsWith(`.${domain}`)) {
+				return proxy;
+			}
+		}
+
+		return proxyCompat.default;
+	}
 	async proxy(input) {
 		let src = this.search.query(input);
 
 		let proxy = this.settings.get('proxy');
 
 		if (proxy === 'auto') {
-			proxy = this.pick_proxy(src);
+			proxy = this.compatible_proxy(src);
 		}
 
 		let proxied_src;

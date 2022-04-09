@@ -2,15 +2,23 @@
 	"default": "rh",
 	"compatibility": [
 		{
-			"host": "example.com",
+			"domain": "google.com",
 			"proxy": "uv"
 		},
 		{
-			"host": "example.net",
+			"domain": "youtube.com",
+			"proxy": "uv"
+		},
+		{
+			"domain": "example.com",
+			"proxy": "uv"
+		},
+		{
+			"domain": "example.net",
 			"proxy": "st"
 		},
 		{
-			"host": "example.org",
+			"domain": "example.org",
 			"proxy": "rh"
 		}
 	]
