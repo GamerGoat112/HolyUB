@@ -134,6 +134,7 @@ export default class Layout extends Component {
 				<Outlet />
 				<ServiceFrame ref={this.service_frame} />
 				<footer>
+					<Link to="/opensource.html">Credits</Link>
 					<Link to="/contact.html">Contact</Link>
 					<Link to="/privacy.html">Privacy Policy</Link>
 					<span>

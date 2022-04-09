@@ -30,6 +30,10 @@ const Rammerhead = lazy(() =>
 const Stomp = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxies/Stomp.js')
 );
+const OpenSource = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/OpenSource.js')
+);
+
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
@@ -82,6 +86,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/opensource.html"
+						element={
+							<Suspense fallback={<></>}>
+								<OpenSource layout={this.layout} />
 							</Suspense>
 						}
 					/>

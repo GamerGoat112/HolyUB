@@ -65,7 +65,7 @@ export default class Support extends Component {
 		return (
 			<>
 				<form className="banner" onSubmit={event => event.preventDefault()}>
-					<h1>{obfuscate(<>SystemYA</>)} Knowledgebase</h1>
+					<h1>{obfuscate(<>HolyUnblocker</>)} Knowledgebase</h1>
 					<div className="search">
 						<span className="icon">
 							<SearchSVG />

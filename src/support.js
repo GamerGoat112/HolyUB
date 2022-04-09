@@ -12,11 +12,24 @@ export const qna = [
 		),
 	},
 	{
-		q: <>Can I host my own {obfuscate(<>proxy</>)}?</>,
+		q: <>Can I host my own {obfuscate(<>proxy site</>)}?</>,
 		a: (
 			<>
-				Yes. Our {obfuscate(<>proxy</>)} scripts are open source. See on{' '}
-				<a href="https://github.com/sysce">GitHub</a>.
+				Yes. This website is open source. See our{' '}
+				<a href="https://git.holy.how/holy">Git repository</a>.
+			</>
+		),
+	},
+	{
+		q: (
+			<>
+				How can I contribute to the {obfuscate(<>proxies</>)} on this website?
+			</>
+		),
+		a: (
+			<>
+				The proxies used on this website can be found in the{' '}
+				<Link to="/opensource.html">open-source credits</Link>.
 			</>
 		),
 	},
@@ -26,7 +39,7 @@ export const qna = [
 			<>
 				We do not collect any data, your information is only as secure as the
 				sites you are visiting on them. For privacy concerns, you can review our{' '}
-				<Link to="/privacy">Privacy Policy</Link>.
+				<Link to="/privacy.html">Privacy Policy</Link>.
 			</>
 		),
 	},
