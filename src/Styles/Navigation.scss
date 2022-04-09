@@ -10,6 +10,24 @@ nav {
 	text-align: center;
 	background: var(--background);
 
+	&[data-search="1"] {
+		> * {
+			display: none;
+		}
+
+		.logo,
+		.omnibox {
+			display: flex;
+		}
+
+		@media only screen and (max-width: 500px) {
+			.logo,
+			.expand {
+				display: none;
+			}
+		}
+	}
+
 	> .collapsable {
 		display: flex;
 		flex-direction: row;
@@ -35,8 +53,7 @@ nav {
 				border-top: 1px solid var(--slate);
 				left: 0;
 				transform: rotate(0deg);
-				transition: width 0.2s ease-in-out, left 0.2s ease-in-out,
-					transform 0.2s ease-in-out;
+				transition: width 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
 
 				&:nth-child(1) {
 					top: 0px;
@@ -89,6 +106,38 @@ nav {
 			margin: auto;
 			width: 50px;
 		}
+
+		&[data-expanded="1"] {
+			> *:not(.expand) {
+				display: none;
+			}
+
+			.collapsable {
+				display: flex;
+			}
+
+			> .expand span {
+				&:nth-child(1) {
+					top: 10;
+					width: 0%;
+					left: 50%;
+				}
+
+				&:nth-child(2) {
+					transform: rotate(45deg);
+				}
+
+				&:nth-child(3) {
+					transform: rotate(-45deg);
+				}
+
+				&:nth-child(4) {
+					top: 10;
+					width: 0%;
+					left: 50%;
+				}
+			}
+		}
 	}
 
 	> button {
@@ -131,7 +180,7 @@ nav {
 
 		span::after {
 			display: none;
-			content: '';
+			content: "";
 			position: absolute;
 			border-bottom: 2px solid var(--slate);
 			left: 0;
@@ -219,58 +268,6 @@ nav {
 			&:hover {
 				background-color: var(--accent);
 			}
-		}
-	}
-}
-
-@media only screen and (max-width: 500px) {
-	nav[data-expanded='1'] {
-		> *:not(.expand) {
-			display: none;
-		}
-
-		.collapsable {
-			display: flex;
-		}
-
-		> .expand span {
-			&:nth-child(1) {
-				top: 10;
-				width: 0%;
-				left: 50%;
-			}
-
-			&:nth-child(2) {
-				transform: rotate(45deg);
-			}
-
-			&:nth-child(3) {
-				transform: rotate(-45deg);
-			}
-
-			&:nth-child(4) {
-				top: 10;
-				width: 0%;
-				left: 50%;
-			}
-		}
-	}
-}
-
-nav[data-search='1'] {
-	> * {
-		display: none;
-	}
-
-	.logo,
-	.omnibox {
-		display: flex;
-	}
-
-	@media only screen and (max-width: 500px) {
-		.logo,
-		.expand {
-			display: none;
 		}
 	}
 }

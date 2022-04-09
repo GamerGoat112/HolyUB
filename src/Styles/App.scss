@@ -51,23 +51,23 @@ body,
 	--shadow: #0004;
 	--grid: url("../Assets/light.svg");
 	--grid-inverted: url("../Assets/dark.svg");
-}
 
-#root[data-theme="dark"] {
-	--blue-link: #006cbe;
-	--background: #000;
-	--slate: #ddd;
-	--slate-text: #333;
-	--accent: #222;
-	--background-accent: #111;
-	--subtle: #ddd;
-	--border: #555;
-	--blue: #0078d4;
-	--contrast-background: 255, 255, 255;
-	--contrast-text: #000;
-	--shadow: #fff4;
-	--grid: url("../Assets/dark.svg");
-	--grid-inverted: url("../Assets/light.svg");
+	&[data-theme="dark"] {
+		--blue-link: #006cbe;
+		--background: #000;
+		--slate: #ddd;
+		--slate-text: #333;
+		--accent: #222;
+		--background-accent: #111;
+		--subtle: #ddd;
+		--border: #555;
+		--blue: #0078d4;
+		--contrast-background: 255, 255, 255;
+		--contrast-text: #000;
+		--shadow: #fff4;
+		--grid: url("../Assets/dark.svg");
+		--grid-inverted: url("../Assets/light.svg");
+	}
 }
 
 * {
@@ -77,10 +77,10 @@ body,
 a {
 	color: var(--blue-link);
 	text-decoration: none;
-}
 
-a:hover {
-	text-decoration: underline;
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 main {

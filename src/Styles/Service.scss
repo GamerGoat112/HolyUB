@@ -62,23 +62,25 @@
 	}
 }
 
-#root[data-service='1'] {
-	.service {
-		display: flex;
+#root {
+	&[data-service="1"] {
+		.service {
+			display: flex;
+		}
 	}
-}
 
-#root[data-appearance='dark'] {
-	.service {
-		background: #000;
-		color: #fff;
+	&[data-appearance="dark"] {
+		.service {
+			background: #000;
+			color: #fff;
+		}
 	}
-}
 
-#root[data-fullscreen='1'] {
-	.service {
-		.buttons {
-			display: none;
+	&[data-fullscreen="1"] {
+		.service {
+			.buttons {
+				display: none;
+			}
 		}
 	}
 }
