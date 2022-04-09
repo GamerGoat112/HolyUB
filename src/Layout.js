@@ -135,7 +135,8 @@ export default class Layout extends Component {
 				<footer>
 					<Link to="/opensource.html">Credits</Link>
 					<Link to="/contact.html">Contact</Link>
-					<Link to="/privacy.html">Privacy Policy</Link>
+					<Link to="/privacy.html">Privacy</Link>
+					<Link to="/terms.html">Terms of use</Link>
 					<span>
 						{obfuscate(<>HolyUnblocker</>)} {new Date().getUTCFullYear()}
 					</span>

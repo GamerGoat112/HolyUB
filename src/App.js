@@ -33,6 +33,9 @@ const Stomp = lazy(() =>
 const OpenSource = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/OpenSource.js')
 );
+const Terms = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Terms.js')
+);
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
@@ -86,6 +89,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/terms.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Terms layout={this.layout} />
 							</Suspense>
 						}
 					/>

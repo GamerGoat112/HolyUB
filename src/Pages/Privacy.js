@@ -9,8 +9,6 @@ export default class Contact extends Component {
 
 		return (
 			<main>
-				<p>{obfuscate(<>SystemYA</>)} is owned and operated in Venezuela.</p>
-
 				<p>
 					If you choose to use our Service, then you agree to the collection and
 					use of information in relation to this policy. The Personal
@@ -19,15 +17,17 @@ export default class Contact extends Component {
 					as described in this Privacy Policy.
 				</p>
 
-				<h1>Information Collection and Use</h1>
+				<h2>Information Collection and Use</h2>
 
 				<p>
 					For a better experience, while using our Service, we collect
 					information your device sends such as your internet protocol (IP)
-					address. The IP address does not identify you personally, but it
-					allows us to maintain communications with you as you move about the
-					Website. Generally, these types of data elements do not reveal your
-					identity or do not relate directly to you or any other individual.
+					address. This information explicitly excludes your usage of our{' '}
+					{obfuscate(<>web-proxies</>)}. The IP address does not identify you
+					personally, but it allows us to maintain communications with you as
+					you move about the Website. Generally, these types of data elements do
+					not reveal your identity or do not relate directly to you or any other
+					individual.
 				</p>
 
 				<p>The following are some examples of Other Information:</p>
@@ -43,7 +43,7 @@ export default class Contact extends Component {
 					technical issue with accessing our service.
 				</p>
 
-				<h1>Removal of Collected Information</h1>
+				<h2>Removal of Collected Information</h2>
 
 				<p>
 					Any (applicable) collected Personal Information is routinely wiped
