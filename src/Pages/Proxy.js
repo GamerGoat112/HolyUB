@@ -15,7 +15,7 @@ class Expand extends Component {
 					onClick={() => this.setState({ expanded: !this.state.expanded })}
 				>
 					<span>{this.props.title}</span>
-					<div class="toggle material-icons">
+					<div className="toggle material-icons">
 						{this.state.expanded ? 'expand_less' : 'expand_more'}
 					</div>
 				</div>
@@ -25,15 +25,63 @@ class Expand extends Component {
 	}
 }
 
+const default_settings = {
+	manual_enabled: false,
+	manual_target: 'uv',
+};
+
 export default class Proxies extends Component {
 	input = createRef();
+	storage_key = 'proxy';
+	state = {
+		settings: this.get_settings(),
+		omnibox_entries: [],
+	};
 	async componentDidMount() {
 		await {};
 		this.on_input();
+		this.get_settings();
 	}
-	state = {
-		omnibox_entries: [],
-	};
+	get_settings() {
+		if (localStorage[this.storage_key] === undefined) {
+			localStorage[this.storage_key] = '{}';
+		}
+
+		let parsed;
+
+		try {
+			parsed = JSON.parse(localStorage[this.storage_key]);
+		} catch (error) {
+			parsed = {};
+		}
+
+		const settings = {};
+		let update = false;
+
+		for (let key in default_settings) {
+			if (typeof parsed[key] === typeof default_settings[key]) {
+				settings[key] = parsed[key];
+			} else {
+				update = true;
+			}
+		}
+
+		if (update) {
+			localStorage[this.storage_key] = JSON.stringify(this.state.settings);
+		}
+
+		return settings;
+	}
+	async set_settings(settings = {}) {
+		await this.setState({
+			settings: {
+				...this.state.settings,
+				...settings,
+			},
+		});
+
+		localStorage[this.storage_key] = JSON.stringify(this.state.settings);
+	}
 	async on_input() {
 		this.setState({
 			omnibox_entries:
@@ -75,13 +123,24 @@ export default class Proxies extends Component {
 					<Expand title="Advanced Options">
 						<h3>{obfuscate(<>Manual Proxy</>)}</h3>
 						<label>
-							<input type="checkbox" name="Enabled"></input>
 							Enabled?
+							<input
+								type="checkbox"
+								name="Enabled"
+								onChange={event =>
+									this.set_settings({ manual_enabled: event.target.checked })
+								}
+								checked={this.state.settings.manual_enabled}
+							></input>
 						</label>
-						<br />
 						<label>
 							Proxy:
-							<select>
+							<select
+								onChange={event =>
+									this.set_settings({ manual_target: event.target.value })
+								}
+								value={this.state.settings.manual_target}
+							>
 								<option value="uv">Ultraviolet</option>
 								<option value="rh">Rammerhead</option>
 								<option value="st">Stomp</option>

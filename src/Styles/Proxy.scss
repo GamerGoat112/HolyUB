@@ -1,8 +1,27 @@
 #root[data-page="proxy"] {
 	main {
-		> .expand {
+		padding: 0 30%;
+
+		.expand {
 			display: flex;
 			flex-direction: column;
+			margin-top: 20px;
+
+			.title {
+				font-size: 22px;
+				align-items: center;
+				cursor: pointer;
+				user-select: none;
+				display: inline-flex;
+				width: fit-content;
+				flex-direction: row;
+				align-items: center;
+
+				.toggle {
+					margin-left: 4px;
+					padding: 3px;
+				}
+			}
 
 			&[data-expanded="0"] {
 				.content {
@@ -17,19 +36,21 @@
 				}
 			}
 
-			.title {
-				font-size: 24px;
-				cursor: pointer;
-				user-select: none;
+			label {
+				width: 175px;
 				display: flex;
 				flex-direction: row;
-				align-items: center;
+				text-align: right;
+
+				input,
+				select {
+					margin-left: auto;
+					height: 20px;
+				}
 			}
 		}
 
 		> .omnibox {
-			margin: 20px auto;
-			width: 75%;
 			height: 50px;
 			display: flex;
 			flex-direction: row;
