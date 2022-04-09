@@ -1,0 +1,17 @@
+{
+	"default": "rh",
+	"compatibility": [
+		{
+			"host": "example.com",
+			"proxy": "uv"
+		},
+		{
+			"host": "example.net",
+			"proxy": "st"
+		},
+		{
+			"host": "example.org",
+			"proxy": "rh"
+		}
+	]
+}

@@ -76,34 +76,15 @@ export default class Proxies extends Component {
 					</form>
 
 					<Expand title="Advanced Options">
-						<h3>{obfuscate(<>Manual Proxy</>)}</h3>
 						<label>
-							Enabled?
-							<input
-								type="checkbox"
-								name="Enabled"
-								onChange={event =>
-									this.service_frame.settings.set(
-										'manual_enabled',
-										event.target.checked
-									)
-								}
-								defaultChecked={this.service_frame.settings.get(
-									'manual_enabled'
-								)}
-							></input>
-						</label>
-						<label>
-							Proxy:
+							{obfuscate(<>Proxy</>)}:
 							<select
 								onChange={event =>
-									this.service_frame.settings.set(
-										'manual_target',
-										event.target.value
-									)
+									this.service_frame.settings.set('proxy', event.target.value)
 								}
-								defaultValue={this.service_frame.settings.get('manual_target')}
+								defaultValue={this.service_frame.settings.get('proxy')}
 							>
+								<option value="auto">Automatic (Default)</option>
 								<option value="uv">Ultraviolet</option>
 								<option value="rh">Rammerhead</option>
 								<option value="st">Stomp</option>

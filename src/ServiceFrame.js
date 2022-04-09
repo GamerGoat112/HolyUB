@@ -7,10 +7,10 @@ import obfuscate from './obfuscate.js';
 import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
+import proxy from './proxy.json';
 
 const default_settings = {
-	manual_enabled: false,
-	manual_target: 'uv',
+	proxy: 'auto',
 };
 
 export default class ServiceFrame extends SleepingComponent {
@@ -45,14 +45,34 @@ export default class ServiceFrame extends SleepingComponent {
 			},
 		});
 	}
+	compatible_proxy(src) {}
 	async proxy(input) {
-		await this.boot.ready;
+		let src = this.search.query(input);
 
-		const src = this.search.query(input);
+		let proxy = this.settings.get('proxy');
+
+		if (proxy === 'auto') {
+			proxy = this.pick_proxy(src);
+		}
+
+		let proxied_src;
+
+		switch (proxy) {
+			default:
+			case 'rh':
+				proxied_src = `/proxies/rh.html#${src}`;
+				break;
+			case 'uv':
+				proxied_src = `/proxies/uv.html#${src}`;
+				break;
+			case 'st':
+				proxied_src = `/proxies/st.html#${src}`;
+				break;
+		}
 
 		await this.setState({
 			title: src,
-			src: this.boot.html(src),
+			src: proxied_src,
 			icon: GenericGlobeSVG,
 			proxy: {
 				current: true,
@@ -117,7 +137,7 @@ export default class ServiceFrame extends SleepingComponent {
 
 			if (!this.links_tried.get(location).has(icons[0])) {
 				this.links_tried.get(location).add(icons[0]);
-				this.load_icon(this.boot.binary(icons[0]));
+				this.load_icon(icons[0]);
 			}
 		}
 
@@ -185,7 +205,7 @@ export default class ServiceFrame extends SleepingComponent {
 	}
 	// cant set image src to serviceworker url unless the page is a client
 	async load_icon(icon) {
-		const outgoing = await this.client_fetch(icon);
+		const outgoing = await this.bare.fetch(icon);
 
 		this.setState({
 			icon: URL.createObjectURL(await outgoing.blob()),
