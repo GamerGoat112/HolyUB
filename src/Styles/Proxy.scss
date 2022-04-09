@@ -36,16 +36,20 @@
 				}
 			}
 
-			label {
-				width: 200px;
-				display: flex;
-				flex-direction: row;
-				text-align: right;
+			.content {
+				margin-top: 15px;
 
-				input,
-				select {
-					margin-left: auto;
-					height: 20px;
+				label {
+					width: 200px;
+					display: flex;
+					flex-direction: row;
+					text-align: right;
+
+					input,
+					select {
+						margin-left: auto;
+						height: 20px;
+					}
 				}
 			}
 		}
