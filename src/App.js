@@ -30,8 +30,8 @@ const Rammerhead = lazy(() =>
 const Stomp = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxies/Stomp.js')
 );
-const OpenSource = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/OpenSource.js')
+const Licenses = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Licenses.js')
 );
 const Terms = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Terms.js')
@@ -101,10 +101,10 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/opensource.html"
+						path="/licenses.html"
 						element={
 							<Suspense fallback={<></>}>
-								<OpenSource layout={this.layout} />
+								<Licenses layout={this.layout} />
 							</Suspense>
 						}
 					/>

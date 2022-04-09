@@ -2,13 +2,13 @@ import { Component } from 'react';
 import obfuscate from '../obfuscate.js';
 import root from '../root.js';
 
-export default class OpenSource extends Component {
+export default class Licenses extends Component {
 	render() {
-		root.dataset.page = 'opensource';
+		root.dataset.page = 'licenses';
 
 		return (
 			<main>
-				<h1>Open-source credits</h1>
+				<h2>Licenses and open-source credits.</h2>
 
 				<ul>
 					<li>

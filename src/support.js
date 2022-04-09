@@ -29,7 +29,7 @@ export const qna = [
 		a: (
 			<>
 				The proxies used on this website can be found in the{' '}
-				<Link to="/opensource.html">open-source credits</Link>.
+				<Link to="/licenses.html">licenses and open-source credits</Link>.
 			</>
 		),
 	},
