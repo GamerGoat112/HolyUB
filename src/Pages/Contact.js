@@ -16,13 +16,13 @@ export default class Contact extends Component {
 					</a>
 				</p>
 				<p>
-					Email:
+					Email:{' '}
 					<a href="mailto:support@holy.how">
 						{obfuscate(<>support@holy.how</>)}
 					</a>
 				</p>
 				<p>
-					{obfuscate(<>Discord</>)}:
+					{obfuscate(<>Discord</>)}:{' '}
 					<a href="https://discord.gg/QKMwvd6tx6">
 						{obfuscate(<>https://discord.gg/QKMwvd6tx6</>)}
 					</a>
