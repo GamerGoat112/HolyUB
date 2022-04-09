@@ -1,6 +1,5 @@
 import root from './root.js';
 import ServiceFrame from './ServiceFrame.js';
-import SearchBar from './SearchBar.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
@@ -120,10 +119,6 @@ export default class Layout extends Component {
 						</Link>
 					</div>
 					<div className="shift-right"></div>
-					<SearchBar
-						service_frame={this.service_frame}
-						layout={{ current: this }}
-					/>
 					<button className="lightswitch" onClick={this.lightswitch.bind(this)}>
 						<span className="material-icons">
 							{this.state.theme === 'dark' ? 'brightness_7' : 'brightness_4'}

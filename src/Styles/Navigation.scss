@@ -10,24 +10,6 @@ nav {
 	text-align: center;
 	background: var(--background);
 
-	&[data-search="1"] {
-		> * {
-			display: none;
-		}
-
-		.logo,
-		.omnibox {
-			display: flex;
-		}
-
-		@media only screen and (max-width: 500px) {
-			.logo,
-			.expand {
-				display: none;
-			}
-		}
-	}
-
 	> .collapsable {
 		display: flex;
 		flex-direction: row;
@@ -210,68 +192,5 @@ nav {
 
 	> .shift-right {
 		margin-left: auto;
-	}
-
-	> .omnibox {
-		width: 100%;
-		padding: 6px 0px;
-		display: none;
-
-		> * {
-			border: 1px solid var(--border);
-			border-radius: 5px;
-			background: var(--background);
-			color: var(--subtle);
-		}
-
-		> button {
-			cursor: pointer;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			> svg,
-			> .material-icons {
-				height: 25px;
-				width: 25px;
-			}
-		}
-
-		> .bar {
-			width: 100%;
-			padding: 0px 12px;
-			font-family: inherit;
-			border-right: none;
-			border-top-right-radius: 0px;
-			border-bottom-right-radius: 0px;
-		}
-
-		> .submit {
-			flex: none;
-			width: 38px;
-			border-top-left-radius: 0px;
-			border-bottom-left-radius: 0px;
-			background: var(--blue);
-			color: #fff;
-
-			&:hover {
-				background-color: var(--blue-accent-hover);
-			}
-
-			&:active {
-				background-color: var(--blue-accent-active);
-			}
-		}
-
-		> .cancel {
-			margin: 0px 5px;
-			color: var(--slate);
-			padding: 0px 8px;
-			width: 38px;
-
-			&:hover {
-				background-color: var(--accent);
-			}
-		}
 	}
 }
