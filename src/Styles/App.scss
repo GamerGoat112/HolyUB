@@ -49,8 +49,6 @@ body,
 	--contrast-background: 0, 0, 0;
 	--contrast-text: #fff;
 	--shadow: #0004;
-	--grid: url("../Assets/light.svg");
-	--grid-inverted: url("../Assets/dark.svg");
 
 	&[data-theme="dark"] {
 		--blue-link: #006cbe;
@@ -65,8 +63,6 @@ body,
 		--contrast-background: 255, 255, 255;
 		--contrast-text: #000;
 		--shadow: #fff4;
-		--grid: url("../Assets/dark.svg");
-		--grid-inverted: url("../Assets/light.svg");
 	}
 }
 
