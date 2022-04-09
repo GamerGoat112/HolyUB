@@ -23,7 +23,7 @@ import ProxyModule from '../../ProxyModule.js';
  * @property {UVDecode} decodeUrl
  */
 
-export default class UltraViolet extends ProxyModule {
+export default class Ultraviolet extends ProxyModule {
 	async _componentDidMount() {
 		await this.load_script('/uv/uv.bundle.js');
 		await this.load_script('/uv/uv.config.js');

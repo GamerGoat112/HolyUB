@@ -21,8 +21,8 @@ const NotFound = lazy(() =>
 const Proxy = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxy.js')
 );
-const UltraViolet = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Proxies/UltraViolet.js')
+const Ultraviolet = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Proxies/Ultraviolet.js')
 );
 const Rammerhead = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Proxies/Rammerhead.js')
@@ -89,7 +89,7 @@ export default class App extends Component {
 						path="/proxies/uv.html"
 						element={
 							<Suspense fallback={<></>}>
-								<UltraViolet layout={this.layout} />
+								<Ultraviolet layout={this.layout} />
 							</Suspense>
 						}
 					/>
