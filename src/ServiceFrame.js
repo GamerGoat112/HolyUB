@@ -155,7 +155,10 @@ export default class ServiceFrame extends SleepingComponent {
 			this.abort = new AbortController();
 
 			const outgoing = await this.bare.fetch(
-				`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&kl=wt-wt`
+				`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&kl=wt-wt`,
+				{
+					abort: this.abort,
+				}
 			);
 
 			if (outgoing.ok) {
