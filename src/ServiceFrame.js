@@ -3,9 +3,10 @@ import GenericGlobeSVG from './Assets/generic-globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
-import process from 'process';
 import obfuscate from './obfuscate.js';
 import Settings from './Settings.js';
+import SearchBuilder from './SearchBuilder.js';
+import BareClient from 'bare-client';
 
 const default_settings = {
 	manual_enabled: false,
@@ -31,6 +32,8 @@ export default class ServiceFrame extends SleepingComponent {
 	iframe = createRef();
 	// headless client for serviceworker
 	headless = createRef();
+	search = new SearchBuilder('https://www.google.com/search?q=%s');
+	bare = new BareClient(bareCDN);
 	async embed(src, title = src, icon = GenericGlobeSVG) {
 		await this.setState({
 			title,
@@ -67,46 +70,6 @@ export default class ServiceFrame extends SleepingComponent {
 	}
 	async componentDidMount() {
 		window.addEventListener('focus', this.focus_listener);
-
-		let config = {
-			bare: bareCDN,
-			directory: '/tomp/',
-		};
-
-		const TOMPBoot = await new Promise(resolve => {
-			if (global.TOMPBoot) {
-				resolve(global.TOMPBoot);
-			} else {
-				const interval = setInterval(() => {
-					if (typeof global.TOMPBoot === 'function') {
-						resolve(global.TOMPBoot);
-						clearInterval(interval);
-					}
-				}, 75);
-			}
-		});
-
-		if (process.env.NODE_ENV === 'development') {
-			config.loglevel = TOMPBoot.LOG_TRACE;
-			config.codec = TOMPBoot.CODEC_PLAIN;
-		} else {
-			config.loglevel = TOMPBoot.LOG_ERROR;
-			config.codec = TOMPBoot.CODEC_XOR;
-		}
-
-		this.boot = new TOMPBoot(config);
-		this.search = new TOMPBoot.SearchBuilder(
-			'https://www.google.com/search?q=%s'
-		);
-
-		await this.boot.ready;
-
-		this.ready = new Promise(resolve => {
-			this.headless.current.addEventListener('load', resolve);
-			this.headless.current.src = this.boot.config.directory;
-		});
-
-		await this.ready;
 
 		while (!this.unmounting) {
 			if (this.state.proxy.current) {
@@ -185,8 +148,6 @@ export default class ServiceFrame extends SleepingComponent {
 		}
 
 		try {
-			await this.ready;
-
 			if (this.abort !== undefined) {
 				this.abort.abort();
 			}
