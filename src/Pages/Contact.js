@@ -10,21 +10,21 @@ export default class Contact extends Component {
 			<main>
 				<h1>Contact:</h1>
 				<p>
-					GitHub:
-					<a href="https://github.com/sysce">
-						{obfuscate(<>https://github.com/sysce</>)}
+					GitHub:{' '}
+					<a href="https://git.holy.how/holy">
+						{obfuscate(<>https://git.holy.how/holy</>)}
 					</a>
 				</p>
 				<p>
 					Email:
-					<a href="mailto:support@sys32.dev">
-						{obfuscate(<>support@sys32.dev</>)}
+					<a href="mailto:support@holy.how">
+						{obfuscate(<>support@holy.how</>)}
 					</a>
 				</p>
 				<p>
 					{obfuscate(<>Discord</>)}:
-					<a href="https://discord.gg/rXFjfYt3ae">
-						{obfuscate(<>https://discord.gg/rXFjfYt3ae</>)}
+					<a href="https://discord.gg/QKMwvd6tx6">
+						{obfuscate(<>https://discord.gg/QKMwvd6tx6</>)}
 					</a>
 				</p>
 			</main>
