@@ -154,25 +154,11 @@ export default class ServiceFrame extends SleepingComponent {
 
 			this.abort = new AbortController();
 
-			const outgoing = await fetch(new URL('v2/', bareCDN), {
-				headers: {
-					'x-bare-path':
-						'/ac/?' +
-						new URLSearchParams({
-							q: query,
-							kl: 'wt-wt',
-						}),
-					'x-bare-headers': JSON.stringify({
-						host: 'duckduckgo.com',
-					}),
-					'x-bare-host': 'duckduckgo.com',
-					'x-bare-port': '443',
-					'x-bare-protocol': 'https:',
-				},
-				signal: this.abort.signal,
-			});
+			const outgoing = await this.bare.fetch(
+				`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&kl=wt-wt`
+			);
 
-			if (outgoing.ok && outgoing.headers.get('x-bare-status') === '200') {
+			if (outgoing.ok) {
 				for (let { phrase } of await outgoing.json()) {
 					results.push(phrase);
 				}
