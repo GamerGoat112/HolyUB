@@ -1,6 +1,6 @@
-#root[data-page="proxy-script"] {
-	footer,
-	nav {
+html[data-page="proxy-script"] #root {
+	> footer,
+	> nav {
 		display: none;
 	}
 }

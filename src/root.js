@@ -18,3 +18,7 @@ export const bareCDN = _bareCDN;
 export const rhApp = _rhApp;
 
 export default document.querySelector('#root');
+
+export function set_page(page) {
+	document.documentElement.dataset.page = page;
+}

@@ -1,5 +1,5 @@
-#root[data-page="proxy"] {
-	main {
+html[data-page="proxy"] #root {
+	> main {
 		padding: 0 30%;
 
 		.expand {

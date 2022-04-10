@@ -253,12 +253,12 @@ export default class ServiceFrame extends SleepingComponent {
 
 		if (this.state.embed.current) {
 			current = 'embed';
-			root.dataset.service = 1;
+			document.documentElement.dataset.service = 1;
 		} else if (this.state.proxy.current) {
 			current = 'proxy';
-			root.dataset.service = 1;
+			document.documentElement.dataset.service = 1;
 		} else {
-			delete root.dataset.service;
+			delete document.documentElement.dataset.service;
 		}
 
 		return (

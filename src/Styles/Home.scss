@@ -1,7 +1,5 @@
-#root[data-page='home'] {
-	background-image: var(--grid);
-
-	main {
+html[data-page="home"] #root {
+	> main {
 		margin: auto;
 
 		> .title {

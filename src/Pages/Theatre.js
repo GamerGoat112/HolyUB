@@ -1,5 +1,5 @@
 import { Component, createRef } from 'react';
-import root from '../root.js';
+import { set_page } from '../root.js';
 import data from '../theatre.json';
 import obfuscate from '../obfuscate.js';
 
@@ -136,7 +136,7 @@ class Category extends Component {
 
 export default class Theatre extends Component {
 	render() {
-		root.dataset.page = 'theatre';
+		set_page('theatre');
 
 		const categories = [];
 

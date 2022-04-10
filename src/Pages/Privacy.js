@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import obfuscate from '../obfuscate.js';
-import root from '../root.js';
+import { set_page } from '../root.js';
 
 export default class Contact extends Component {
 	render() {
-		root.dataset.page = 'contact';
+		set_page('contact');
 
 		return (
 			<main>

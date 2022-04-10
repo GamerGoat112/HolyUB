@@ -1,4 +1,3 @@
-import root from './root.js';
 import ServiceFrame from './ServiceFrame.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { Component, createRef } from 'react';
@@ -79,8 +78,8 @@ export default class Layout extends Component {
 		}
 	}
 	render() {
-		root.dataset.theme = this.state.theme;
-		root.dataset.fullscreen = Number(this.state.fullscreen);
+		document.documentElement.dataset.theme = this.state.theme;
+		document.documentElement.fullscreen = Number(this.state.fullscreen);
 
 		this.set_theme(this.state.theme);
 

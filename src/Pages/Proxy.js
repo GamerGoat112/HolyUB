@@ -1,5 +1,5 @@
 import obfuscate from '../obfuscate.js';
-import root from '../root.js';
+import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
 
@@ -54,7 +54,7 @@ export default class Proxies extends Component {
 		this.on_input();
 	}
 	render() {
-		root.dataset.page = 'proxy';
+		set_page('proxy');
 
 		return (
 			<>

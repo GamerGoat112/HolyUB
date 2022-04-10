@@ -1,6 +1,6 @@
-import root from '../root.js';
 import obfuscate from '../obfuscate.js';
 import { Component, createRef } from 'react';
+import { set_page } from '../root.js';
 import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
 import { Link } from 'react-router-dom';
 import { qna } from '../support.js';
@@ -38,7 +38,7 @@ export default class Support extends Component {
 		}
 	}
 	render() {
-		root.dataset.page = 'support';
+		set_page('support');
 
 		const sections = [];
 

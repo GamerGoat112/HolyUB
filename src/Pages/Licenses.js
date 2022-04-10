@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import obfuscate from '../obfuscate.js';
-import root from '../root.js';
+import { set_page } from '../root.js';
 
 export default class Licenses extends Component {
 	render() {
-		root.dataset.page = 'licenses';
+		set_page('licenses');
 
 		return (
 			<main>

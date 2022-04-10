@@ -1,14 +1,12 @@
-#root {
-	> .banner {
-		position: relative;
-		width: 100%;
-		text-align: center;
-		display: block;
-		background: var(--blue);
-		padding: 15px 0px;
+html > #root > .banner {
+	position: relative;
+	width: 100%;
+	text-align: center;
+	display: block;
+	background: var(--blue);
+	padding: 15px 0px;
 
-		> * {
-			color: var(--slate-text);
-		}
+	> * {
+		color: var(--slate-text);
 	}
 }

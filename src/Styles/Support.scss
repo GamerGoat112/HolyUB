@@ -1,4 +1,4 @@
-#root[data-page="support"] {
+html[data-page="support"] #root {
 	> .banner {
 		width: 100%;
 		display: block;
@@ -54,7 +54,7 @@
 		}
 	}
 
-	main {
+	> main {
 		> .note {
 			margin-top: 30px;
 			opacity: 0.75;
