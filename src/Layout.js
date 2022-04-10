@@ -110,8 +110,8 @@ export default class Layout extends Component {
 						<Link to="/proxy.html" className="entry text">
 							<span>Proxy</span>
 						</Link>
-						<Link to="/theatre.html" className="entry text">
-							<span>Theatre</span>
+						<Link to="/games.html" className="entry text">
+							<span>Games</span>
 						</Link>
 						<Link to="/support.html" className="entry text">
 							<span>Support</span>

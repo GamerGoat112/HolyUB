@@ -3,8 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout.js';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './Pages/Home.js'));
-const Theatre = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Theatre.js')
+const Games = lazy(() =>
+	import(/* webpackPrefetch: true */ './Pages/Games.js')
 );
 const Support = lazy(() =>
 	import(/* webpackPrefetch: true */ './Pages/Support.js')
@@ -61,10 +61,10 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/theatre.html"
+						path="/games.html"
 						element={
 							<Suspense fallback={<></>}>
-								<Theatre layout={this.layout} />
+								<Games layout={this.layout} />
 							</Suspense>
 						}
 					/>

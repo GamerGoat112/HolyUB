@@ -1,4 +1,4 @@
-pages=( "404.html" "support.html" "theatre.html" "contact.html" "privacy.html" "proxy.html" "opensource.html" )
+pages=( "404.html" "support.html" "games.html" "contact.html" "privacy.html" "proxy.html" "licenses.html" )
 
 npm run build
 

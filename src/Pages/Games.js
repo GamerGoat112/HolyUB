@@ -134,9 +134,9 @@ class Category extends Component {
 	}
 }
 
-export default class Theatre extends Component {
+export default class Games extends Component {
 	render() {
-		set_page('theatre');
+		set_page('games');
 
 		const categories = [];
 
