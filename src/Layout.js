@@ -4,7 +4,7 @@ import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import './Styles/App.scss';
 
-const themes = ['light', 'dark'];
+const themes = ['dark', 'light'];
 
 export default class Layout extends Component {
 	state = {
