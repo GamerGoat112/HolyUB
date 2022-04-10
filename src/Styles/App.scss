@@ -8,6 +8,7 @@
 @use "./Support.scss";
 @use "./Banner.scss";
 @use "./ProxyScript.scss";
+@use "./Theme.scss";
 $material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
 @import "~material-design-icons-iconfont/src/material-design-icons";
 
@@ -32,36 +33,6 @@ body,
 html {
 	--footer-height: 70px;
 	--nav-height: 50px;
-	--slate: #111;
-	--slate-text: #eee;
-	--slate-accent: #333;
-	--accent: #e0e0e0;
-	--subtle: #555;
-	--background-accent: #f2f2f2;
-	--border: #ccc;
-	--blue-link: #1a0dab;
-	--blue: #0078d4;
-	--blue-accent-active: #1683d8;
-	--blue-accent-hover: #006cbe;
-	--background: #fff;
-	--contrast-background: 0, 0, 0;
-	--contrast-text: #fff;
-	--shadow: #0004;
-
-	&[data-theme="dark"] {
-		--blue-link: #006cbe;
-		--background: #000;
-		--slate: #ddd;
-		--slate-text: #333;
-		--accent: #222;
-		--background-accent: #111;
-		--subtle: #ddd;
-		--border: #555;
-		--blue: #0078d4;
-		--contrast-background: 255, 255, 255;
-		--contrast-text: #000;
-		--shadow: #fff4;
-	}
 }
 
 * {
