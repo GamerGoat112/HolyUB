@@ -20,13 +20,15 @@ export default class ServiceFrame extends SleepingComponent {
 		icon: GenericGlobeSVG,
 		// if icon is a blob: uri, revoke it once loaded
 		revoke_icon: false,
-		src: 'about:blank',
+		src: '',
 		embed: {
 			current: false,
 		},
 		proxy: {
 			current: false,
+			src: '',
 		},
+		first_load: false,
 	};
 	links_tried = new WeakMap();
 	iframe = createRef();
@@ -237,6 +239,7 @@ export default class ServiceFrame extends SleepingComponent {
 	close() {
 		this.setState({
 			src: '',
+			first_load: false,
 			proxy: {
 				current: false,
 			},
@@ -290,6 +293,12 @@ export default class ServiceFrame extends SleepingComponent {
 					src={this.state.src}
 					title="embed"
 					ref={this.iframe}
+					data-first-load={Number(this.state.first_load)}
+					onLoad={() => {
+						if (this.state.src !== '') {
+							this.setState({ first_load: true });
+						}
+					}}
 				></iframe>
 			</div>
 		);
