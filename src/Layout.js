@@ -124,7 +124,7 @@ export default class Layout extends Component {
 						</span>
 					</button>
 				</nav>
-				<Outlet />
+				{this.props.element || <Outlet />}
 				<ServiceFrame ref={this.service_frame} />
 				<footer>
 					<Link to="/licenses.html">Licenses</Link>

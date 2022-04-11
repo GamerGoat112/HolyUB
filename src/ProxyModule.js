@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import obfuscate from './obfuscate.js';
+import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { set_page } from './root.js';
 
 export default class ProxyModule extends Component {
@@ -67,13 +67,13 @@ export default class ProxyModule extends Component {
 	render() {
 		set_page('proxy-script');
 
+		let main;
+
 		if (this.state.error === undefined) {
-			return (
-				<>
-					<main>
-						<p>Your {obfuscate(<>proxy</>)} is loading...</p>
-					</main>
-				</>
+			main = (
+				<main>
+					<p>Your {obfuscate(<>proxy</>)} is loading...</p>
+				</main>
 			);
 		} else {
 			let description;
@@ -84,7 +84,7 @@ export default class ProxyModule extends Component {
 				description = <p>{this.state.possible_error}</p>;
 			}
 
-			return (
+			main = (
 				<main>
 					<p>
 						We encountered an error while loading your {obfuscate(<>proxy</>)}:
@@ -93,5 +93,12 @@ export default class ProxyModule extends Component {
 				</main>
 			);
 		}
+
+		return (
+			<>
+				<ObfuscateStyle />
+				{main}
+			</>
+		);
 	}
 }

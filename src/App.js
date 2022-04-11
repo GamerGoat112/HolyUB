@@ -108,16 +108,10 @@ export default class App extends Component {
 							</Suspense>
 						}
 					/>
+				</Route>
+				<Route path="/proxies/">
 					<Route
-						path="/proxies/uv.html"
-						element={
-							<Suspense fallback={<></>}>
-								<Ultraviolet layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path="/proxies/rh.html"
+						path="rh.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Rammerhead layout={this.layout} />
@@ -125,7 +119,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/proxies/st.html"
+						path="st.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Stomp layout={this.layout} />
@@ -133,14 +127,26 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="*"
+						path="uv.html"
 						element={
 							<Suspense fallback={<></>}>
-								<NotFound layout={this.layout} />
+								<Ultraviolet layout={this.layout} />
 							</Suspense>
 						}
 					/>
 				</Route>
+				<Route
+					path="*"
+					element={
+						<Layout
+							element={
+								<Suspense fallback={<></>}>
+									<NotFound layout={this.layout} />
+								</Suspense>
+							}
+						/>
+					}
+				/>
 			</Routes>
 		);
 	}
