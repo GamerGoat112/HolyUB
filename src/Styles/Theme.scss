@@ -14,7 +14,7 @@ $night: (
 	text-accent: #bbb,
 	text-placeholder: #9aa0a6,
 	border: #555,
-	link: #006cbe,
+	link: $nord8,
 );
 $day: (
 	background: $nord4,
@@ -23,7 +23,7 @@ $day: (
 	text-accent: #222,
 	text-placeholder: #9aa0a6,
 	border: #ccc,
-	link: #1a0dab,
+	link: $nord10,
 );
 
 @mixin theme-rules($theme, $contrast) {
