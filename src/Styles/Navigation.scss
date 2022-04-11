@@ -86,10 +86,6 @@
 			left: 0px;
 			right: 0px;
 			margin: auto;
-
-			:not(.text) {
-				width: 50px;
-			}
 		}
 
 		&[data-expanded="1"] {

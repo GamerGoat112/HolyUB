@@ -1,3 +1,4 @@
+@use "sass:map";
 @import "~nord/src/sass/nord.scss";
 
 /*
@@ -5,35 +6,48 @@ Design for dark theme first.
 
 https://www.nordtheme.com/
 */
-html {
-	--background: #{$nord0};
-	--background-accent: #111;
-	--contrast-background: 255, 255, 255;
-	--slate: #ddd;
-	--slate-text: #333;
-	--slate-accent: #333;
-	--contrast-text: #fff;
-	--accent: #222;
-	--border: #555;
+
+$night: (
+	background: $nord0,
+	background-accent: $nord1,
+	text: #fff,
+	text-accent: #bbb,
+	text-placeholder: #9aa0a6,
+	border: #555,
+	link: #006cbe,
+);
+$day: (
+	background: $nord4,
+	background-accent: $nord5,
+	text: #000,
+	text-accent: #222,
+	text-placeholder: #9aa0a6,
+	border: #ccc,
+	link: #1a0dab,
+);
+
+@mixin theme-rules($theme, $contrast) {
+	--background: #{map.get($theme, "background")};
+	--contrast-background: #{map.get($contrast, "background")};
+	--text: #{map.get($theme, "text")};
+	--contrast-text: #{map.get($contrast, "text")};
+	--text-placeholder: #{map.get($theme, "text-placeholder")};
+	--text-accent: #{map.get($theme, "text-accent")};
+	--background-accent: #{map.get($theme, "background-accent")};
+	--border: #{map.get($theme, "border")};
+	--link: #{map.get($theme, "link")};
 	--subtle: #ddd;
 	--blue: #0078d4;
 	--blue-link: #006cbe;
 	--blue-accent-active: #1683d8;
 	--blue-accent-hover: #006cbe;
 	--shadow: #fff4;
+}
 
-	&[data-theme="light"] {
-		--background: #{$nord4};
-		--background-accent: #f2f2f2;
-		--contrast-background: 0, 0, 0;
-		--slate: #111;
-		--slate-text: #eee;
-		--contrast-text: #000;
-		--accent: #e0e0e0;
-		--border: #ccc;
-		--subtle: #555;
-		--blue: #0078d4;
-		--blue-link: #1a0dab;
-		--shadow: #0004;
+html {
+	@include theme-rules($day, $night);
+
+	&[data-theme="day"] {
+		@include theme-rules($night, $day);
 	}
 }

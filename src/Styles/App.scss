@@ -17,13 +17,13 @@ body,
 #root {
 	margin: 0px;
 	width: 100%;
-	background: var(--background);
+	background-color: var(--background);
 }
 
 #root {
 	font-family: Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif;
 	font-weight: 400;
-	color: var(--slate);
+	color: var(--text);
 	min-height: 100vh;
 	overflow: auto;
 	display: flex;
@@ -40,7 +40,7 @@ html {
 }
 
 a {
-	color: var(--blue-link);
+	color: var(--link);
 	text-decoration: none;
 
 	&:hover {

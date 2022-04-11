@@ -1,10 +1,11 @@
 import ServiceFrame from './ServiceFrame.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
+import { ReactComponent as HatSVG } from './Assets/hat.svg';
 import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import './Styles/App.scss';
 
-const themes = ['dark', 'light'];
+const themes = ['night', 'day'];
 
 export default class Layout extends Component {
 	state = {
@@ -67,13 +68,13 @@ export default class Layout extends Component {
 		document.removeEventListener('click', this.listen_click);
 	}
 	lightswitch() {
-		if (this.state.theme === 'light') {
+		if (this.state.theme === 'day') {
 			this.setState({
-				theme: 'dark',
+				theme: 'night',
 			});
-		} else if (this.state.theme === 'dark') {
+		} else if (this.state.theme === 'night') {
 			this.setState({
-				theme: 'light',
+				theme: 'day',
 			});
 		}
 	}
@@ -102,8 +103,8 @@ export default class Layout extends Component {
 							<span></span>
 						</div>
 					</div>
-					<Link to="/" className="entry logo text">
-						Holy Unblocker
+					<Link to="/" className="entry logo">
+						<HatSVG />
 					</Link>
 					<div className="separator"></div>
 					<div className="collapsable" ref={this.collapsable}>
@@ -120,7 +121,7 @@ export default class Layout extends Component {
 					<div className="shift-right"></div>
 					<button className="lightswitch" onClick={this.lightswitch.bind(this)}>
 						<span className="material-icons">
-							{this.state.theme === 'dark' ? 'brightness_7' : 'brightness_4'}
+							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}
 						</span>
 					</button>
 				</nav>
