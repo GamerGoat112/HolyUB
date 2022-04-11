@@ -106,7 +106,7 @@ export default class Layout extends Component {
 					<Link to="/" className="entry logo">
 						<HatSVG />
 					</Link>
-					<div className="separator"></div>
+					<div className="shift-right"></div>
 					<div className="collapsable" ref={this.collapsable}>
 						<Link to="/proxy.html" className="entry text">
 							<span>Proxy</span>
@@ -118,7 +118,6 @@ export default class Layout extends Component {
 							<span>Support</span>
 						</Link>
 					</div>
-					<div className="shift-right"></div>
 					<button className="lightswitch" onClick={this.lightswitch.bind(this)}>
 						<span className="material-icons">
 							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}

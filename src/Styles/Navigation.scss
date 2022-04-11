@@ -5,7 +5,7 @@
 	position: relative;
 	color: var(--slate);
 	border-bottom: var(--border) 1px solid;
-	padding: 0px 5vw;
+	padding: 10px 5vw;
 	z-index: 10;
 	text-align: center;
 	background: var(--background);
@@ -13,7 +13,12 @@
 	> .collapsable {
 		display: flex;
 		flex-direction: row;
-		width: 100%;
+
+		@media only screen and (max-width: 650px) {
+			> .collapsable {
+				justify-content: space-around;
+			}
+		}
 	}
 
 	> .expand {
@@ -53,12 +58,6 @@
 		}
 	}
 
-	@media only screen and (max-width: 650px) {
-		> .collapsable {
-			justify-content: space-around;
-		}
-	}
-
 	@media only screen and (max-width: 500px) {
 		> .expand {
 			display: flex;
@@ -75,10 +74,6 @@
 			text-align: left;
 			background: var(--background);
 			border-bottom: 1px solid var(--border);
-		}
-
-		> .separator {
-			display: none;
 		}
 
 		> .logo {
@@ -177,13 +172,6 @@
 				display: block;
 			}
 		}
-	}
-
-	.separator {
-		background: var(--subtle);
-		height: 30px;
-		width: 2px;
-		margin: auto 8px;
 	}
 
 	> .shift-right {
