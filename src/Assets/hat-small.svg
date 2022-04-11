@@ -1,0 +1,18 @@
+<svg viewBox="0 0 88.9 81.4" xmlns="http://www.w3.org/2000/svg">
+  <defs></defs>
+  <ellipse style="paint-order: stroke; fill: rgb(76, 86, 106); stroke: rgb(237, 240, 245); stroke-width: 6px;" cx="44.472" cy="54.052" rx="41.472" ry="24.375">
+    <title>bottom</title>
+  </ellipse>
+  <path d="M 19.272 22.791 C 29.314 34.371 59.966 33.951 69.672 22.791 L 69.672 53.69 C 69.672 53.69 69.655 54.691 69.655 55.204 C 69.655 61.99 58.38 67.491 44.472 67.491 C 30.564 67.491 19.289 61.99 19.289 55.204 C 19.289 54.691 19.272 22.791 19.272 22.791 Z" style="paint-order: stroke; stroke: rgb(237, 240, 245); fill: rgb(46, 52, 64); stroke-width: 6px;">
+    <title>correct mid</title>
+  </path>
+  <ellipse style="paint-order: stroke; fill: rgb(76, 86, 106); stroke-width: 6px; stroke: rgb(237, 240, 245);" cx="44.472" cy="15.287" rx="25.183" ry="12.287">
+    <title>correct top</title>
+  </ellipse>
+  <ellipse style="paint-order: stroke; stroke: rgb(237, 240, 245); fill: rgb(76, 86, 106); stroke-width: 6px;" cx="34.042" cy="44.96" rx="5.84" ry="7.949">
+    <title>left eye</title>
+  </ellipse>
+  <ellipse style="paint-order: stroke; stroke: rgb(237, 240, 245); fill: rgb(76, 86, 106); stroke-width: 6px;" cx="54.902" cy="44.96" rx="5.84" ry="7.949">
+    <title>left eye</title>
+  </ellipse>
+</svg>

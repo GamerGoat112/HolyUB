@@ -94,7 +94,7 @@
 
 			> .expand span {
 				&:nth-child(1) {
-					top: 10;
+					top: 10px;
 					width: 0%;
 					left: 50%;
 				}
@@ -131,7 +131,7 @@
 		color: inherit;
 
 		&:hover {
-			background: var(--accent);
+			background: var(--background-accent);
 		}
 	}
 
@@ -149,6 +149,16 @@
 			height: 25px;
 			width: 25px;
 			color: inherit;
+		}
+
+		&.logo {
+			height: 38px;
+			width: 42px;
+
+			> svg {
+				width: inherit;
+				height: inherit;
+			}
 		}
 
 		span {

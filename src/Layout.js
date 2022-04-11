@@ -1,6 +1,6 @@
 import ServiceFrame from './ServiceFrame.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
-import { ReactComponent as HatSVG } from './Assets/hat.svg';
+import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
 import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import './Styles/App.scss';
