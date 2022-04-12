@@ -1,7 +1,6 @@
 import obfuscate from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
-import { ReactComponent as SearchSVG } from '../Assets/nav-search.svg';
 
 class Expand extends Component {
 	state = {
@@ -70,8 +69,8 @@ export default class Proxies extends Component {
 							onInput={this.on_input.bind(this)}
 						/>
 						<datalist id="proxy-omnibox">{this.state.omnibox_entries}</datalist>
-						<button type="submit">
-							<SearchSVG />
+						<button className="material-icons" type="submit">
+							search
 						</button>
 					</form>
 
