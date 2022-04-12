@@ -69,9 +69,6 @@ export default class Proxies extends Component {
 							onInput={this.on_input.bind(this)}
 						/>
 						<datalist id="proxy-omnibox">{this.state.omnibox_entries}</datalist>
-						<button className="material-icons" type="submit">
-							search
-						</button>
 					</form>
 
 					<Expand title="Advanced Options">

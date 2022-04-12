@@ -1,3 +1,5 @@
+@import "./Screen.scss";
+
 #root > nav {
 	display: flex;
 	min-height: var(--nav-height);
@@ -13,12 +15,6 @@
 	> .collapsable {
 		display: flex;
 		flex-direction: row;
-
-		@media only screen and (max-width: 650px) {
-			> .collapsable {
-				justify-content: space-around;
-			}
-		}
 	}
 
 	> .expand {
@@ -37,7 +33,7 @@
 				position: absolute;
 				height: 0px;
 				width: 100%;
-				border-top: 1px solid var(--slate);
+				border-top: 1px solid var(--text);
 				left: 0;
 				transform: rotate(0deg);
 				transition: width 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
@@ -58,7 +54,7 @@
 		}
 	}
 
-	@media only screen and (max-width: 500px) {
+	@include screen_phone {
 		> .expand {
 			display: flex;
 		}
@@ -153,9 +149,7 @@
 		}
 
 		&.logo {
-			height: 38px;
-			width: 42px;
-
+			width: 35px;
 			> svg {
 				width: inherit;
 				height: inherit;
@@ -187,5 +181,18 @@
 
 	> .shift-right {
 		margin-left: auto;
+	}
+
+	@include screen_tablet {
+		> .shift-right {
+			display: none;
+		}
+
+		justify-content: space-between;
+
+		.collapsable {
+			justify-content: space-around;
+			width: 100%;
+		}
 	}
 }
