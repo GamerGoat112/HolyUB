@@ -87,6 +87,7 @@ html[data-page="proxy"] #root {
 				width: 50px;
 				background: var(--blue);
 				color: #fff;
+				user-select: none;
 
 				&:hover {
 					background-color: var(--blue-accent-hover);
