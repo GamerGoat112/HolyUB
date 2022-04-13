@@ -98,7 +98,7 @@ export default class Proxies extends Component {
 						}}
 						onSubmit={event => {
 							event.preventDefault();
-							this.search_submit.bind(this);
+							this.search_submit();
 						}}
 						ref={this.form}
 					>
