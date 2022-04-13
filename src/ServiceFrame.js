@@ -209,10 +209,6 @@ export default class ServiceFrame extends SleepingComponent {
 			}
 		}
 
-		for (let i = 0; i < results.length; i++) {
-			results[i] = <option key={i} value={results[i]} />;
-		}
-
 		return results;
 	}
 	// cant set image src to serviceworker url unless the page is a client

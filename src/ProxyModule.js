@@ -1,8 +1,8 @@
-import { Component } from 'react';
+import Layout from './Layout.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { set_page } from './root.js';
 
-export default class ProxyModule extends Component {
+export default class ProxyModule extends Layout {
 	scripts = new Map();
 	load_script(src) {
 		if (this.scripts.has(src)) {
@@ -29,7 +29,6 @@ export default class ProxyModule extends Component {
 
 		return promise;
 	}
-	state = {};
 	get destination() {
 		const { hash } = global.location;
 
@@ -65,6 +64,9 @@ export default class ProxyModule extends Component {
 		});
 	}
 	render() {
+		// set dataset props
+		super.render();
+
 		set_page('proxy-script');
 
 		let main;

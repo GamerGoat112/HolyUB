@@ -61,20 +61,23 @@ html[data-page="proxy"] #root {
 		}
 
 		> .omnibox {
+			$border: 1px;
 			$height: 44px;
 			width: 584px;
-			height: $height;
+			min-height: $height;
 			display: flex;
 			position: relative;
+			flex-direction: column;
 
 			@include screen_tablet {
 				width: 100%;
 			}
 
 			$icon-size: 20px;
-			$icon-distance: calc(($height / 2) - ($icon-size / 2));
+			$icon-distance: calc($border + ($height / 2) - ($icon-size / 2));
 
-			> span {
+			.eyeglass,
+			.open {
 				user-select: none;
 				font-size: $icon-size;
 				width: $icon-size;
@@ -88,9 +91,20 @@ html[data-page="proxy"] #root {
 				pointer-events: none;
 			}
 
+			.open {
+				display: none;
+			}
+
+			@include screen_tablet {
+				.open {
+					display: block;
+					top: 0px;
+					right: 0px;
+				}
+			}
+
 			> input {
-				width: 100%;
-				height: 100%;
+				height: $height;
 				font-family: inherit;
 				background: var(--background-accent);
 				color: var(--text-accent);
@@ -99,6 +113,51 @@ html[data-page="proxy"] #root {
 				padding: 0px 15px 0px calc(($icon-distance * 2) + $icon-size);
 				&::placeholder {
 					color: var(--text-placeholder);
+				}
+			}
+
+			> .suggested {
+				display: none;
+			}
+
+			&[data-suggested="1"] {
+				> .suggested {
+					display: flex;
+					flex-direction: column;
+					background-color: var(--background-accent);
+					overflow: hidden;
+					border-bottom-left-radius: 5px;
+					border-bottom-right-radius: 5px;
+					border: 1px solid var(--border);
+					border-top: none;
+					cursor: pointer;
+
+					> div {
+						color: var(--text);
+						height: $height;
+						position: relative;
+
+						&:hover {
+							background-color: var(--background);
+						}
+
+						> .text {
+							padding-left: calc(($icon-distance * 2) + $icon-size);
+							padding-right: 15px;
+							line-height: $height;
+							user-select: none;
+						}
+
+						> .eyeglass {
+							color: var(--text);
+						}
+					}
+				}
+
+				> input {
+					height: $height;
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 0px;
 				}
 			}
 		}
