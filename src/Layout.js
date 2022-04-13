@@ -132,7 +132,7 @@ export default class Layout extends Component {
 					<Link to="/privacy.html">Privacy</Link>
 					<Link to="/terms.html">Terms of use</Link>
 					<span>
-						&copy;{obfuscate(<>HolyUnblocker</>)} {new Date().getUTCFullYear()}
+						&copy; {obfuscate(<>HolyUnblocker</>)} {new Date().getUTCFullYear()}
 					</span>
 				</footer>
 			</>
