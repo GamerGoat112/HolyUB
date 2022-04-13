@@ -48,11 +48,14 @@ export default class Proxies extends Component {
 		this.on_input();
 	}
 	async on_input() {
-		this.setState({
-			omnibox_entries: await this.service_frame.omnibox_entries(
-				this.input.current.value
-			),
-		});
+		if (this.state.input_value !== this.input.current.value) {
+			this.setState({
+				input_value: this.input.current.value,
+				omnibox_entries: await this.service_frame.omnibox_entries(
+					this.input.current.value
+				),
+			});
+		}
 	}
 	search_submit() {
 		this.setState({ input_focused: false });
@@ -62,7 +65,8 @@ export default class Proxies extends Component {
 	render() {
 		set_page('proxy');
 
-		const render_suggested = this.state.omnibox_entries.length !== 0;
+		const render_suggested =
+			this.state.input_focused && this.state.omnibox_entries.length !== 0;
 		const suggested = [];
 
 		if (render_suggested) {
@@ -88,11 +92,9 @@ export default class Proxies extends Component {
 				<main>
 					<form
 						className="omnibox"
-						data-suggested={Number(
-							this.state.input_focused && render_suggested
-						)}
+						data-suggested={Number(render_suggested)}
 						data-focused={Number(this.state.input_focused)}
-						onBlur={event => {
+						onBlur={async event => {
 							if (!this.form.current.contains(event.target)) {
 								this.setState({ input_focused: false });
 							}
@@ -111,8 +113,10 @@ export default class Proxies extends Component {
 							list="proxy-omnibox"
 							ref={this.input}
 							onInput={this.on_input.bind(this)}
-							onFocus={() => this.setState({ input_focused: true })}
-							onBlur={() => this.setState({ input_focused: false })}
+							onFocus={() => {
+								this.setState({ input_focused: true });
+								this.on_input();
+							}}
 						/>
 						<span className="eyeglass material-icons">search</span>
 						<div className="suggested">{suggested}</div>
