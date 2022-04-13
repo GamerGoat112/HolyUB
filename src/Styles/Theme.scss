@@ -45,9 +45,9 @@ $day: (
 }
 
 html {
-	@include theme-rules($day, $night);
+	@include theme-rules($night, $day);
 
 	&[data-theme="day"] {
-		@include theme-rules($night, $day);
+		@include theme-rules($day, $night);
 	}
 }
