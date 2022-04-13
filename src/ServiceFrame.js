@@ -263,8 +263,11 @@ export default class ServiceFrame extends SleepingComponent {
 		return (
 			<div className="service" ref={this.container} data-current={current}>
 				<div className="buttons">
-					<div className="button" onClick={this.close.bind(this)}>
-						<span className="material-icons">chevron_left</span>
+					<div
+						className="material-icons button"
+						onClick={this.close.bind(this)}
+					>
+						chevron_left
 					</div>
 					<img
 						className="icon"
@@ -275,8 +278,11 @@ export default class ServiceFrame extends SleepingComponent {
 					/>
 					<p className="title">{obfuscate(<>{this.state.title}</>)}</p>
 					<div className="shift-right"></div>
-					<div className="button" onClick={this.fullscreen.bind(this)}>
-						<span className="material-icons">fullscreen</span>
+					<div
+						className="material-icons button"
+						onClick={this.fullscreen.bind(this)}
+					>
+						fullscreen
 					</div>
 				</div>
 				<iframe
