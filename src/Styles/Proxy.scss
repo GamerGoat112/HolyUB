@@ -68,13 +68,25 @@ html[data-page="proxy"] #root {
 			display: flex;
 			position: relative;
 			flex-direction: column;
-
-			@include screen_tablet {
-				width: 100%;
-			}
+			transition: top 0.5s ease-in-out;
+			max-height: 100%;
 
 			$icon-size: 20px;
 			$icon-distance: calc($border + ($height / 2) - ($icon-size / 2));
+			$padding-left: calc(($icon-distance * 2) + $icon-size);
+
+			@include screen_tablet {
+				width: 100%;
+
+				&[data-focused="1"] {
+					position: absolute;
+					z-index: 100;
+					top: 10px;
+					left: 10px;
+					width: calc(100% - 20px);
+					height: calc(100% - 20px);
+				}
+			}
 
 			.eyeglass,
 			.open {
@@ -105,12 +117,13 @@ html[data-page="proxy"] #root {
 
 			> input {
 				height: $height;
+				flex: none;
 				font-family: inherit;
 				background: var(--background-accent);
 				color: var(--text-accent);
 				border: 1px solid var(--border);
 				border-radius: 5px;
-				padding: 0px 15px 0px calc(($icon-distance * 2) + $icon-size);
+				padding: 0px 15px 0px $padding-left;
 				&::placeholder {
 					color: var(--text-placeholder);
 				}
@@ -142,7 +155,7 @@ html[data-page="proxy"] #root {
 						}
 
 						> .text {
-							padding-left: calc(($icon-distance * 2) + $icon-size);
+							padding-left: $padding-left;
 							padding-right: 15px;
 							line-height: $height;
 							user-select: none;

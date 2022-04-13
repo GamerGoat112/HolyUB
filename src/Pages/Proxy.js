@@ -91,6 +91,7 @@ export default class Proxies extends Component {
 						data-suggested={Number(
 							this.state.input_focused && render_suggested
 						)}
+						data-focused={Number(this.state.input_focused)}
 						onBlur={event => {
 							if (!this.form.current.contains(event.target)) {
 								this.setState({ input_focused: false });
@@ -111,6 +112,7 @@ export default class Proxies extends Component {
 							ref={this.input}
 							onInput={this.on_input.bind(this)}
 							onFocus={() => this.setState({ input_focused: true })}
+							onBlur={() => this.setState({ input_focused: false })}
 						/>
 						<span className="eyeglass material-icons">search</span>
 						<div className="suggested">{suggested}</div>
