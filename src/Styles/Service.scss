@@ -60,12 +60,15 @@ html {
 				width: 24px;
 				height: 24px;
 				margin: auto 5px;
+				flex: none;
 			}
 
 			> .title {
 				white-space: nowrap;
+				overflow: hidden;
 				text-overflow: ellipsis;
 				margin: auto 5px;
+				width: 100%;
 			}
 
 			> .shift-right {
@@ -84,6 +87,7 @@ html {
 				position: relative;
 				margin: auto 5px;
 				border-radius: 2px;
+				flex: none;
 
 				&:hover {
 					background-color: var(--background-accent);
