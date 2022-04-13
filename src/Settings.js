@@ -51,7 +51,6 @@ export default class Settings {
 		return this.value[key];
 	}
 	set(key, value) {
-		console.log(key, value, this.valid_value(key, value));
 		if (this.valid_value(key, value)) {
 			this.value[key] = value;
 			localStorage[this.key] = JSON.stringify(this.value);
