@@ -147,3 +147,21 @@ export default function obfuscate(input) {
 
 	return <s className={string_class}>{output}</s>;
 }
+
+export class ObfuscatedA extends Component {
+	render() {
+		const props = { ...this.props };
+		delete props.href;
+
+		return (
+			// eslint-disable-next-line jsx-a11y/anchor-is-valid
+			<a
+				href=""
+				{...props}
+				onClick={() => global.location.assign(this.props.href)}
+			>
+				{this.props.children}
+			</a>
+		);
+	}
+}
