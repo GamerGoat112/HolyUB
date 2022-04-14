@@ -1,4 +1,6 @@
-html[data-page="support"] #root {
+@import "./Common.scss";
+
+@include root_page("support") {
 	> .banner {
 		width: 100%;
 		display: block;

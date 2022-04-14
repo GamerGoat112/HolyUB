@@ -1,4 +1,6 @@
-html[data-page="home"] #root {
+@import "./Common.scss";
+
+@include root_page("home") {
 	> main {
 		margin: auto;
 

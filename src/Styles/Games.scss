@@ -1,62 +1,55 @@
-html[data-page="games"] #root {
+@import "./Common.scss";
+
+@include root_page("games") {
 	> main {
 		> section {
+			height: 360px;
+			$expand-size: 50px;
+			$expand-overflow: calc($expand-size / 2);
+
+			overflow: hidden;
+			padding-bottom: $expand-overflow;
 			position: relative;
 
-			&[data-overflowing="1"] {
-				> .items {
-					&::after {
-						display: block;
-					}
-				}
-			}
-
-			&[data-expanded="1"] {
-				> .items {
-					max-height: unset;
-
-					&::after {
-						display: none;
-					}
-				}
+			> .items-expand {
+				display: none;
 			}
 
 			&[data-expanded="1"],
 			&[data-overflowing="1"] {
+				height: unset;
+
 				> .items-expand {
 					display: block;
+					border-radius: 50%;
+					width: $expand-size;
+					height: $expand-size;
+					border: 2px solid var(--text-accent);
+					background: var(--background-accent);
+					position: absolute;
+					bottom: 0px;
+					left: 0px;
+					right: 0px;
+					margin: 0 auto;
+					line-height: $expand-size;
+					text-align: center;
+					user-select: none;
+					cursor: pointer;
 				}
-			}
-
-			> .items-expand {
-				display: none;
-				border-radius: 50%;
-				width: 50px;
-				height: 50px;
-				border: 2px solid var(--text-accent);
-				background: var(--background-accent);
-				position: absolute;
-				bottom: -25px;
-				left: 0px;
-				right: 0px;
-				margin: 0 auto;
-				line-height: 50px;
-				text-align: center;
-				user-select: none;
-				cursor: pointer;
 			}
 
 			> .items {
 				padding: 10px;
 				background: var(--background-accent);
 				width: 100%;
+				height: 265px;
 				display: flex;
 				flex-direction: row;
 				border-radius: 10px;
 				justify-content: space-around;
-				max-height: 265px;
 				padding-bottom: 30px;
 				flex-wrap: wrap;
+				flex-grow: 0;
 				overflow: hidden;
 
 				&::after {
@@ -96,6 +89,23 @@ html[data-page="games"] #root {
 						line-height: 40px;
 						text-align: center;
 						border-top: 1px solid var(--border);
+					}
+				}
+			}
+
+			&[data-overflowing="1"] {
+				> .items {
+					&::after {
+						display: block;
+					}
+				}
+			}
+
+			&[data-expanded="1"] {
+				> .items {
+					height: unset;
+					&::after {
+						display: none;
 					}
 				}
 			}

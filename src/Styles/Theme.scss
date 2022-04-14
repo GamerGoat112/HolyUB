@@ -45,6 +45,9 @@ $day: (
 }
 
 html {
+	--footer-height: 70px;
+	--nav-height: 50px;
+
 	@include theme-rules($night, $day);
 
 	&[data-theme="day"] {

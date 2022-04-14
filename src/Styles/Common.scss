@@ -1,0 +1,5 @@
+@mixin root_page($page) {
+	html[data-page="#{$page}"] #root {
+		@content;
+	}
+}

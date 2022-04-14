@@ -1,6 +1,7 @@
+@import "./Common.scss";
 @import "./Screen.scss";
 
-html[data-page="proxy"] #root {
+@include root_page("proxy") {
 	> main {
 		margin: 40px auto;
 
