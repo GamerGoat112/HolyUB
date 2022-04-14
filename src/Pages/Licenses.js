@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import obfuscate from '../obfuscate.js';
+import obfuscate, { ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 
 export default class Licenses extends Component {
@@ -13,23 +13,23 @@ export default class Licenses extends Component {
 				<ul>
 					<li>
 						{obfuscate(<>Rammerhead:</>)}{' '}
-						<a href="https://github.com/binary-person/rammerhead">
+						<ObfuscatedA href="https://github.com/binary-person/rammerhead">
 							{obfuscate(<>https://github.com/binary-person/rammerhead</>)}
-						</a>
+						</ObfuscatedA>
 					</li>
 					<li>
 						{obfuscate(<>Ultraviolet:</>)}{' '}
-						<a href="https://github.com/titaniumnetwork-dev/Ultraviolet">
+						<ObfuscatedA href="https://github.com/titaniumnetwork-dev/Ultraviolet">
 							{obfuscate(
 								<>https://github.com/titaniumnetwork-dev/Ultraviolet</>
 							)}
-						</a>
+						</ObfuscatedA>
 					</li>
 					<li>
 						{obfuscate(<>Stomp:</>)}{' '}
-						<a href="https://github.com/sysce/stomp">
+						<ObfuscatedA href="https://github.com/sysce/stomp">
 							{obfuscate(<>https://github.com/sysce/stomp</>)}
-						</a>
+						</ObfuscatedA>
 					</li>
 				</ul>
 			</main>
