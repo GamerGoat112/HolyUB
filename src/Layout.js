@@ -1,6 +1,7 @@
 import ServiceFrame from './ServiceFrame.js';
 import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
+import { ReactComponent as WavesSVG } from './Assets/waves.svg';
 import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import './Styles/Navigation.scss';
@@ -128,14 +129,17 @@ export default class Layout extends Component {
 				{this.props.element || <Outlet />}
 				<ServiceFrame ref={this.service_frame} />
 				<footer>
-					<Link to="/licenses.html">Licenses</Link>
-					<Link to="/contact.html">Contact</Link>
-					<Link to="/privacy.html">Privacy</Link>
-					<Link to="/terms.html">Terms of use</Link>
-					<span>
-						&copy; {obfuscate(<>Holy Unblocker</>)}{' '}
-						{new Date().getUTCFullYear()}
-					</span>
+					<WavesSVG />
+					<div className="content">
+						<Link to="/licenses.html">Licenses</Link>
+						<Link to="/contact.html">Contact</Link>
+						<Link to="/privacy.html">Privacy</Link>
+						<Link to="/terms.html">Terms of use</Link>
+						<span>
+							&copy; {obfuscate(<>Holy Unblocker</>)}{' '}
+							{new Date().getUTCFullYear()}
+						</span>
+					</div>
 				</footer>
 			</>
 		);

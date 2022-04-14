@@ -16,6 +16,7 @@ $night: (
 	border: #555,
 	link: $nord8,
 );
+
 $day: (
 	background: $nord4,
 	background-accent: $nord5,
@@ -26,6 +27,10 @@ $day: (
 	link: $nord10,
 );
 
+@function offsetHex($color, $ness) {
+	@return "rgb(" + (red($color) + $ness) + ", " + (green($color) + $ness) + ", " + (blue($color) + $ness) + ")";
+}
+
 @mixin theme-rules($theme, $contrast) {
 	--background: #{map.get($theme, "background")};
 	--contrast-background: #{map.get($contrast, "background")};
@@ -34,6 +39,8 @@ $day: (
 	--text-placeholder: #{map.get($theme, "text-placeholder")};
 	--text-accent: #{map.get($theme, "text-accent")};
 	--background-accent: #{map.get($theme, "background-accent")};
+	--background-accent-deep-1: #{offsetHex(map.get($theme, "background-accent"), -5)};
+	--background-accent-deep-2: #{offsetHex(map.get($theme, "background-accent"), -8)};
 	--border: #{map.get($theme, "border")};
 	--link: #{map.get($theme, "link")};
 	--subtle: #ddd;
@@ -45,7 +52,6 @@ $day: (
 }
 
 html {
-	--footer-height: 70px;
 	--nav-height: 50px;
 
 	@include theme-rules($night, $day);
