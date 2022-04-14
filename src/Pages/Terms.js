@@ -55,7 +55,7 @@ export default class Terms extends Component {
 				<h2>Contact Information &amp; Credit</h2>
 				<p>
 					If you have any questions about our Privacy Policy, please{' '}
-					<Link to="/contact">Contact Us</Link>.
+					<Link to="/contact.html">Contact Us</Link>.
 				</p>
 			</main>
 		);
