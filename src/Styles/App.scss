@@ -1,6 +1,7 @@
-@use "./Segoe-UI.scss";
-@use "./Banner.scss";
-@use "./Theme.scss";
+@import "./Segoe UI.scss";
+@import "./Montserrat Alternates.scss";
+@import "./Banner.scss";
+@import "./Theme.scss";
 $material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
 @import "~material-design-icons-iconfont/src/material-design-icons";
 
@@ -13,7 +14,7 @@ body {
 }
 
 #root {
-	font-family: Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-family: "Segoe UI", Helvetica Neue, Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);
 	display: flex;
