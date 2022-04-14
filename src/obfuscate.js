@@ -156,9 +156,12 @@ export class ObfuscatedA extends Component {
 		return (
 			// eslint-disable-next-line jsx-a11y/anchor-is-valid
 			<a
-				href=""
+				href="i:"
 				{...props}
-				onClick={() => global.location.assign(this.props.href)}
+				onClick={event => {
+					event.preventDefault();
+					global.location.assign(this.props.href);
+				}}
 			>
 				{this.props.children}
 			</a>
