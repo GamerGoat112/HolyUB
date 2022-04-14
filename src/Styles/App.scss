@@ -1,4 +1,4 @@
-@import "./Segoe UI.scss";
+@import "./Lato.scss";
 @import "./Montserrat Alternates.scss";
 @import "./Banner.scss";
 @import "./Theme.scss";
@@ -19,7 +19,7 @@ h2 {
 }
 
 #root {
-	font-family: "Segoe UI", Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);
 	display: flex;
