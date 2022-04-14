@@ -10,8 +10,10 @@ export default class Home extends Component {
 		return (
 			<>
 				<main>
-					<h1>{obfuscate(<>End Internet Censorship.</>)}</h1>
-					<h2>{obfuscate(<>Privacy right at your fingertips.</>)}</h2>
+					<div className="landing">
+						<h1>{obfuscate(<>End Internet Censorship.</>)}</h1>
+						<h2>{obfuscate(<>Privacy right at your fingertips.</>)}</h2>
+					</div>
 				</main>
 			</>
 		);
