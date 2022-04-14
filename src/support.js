@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import obfuscate from './obfuscate';
+import obfuscate, { ObfuscatedA } from './obfuscate';
 
 export const qna = [
 	{
@@ -16,7 +16,10 @@ export const qna = [
 		a: (
 			<>
 				Yes. This website is open source. See our{' '}
-				<a href="https://git.holy.how/holy">Git repository</a>.
+				<ObfuscatedA href="https://git.holy.how/holy">
+					Git repository
+				</ObfuscatedA>
+				.
 			</>
 		),
 	},
