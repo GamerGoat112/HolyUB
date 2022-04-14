@@ -51,10 +51,11 @@ export default class Contact extends Component {
 					relevant to maintaining or auditing our systems.
 				</p>
 
+				<h2>Contact Information</h2>
+
 				<p>
 					For any additional information or clarification regarding the privacy
-					policy, contact information is available from our{' '}
-					<Link to="/contact.html">contact page</Link>.
+					policy, please <Link to="/contact.html">Contact Us</Link>.
 				</p>
 			</main>
 		);

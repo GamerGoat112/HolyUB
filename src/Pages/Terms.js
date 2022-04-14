@@ -52,7 +52,7 @@ export default class Terms extends Component {
 					continued use of this site after any change in this Privacy Policy
 					will constitute your acceptance of such change.
 				</p>
-				<h2>Contact Information &amp; Credit</h2>
+				<h2>Contact Information</h2>
 				<p>
 					If you have any questions about our Privacy Policy, please{' '}
 					<Link to="/contact.html">Contact Us</Link>.
