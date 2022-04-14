@@ -160,7 +160,7 @@ export class ObfuscatedA extends Component {
 				{...props}
 				onClick={event => {
 					event.preventDefault();
-					global.location.assign(this.props.href);
+					window.open(this.props.href, '_self');
 				}}
 			>
 				{this.props.children}
