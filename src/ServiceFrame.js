@@ -8,6 +8,7 @@ import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
 import proxyCompat from './proxy.json';
+import './Styles/Service.scss';
 
 const default_settings = {
 	proxy: 'auto',

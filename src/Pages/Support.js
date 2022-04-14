@@ -3,6 +3,7 @@ import { Component, createRef } from 'react';
 import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
 import { qna } from '../support.js';
+import '../Styles/Support.scss';
 
 export default class Support extends Component {
 	main = createRef();

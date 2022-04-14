@@ -3,7 +3,8 @@ import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
 import { Component, createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import './Styles/App.scss';
+import './Styles/Navigation.scss';
+import './Styles/Footer.scss';
 
 const themes = ['night', 'day'];
 

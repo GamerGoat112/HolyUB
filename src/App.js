@@ -1,6 +1,7 @@
 import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout.js';
+import './Styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './Pages/Home.js'));
 const Games = lazy(() =>
