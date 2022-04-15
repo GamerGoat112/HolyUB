@@ -1,15 +1,8 @@
 const WebpackObfuscator = require('webpack-obfuscator');
-const { whenProd } = require('@craco/craco');
 const { resolve } = require('path');
 
 module.exports = {
 	webpack: {
-		...whenProd(
-			() => ({
-				devtool: false,
-			}),
-			{}
-		),
 		configure(config) {
 			if (config.mode === 'production') {
 				config.devtool = false;
