@@ -1,5 +1,5 @@
 import root, { bareCDN } from './root.js';
-import GenericGlobeSVG from './Assets/generic-globe.svg';
+import { ReactComponent as GlobeSVG } from './Assets/globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
@@ -18,7 +18,7 @@ export default class ServiceFrame extends SleepingComponent {
 	settings = new Settings('service settings', default_settings);
 	state = {
 		title: '',
-		icon: GenericGlobeSVG,
+		icon: 'globe',
 		// if icon is a blob: uri, revoke it once loaded
 		revoke_icon: false,
 		src: '',
@@ -37,7 +37,7 @@ export default class ServiceFrame extends SleepingComponent {
 	headless = createRef();
 	search = new SearchBuilder('https://www.google.com/search?q=%s');
 	bare = new BareClient(bareCDN);
-	async embed(src, title = src, icon = GenericGlobeSVG) {
+	async embed(src, title = src, icon = 'globe') {
 		await this.setState({
 			title,
 			src,
@@ -86,7 +86,7 @@ export default class ServiceFrame extends SleepingComponent {
 		await this.setState({
 			title: src,
 			src: proxied_src,
-			icon: GenericGlobeSVG,
+			icon: 'globe',
 			proxy: {
 				current: true,
 				src,
@@ -236,7 +236,7 @@ export default class ServiceFrame extends SleepingComponent {
 		});
 	}
 	on_icon_error() {
-		this.state.icon = GenericGlobeSVG;
+		this.state.icon = 'globe';
 	}
 	on_icon_load() {
 		if (this.state.revoke_icon) {
@@ -284,13 +284,17 @@ export default class ServiceFrame extends SleepingComponent {
 					>
 						chevron_left
 					</div>
-					<img
-						className="icon"
-						alt=""
-						src={this.state.icon}
-						onError={this.on_icon_error.bind(this)}
-						onLoad={this.on_icon_load.bind(this)}
-					/>
+					{this.state.icon === 'globe' ? (
+						<GlobeSVG className="icon" />
+					) : (
+						<img
+							className="icon"
+							alt=""
+							src={this.state.icon}
+							onError={this.on_icon_error.bind(this)}
+							onLoad={this.on_icon_load.bind(this)}
+						/>
+					)}
 					<p className="title">{obfuscate(<>{this.state.title}</>)}</p>
 					<div className="shift-right"></div>
 					<div

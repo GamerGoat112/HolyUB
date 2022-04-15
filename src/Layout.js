@@ -48,8 +48,6 @@ export default class Layout extends Component {
 	}
 	update() {
 		this.set_theme(this.state.theme);
-	}
-	dataset() {
 		document.documentElement.dataset.theme = this.state.theme;
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
 	}
