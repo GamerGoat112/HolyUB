@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
-import obfuscate, { ObfuscatedA } from './obfuscate.js';
+import obfuscate from './obfuscate.js';
 import { set_page } from './root.js';
 
 export default class ProxyLayout extends Component {
@@ -109,6 +110,17 @@ export default class ProxyLayout extends Component {
 						>
 							here
 						</a>
+						.
+					</p>
+					<p>
+						If this problem still occurs, check{' '}
+						<Link to="/support.html" target="_parent">
+							Support
+						</Link>{' '}
+						or{' '}
+						<Link to="/contact.html" target="_parent">
+							Contact Us
+						</Link>
 						.
 					</p>
 				</main>
