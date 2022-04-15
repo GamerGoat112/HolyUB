@@ -71,7 +71,7 @@ class ObfuscateContext {
 	real_class(rand) {
 		return real_classes[this.rand(real_classes.length)];
 	}
-	random(chars, char, i, ci) {
+	random(chars, i, ci) {
 		const r = this.rand(2);
 
 		switch (r) {
@@ -127,7 +127,7 @@ export default function obfuscate(input) {
 						</s>
 					);
 				} else {
-					content.push(context.random(chars, char, i, ci));
+					content.push(context.random(chars, i, ci));
 				}
 			}
 

@@ -1,6 +1,7 @@
 import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from './Layout.js';
+import MainLayout from './MainLayout.js';
+import ProxyLayout from './ProxyLayout.js';
 import './Styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './Pages/Home.js'));
@@ -44,7 +45,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<Routes>
-				<Route path="/" element={<Layout ref={this.layout} />}>
+				<Route path="/" element={<MainLayout ref={this.layout} />}>
 					<Route
 						index
 						element={
@@ -110,7 +111,7 @@ export default class App extends Component {
 						}
 					/>
 				</Route>
-				<Route path="/proxies/">
+				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
 					<Route
 						path="rh.html"
 						element={
@@ -139,7 +140,7 @@ export default class App extends Component {
 				<Route
 					path="*"
 					element={
-						<Layout
+						<MainLayout
 							element={
 								<Suspense fallback={<></>}>
 									<NotFound layout={this.layout} />
