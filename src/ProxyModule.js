@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Layout from './Layout.js';
-import obfuscate from './obfuscate.js';
+import obfuscate, { ObfuscatedA } from './obfuscate.js';
 import { set_page } from './root.js';
 
 export default class ProxyLayout extends Component {
@@ -88,13 +88,29 @@ export default class ProxyLayout extends Component {
 			if (this.state.possible_error === undefined) {
 				description = <pre>{this.state.error}</pre>;
 			} else {
-				description = <p>{this.state.possible_error}</p>;
+				description = <pre>{this.state.possible_error}</pre>;
 			}
 
 			main = (
 				<main>
-					<p>An error when loading {obfuscate(<>{this.name}</>)}:</p>
-					{description}
+					<span>
+						An error when loading {obfuscate(<>{this.name}</>)}:
+						<br />
+						{description}
+					</span>
+					<p>
+						Try again by clicking{' '}
+						<a
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								global.location.reload();
+							}}
+						>
+							here
+						</a>
+						.
+					</p>
 				</main>
 			);
 		}
