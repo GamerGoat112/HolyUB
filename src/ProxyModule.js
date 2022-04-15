@@ -3,6 +3,7 @@ import obfuscate, { ObfuscateStyle } from './obfuscate.js';
 import { set_page } from './root.js';
 
 export default class ProxyModule extends Layout {
+	name = 'Generic Proxy';
 	scripts = new Map();
 	load_script(src) {
 		if (this.scripts.has(src)) {
@@ -88,9 +89,7 @@ export default class ProxyModule extends Layout {
 
 			main = (
 				<main>
-					<p>
-						We encountered an error while loading your {obfuscate(<>proxy</>)}:
-					</p>
+					<p>An error when loading {this.name}:</p>
 					{description}
 				</main>
 			);

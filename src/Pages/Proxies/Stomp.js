@@ -3,8 +3,11 @@ import process from 'process';
 import { bareCDN } from '../../root.js';
 
 export default class Stomp extends ProxyModule {
+	name = 'Stomp';
 	async _componentDidMount() {
+		await this.possible_error('Failure loading the Stomp bootstrapper.');
 		await this.load_script('/stomp/bootstrapper.js');
+		await this.possible_error();
 
 		const { StompBoot } = global;
 
@@ -23,7 +26,13 @@ export default class Stomp extends ProxyModule {
 
 		this.boot = new StompBoot(config);
 
+		this.possible_error('Failure registering the Stomp Service Worker.');
 		await this.boot.ready;
+		this.possible_error();
+
+		await this.possible_error('Bare server is unreachable.');
+		await fetch(bareCDN);
+		await this.possible_error();
 
 		this.redirect(this.boot.html(this.destination));
 	}
