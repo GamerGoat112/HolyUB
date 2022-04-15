@@ -1,5 +1,5 @@
 import ServiceFrame from './ServiceFrame.js';
-import obfuscate, { ObfuscateStyle } from './obfuscate.js';
+import obfuscate, { ObfuscateComponent } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './Assets/waves.svg';
 import { createRef } from 'react';
@@ -53,7 +53,7 @@ export default class MainLayout extends Layout {
 
 		return (
 			<>
-				<ObfuscateStyle />
+				<ObfuscateComponent />
 				<nav
 					ref={this.nav}
 					data-expanded={Number(this.state.expanded)}

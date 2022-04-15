@@ -33,31 +33,28 @@ function classes() {
 
 const junk_classes = classes();
 const real_classes = classes();
+const ellipsis_classes = classes();
 
 const char_class = unused_char();
 const string_class = unused_char();
 
-export class ObfuscateStyle extends Component {
+export class ObfuscateComponent extends Component {
 	style = createRef();
 	componentDidMount() {
 		const { sheet } = this.style.current;
 
-		const junk_selector = [];
-
 		for (let junk of junk_classes) {
-			junk_selector.push(`.${string_class} .${junk}`);
+			sheet.insertRule(
+				`.${string_class} .${junk}{position:absolute;z-index:-10;opacity:0}`
+			);
 		}
 
-		// hidden
-		sheet.insertRule(
-			`${junk_selector.join(',')}{position:absolute;z-index:-10;opacity:0}`
-		);
 		// word
-		sheet.insertRule(`.${string_class}>s{display:inline-block}`);
-		// strikethrough
-		sheet.insertRule(
-			`.${string_class},.${string_class} s{text-decoration:none;display:inline}`
-		);
+		sheet.insertRule(`.${string_class}>span{display:inline-block}`);
+
+		for (let ellipsis of ellipsis_classes) {
+			sheet.insertRule(`.${string_class} .${ellipsis}{display:inline}`);
+		}
 	}
 	render() {
 		return <style ref={this.style}></style>;
@@ -68,10 +65,13 @@ class ObfuscateContext {
 	constructor(text) {
 		this.rand = create(text + navigator.userAgent + global.location.origin);
 	}
-	junk_class(rand) {
+	ellipsis_class() {
+		return ellipsis_classes[this.rand(ellipsis_classes.length)];
+	}
+	junk_class() {
 		return junk_classes[this.rand(junk_classes.length)];
 	}
-	real_class(rand) {
+	real_class() {
 		return real_classes[this.rand(real_classes.length)];
 	}
 	random(chars, i, ci) {
@@ -83,26 +83,27 @@ class ObfuscateContext {
 			// eslint-disable-next-line
 			case 0:
 				return (
-					<s key={i} className={this.junk_class()}>
+					<span key={i} className={this.junk_class()}>
 						{chars[chars.length - ci]}
-					</s>
+					</span>
 				);
 			case 1:
 				return (
-					<s key={i} className={this.junk_class()}>
+					<span key={i} className={this.junk_class()}>
 						{String.fromCharCode(chars[chars.length - ci - 1].charCodeAt() ^ i)}
-					</s>
+					</span>
 				);
 		}
 	}
 }
 
 /**
- * @param {JSX.Element} input Text to be obfuscate
- * @returns {JSX.Element} Obfuscated
+ *
+ * @param {string} text
+ * @param {boolean} ellipsis
+ * @returns {JSX.Element}
  */
-export default function obfuscate(input) {
-	const text = input.props.children;
+function _obfuscate(text, ellipsis) {
 	const context = new ObfuscateContext(text);
 
 	const output = [];
@@ -125,9 +126,9 @@ export default function obfuscate(input) {
 			for (let i = 0; i < add_chars; i++) {
 				if (i === real_at_i) {
 					content.push(
-						<s key={`${wi}${ci}${i}`} className={context.real_class()}>
+						<span key={`${wi}${ci}${i}`} className={context.real_class()}>
 							{char}
-						</s>
+						</span>
 					);
 				} else {
 					content.push(context.random(chars, i, ci));
@@ -135,20 +136,46 @@ export default function obfuscate(input) {
 			}
 
 			added.push(
-				<s key={`${wi}${ci}`} className={char_class}>
+				<span key={`${wi}${ci}`} className={char_class}>
 					{content}
-				</s>
+				</span>
 			);
 		}
 
-		output.push(<s key={`${wi}`}>{added}</s>);
+		let word_class = '';
+
+		if (ellipsis) {
+			word_class = context.ellipsis_class();
+		}
+
+		output.push(
+			<span className={word_class} key={`${wi}`}>
+				{added}
+			</span>
+		);
 
 		if (wi !== words.length - 1) {
 			output.push(' ');
 		}
 	}
 
-	return <s className={string_class}>{output}</s>;
+	return <span className={string_class}>{output}</span>;
+}
+
+/**
+ * @param {JSX.Element} input Text to be obfuscate
+ * @returns {JSX.Element} Obfuscated
+ */
+export function obfuscateEllipsis(input) {
+	return _obfuscate(input.props.children, true);
+}
+
+/**
+ * @param {JSX.Element} input Text to be obfuscate
+ * @returns {JSX.Element} Obfuscated
+ */
+export default function obfuscate(input) {
+	return _obfuscate(input.props.children, false);
 }
 
 export class ObfuscatedA extends Component {

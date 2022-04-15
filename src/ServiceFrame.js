@@ -3,7 +3,7 @@ import { ReactComponent as GlobeSVG } from './Assets/globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
-import obfuscate from './obfuscate.js';
+import obfuscate, { obfuscateEllipsis } from './obfuscate.js';
 import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
@@ -295,7 +295,7 @@ export default class ServiceFrame extends SleepingComponent {
 							onLoad={this.on_icon_load.bind(this)}
 						/>
 					)}
-					<p className="title">{obfuscate(<>{this.state.title}</>)}</p>
+					<p className="title">{obfuscateEllipsis(<>{this.state.title}</>)}</p>
 					<div className="shift-right"></div>
 					<div
 						className="material-icons button"
