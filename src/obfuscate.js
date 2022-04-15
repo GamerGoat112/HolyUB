@@ -48,13 +48,16 @@ export class ObfuscateStyle extends Component {
 			junk_selector.push(`.${string_class} .${junk}`);
 		}
 
+		// hidden
 		sheet.insertRule(
 			`${junk_selector.join(',')}{position:absolute;z-index:-10;opacity:0}`
 		);
-		sheet.insertRule(
-			`.${string_class},.${string_class} s{text-decoration:none;flex:none;display:inline}`
-		);
+		// word
 		sheet.insertRule(`.${string_class}>s{display:inline-block}`);
+		// strikethrough
+		sheet.insertRule(
+			`.${string_class},.${string_class} s{text-decoration:none;display:inline}`
+		);
 	}
 	render() {
 		return <style ref={this.style}></style>;
