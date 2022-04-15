@@ -3,7 +3,7 @@ import { ReactComponent as GlobeSVG } from './Assets/globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
-import obfuscate, { obfuscateEllipsis } from './obfuscate.js';
+import { obfuscateEllipsis } from './obfuscate.js';
 import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
