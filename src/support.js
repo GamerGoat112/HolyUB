@@ -3,6 +3,19 @@ import obfuscate, { ObfuscatedA } from './obfuscate';
 
 export const qna = [
 	{
+		q: <>The proxy is {obfuscate(<>slow</>)}.</>,
+		a: (
+			<>
+				Our {obfuscate(<>proxy</>)} servers are paid for by our supporters on{' '}
+				<ObfuscatedA href="https://www.patreon.com/holyunblocker">
+					{obfuscate(<>Patreon</>)}
+				</ObfuscatedA>
+				. If you subscribe, you can help us purchase faster servers in the
+				future.
+			</>
+		),
+	},
+	{
 		q: <>My page won't load.</>,
 		a: (
 			<>
@@ -31,7 +44,7 @@ export const qna = [
 		),
 		a: (
 			<>
-				The proxies used on this website can be found in the{' '}
+				The proxies used on this website can be found in{' '}
 				<Link to="/licenses.html">licenses and open-source credits</Link>.
 			</>
 		),
@@ -41,7 +54,7 @@ export const qna = [
 		a: (
 			<>
 				We do not collect any data, your information is only as secure as the
-				sites you are visiting on them. For privacy concerns, you can review our{' '}
+				sites you are accessing. For privacy concerns, you can review our{' '}
 				<Link to="/privacy.html">Privacy Policy</Link>.
 			</>
 		),

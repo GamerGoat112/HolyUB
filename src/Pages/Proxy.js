@@ -1,4 +1,4 @@
-import obfuscate from '../obfuscate.js';
+import obfuscate, { ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import '../Styles/Proxy.scss';
@@ -28,6 +28,7 @@ class Expand extends Component {
 export default class Proxies extends Component {
 	input = createRef();
 	form = createRef();
+	suggested = createRef();
 	state = {
 		omnibox_entries: [],
 		input_focused: false,
@@ -72,16 +73,25 @@ export default class Proxies extends Component {
 
 		if (render_suggested) {
 			for (let i = 0; i < this.state.omnibox_entries.length; i++) {
+				const text = createRef();
+
 				suggested.push(
 					<div
 						key={i}
+						tabIndex="0"
 						onClick={() => {
-							this.input.current.value = this.state.omnibox_entries[i];
+							this.input.current.value = text.current.textContent;
 							this.search_submit();
 						}}
 					>
 						<span className="eyeglass material-icons">search</span>
-						<span className="text">{this.state.omnibox_entries[i]}</span>
+						<span
+							className="text"
+							ref={text}
+							dangerouslySetInnerHTML={{
+								__html: this.state.omnibox_entries[i],
+							}}
+						/>
 						<span className="open material-icons">north_west</span>
 					</div>
 				);
@@ -95,14 +105,15 @@ export default class Proxies extends Component {
 						className="omnibox"
 						data-suggested={Number(render_suggested)}
 						data-focused={Number(this.state.input_focused)}
-						onBlur={async event => {
-							if (!this.form.current.contains(event.target)) {
-								this.setState({ input_focused: false });
-							}
-						}}
 						onSubmit={event => {
 							event.preventDefault();
 							this.search_submit();
+						}}
+						onBlur={async event => {
+							await {};
+							if (!this.form.current.contains(event.relatedTarget)) {
+								this.setState({ input_focused: false });
+							}
 						}}
 						ref={this.form}
 					>
@@ -115,14 +126,23 @@ export default class Proxies extends Component {
 							ref={this.input}
 							onInput={this.on_input.bind(this)}
 							onFocus={() => {
-								this.setState({ input_focused: true });
 								this.on_input();
+								this.setState({ input_focused: true });
 							}}
 						/>
 						<span className="eyeglass material-icons">search</span>
-						<div className="suggested">{suggested}</div>
+						<div ref={this.suggested} className="suggested">
+							{suggested}
+						</div>
 					</form>
-
+					<p>
+						This is a free service paid for by our Patreons. If you want faster
+						servers, donate to {obfuscate(<>Holy Unblocker</>)} on{' '}
+						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
+							{obfuscate(<>Patreon</>)}
+						</ObfuscatedA>
+						.
+					</p>
 					<Expand title="Advanced Options">
 						<label>
 							{obfuscate(<>Proxy</>)}:

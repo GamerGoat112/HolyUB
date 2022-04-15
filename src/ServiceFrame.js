@@ -174,11 +174,11 @@ export default class ServiceFrame extends SleepingComponent {
 		render(fields, datalist);
 	}
 	async omnibox_entries(query) {
-		const results = [];
+		const entries = [];
 
-		if (query === '') {
-			return results;
-		}
+		/*if (query === '') {
+			return entries;
+		}*/
 
 		try {
 			if (this.abort !== undefined) {
@@ -188,18 +188,32 @@ export default class ServiceFrame extends SleepingComponent {
 			this.abort = new AbortController();
 
 			const outgoing = await this.bare.fetch(
-				`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}&kl=wt-wt`,
+				`https://www.google.com/complete/search?` +
+					new URLSearchParams({
+						q: query,
+						client: 'gws-wiz',
+					}),
 				{
 					signal: this.abort.signal,
 				}
 			);
 
 			if (outgoing.ok) {
-				for (let { phrase } of await outgoing.json()) {
-					results.push(phrase);
+				let results;
+
+				{
+					let [, args] = (await outgoing.text()).match(
+						/window\.google\.ac\.h\((.*?)\)$/
+					);
+					args = JSON.parse(`[${args}]`);
+					[[results]] = args;
+				}
+
+				for (let [phrase] of results) {
+					entries.push(phrase);
 				}
 			} else {
-				throw await outgoing.json();
+				throw await outgoing.text();
 			}
 		} catch (error) {
 			// likely abort error
@@ -210,7 +224,7 @@ export default class ServiceFrame extends SleepingComponent {
 			}
 		}
 
-		return results;
+		return entries;
 	}
 	// cant set image src to serviceworker url unless the page is a client
 	async load_icon(icon) {
