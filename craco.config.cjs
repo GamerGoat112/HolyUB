@@ -5,8 +5,6 @@ module.exports = {
 	webpack: {
 		configure(config) {
 			if (config.mode === 'production') {
-				config.devtool = false;
-
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',
