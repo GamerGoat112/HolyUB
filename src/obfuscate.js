@@ -103,7 +103,7 @@ class ObfuscateContext {
  * @param {boolean} ellipsis
  * @returns {JSX.Element}
  */
-function _obfuscate(text, ellipsis, key) {
+export function obfuscateText(text, ellipsis, key) {
 	const context = new ObfuscateContext(text);
 
 	const output = [];
@@ -194,7 +194,7 @@ export class Obfuscated extends Component {
 			}
 		}
 
-		return _obfuscate(string, 'ellipsis' in this.props);
+		return obfuscateText(string, 'ellipsis' in this.props);
 	}
 }
 
