@@ -1,4 +1,4 @@
-import obfuscate, { ObfuscatedA } from '../obfuscate.js';
+import obfuscate, { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import '../Styles/Proxy.scss';
@@ -136,13 +136,13 @@ export default class Proxies extends Component {
 						</div>
 					</form>
 					<p>
-						{obfuscate(
-							<>
-								This is a free service paid for by our Patreons. If you want
-								faster servers, donate to Holy Unblocker on{' '}
-								<a href="https://www.patreon.com/holyunblocker">Patreon</a>
-							</>
-						)}
+						<Obfuscated>
+							This is a free service paid for by our Patreons. If you want
+							faster servers, donate to Holy Unblocker on{' '}
+						</Obfuscated>
+						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
+							<Obfuscated>Patreon</Obfuscated>
+						</ObfuscatedA>
 						.
 					</p>
 					<p>

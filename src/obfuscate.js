@@ -38,7 +38,7 @@ const ellipsis_classes = classes();
 const char_class = unused_char();
 const string_class = unused_char();
 
-export class ObfuscateComponent extends Component {
+export class ObfuscateLayout extends Component {
 	style = createRef();
 	componentDidMount() {
 		const { sheet } = this.style.current;
@@ -179,77 +179,39 @@ export function obfuscateEllipsis(input) {
  * @returns {JSX.Element} Obfuscated
  */
 export default function obfuscate(input) {
-	/**
-	 * @type {JSX.Element}
-	 */
-	const clone = [];
+	return _obfuscate(input.props.children, true);
+}
 
-	/**
-	 * @typedef {['iterate'|'finalize',...([JSX.Element,JSX.Element[]]|[function])][]} ObfuscatedStack
-	 */
+/**
+ * @description A obfuscated text block. This will strip the input of all non-text elements.d
+ */
+export class Obfuscated extends Component {
+	render() {
+		let string = '';
+		const stack = [this];
 
-	/**
-	 * @type {ObfuscatedStack}
-	 */
-	const stack = [['iterate', input, clone, 1]];
+		let toclone;
+		while ((toclone = stack.pop())) {
+			if (typeof toclone === 'string') {
+				string += toclone;
+			} else if (typeof toclone === 'object' && toclone !== undefined) {
+				let children = toclone.props.children;
 
-	let array;
-	while ((array = stack.pop())) {
-		const [instruction] = array.splice(0, 1);
-
-		switch (instruction) {
-			case 'iterate':
-				const [toclone, list, i] = array;
-
-				if (typeof toclone === 'string') {
-					list.push(_obfuscate(toclone, false, i));
-				} else if (typeof toclone === 'object' && toclone !== undefined) {
-					const child_list = [];
-
-					const props = {
-						key: i,
-					};
-
-					for (let key in toclone.props) {
-						if (key !== 'children') {
-							props[key] = toclone.props[key];
-						}
-					}
-
-					let children = toclone.props.children;
-
-					if (!(children instanceof Array)) {
-						children = [children];
-					}
-
-					let max = children.length;
-					for (let i = 0; i < max; i++) {
-						// append in reverse order
-						const child = children[max - i - 1];
-						stack.push(['iterate', child, child_list, i]);
-					}
-
-					stack.push([
-						'finalize',
-						() => {
-							list.push(React.createElement(toclone.type, props, child_list));
-						},
-					]);
+				if (!(children instanceof Array)) {
+					children = [children];
 				}
-				break;
-			case 'finalize':
-				const [callback] = array;
 
-				// LAZY
-				callback();
-				break;
-			default:
-				console.warn('unknown instruction', instruction);
-				break;
+				let max = children.length;
+				for (let i = 0; i < max; i++) {
+					// append in reverse order
+					const child = children[max - i - 1];
+					stack.push(child);
+				}
+			}
 		}
-	}
 
-	return <>{clone}</>;
+		return _obfuscate(string);
+	}
 }
 
 export class ObfuscatedA extends Component {

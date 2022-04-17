@@ -1,5 +1,5 @@
 import Layout from './Layout.js';
-import { ObfuscateComponent } from './obfuscate.js';
+import { ObfuscateLayout } from './obfuscate.js';
 import { Outlet } from 'react-router-dom';
 
 export default class ProxyLayout extends Layout {
@@ -8,7 +8,7 @@ export default class ProxyLayout extends Layout {
 
 		return (
 			<>
-				<ObfuscateComponent />
+				<ObfuscateLayout />
 				<Outlet />
 			</>
 		);
