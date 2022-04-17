@@ -188,10 +188,10 @@ export default class ServiceFrame extends SleepingComponent {
 			this.abort = new AbortController();
 
 			const outgoing = await this.bare.fetch(
-				`https://www.google.com/complete/search?` +
+				`https://www.bing.com/AS/Suggestions?` +
 					new URLSearchParams({
-						q: query,
-						client: 'android',
+						qry: query,
+						cvid: '\u0001',
 						bareServer: true,
 					}),
 				{
@@ -200,13 +200,15 @@ export default class ServiceFrame extends SleepingComponent {
 			);
 
 			if (outgoing.ok) {
-				let results = await outgoing.json();
+				const text = await outgoing.text();
 
-				for (let [phrase] of results) {
+				for (let [, phrase] of text.matchAll(
+					/<span class="sa_tm_text">(.*?)<\/span>/g
+				)) {
 					entries.push(phrase);
 				}
 			} else {
-				throw await outgoing.json();
+				throw await outgoing.text();
 			}
 		} catch (error) {
 			// likely abort error
