@@ -167,22 +167,6 @@ function _obfuscate(text, ellipsis, key) {
 }
 
 /**
- * @param {JSX.Element} input Text to be obfuscate
- * @returns {JSX.Element} Obfuscated
- */
-export function obfuscateEllipsis(input) {
-	return _obfuscate(input.props.children, true);
-}
-
-/**
- * @param {JSX.Element} input JSX to be obfuscate
- * @returns {JSX.Element} Obfuscated
- */
-export default function obfuscate(input) {
-	return _obfuscate(input.props.children, true);
-}
-
-/**
  * @description A obfuscated text block. This will strip the input of all non-text elements.d
  */
 export class Obfuscated extends Component {
@@ -210,7 +194,7 @@ export class Obfuscated extends Component {
 			}
 		}
 
-		return _obfuscate(string);
+		return _obfuscate(string, 'ellipsis' in this.props);
 	}
 }
 

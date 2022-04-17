@@ -1,4 +1,4 @@
-import obfuscate, { Obfuscated, ObfuscatedA } from '../obfuscate.js';
+import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import '../Styles/Proxy.scss';
@@ -146,15 +146,16 @@ export default class Proxies extends Component {
 						.
 					</p>
 					<p>
-						{obfuscate(<>Click </>)}
+						<Obfuscated>Click </Obfuscated>
 						<ObfuscatedA href="https://discord.gg/unblock">here</ObfuscatedA>
-						{obfuscate(
-							<> to join our Discord for access to new Holy Unblocker links.</>
-						)}
+						<Obfuscated>
+							{' '}
+							to join our Discord for access to new Holy Unblocker links.
+						</Obfuscated>
 					</p>
 					<Expand title="Advanced Options">
 						<label>
-							{obfuscate(<>Proxy</>)}:
+							<Obfuscated>Proxy</Obfuscated>:
 							<select
 								onChange={event =>
 									this.service_frame.settings.set('proxy', event.target.value)

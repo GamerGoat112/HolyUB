@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import obfuscate from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate.js';
 import { set_page } from '../root.js';
 
 export default class Contact extends Component {
@@ -23,11 +23,11 @@ export default class Contact extends Component {
 					For a better experience, while using our Service, we collect
 					information your device sends such as your internet protocol (IP)
 					address. This information explicitly excludes your usage of our{' '}
-					{obfuscate(<>web-proxies</>)}. The IP address does not identify you
-					personally, but it allows us to maintain communications with you as
-					you move about the Website. Generally, these types of data elements do
-					not reveal your identity or do not relate directly to you or any other
-					individual.
+					<Obfuscated>web-proxies</Obfuscated>. The IP address does not identify
+					you personally, but it allows us to maintain communications with you
+					as you move about the Website. Generally, these types of data elements
+					do not reveal your identity or do not relate directly to you or any
+					other individual.
 				</p>
 
 				<p>The following are some examples of Other Information:</p>

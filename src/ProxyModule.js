@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
-import obfuscate from './obfuscate.js';
+import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
 
 export default class ProxyLayout extends Component {
@@ -80,7 +80,9 @@ export default class ProxyLayout extends Component {
 		if (this.state.error === undefined) {
 			main = (
 				<main>
-					<p>{obfuscate(<>{this.name}</>)} is loading...</p>
+					<p>
+						<Obfuscated>{this.name}</Obfuscated> is loading...
+					</p>
 				</main>
 			);
 		} else {
@@ -95,7 +97,7 @@ export default class ProxyLayout extends Component {
 			main = (
 				<main>
 					<span>
-						An error when loading {obfuscate(<>{this.name}</>)}:
+						An error when loading <Obfuscated>{this.name}</Obfuscated>:
 						<br />
 						{description}
 					</span>

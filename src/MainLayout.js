@@ -1,5 +1,5 @@
 import ServiceFrame from './ServiceFrame.js';
-import obfuscate, { ObfuscateLayout } from './obfuscate.js';
+import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './Assets/waves.svg';
 import { createRef } from 'react';
@@ -102,7 +102,7 @@ export default class MainLayout extends Layout {
 							<Link to="/privacy.html">Privacy</Link>
 							<Link to="/terms.html">Terms of use</Link>
 							<span>
-								&copy; {obfuscate(<>Holy Unblocker</>)}{' '}
+								&copy; <Obfuscated>Holy Unblocker</Obfuscated>{' '}
 								{new Date().getUTCFullYear()}
 							</span>
 						</div>

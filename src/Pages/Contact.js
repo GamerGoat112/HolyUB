@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import obfuscate, { ObfuscatedA } from '../obfuscate.js';
+import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 
 export default class Contact extends Component {
@@ -12,19 +12,19 @@ export default class Contact extends Component {
 				<p>
 					GitHub:{' '}
 					<ObfuscatedA href="https://git.holy.how/holy">
-						{obfuscate(<>https://git.holy.how/holy</>)}
+						<Obfuscated>https://git.holy.how/holy</Obfuscated>
 					</ObfuscatedA>
 				</p>
 				<p>
 					Email:{' '}
 					<ObfuscatedA href="mailto:support@holy.how">
-						{obfuscate(<>support@holy.how</>)}
+						<Obfuscated>support@holy.how</Obfuscated>
 					</ObfuscatedA>
 				</p>
 				<p>
-					{obfuscate(<>Discord</>)}:{' '}
+					<Obfuscated>Discord</Obfuscated>:{' '}
 					<ObfuscatedA href="https://discord.gg/QKMwvd6tx6">
-						{obfuscate(<>https://discord.gg/QKMwvd6tx6</>)}
+						<Obfuscated>https://discord.gg/QKMwvd6tx6</Obfuscated>
 					</ObfuscatedA>
 				</p>
 			</main>

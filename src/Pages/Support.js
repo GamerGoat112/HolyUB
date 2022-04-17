@@ -1,4 +1,4 @@
-import obfuscate from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate.js';
 import { Component, createRef } from 'react';
 import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
@@ -65,7 +65,9 @@ export default class Support extends Component {
 		return (
 			<>
 				<form className="banner" onSubmit={event => event.preventDefault()}>
-					<h1>{obfuscate(<>HolyUnblocker</>)} Knowledgebase</h1>
+					<h1>
+						<Obfuscated>HolyUnblocker</Obfuscated> Knowledgebase
+					</h1>
 					<div className="search">
 						<span className="icon material-icons">search</span>
 						<input

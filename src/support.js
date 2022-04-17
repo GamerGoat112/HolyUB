@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom';
-import obfuscate, { ObfuscatedA } from './obfuscate';
+import { Obfuscated, ObfuscatedA } from './obfuscate';
 
 export const qna = [
 	{
-		q: <>The proxy is {obfuscate(<>slow</>)}.</>,
+		q: (
+			<>
+				The proxy is <Obfuscated>slow</Obfuscated>.
+			</>
+		),
 		a: (
 			<>
-				Our {obfuscate(<>proxy</>)} servers are paid for by our supporters on{' '}
+				Our <Obfuscated>proxy</Obfuscated> servers are paid for by our
+				supporters on{' '}
 				<ObfuscatedA href="https://www.patreon.com/holyunblocker">
-					{obfuscate(<>Patreon</>)}
+					<Obfuscated>Patreon</Obfuscated>
 				</ObfuscatedA>
 				. If you subscribe, you can help us purchase faster servers in the
 				future.
@@ -19,13 +24,17 @@ export const qna = [
 		q: <>My page won't load.</>,
 		a: (
 			<>
-				Your page may be incompatible with our {obfuscate(<>proxy</>)}. Give the
-				website at most 1 minute to load.
+				Your page may be incompatible with our <Obfuscated>proxy</Obfuscated>.
+				Give the website at most 1 minute to load.
 			</>
 		),
 	},
 	{
-		q: <>Can I host my own {obfuscate(<>proxy site</>)}?</>,
+		q: (
+			<>
+				Can I host my own <Obfuscated>proxy site</Obfuscated>?
+			</>
+		),
 		a: (
 			<>
 				Yes. This website is open source. See our{' '}
@@ -39,7 +48,8 @@ export const qna = [
 	{
 		q: (
 			<>
-				How can I contribute to the {obfuscate(<>proxies</>)} on this website?
+				How can I contribute to the <Obfuscated>proxies</Obfuscated> on this
+				website?
 			</>
 		),
 		a: (
@@ -50,7 +60,11 @@ export const qna = [
 		),
 	},
 	{
-		q: <>Is my information on the {obfuscate(<>proxy</>)} secure?</>,
+		q: (
+			<>
+				Is my information on the <Obfuscated>proxy</Obfuscated> secure?
+			</>
+		),
 		a: (
 			<>
 				We do not collect any data, your information is only as secure as the

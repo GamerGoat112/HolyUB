@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import obfuscate, { ObfuscatedA } from '../obfuscate.js';
+import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 
 export default class Licenses extends Component {
@@ -12,23 +12,25 @@ export default class Licenses extends Component {
 
 				<ul>
 					<li>
-						{obfuscate(<>Rammerhead:</>)}{' '}
+						<Obfuscated>Rammerhead:</Obfuscated>{' '}
 						<ObfuscatedA href="https://github.com/binary-person/rammerhead">
-							{obfuscate(<>https://github.com/binary-person/rammerhead</>)}
+							<Obfuscated>
+								https://github.com/binary-person/rammerhead
+							</Obfuscated>
 						</ObfuscatedA>
 					</li>
 					<li>
-						{obfuscate(<>Ultraviolet:</>)}{' '}
+						<Obfuscated>Ultraviolet:</Obfuscated>{' '}
 						<ObfuscatedA href="https://github.com/titaniumnetwork-dev/Ultraviolet">
-							{obfuscate(
-								<>https://github.com/titaniumnetwork-dev/Ultraviolet</>
-							)}
+							<Obfuscated>
+								https://github.com/titaniumnetwork-dev/Ultraviolet
+							</Obfuscated>
 						</ObfuscatedA>
 					</li>
 					<li>
-						{obfuscate(<>Stomp:</>)}{' '}
+						<Obfuscated>Stomp:</Obfuscated>{' '}
 						<ObfuscatedA href="https://github.com/sysce/stomp">
-							{obfuscate(<>https://github.com/sysce/stomp</>)}
+							<Obfuscated>https://github.com/sysce/stomp</Obfuscated>
 						</ObfuscatedA>
 					</li>
 				</ul>

@@ -1,7 +1,7 @@
 import { Component, createRef } from 'react';
 import { set_page } from '../root.js';
 import data from '../theatre.json';
-import obfuscate from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate.js';
 import '../Styles/Games.scss';
 
 class Item extends Component {
@@ -51,7 +51,9 @@ class Item extends Component {
 		return (
 			<div className="item" onClick={this.open.bind(this)}>
 				<div className="front" style={style}></div>
-				<div className="name">{obfuscate(<>{this.state.name}</>)}</div>
+				<div className="name">
+					<Obfuscated>{this.state.name}</Obfuscated>
+				</div>
 			</div>
 		);
 	}
