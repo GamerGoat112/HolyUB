@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import React, { Component, createRef } from 'react';
 import { create } from 'random-seed';
 
 const rand = create(navigator.userAgent + global.location.origin);
@@ -103,7 +103,7 @@ class ObfuscateContext {
  * @param {boolean} ellipsis
  * @returns {JSX.Element}
  */
-function _obfuscate(text, ellipsis) {
+function _obfuscate(text, ellipsis, key) {
 	const context = new ObfuscateContext(text);
 
 	const output = [];
@@ -142,7 +142,7 @@ function _obfuscate(text, ellipsis) {
 			);
 		}
 
-		let word_class = '';
+		let word_class;
 
 		if (ellipsis) {
 			word_class = context.ellipsis_class();
@@ -159,7 +159,11 @@ function _obfuscate(text, ellipsis) {
 		}
 	}
 
-	return <span className={string_class}>{output}</span>;
+	return (
+		<span key={key} className={string_class}>
+			{output}
+		</span>
+	);
 }
 
 /**
@@ -171,11 +175,79 @@ export function obfuscateEllipsis(input) {
 }
 
 /**
- * @param {JSX.Element} input Text to be obfuscate
+ * @param {JSX.Element} input JSX to be obfuscate
  * @returns {JSX.Element} Obfuscated
  */
 export default function obfuscate(input) {
-	return _obfuscate(input.props.children, false);
+	/**
+	 * @type {JSX.Element}
+	 */
+	const clone = [];
+
+	/**
+	 * @typedef {['iterate'|'finalize',...([JSX.Element,JSX.Element[]]|[function])][]} ObfuscatedStack
+	 */
+
+	/**
+	 * @type {ObfuscatedStack}
+	 */
+	const stack = [['iterate', input, clone, 1]];
+
+	let array;
+	while ((array = stack.pop())) {
+		const [instruction] = array.splice(0, 1);
+
+		switch (instruction) {
+			case 'iterate':
+				const [toclone, list, i] = array;
+
+				if (typeof toclone === 'string') {
+					list.push(_obfuscate(toclone, false, i));
+				} else if (typeof toclone === 'object' && toclone !== undefined) {
+					const child_list = [];
+
+					const props = {
+						key: i,
+					};
+
+					for (let key in toclone.props) {
+						if (key !== 'children') {
+							props[key] = toclone.props[key];
+						}
+					}
+
+					let children = toclone.props.children;
+
+					if (!(children instanceof Array)) {
+						children = [children];
+					}
+
+					for (let i = 0; i < children.length; i++) {
+						const child = children[i];
+						stack.push(['iterate', child, child_list, i]);
+					}
+
+					stack.push([
+						'finalize',
+						() => {
+							list.push(React.createElement(toclone.type, props, child_list));
+						},
+					]);
+				}
+				break;
+			case 'finalize':
+				const [callback] = array;
+
+				// LAZY
+				callback();
+				break;
+			default:
+				console.warn('unknown instruction', instruction);
+				break;
+		}
+	}
+
+	return <>{clone}</>;
 }
 
 export class ObfuscatedA extends Component {

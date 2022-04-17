@@ -136,12 +136,23 @@ export default class Proxies extends Component {
 						</div>
 					</form>
 					<p>
-						This is a free service paid for by our Patreons. If you want faster
-						servers, donate to {obfuscate(<>Holy Unblocker</>)} on{' '}
+						{obfuscate(
+							<>
+								This is a free service paid for by our Patreons. If you want
+								faster servers, donate to Holy Unblocker on{' '}
+							</>
+						)}
 						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
 							{obfuscate(<>Patreon</>)}
 						</ObfuscatedA>
 						.
+					</p>
+					<p>
+						{obfuscate(<>Click </>)}
+						<ObfuscatedA href="https://discord.gg/unblock">here</ObfuscatedA>
+						{obfuscate(
+							<> to join our Discord for access to new Holy Unblocker links.</>
+						)}
 					</p>
 					<Expand title="Advanced Options">
 						<label>
