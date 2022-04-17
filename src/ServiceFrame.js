@@ -191,7 +191,8 @@ export default class ServiceFrame extends SleepingComponent {
 				`https://www.google.com/complete/search?` +
 					new URLSearchParams({
 						q: query,
-						client: 'gws-wiz',
+						client: 'android',
+						bareServer: true,
 					}),
 				{
 					signal: this.abort.signal,
@@ -199,21 +200,13 @@ export default class ServiceFrame extends SleepingComponent {
 			);
 
 			if (outgoing.ok) {
-				let results;
-
-				{
-					let [, args] = (await outgoing.text()).match(
-						/window\.google\.ac\.h\((.*?)\)$/
-					);
-					args = JSON.parse(`[${args}]`);
-					[[results]] = args;
-				}
+				let results = await outgoing.json();
 
 				for (let [phrase] of results) {
 					entries.push(phrase);
 				}
 			} else {
-				throw await outgoing.text();
+				throw await outgoing.json();
 			}
 		} catch (error) {
 			// likely abort error
