@@ -140,11 +140,9 @@ export default class Proxies extends Component {
 							<>
 								This is a free service paid for by our Patreons. If you want
 								faster servers, donate to Holy Unblocker on{' '}
+								<a href="https://www.patreon.com/holyunblocker">Patreon</a>
 							</>
 						)}
-						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
-							{obfuscate(<>Patreon</>)}
-						</ObfuscatedA>
 						.
 					</p>
 					<p>

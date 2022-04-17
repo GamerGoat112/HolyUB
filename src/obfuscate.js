@@ -222,8 +222,10 @@ export default function obfuscate(input) {
 						children = [children];
 					}
 
-					for (let i = 0; i < children.length; i++) {
-						const child = children[i];
+					let max = children.length;
+					for (let i = 0; i < max; i++) {
+						// append in reverse order
+						const child = children[max - i - 1];
 						stack.push(['iterate', child, child_list, i]);
 					}
 
