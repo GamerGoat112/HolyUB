@@ -1,8 +1,8 @@
 import { Component, createRef } from 'react';
 import { set_page } from '../root.js';
-import data from '../theatre.json';
 import { Obfuscated } from '../obfuscate.js';
-import '../Styles/Games.scss';
+import data from '../games.json';
+import '../styles/Games.scss';
 
 class Item extends Component {
 	constructor(props) {
@@ -10,7 +10,7 @@ class Item extends Component {
 
 		this.state = {
 			name: this.props.name,
-			image: this.props.image,
+			id: this.props.id,
 			target: this.props.target,
 			src: this.props.src,
 		};
@@ -43,9 +43,7 @@ class Item extends Component {
 	}
 	render() {
 		const style = {
-			backgroundPosition: `${this.state.image[0] * data.image.width * -1}px ${
-				this.state.image[1] * data.image.height * -1
-			}px`,
+			backgroundPosition: `${this.state.id * data.image.width * -1}px`,
 		};
 
 		return (
@@ -68,6 +66,7 @@ class Category extends Component {
 		this.state = {
 			overflowing: false,
 			expanded: false,
+			id: this.props.id,
 			name: this.props.name,
 			items: this.props.items,
 			base: this.props.base,
@@ -107,11 +106,11 @@ class Category extends Component {
 			items.push(
 				<Item
 					key={i}
-					layout={this.props.layout}
+					layout={this.state.layout}
 					name={item.name}
 					src={new URL(item.src, this.state.base)}
 					target={item.target}
-					image={item.image}
+					id={item.id}
 				/>
 			);
 		}
@@ -120,6 +119,7 @@ class Category extends Component {
 			<section
 				data-overflowing={Number(this.state.overflowing)}
 				data-expanded={Number(this.state.expanded)}
+				id={this.state.id}
 				ref={this.container}
 			>
 				<h1>{this.state.name}</h1>
@@ -152,6 +152,7 @@ export default class Games extends Component {
 					layout={this.props.layout}
 					name={category.name}
 					items={category.items}
+					id={category.id}
 					base={new URL(category.base, global.location)}
 				/>
 			);

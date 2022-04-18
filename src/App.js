@@ -2,41 +2,41 @@ import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
-import './Styles/App.scss';
+import './styles/App.scss';
 
-const Home = lazy(() => import(/* webpackPrefetch: true */ './Pages/Home.js'));
+const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const Games = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Games.js')
+	import(/* webpackPrefetch: true */ './pages/Games.js')
 );
 const Support = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Support.js')
+	import(/* webpackPrefetch: true */ './pages/Support.js')
 );
 const Contact = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Contact.js')
+	import(/* webpackPrefetch: true */ './pages/Contact.js')
 );
 const Privacy = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Privacy.js')
+	import(/* webpackPrefetch: true */ './pages/Privacy.js')
 );
 const NotFound = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/NotFound.js')
+	import(/* webpackPrefetch: true */ './pages/NotFound.js')
 );
 const Proxy = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Proxy.js')
+	import(/* webpackPrefetch: true */ './pages/Proxy.js')
 );
 const Ultraviolet = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Proxies/Ultraviolet.js')
+	import(/* webpackPrefetch: true */ './pages/proxies/Ultraviolet.js')
 );
 const Rammerhead = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Proxies/Rammerhead.js')
+	import(/* webpackPrefetch: true */ './pages/proxies/Rammerhead.js')
 );
 const Stomp = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Proxies/Stomp.js')
+	import(/* webpackPrefetch: true */ './pages/proxies/Stomp.js')
 );
 const Licenses = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Licenses.js')
+	import(/* webpackPrefetch: true */ './pages/Licenses.js')
 );
 const Terms = lazy(() =>
-	import(/* webpackPrefetch: true */ './Pages/Terms.js')
+	import(/* webpackPrefetch: true */ './pages/Terms.js')
 );
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview

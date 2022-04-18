@@ -1,5 +1,5 @@
 import root, { bareCDN } from './root.js';
-import { ReactComponent as GlobeSVG } from './Assets/globe.svg';
+import { ReactComponent as GlobeSVG } from './assets/globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
@@ -8,7 +8,7 @@ import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
 import proxyCompat from './proxy.json';
-import './Styles/Service.scss';
+import './styles/Service.scss';
 
 const default_settings = {
 	proxy: 'auto',

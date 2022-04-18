@@ -1,7 +1,7 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
-import '../Styles/Proxy.scss';
+import '../styles/Proxy.scss';
 
 class Expand extends Component {
 	state = {

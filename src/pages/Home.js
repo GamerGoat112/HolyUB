@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Obfuscated } from '../obfuscate.js';
 import { set_page } from '../root.js';
-import '../Styles/Home.scss';
+import '../styles/Home.scss';
 
 export default class Home extends Component {
 	render() {

@@ -1,11 +1,11 @@
 import ServiceFrame from './ServiceFrame.js';
 import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
-import { ReactComponent as HatSVG } from './Assets/hat-small.svg';
-import { ReactComponent as WavesSVG } from './Assets/waves.svg';
+import { ReactComponent as HatSVG } from './assets/hat-small.svg';
+import { ReactComponent as WavesSVG } from './assets/waves.svg';
 import { createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import './Styles/Navigation.scss';
-import './Styles/Footer.scss';
+import './styles/Navigation.scss';
+import './styles/Footer.scss';
 import Layout from './Layout.js';
 
 export default class MainLayout extends Layout {
