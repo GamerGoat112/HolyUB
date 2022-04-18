@@ -1,0 +1,3 @@
+[submodule "public/games"]
+	path = public/games
+	url = ssh://git@git.holy.how:654/holy/games.git
