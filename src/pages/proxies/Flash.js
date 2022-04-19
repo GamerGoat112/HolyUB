@@ -31,7 +31,7 @@ export default class Flash extends ProxyModule {
 			});
 		});
 
-		this.player?.load({ url: this.destination.toString() });
+		this.player.load({ url: this.destination.toString() });
 	}
 	move_player(parent) {
 		const inst = this.player.instance;
