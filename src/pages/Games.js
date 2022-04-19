@@ -7,9 +7,6 @@ import '../styles/Games.scss';
 const games_base = new URL(data.base, global.location);
 
 class Item extends Component {
-	constructor(props) {
-		super(props);
-	}
 	get layout(){
 		return this.props.layout.current;
 	}
@@ -44,7 +41,7 @@ class Item extends Component {
 	}
 	render() {
 		const style = {
-			backgroundPosition: `${this.props.index * data.image.width * -1}px`,
+			backgroundPosition: `${this.props.index * data.image.width * -1}px 0px`,
 		};
 
 		return (
@@ -65,10 +62,12 @@ class Category extends Component {
 		super(props);
 
 		this.state = {
+			load_image: false,
 			overflowing: false,
 			expanded: false,
 		};
 
+		this.scroll = this.scroll.bind(this);
 		this.resize = this.resize.bind(this);
 	}
 	resize() {
@@ -82,11 +81,28 @@ class Category extends Component {
 
 		this.container.current.dataset.expanded = expanded;
 	}
+	scroll(){
+		const rect = this.container.current.getBoundingClientRect();
+		const visible = rect.top < window.innerHeight && rect.bottom >= 0;
+		
+		// lazy loading
+		if(visible){
+			this.setState({
+				load_image: true,
+			});
+
+			document.removeEventListener('scroll', this.scroll);
+		}
+	}
 	componentDidMount() {
-		this.resize();
+		document.addEventListener('scroll', this.scroll);
 		window.addEventListener('resize', this.resize);
+
+		this.resize();
+		this.scroll();
 	}
 	componentWillUnmount() {
+		document.removeEventListener('scroll', this.scroll);
 		window.removeEventListener('resize', this.resize);
 	}
 	async expand() {
@@ -114,6 +130,7 @@ class Category extends Component {
 
 		return (
 			<section
+				data-load-image={Number(this.state.load_image)}
 				data-overflowing={Number(this.state.overflowing)}
 				data-expanded={Number(this.state.expanded)}
 				id={this.props.id}

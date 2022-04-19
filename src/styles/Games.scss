@@ -1,33 +1,21 @@
 @import "./Common.scss";
 
+@mixin thumbnail($id, $url) {
+	&##{$id}[data-load-image="1"] > .items > .item > .front {
+		background-image: url(#{$url});
+	}
+}
+
 @include root_page("games") {
 	> main {
 		> section {
-			&#social > .items > .item > .front {
-				background-image: url("../assets/thumbnails/social.png");
-				background-position: 0px 0px;
-			}
-			&#html5 > .items > .item > .front {
-				background-image: url("../assets/thumbnails/html5.png");
-				background-position: 0px 0px;
-			}
-			&#ports > .items > .item > .front {
-				background-image: url("../assets/thumbnails/ports.png");
-				background-position: 0px 0px;
-			}
-			&#gba > .items > .item > .front {
-				background-image: url("../assets/thumbnails/gba.png");
-				background-position: 0px 0px;
-			}
-			&#genesis > .items > .item > .front {
-				background-image: url("../assets/thumbnails/genesis.png");
-				background-position: 0px 0px;
-			}
-			&#nes > .items > .item > .front {
-				background-image: url("../assets/thumbnails/nes.png");
-				background-position: 0px 0px;
-			}
-			
+			@include thumbnail(social, "../assets/thumbnails/social.png");
+			@include thumbnail(html5, "../assets/thumbnails/html5.png");
+			@include thumbnail(ports, "../assets/thumbnails/ports.png");
+			@include thumbnail(gba, "../assets/thumbnails/gba.png");
+			@include thumbnail(genesis, "../assets/thumbnails/genesis.png");
+			@include thumbnail(nes, "../assets/thumbnails/nes.png");
+
 			height: 360px;
 			$expand-size: 50px;
 			$expand-overflow: calc($expand-size / 2);
