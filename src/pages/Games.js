@@ -29,9 +29,10 @@ class Item extends Component {
 				break;
 			case 'webretro':
 				this.service_frame.embed(
-					`/assets/theatre/WebRetro/?rom=${encodeURIComponent(
-						this.props.src
-					)}&core=autodetect`,
+					new URL('webretro?' + new URLSearchParams({
+						rom: this.props.src,
+						core: 'autodetect'
+					}), games_base),
 					this.props.name
 				);
 				break;
