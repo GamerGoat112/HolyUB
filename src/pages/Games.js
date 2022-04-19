@@ -71,6 +71,11 @@ class Category extends Component {
 		this.resize = this.resize.bind(this);
 	}
 	resize() {
+		if(!this.state.load_image){
+			// test scroll on resize
+			this.scroll();
+		}
+
 		const { expanded } = this.container.current.dataset;
 		this.container.current.dataset.expanded = 0;
 
