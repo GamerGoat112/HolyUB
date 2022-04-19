@@ -23,6 +23,12 @@ const NotFound = lazy(() =>
 const Proxy = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Proxy.js')
 );
+const Licenses = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/Licenses.js')
+);
+const Terms = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/Terms.js')
+);
 const Ultraviolet = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/proxies/Ultraviolet.js')
 );
@@ -32,11 +38,8 @@ const Rammerhead = lazy(() =>
 const Stomp = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/proxies/Stomp.js')
 );
-const Licenses = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Licenses.js')
-);
-const Terms = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Terms.js')
+const Flash = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/proxies/Flash.js')
 );
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
@@ -133,6 +136,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Ultraviolet layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="flash.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Flash layout={this.layout} />
 							</Suspense>
 						}
 					/>

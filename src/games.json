@@ -74,6 +74,17 @@
 			]
 		},
 		{
+			"name": "Flash",
+			"id": "flash",
+			"items": [
+				{
+					"name": "test",
+					"src": "https://cdn.jsdelivr.net/gh/BinBashBanana/gstore/dontshootthepuppy.swf",
+					"target": "flash"
+				}
+			]
+		},
+		{
 			"name": "Ports",
 			"id": "ports",
 			"base": "ports/",

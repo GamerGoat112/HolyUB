@@ -6,7 +6,13 @@
 	}
 }
 
+
+html[data-page="games"][data-service="1"] {
+	overflow: hidden;
+}
+
 @include root_page("games") {
+
 	> main {
 		> section {
 			@include thumbnail(social, "../assets/thumbnails/social.png");

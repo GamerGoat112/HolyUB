@@ -7,32 +7,36 @@ import '../styles/Games.scss';
 const games_base = new URL(data.base, global.location);
 
 class Item extends Component {
-	get layout(){
+	get layout() {
 		return this.props.layout.current;
 	}
-	get service_frame(){
+	get service_frame() {
 		return this.layout.service_frame.current;
 	}
 	open() {
 		switch (this.props.target) {
 			case 'proxy':
-				this.service_frame.proxy(
-					this.props.src,
-					this.props.name
-				);
+				this.service_frame.proxy(this.props.src, this.props.name);
 				break;
 			case 'embed':
+				this.service_frame.embed(this.props.src, this.props.name);
+				break;
+			case 'flash':
 				this.service_frame.embed(
-					this.props.src,
+					`/proxies/flash.html#${this.props.src}`,
 					this.props.name
 				);
 				break;
 			case 'webretro':
 				this.service_frame.embed(
-					new URL('webretro?' + new URLSearchParams({
-						rom: this.props.src,
-						core: 'autodetect'
-					}), games_base),
+					new URL(
+						'webretro?' +
+							new URLSearchParams({
+								rom: this.props.src,
+								core: 'autodetect',
+							}),
+						games_base
+					),
 					this.props.name
 				);
 				break;
@@ -72,7 +76,7 @@ class Category extends Component {
 		this.resize = this.resize.bind(this);
 	}
 	resize() {
-		if(!this.state.load_image){
+		if (!this.state.load_image) {
 			// test scroll on resize
 			this.scroll();
 		}
@@ -87,12 +91,12 @@ class Category extends Component {
 
 		this.container.current.dataset.expanded = expanded;
 	}
-	scroll(){
+	scroll() {
 		const rect = this.container.current.getBoundingClientRect();
 		const visible = rect.top < window.innerHeight && rect.bottom >= 0;
-		
+
 		// lazy loading
-		if(visible){
+		if (visible) {
 			this.setState({
 				load_image: true,
 			});

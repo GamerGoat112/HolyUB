@@ -23,14 +23,14 @@ export default class Rammerhead extends ProxyModule {
 		await fetch(rhApp);
 		await this.possible_error();
 
-		this.possible_error('Unable to check if the saved session exists.');
+		await this.possible_error('Unable to check if the saved session exists.');
 		if (!this.session || !(await this.api.sessionexists(this.session))) {
 			await this.possible_error('Unable to create a new Rammerhead session.');
 			const session = await this.api.newsession();
 			await this.possible_error();
 			this.session = session;
 		}
-		this.possible_error();
+		await this.possible_error();
 
 		await this.possible_error('Unable to edit a Rammerhead session.');
 		await this.api.editsession(this.session, false, true);
