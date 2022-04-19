@@ -13,5 +13,3 @@ cd game-thumbnails
 		cd ..
 	done
 cd ..
-
-# convert +append image_1.png image_2.png -resize x500 new_image_conbined.png
