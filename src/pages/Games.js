@@ -10,7 +10,7 @@ class Item extends Component {
 
 		this.state = {
 			name: this.props.name,
-			id: this.props.id,
+			index: this.props.index,
 			target: this.props.target,
 			src: this.props.src,
 		};
@@ -43,7 +43,7 @@ class Item extends Component {
 	}
 	render() {
 		const style = {
-			backgroundPosition: `${this.state.id * data.image.width * -1}px`,
+			backgroundPosition: `${this.state.index * data.image.width * -1}px`,
 		};
 
 		return (
@@ -106,11 +106,11 @@ class Category extends Component {
 			items.push(
 				<Item
 					key={i}
+					index={i}
 					layout={this.state.layout}
 					name={item.name}
 					src={new URL(item.src, this.state.base)}
 					target={item.target}
-					id={item.id}
 				/>
 			);
 		}

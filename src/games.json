@@ -11,25 +11,21 @@
 				{
 					"name": "Discord",
 					"src": "https://discord.com/",
-					"id": 0,
 					"target": "proxy"
 				},
 				{
 					"name": "Reddit",
 					"src": "https://reddit.com/",
-					"id": 2,
 					"target": "proxy"
 				},
 				{
 					"name": "Youtube",
 					"src": "https://www.youtube.com/",
-					"id": 1,
 					"target": "proxy"
 				},
 				{
 					"name": "Invidious",
 					"src": "https://invidio.xamh.de/",
-					"id": 3,
 					"target": "proxy"
 				}
 			]
@@ -42,43 +38,36 @@
 				{
 					"name": "Krunker",
 					"src": "https://krunker.io/",
-					"id": 1,
 					"target": "proxy"
 				},
 				{
 					"name": "1v1.LOL",
 					"src": "https://1v1.lol/",
-					"id": 0,
 					"target": "proxy"
 				},
 				{
 					"name": "Cookie Clicker",
 					"src": "Cookie Clicker/",
-					"id": 2,
 					"target": "embed"
 				},
 				{
 					"name": "Duck Life",
 					"src": "Duck Life/",
-					"id": 0,
 					"target": "embed"
 				},
 				{
 					"name": "Duck Life 2",
 					"src": "Duck Life 2/",
-					"id": 1,
 					"target": "embed"
 				},
 				{
 					"name": "Duck Life 3",
 					"src": "Duck Life 3/",
-					"id": 2,
 					"target": "embed"
 				},
 				{
 					"name": "Duck Life 4",
 					"src": "Duck Life 4/",
-					"id": 3,
 					"target": "embed"
 				}
 			]
@@ -91,13 +80,11 @@
 				{
 					"name": "Minecraft 0.30",
 					"src": "Minecraft 0.30/",
-					"id": 0,
 					"target": "embed"
 				},
 				{
 					"name": "Super Mario 64",
 					"src": "Super Mario 64/",
-					"id": 1,
 					"target": "embed"
 				}
 			]
@@ -110,91 +97,76 @@
 				{
 					"name": "Super Mario Advance",
 					"src": "Super Mario Advance.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Super Mario Advance 2",
 					"src": "Super Mario Advance 2.gba",
-					"id": 1,
 					"target": "webretro"
 				},
 				{
 					"name": "Mario Kart: Super Circuit",
 					"src": "Mario Kart: Super Circuit.gba",
-					"id": 2,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Red",
 					"src": "Pokemon Red.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Green",
 					"src": "Pokemon Green.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Blue",
 					"src": "Pokemon Blue.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Yellow",
 					"src": "Pokemon Yellow.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Gold",
 					"src": "Pokemon Gold.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Silver",
 					"src": "Pokemon Silver.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Crystal",
 					"src": "Pokemon Crystal.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Ruby",
 					"src": "Pokemon Ruby.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Sapphire",
 					"src": "Pokemon Sapphire.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Emerald",
 					"src": "Pokemon Emerald.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Fire Red",
 					"src": "Pokemon Fire Red.gba",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Pokemon Leaf Green",
 					"src": "Pokemon Leaf Green.gba",
-					"id": 0,
 					"target": "webretro"
 				}
 			]
@@ -207,19 +179,16 @@
 				{
 					"name": "Sonic The Hedgehog",
 					"src": "Sonic The Hedgehog.smd",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Sonic The Hedgehog 2",
 					"src": "Sonic The Hedgehog 2.smd",
-					"id": 1,
 					"target": "webretro"
 				},
 				{
 					"name": "Sonic The Hedgehog 3",
 					"src": "Sonic The Hedgehog 3.smd",
-					"id": 2,
 					"target": "webretro"
 				}
 			]
@@ -232,19 +201,16 @@
 				{
 					"name": "Super Mario Bros",
 					"src": "Super Mario Bros.nes",
-					"id": 0,
 					"target": "webretro"
 				},
 				{
 					"name": "Super Mario Bros 2",
 					"src": "Super Mario Bros 2.nes",
-					"id": 1,
 					"target": "webretro"
 				},
 				{
 					"name": "Super Mario Bros 3",
 					"src": "Super Mario Bros 3.nes",
-					"id": 2,
 					"target": "webretro"
 				}
 			]
