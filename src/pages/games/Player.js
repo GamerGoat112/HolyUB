@@ -145,6 +145,7 @@ export default class GamesPlayer extends Component {
 							}
 
 							common_settings.set('favorites', favorites);
+							this.forceUpdate();
 						}}
 					>
 						{this.favorited ? 'star' : 'star_outlined'}
