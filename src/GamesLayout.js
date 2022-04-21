@@ -1,46 +1,7 @@
-import { Obfuscated } from './obfuscate.js';
-import { Outlet, Link, Navigate } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Component } from 'react';
 import { set_page } from './root.js';
 import './styles/Games.scss';
-
-export class Item extends Component {
-	state = {
-		search: false,
-		redirect: '',
-	};
-	open() {
-		this.setState({
-			redirect:
-				'/games/player.html?' +
-				new URLSearchParams({
-					id: this.props.id,
-				}),
-		});
-	}
-	render() {
-		let redirect;
-
-		if (this.state.redirect !== '') {
-			redirect = <Navigate replace to={this.state.redirect} />;
-		}
-
-		return (
-			<>
-				{redirect}
-				<div className="item" onClick={this.open.bind(this)}>
-					{
-						// todo: make <img src="...something with this.props.id in src"
-					}
-					<div className="front"></div>
-					<div className="name">
-						<Obfuscated>{this.props.name}</Obfuscated>
-					</div>
-				</div>
-			</>
-		);
-	}
-}
 
 export default class GamesLayout extends Component {
 	state = {
@@ -48,9 +9,10 @@ export default class GamesLayout extends Component {
 		expanded: false,
 		search: false,
 	};
-	render() {
+	componentDidMount() {
 		set_page('games');
-
+	}
+	render() {
 		return (
 			<>
 				<nav

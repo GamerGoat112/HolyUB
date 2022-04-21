@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { gamesAPI, set_page } from '../../root.js';
-import { Item } from '../../GamesLayout.js';
+import { set_page } from '../../root.js';
+import { Item, fetch_category } from '../../GamesUtil.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
@@ -17,10 +17,10 @@ export default class Category extends Component {
 		let sort;
 
 		switch (this.settings.get('sort')) {
-			case 'Least Plays':
+			case 'Least Played':
 				leastGreatest = true;
 			// falls through
-			case 'Most Plays':
+			case 'Most Played':
 				sort = 'plays';
 				break;
 			case 'Least Favorites':
@@ -28,6 +28,12 @@ export default class Category extends Component {
 			// falls through
 			case 'Most Favorites':
 				sort = 'favorites';
+				break;
+			case 'Shortest Played':
+				leastGreatest = true;
+			// falls through
+			case 'Longest Played':
+				sort = 'retention';
 				break;
 			case 'Name (Z-A)':
 				leastGreatest = true;
@@ -40,27 +46,17 @@ export default class Category extends Component {
 				break;
 		}
 
-		const outgoing = await fetch(
-			new URL(
-				'/games/?' +
-					new URLSearchParams({
-						category: this.props.id,
-						sort,
-						leastGreatest,
-					}),
-				gamesAPI
-			)
-		);
+		try {
+			const data = await fetch_category(this.props.id, sort, leastGreatest);
 
-		if (!outgoing.ok) {
 			return this.setState({
-				error: await outgoing.json(),
+				data,
+			});
+		} catch (error) {
+			return this.setState({
+				error,
 			});
 		}
-
-		this.setState({
-			data: await outgoing.json(),
-		});
 	}
 	componentDidMount() {
 		this.fetch();

@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { gamesAPI, set_page } from '../../root.js';
-import { Item } from '../../GamesLayout.js';
+import { set_page } from '../../root.js';
+import { Item, fetch_category } from '../../GamesUtil.js';
 import '../../styles/Games Category.scss';
 
 export default class Category extends Component {
@@ -15,29 +15,17 @@ export default class Category extends Component {
 		return this.props.layout;
 	}
 	async fetch() {
-		let leastGreatest = false;
-		let sort = 'Most Plays';
+		try {
+			const data = await fetch_category(undefined, 'Most Plays', false);
 
-		const outgoing = await fetch(
-			new URL(
-				'/games/?' +
-					new URLSearchParams({
-						sort,
-						leastGreatest,
-					}),
-				gamesAPI
-			)
-		);
-
-		if (!outgoing.ok) {
 			return this.setState({
-				error: await outgoing.json(),
+				data,
+			});
+		} catch (error) {
+			return this.setState({
+				error,
 			});
 		}
-
-		this.setState({
-			data: await outgoing.json(),
-		});
 	}
 	componentDidMount() {
 		this.fetch();
