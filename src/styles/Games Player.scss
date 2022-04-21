@@ -1,0 +1,7 @@
+@import './Common.scss';
+
+@include root_page('games-player') {
+	> main {
+		background-color: var(--background-accent);
+	}
+}

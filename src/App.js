@@ -12,6 +12,9 @@ const GamesPopular = lazy(() =>
 const GamesCategory = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Category.js')
 );
+const GamesPlayer = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/games/Player.js')
+);
 const Support = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Support.js')
 );
@@ -115,6 +118,14 @@ export default class App extends Component {
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPopular layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="player.html"
+							element={
+								<Suspense fallback={<></>}>
+									<GamesPlayer layout={this.layout} />
 								</Suspense>
 							}
 						/>
