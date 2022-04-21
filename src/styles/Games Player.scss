@@ -4,6 +4,43 @@
 	> main {
 		border-radius: 10px;
 		margin: 3% 3%;
+		padding: 40px;
 		background-color: var(--background-accent);
+
+		> .title {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			height: 40px;
+			line-height: 20px;
+			border-bottom: 1px solid var(--border);
+			padding-bottom: 10px;
+			margin-bottom: 5px;
+
+			> h3 {
+				margin: 0px;
+				height: fit-content;
+			}
+
+			> .shift-right {
+				margin-left: auto;
+			}
+
+			> button {
+				margin-left: 15px;
+				border: none;
+				background-color: var(--contrast-background);
+				color: var(--contrast-text);
+				border-radius: 5px;
+				width: 40px;
+				height: 40px;
+			}
+		}
+
+		> iframe {
+			border: none;
+			width: 60vw;
+			height: 40vw;
+		}
 	}
 }

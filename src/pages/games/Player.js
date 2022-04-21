@@ -83,10 +83,16 @@ export default class GamesPlayer extends Component {
 
 		return (
 			<main>
-				<h1>
-					<Obfuscated>{this.state.data.name}</Obfuscated>
-				</h1>
+				<div className="title">
+					<h3>
+						<Obfuscated>{this.state.data.name}</Obfuscated>
+					</h3>
+					<div className="shift-right"></div>
+					<button className="material-icons">fullscreen</button>
+					<button className="material-icons">favorite</button>
+				</div>
 				<iframe
+					ref={this.iframe}
 					title="Embed"
 					src={resolve_game(
 						new URL(this.state.data.src, gamesCDN),
