@@ -43,7 +43,6 @@ export default class Settings {
 			}
 		}
 
-		console.log(settings);
 		this.value = settings;
 
 		if (update) {
@@ -51,7 +50,6 @@ export default class Settings {
 		}
 	}
 	valid_value(key, value) {
-		console.trace(typeof value, typeof this.default_settings[key], key);
 		return typeof value === typeof this.default_settings[key];
 	}
 	get(key) {

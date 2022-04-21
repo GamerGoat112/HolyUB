@@ -1,14 +1,14 @@
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { gamesAPI, gamesCDN, set_page } from '../../root.js';
-import '../../styles/Games Player.scss';
-import resolve_groxy from '../../ProxyResolver.js';
+import resolve_proxy from '../../ProxyResolver.js';
 import Settings from '../../Settings.js';
+import '../../styles/Games Player.scss';
 
 function resolve_game(src, type, setting) {
 	switch (type) {
 		case 'proxy':
-			return resolve_groxy(src, setting);
+			return resolve_proxy(src, setting);
 		case 'embed':
 			return src;
 		case 'flash':
@@ -24,19 +24,24 @@ function resolve_game(src, type, setting) {
 						core: 'autodetect',
 					}),
 				gamesCDN
-			);
+			).toString();
 		default:
 			throw new TypeError(`Unrecognized target: ${type}`);
 	}
 }
 
 export default class GamesPlayer extends Component {
-	settings = new Settings('common games', {
-		favorites: [],
-	});
-	state = {
-		favorited: this.settings.get('favorites').includes(this.id),
-	};
+	settings = new Settings(
+		'common games',
+		{
+			favorites: [],
+		},
+		this
+	);
+	state = {};
+	get favorited() {
+		return this.settings.get('favorites').includes(this.id);
+	}
 	iframe = createRef();
 	/**
 	 * @returns {import('../Layout.js').default}
@@ -98,6 +103,12 @@ export default class GamesPlayer extends Component {
 			);
 		}
 
+		const resolved = resolve_game(
+			new URL(this.state.data.src, gamesCDN),
+			this.state.data.type,
+			this.layout.current.settings.get('proxy')
+		);
+
 		return (
 			<main>
 				<div className="title">
@@ -128,19 +139,29 @@ export default class GamesPlayer extends Component {
 					>
 						vertical_align_center
 					</button>
-					<button className="material-icons">
-						{this.state.favorited ? 'favorite' : 'favorite_outlined'}
+					<button
+						className="material-icons"
+						onClick={() => {
+							const favorites = this.settings.get('favorites');
+							const i = favorites.indexOf(this.id);
+
+							if (i === -1) {
+								favorites.push(this.id);
+							} else {
+								favorites.splice(i, 1);
+							}
+
+							this.settings.set('favorites', favorites);
+						}}
+					>
+						{this.favorited ? 'favorite' : 'favorite_outlined'}
 					</button>
 				</div>
 				<iframe
 					ref={this.iframe}
 					title="Embed"
 					onFocus={() => this.focus_listener()}
-					src={resolve_game(
-						new URL(this.state.data.src, gamesCDN),
-						this.state.data.type,
-						this.layout.current.settings.get('proxy')
-					)}
+					src={resolved}
 				/>
 			</main>
 		);
