@@ -4,16 +4,11 @@ import { Component } from 'react';
 import { set_page } from './root.js';
 import './styles/Games.scss';
 
-export const games_base = new URL('/games/', global.location);
-
 export class Item extends Component {
 	state = {
 		search: false,
 		redirect: '',
 	};
-	get layout() {
-		return this.props.layout.current;
-	}
 	open() {
 		this.setState({
 			redirect:

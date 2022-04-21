@@ -4,22 +4,23 @@ document.title = 'Holy Unblocker';
 
 let _bareCDN;
 let _rhApp;
-let _gamesCDN;
+let _gamesAPI;
 
 if (process.env.NODE_ENV === 'development') {
 	_bareCDN = 'http://localhost:8001/';
 	_rhApp = 'http://localhost:8002/';
-	_gamesCDN = 'http://localhost:3001/';
+	_gamesAPI = 'http://localhost:3001/';
 } else {
 	const { host } = global.location;
 	_bareCDN = `https://uv.${host}/bare/`;
 	_rhApp = `https://rh.${host}/`;
-	_gamesCDN = `https://gs.${host}/`;
+	_gamesAPI = `https://gs.${host}/`;
 }
 
 export const bareCDN = _bareCDN;
 export const rhApp = _rhApp;
-export const gamesCDN = _gamesCDN;
+export const gamesAPI = _gamesAPI;
+export const gamesCDN = new URL('/games/', global.location);
 
 export default document.querySelector('#root');
 

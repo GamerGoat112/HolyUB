@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { gamesCDN, set_page } from '../../root.js';
-import { games_base, Item } from '../../GamesLayout.js';
+import { gamesAPI, set_page } from '../../root.js';
+import { Item } from '../../GamesLayout.js';
 import '../../styles/Games Category.scss';
 
 export default class Category extends Component {
@@ -25,7 +25,7 @@ export default class Category extends Component {
 						sort,
 						leastGreatest,
 					}),
-				gamesCDN
+				gamesAPI
 			)
 		);
 
@@ -57,8 +57,6 @@ export default class Category extends Component {
 					id={item.id}
 					layout={this.props.layout}
 					name={item.name}
-					src={new URL(item.src, games_base)}
-					target={item.target}
 				/>
 			);
 		}
