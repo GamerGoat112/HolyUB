@@ -1,6 +1,5 @@
 import ProxyModule from '../../ProxyModule.js';
 import { set_page } from '../../root.js';
-import '../../styles/ProxyScript.scss';
 
 export default class Flash extends ProxyModule {
 	name = 'Flash';

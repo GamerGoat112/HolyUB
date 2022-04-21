@@ -1,9 +1,9 @@
-@import "./Lato.scss";
-@import "./Montserrat Alternates.scss";
-@import "./Banner.scss";
-@import "./Theme.scss";
-$material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
-@import "~material-design-icons-iconfont/src/material-design-icons";
+@import './Lato.scss';
+@import './Montserrat Alternates.scss';
+@import './Banner.scss';
+@import './Theme.scss';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@import '~material-design-icons-iconfont/src/material-design-icons';
 
 html {
 	background-color: var(--background);
@@ -13,13 +13,17 @@ body {
 	margin: 0px;
 }
 
+button {
+	user-select: none;
+}
+
 h1,
 h2 {
-	font-family: "Montserrat Alternates";
+	font-family: 'Montserrat Alternates';
 }
 
 #root {
-	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);
 	display: flex;

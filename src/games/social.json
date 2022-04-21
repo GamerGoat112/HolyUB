@@ -1,0 +1,30 @@
+{
+	"sections": [
+		{
+			"name": "Social Media",
+			"id": "social",
+			"items": [
+				{
+					"name": "Discord",
+					"src": "https://discord.com/",
+					"target": "proxy"
+				},
+				{
+					"name": "Reddit",
+					"src": "https://reddit.com/",
+					"target": "proxy"
+				},
+				{
+					"name": "Youtube",
+					"src": "https://www.youtube.com/",
+					"target": "proxy"
+				},
+				{
+					"name": "Invidious",
+					"src": "https://invidio.xamh.de/",
+					"target": "proxy"
+				}
+			]
+		}
+	]
+}

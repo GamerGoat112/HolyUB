@@ -2,11 +2,15 @@ import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
+import GamesLayout from './GamesLayout.js';
 import './styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const Games = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Games.js')
+	import(/* webpackPrefetch: true */ './pages/games/Games.js')
+);
+const Category = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/games/Category.js')
 );
 const Support = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Support.js')
@@ -44,6 +48,46 @@ const Flash = lazy(() =>
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
+	game_categories = [];
+	constructor(props) {
+		super(props);
+
+		const games = {
+			social: () => import(/* webpackPrefetch: true */ './games/social.json'),
+		};
+
+		for (let category in games) {
+			const data = games[category];
+			let cache;
+
+			this.game_categories.push(
+				<Route
+					key={category}
+					path={`${category}.html`}
+					element={
+						<Suspense fallback={<></>}>
+							<Category
+								ref={async category => {
+									if (category === undefined) {
+										return;
+									}
+
+									if (cache === undefined) {
+										cache = (await data()).default;
+									}
+
+									await category.setState({
+										data: cache,
+									});
+								}}
+								layout={this.layout}
+							/>
+						</Suspense>
+					}
+				/>
+			);
+		}
+	}
 	layout = createRef();
 	render() {
 		return (
@@ -62,14 +106,6 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Proxy layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path="/games.html"
-						element={
-							<Suspense fallback={<></>}>
-								<Games layout={this.layout} />
 							</Suspense>
 						}
 					/>
@@ -113,6 +149,17 @@ export default class App extends Component {
 							</Suspense>
 						}
 					/>
+					<Route path="/games/" element={<GamesLayout layout={this.layout} />}>
+						<Route
+							path=""
+							element={
+								<Suspense fallback={<></>}>
+									<Games layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						{this.game_categories}
+					</Route>
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
 					<Route

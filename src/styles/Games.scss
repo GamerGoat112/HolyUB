@@ -1,26 +1,348 @@
-@import "./Common.scss";
+@import './Common.scss';
+@import './Screen.scss';
 
 @mixin thumbnail($id, $url) {
-	&##{$id}[data-load-image="1"] > .items > .item > .front {
+	&##{$id}[data-load-image='1'] > .items > .item > .front {
 		background-image: url(#{$url});
 	}
 }
 
-
-html[data-page="games"][data-service="1"] {
+html[data-page*='games'][data-service='1'] {
 	overflow: hidden;
 }
 
-@include root_page("games") {
+html[data-page*='games'] #root {
+	> nav.games {
+		display: flex;
+		min-height: var(--nav-height);
+		align-content: center;
+		position: relative;
+		color: var(--slate);
+		border-bottom: var(--border) 1px solid;
+		padding: 10px 5vw;
+		z-index: 10;
+		text-align: center;
+		background: var(--background);
+
+		> div.search {
+			display: none;
+		}
+
+		&[data-search='1'] {
+			> button.search {
+				display: none;
+			}
+
+			> div.search {
+				$border: 1px;
+				$height: 44px;
+				width: 584px;
+				height: $height;
+
+				display: flex;
+				position: relative;
+				flex-direction: row;
+				max-height: 100%;
+
+				@include screen_tablet {
+					width: 100%;
+
+					&[data-focused='1'] {
+						position: absolute;
+						z-index: 100;
+						top: 0px;
+						left: 0px;
+						padding: 10px;
+						width: calc(100% - 20px);
+						height: calc(100% - 20px);
+						background: rgba(0, 0, 0, 0.5);
+					}
+				}
+
+				> input {
+					width: 100%;
+					height: $height;
+					font-family: inherit;
+					background: var(--background-accent);
+					color: var(--text-accent);
+					border: 1px solid var(--border);
+					border-radius: 5px;
+					border-right: none;
+					border-top-right-radius: 0px;
+					border-bottom-right-radius: 0px;
+					padding: 0px 15px 0px 15px;
+					&::placeholder {
+						color: var(--text-placeholder);
+					}
+				}
+
+				> button {
+					width: 44px;
+					height: 46px;
+					flex: none;
+					background-color: var(--background-accent);
+					color: var(--text-accent);
+					border: 1px solid var(--border);
+					cursor: pointer;
+
+					&:hover {
+						background-color: var(--background);
+					}
+
+					&.button-close {
+						border-radius: 5px;
+						border-left: none;
+						border-top-left-radius: 0px;
+						border-bottom-left-radius: 0px;
+					}
+				}
+
+				> .suggested {
+					display: none;
+				}
+
+				&[data-suggested='1'] {
+					> .suggested {
+						display: flex;
+						flex-direction: column;
+						background-color: var(--background-accent);
+						overflow: hidden;
+						border-bottom-left-radius: 5px;
+						border-bottom-right-radius: 5px;
+						border: 1px solid var(--border);
+						border-top: none;
+						cursor: pointer;
+					}
+
+					> input {
+						height: $height;
+						border-bottom-left-radius: 0px;
+						border-bottom-right-radius: 0px;
+					}
+				}
+			}
+		}
+
+		> .collapsable {
+			display: flex;
+			flex-direction: row;
+		}
+
+		> .expand {
+			position: relative;
+			display: none;
+			padding: 15px;
+			cursor: pointer;
+
+			> div {
+				width: 30px;
+				height: 20px;
+				position: relative;
+
+				span {
+					display: block;
+					position: absolute;
+					height: 0px;
+					width: 100%;
+					border-top: 1px solid var(--text);
+					left: 0;
+					transform: rotate(0deg);
+					transition: width 0.2s ease-in-out, left 0.2s ease-in-out,
+						transform 0.2s ease-in-out;
+
+					&:nth-child(1) {
+						top: 0px;
+					}
+
+					&:nth-child(2),
+					&:nth-child(3) {
+						top: 10px;
+					}
+
+					&:nth-child(4) {
+						top: 20px;
+					}
+				}
+			}
+		}
+
+		@include screen_phone {
+			> .expand {
+				display: flex;
+			}
+
+			> .collapsable {
+				display: none;
+				flex-direction: column;
+				width: 100%;
+				top: 100%;
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				text-align: left;
+				background: var(--background);
+				border-bottom: 1px solid var(--border);
+			}
+
+			> .logo {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				margin: auto;
+			}
+
+			&[data-expanded='1'] {
+				> *:not(.expand) {
+					display: none;
+				}
+
+				.collapsable {
+					display: flex;
+				}
+
+				> .expand span {
+					&:nth-child(1) {
+						top: 10px;
+						width: 0%;
+						left: 50%;
+					}
+
+					&:nth-child(2) {
+						transform: rotate(45deg);
+					}
+
+					&:nth-child(3) {
+						transform: rotate(-45deg);
+					}
+
+					&:nth-child(4) {
+						top: 10;
+						width: 0%;
+						left: 50%;
+					}
+				}
+			}
+		}
+
+		> button {
+			user-select: none;
+			box-sizing: content-box;
+			border: none;
+			background: none;
+			width: 25px;
+			height: 25px;
+			margin: auto 5px;
+			border-radius: 2px;
+			padding: 5px;
+			position: relative;
+			flex: none;
+			cursor: pointer;
+			color: inherit;
+
+			&:hover {
+				background: var(--background-accent);
+			}
+		}
+
+		.entry {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: var(--nav-height);
+			padding: 0px 15px;
+			color: inherit;
+			white-space: nowrap;
+
+			> svg,
+			> .material-icons {
+				height: 25px;
+				width: 25px;
+				color: inherit;
+			}
+
+			&.logo {
+				width: 35px;
+				> svg {
+					width: inherit;
+					height: inherit;
+				}
+			}
+
+			span {
+				position: relative;
+			}
+
+			span::after {
+				display: none;
+				content: '';
+				position: absolute;
+				border-bottom: 2px solid var(--text);
+				left: 0;
+				right: 0;
+				bottom: -0.125rem;
+			}
+
+			&:hover {
+				text-decoration: none;
+
+				span::after {
+					display: block;
+				}
+			}
+		}
+
+		> .shift-right {
+			margin-left: auto;
+		}
+
+		@include screen_tablet {
+			> .shift-right {
+				display: none;
+			}
+
+			justify-content: space-between;
+
+			.collapsable {
+				justify-content: space-around;
+				width: 100%;
+			}
+		}
+	}
+
+	.item {
+		cursor: pointer;
+		user-select: none;
+		width: 200px;
+		height: 241px;
+		background: var(--background);
+		box-shadow: 0px 0px 10px var(--shadow);
+		border-radius: 5px;
+		margin: 12px 12px;
+
+		> .front {
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			width: 200px;
+			height: 200px;
+		}
+
+		> .name {
+			font-size: 14px;
+			width: 200px;
+			line-height: 40px;
+			text-align: center;
+			border-top: 1px solid var(--border);
+		}
+	}
 
 	> main {
 		> section {
-			@include thumbnail(social, "../assets/thumbnails/social.png");
-			@include thumbnail(html5, "../assets/thumbnails/html5.png");
-			@include thumbnail(ports, "../assets/thumbnails/ports.png");
-			@include thumbnail(gba, "../assets/thumbnails/gba.png");
-			@include thumbnail(genesis, "../assets/thumbnails/genesis.png");
-			@include thumbnail(nes, "../assets/thumbnails/nes.png");
+			@include thumbnail(social, '../assets/thumbnails/social.png');
+			@include thumbnail(html5, '../assets/thumbnails/html5.png');
+			@include thumbnail(ports, '../assets/thumbnails/ports.png');
+			@include thumbnail(gba, '../assets/thumbnails/gba.png');
+			@include thumbnail(genesis, '../assets/thumbnails/genesis.png');
+			@include thumbnail(nes, '../assets/thumbnails/nes.png');
 
 			height: 360px;
 			$expand-size: 50px;
@@ -34,8 +356,8 @@ html[data-page="games"][data-service="1"] {
 				display: none;
 			}
 
-			&[data-expanded="1"],
-			&[data-overflowing="1"] {
+			&[data-expanded='1'],
+			&[data-overflowing='1'] {
 				height: unset;
 
 				> .items-expand {
@@ -73,7 +395,7 @@ html[data-page="games"][data-service="1"] {
 
 				&::after {
 					display: none;
-					content: "";
+					content: '';
 					position: absolute;
 					width: 100%;
 					height: 30px;
@@ -83,35 +405,9 @@ html[data-page="games"][data-service="1"] {
 					border-bottom-left-radius: 10px;
 					border-bottom-right-radius: 10px;
 				}
-
-				> .item {
-					cursor: pointer;
-					user-select: none;
-					width: 200px;
-					height: 241px;
-					background: var(--background);
-					box-shadow: 0px 0px 10px var(--shadow);
-					border-radius: 5px;
-					margin: 12px 12px;
-
-					> .front {
-						border-top-left-radius: 5px;
-						border-top-right-radius: 5px;
-						width: 200px;
-						height: 200px;
-					}
-
-					> .name {
-						font-size: 14px;
-						width: 200px;
-						line-height: 40px;
-						text-align: center;
-						border-top: 1px solid var(--border);
-					}
-				}
 			}
 
-			&[data-overflowing="1"] {
+			&[data-overflowing='1'] {
 				> .items {
 					&::after {
 						display: block;
@@ -119,7 +415,7 @@ html[data-page="games"][data-service="1"] {
 				}
 			}
 
-			&[data-expanded="1"] {
+			&[data-expanded='1'] {
 				> .items {
 					height: unset;
 					&::after {

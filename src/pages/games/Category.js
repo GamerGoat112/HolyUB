@@ -1,66 +1,10 @@
 import { Component, createRef } from 'react';
-import { set_page } from '../root.js';
-import { Obfuscated } from '../obfuscate.js';
-import data from '../games.json';
-import '../styles/Games.scss';
+import { set_page } from '../../root.js';
+import { Obfuscated } from '../../obfuscate.js';
+import { Item, games_base } from '../../GamesLayout.js';
+import '../../styles/Games Category.scss';
 
-const games_base = new URL(data.base, global.location);
-
-class Item extends Component {
-	get layout() {
-		return this.props.layout.current;
-	}
-	get service_frame() {
-		return this.layout.service_frame.current;
-	}
-	open() {
-		switch (this.props.target) {
-			case 'proxy':
-				this.service_frame.proxy(this.props.src, this.props.name);
-				break;
-			case 'embed':
-				this.service_frame.embed(this.props.src, this.props.name);
-				break;
-			case 'flash':
-				this.service_frame.embed(
-					`/proxies/flash.html#${this.props.src}`,
-					this.props.name
-				);
-				break;
-			case 'webretro':
-				this.service_frame.embed(
-					new URL(
-						'webretro?' +
-							new URLSearchParams({
-								rom: this.props.src,
-								core: 'autodetect',
-							}),
-						games_base
-					),
-					this.props.name
-				);
-				break;
-			default:
-				throw new TypeError(`Unrecognized target: ${this.props.target}`);
-		}
-	}
-	render() {
-		const style = {
-			backgroundPosition: `${this.props.index * data.image.width * -1}px 0px`,
-		};
-
-		return (
-			<div className="item" onClick={this.open.bind(this)}>
-				<div className="front" style={style}></div>
-				<div className="name">
-					<Obfuscated>{this.props.name}</Obfuscated>
-				</div>
-			</div>
-		);
-	}
-}
-
-class Category extends Component {
+class Section extends Component {
 	items = createRef();
 	container = createRef();
 	constructor(props) {
@@ -161,30 +105,39 @@ class Category extends Component {
 	}
 }
 
-export default class Games extends Component {
+export default class Category extends Component {
+	state = {};
 	render() {
-		set_page('games');
+		set_page('games-category');
 
-		const categories = [];
+		if (this.state.data === undefined) {
+			return (
+				<main>
+					Fetching <Obfuscated>Games</Obfuscated>...
+				</main>
+			);
+		}
 
-		for (let i = 0; i < data.categories.length; i++) {
-			const category = data.categories[i];
+		const sections = [];
 
-			categories.push(
-				<Category
+		for (let i = 0; i < this.state.data.sections.length; i++) {
+			const section = this.state.data.sections[i];
+
+			sections.push(
+				<Section
 					key={i}
 					layout={this.props.layout}
-					name={category.name}
-					items={category.items}
-					id={category.id}
-					base={new URL(category.base, games_base)}
+					name={section.name}
+					items={section.items}
+					id={section.id}
+					base={new URL(section.base, games_base)}
 				/>
 			);
 		}
 
 		return (
 			<>
-				<main>{categories}</main>
+				<main>{sections}</main>
 			</>
 		);
 	}

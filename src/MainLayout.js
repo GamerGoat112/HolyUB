@@ -4,18 +4,16 @@ import { ReactComponent as HatSVG } from './assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './assets/waves.svg';
 import { createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import Layout from './Layout.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
-import Layout from './Layout.js';
 
 export default class MainLayout extends Layout {
 	state = {
 		...this.state,
-		search: false,
 		expanded: false,
 	};
 	nav = createRef();
-	search_bar = createRef();
 	service_frame = createRef();
 	collapsable = createRef();
 	listen_click(event) {
@@ -55,9 +53,9 @@ export default class MainLayout extends Layout {
 			<>
 				<ObfuscateLayout />
 				<nav
+					className="main"
 					ref={this.nav}
 					data-expanded={Number(this.state.expanded)}
-					data-search={Number(this.state.search)}
 				>
 					<div
 						className="expand"
@@ -78,7 +76,7 @@ export default class MainLayout extends Layout {
 						<Link to="/proxy.html" className="entry text">
 							<span>Proxy</span>
 						</Link>
-						<Link to="/games.html" className="entry text">
+						<Link to="/games/" className="entry text">
 							<span>Games</span>
 						</Link>
 						<Link to="/support.html" className="entry text">

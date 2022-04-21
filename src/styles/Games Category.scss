@@ -1,0 +1,91 @@
+@import './Common.scss';
+
+html[data-page='games-category'][data-service='1'] {
+	overflow: hidden;
+}
+
+@include root_page('games-category') {
+	> main {
+		> section {
+			height: 360px;
+			$expand-size: 50px;
+			$expand-overflow: calc($expand-size / 2);
+
+			overflow: hidden;
+			padding-bottom: $expand-overflow;
+			position: relative;
+
+			> .items-expand {
+				display: none;
+			}
+
+			&[data-expanded='1'],
+			&[data-overflowing='1'] {
+				height: unset;
+
+				> .items-expand {
+					display: block;
+					border-radius: 50%;
+					width: $expand-size;
+					height: $expand-size;
+					border: 2px solid var(--text-accent);
+					background: var(--background-accent);
+					position: absolute;
+					bottom: 0px;
+					left: 0px;
+					right: 0px;
+					margin: 0 auto;
+					line-height: $expand-size;
+					text-align: center;
+					user-select: none;
+					cursor: pointer;
+				}
+			}
+
+			> .items {
+				padding: 10px;
+				background: var(--background-accent);
+				width: 100%;
+				height: 265px;
+				display: flex;
+				flex-direction: row;
+				border-radius: 10px;
+				justify-content: space-around;
+				padding-bottom: 30px;
+				flex-wrap: wrap;
+				flex-grow: 0;
+				overflow: hidden;
+
+				&::after {
+					display: none;
+					content: '';
+					position: absolute;
+					width: 100%;
+					height: 30px;
+					background: linear-gradient(0deg, var(--background), transparent);
+					bottom: 0px;
+					padding: 11px;
+					border-bottom-left-radius: 10px;
+					border-bottom-right-radius: 10px;
+				}
+			}
+
+			&[data-overflowing='1'] {
+				> .items {
+					&::after {
+						display: block;
+					}
+				}
+			}
+
+			&[data-expanded='1'] {
+				> .items {
+					height: unset;
+					&::after {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}

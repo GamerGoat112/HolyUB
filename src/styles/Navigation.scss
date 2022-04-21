@@ -1,6 +1,6 @@
-@import "./Screen.scss";
+@import './Screen.scss';
 
-#root > nav {
+#root > nav.main {
 	display: flex;
 	min-height: var(--nav-height);
 	align-content: center;
@@ -36,7 +36,8 @@
 				border-top: 1px solid var(--text);
 				left: 0;
 				transform: rotate(0deg);
-				transition: width 0.2s ease-in-out, left 0.2s ease-in-out, transform 0.2s ease-in-out;
+				transition: width 0.2s ease-in-out, left 0.2s ease-in-out,
+					transform 0.2s ease-in-out;
 
 				&:nth-child(1) {
 					top: 0px;
@@ -79,7 +80,7 @@
 			margin: auto;
 		}
 
-		&[data-expanded="1"] {
+		&[data-expanded='1'] {
 			> *:not(.expand) {
 				display: none;
 			}
@@ -113,7 +114,6 @@
 	}
 
 	> button {
-		user-select: none;
 		box-sizing: content-box;
 		border: none;
 		background: none;
@@ -162,7 +162,7 @@
 
 		span::after {
 			display: none;
-			content: "";
+			content: '';
 			position: absolute;
 			border-bottom: 2px solid var(--text);
 			left: 0;
