@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { set_page } from '../../root.js';
-import { Item, fetch_category } from '../../GamesUtil.js';
+import { gamesAPI, set_page } from '../../root.js';
+import { Item, GamesAPI } from '../../GamesUtil.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
@@ -8,6 +8,7 @@ export default class Category extends Component {
 	state = {
 		data: [],
 	};
+	api = new GamesAPI(gamesAPI);
 	settings = new Settings(`games category ${this.props.id} settings`, {
 		sort: 'Most Plays',
 	});
@@ -47,7 +48,7 @@ export default class Category extends Component {
 		}
 
 		try {
-			const data = await fetch_category(this.props.id, sort, leastGreatest);
+			const data = await this.api.category(this.props.id, sort, leastGreatest);
 
 			return this.setState({
 				data,
@@ -82,6 +83,7 @@ export default class Category extends Component {
 
 		return (
 			<main>
+				<h1>{this.props.name}</h1>
 				<div className="sort">
 					<select
 						defaultValue={this.settings.get('sort')}

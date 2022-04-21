@@ -3,11 +3,15 @@ import { Routes, Route } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
 import GamesLayout from './GamesLayout.js';
+import categories from './pages/games/categories.json';
 import './styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
+);
+const GamesFavorites = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/games/Favorites.js')
 );
 const GamesCategory = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Category.js')
@@ -52,6 +56,29 @@ const Flash = lazy(() =>
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
+	categories = [];
+	constructor(props) {
+		super(props);
+
+		for (let { name, id } of categories) {
+			this.categories.push(
+				<Route
+					key={id}
+					path={`${id}.html`}
+					element={
+						<Suspense fallback={<></>}>
+							<GamesCategory
+								key={id}
+								id={id}
+								name={name}
+								layout={this.layout}
+							/>
+						</Suspense>
+					}
+				/>
+			);
+		}
+	}
 	render() {
 		return (
 			<Routes>
@@ -114,10 +141,18 @@ export default class App extends Component {
 					/>
 					<Route path="/games/" element={<GamesLayout layout={this.layout} />}>
 						<Route
-							path=""
+							path="popular.html"
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPopular layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="favorites.html"
+							element={
+								<Suspense fallback={<></>}>
+									<GamesFavorites layout={this.layout} />
 								</Suspense>
 							}
 						/>
@@ -129,30 +164,7 @@ export default class App extends Component {
 								</Suspense>
 							}
 						/>
-						<Route
-							path="social.html"
-							element={
-								<Suspense fallback={<></>}>
-									<GamesCategory
-										key="social"
-										id="social"
-										layout={this.layout}
-									/>
-								</Suspense>
-							}
-						/>
-						<Route
-							path="platformer.html"
-							element={
-								<Suspense fallback={<></>}>
-									<GamesCategory
-										key="platformer"
-										id="platformer"
-										layout={this.layout}
-									/>
-								</Suspense>
-							}
-						/>
+						{this.categories}
 					</Route>
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>

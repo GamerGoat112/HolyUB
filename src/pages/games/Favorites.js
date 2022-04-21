@@ -1,13 +1,13 @@
 import { Component } from 'react';
 import { gamesAPI, set_page } from '../../root.js';
-import { Item, GamesAPI } from '../../GamesUtil.js';
+import { Item, common_settings, GamesAPI } from '../../GamesUtil.js';
 import '../../styles/Games Category.scss';
 
-export default class Category extends Component {
+export default class FavoritesCategory extends Component {
+	api = new GamesAPI(gamesAPI);
 	state = {
 		data: [],
 	};
-	api = new GamesAPI(gamesAPI);
 	abort = new AbortController();
 	/**
 	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
@@ -16,17 +16,15 @@ export default class Category extends Component {
 		return this.props.layout;
 	}
 	async fetch() {
-		try {
-			const data = await this.api.category(undefined, 'Most Plays', false);
+		const data = [];
 
-			return this.setState({
-				data,
-			});
-		} catch (error) {
-			return this.setState({
-				error,
-			});
+		for (let id of common_settings.get('favorites')) {
+			data.push(await this.api.game(id));
 		}
+
+		return this.setState({
+			data,
+		});
 	}
 	componentDidMount() {
 		this.fetch();
@@ -52,7 +50,7 @@ export default class Category extends Component {
 
 		return (
 			<main>
-				<h1>Popular</h1>
+				<h1>Favorites</h1>
 				<div className="items">{items}</div>
 			</main>
 		);

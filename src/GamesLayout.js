@@ -1,6 +1,7 @@
 import { Outlet, Link } from 'react-router-dom';
 import { Component } from 'react';
 import { set_page } from './root.js';
+import categories from './pages/games/categories.json';
 import './styles/Games.scss';
 
 export default class GamesLayout extends Component {
@@ -11,6 +12,18 @@ export default class GamesLayout extends Component {
 	};
 	componentDidMount() {
 		set_page('games');
+	}
+	categories = [];
+	constructor(props) {
+		super(props);
+
+		for (let { name, id } of categories) {
+			this.categories.push(
+				<Link key={id} to={`/games/${id}.html`} className="entry text">
+					<span>{name}</span>
+				</Link>
+			);
+		}
 	}
 	render() {
 		return (
@@ -32,15 +45,13 @@ export default class GamesLayout extends Component {
 						</div>
 					</div>
 					<div className="collapsable">
-						<Link to="/games/" className="entry text">
+						<Link to="/games/popular.html" className="entry text">
 							<span>Popular</span>
 						</Link>
-						<Link to="/games/social.html" className="entry text">
-							<span>Social Media</span>
+						<Link to="/games/favorites.html" className="entry text">
+							<span>Favorites</span>
 						</Link>
-						<Link to="/games/platformer.html" className="entry text">
-							<span>Platformer</span>
-						</Link>
+						{this.categories}
 					</div>
 					<div className="shift-right" />
 					<button

@@ -1,8 +1,8 @@
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
+import { common_settings } from '../../GamesUtil.js';
 import { gamesAPI, gamesCDN, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
-import Settings from '../../Settings.js';
 import '../../styles/Games Player.scss';
 
 function resolve_game(src, type, setting) {
@@ -31,16 +31,9 @@ function resolve_game(src, type, setting) {
 }
 
 export default class GamesPlayer extends Component {
-	settings = new Settings(
-		'common games',
-		{
-			favorites: [],
-		},
-		this
-	);
 	state = {};
 	get favorited() {
-		return this.settings.get('favorites').includes(this.id);
+		return common_settings.get('favorites').includes(this.id);
 	}
 	iframe = createRef();
 	/**
@@ -142,7 +135,7 @@ export default class GamesPlayer extends Component {
 					<button
 						className="material-icons"
 						onClick={() => {
-							const favorites = this.settings.get('favorites');
+							const favorites = common_settings.get('favorites');
 							const i = favorites.indexOf(this.id);
 
 							if (i === -1) {
@@ -151,7 +144,7 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							this.settings.set('favorites', favorites);
+							common_settings.set('favorites', favorites);
 						}}
 					>
 						{this.favorited ? 'star' : 'star_outlined'}

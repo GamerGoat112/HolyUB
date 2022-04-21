@@ -70,7 +70,7 @@ export default class MainLayout extends Layout {
 						<Link to="/proxy.html" className="entry text">
 							<span>Proxy</span>
 						</Link>
-						<Link to="/games/" className="entry text">
+						<Link to="/games/popular.html" className="entry text">
 							<span>Games</span>
 						</Link>
 						<Link to="/support.html" className="entry text">

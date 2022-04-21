@@ -2,31 +2,54 @@ import { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
+import Settings from './Settings.js';
 
-export async function fetch_category(category, sort, leastGreatest) {
-	const params = {};
+export const common_settings = new Settings(
+	'common games',
+	{
+		favorites: [],
+	},
+	this
+);
 
-	if (typeof category === 'string') {
-		params.category = category;
+export class GamesAPI {
+	constructor(server) {
+		this.server = server;
 	}
+	async game(id) {
+		const outgoing = await fetch(new URL(`./games/${id}/`, gamesAPI));
 
-	if (typeof sort === 'string') {
-		params.sort = sort;
+		if (!outgoing.ok) {
+			throw await outgoing.json();
+		}
+
+		return await outgoing.json();
 	}
+	async category(category, sort, leastGreatest) {
+		const params = {};
 
-	if (typeof leastGreatest === 'boolean') {
-		params.leastGreatest = leastGreatest;
+		if (typeof category === 'string') {
+			params.category = category;
+		}
+
+		if (typeof sort === 'string') {
+			params.sort = sort;
+		}
+
+		if (typeof leastGreatest === 'boolean') {
+			params.leastGreatest = leastGreatest;
+		}
+
+		const outgoing = await fetch(
+			new URL('./games/?' + new URLSearchParams(params), gamesAPI)
+		);
+
+		if (!outgoing.ok) {
+			throw await outgoing.json();
+		}
+
+		return await outgoing.json();
 	}
-
-	const outgoing = await fetch(
-		new URL('/games/?' + new URLSearchParams(params), gamesAPI)
-	);
-
-	if (!outgoing.ok) {
-		throw await outgoing.json();
-	}
-
-	return await outgoing.json();
 }
 
 export class Item extends Component {
