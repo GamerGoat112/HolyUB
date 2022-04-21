@@ -4,16 +4,22 @@ import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
 
 export async function fetch_category(category, sort, leastGreatest) {
+	const params = {};
+
+	if (typeof category === 'string') {
+		params.category = category;
+	}
+
+	if (typeof sort === 'string') {
+		params.sort = sort;
+	}
+
+	if (typeof leastGreatest === 'boolean') {
+		params.leastGreatest = leastGreatest;
+	}
+
 	const outgoing = await fetch(
-		new URL(
-			'/games/?' +
-				new URLSearchParams({
-					category,
-					sort,
-					leastGreatest,
-				}),
-			gamesAPI
-		)
+		new URL('/games/?' + new URLSearchParams(params), gamesAPI)
 	);
 
 	if (!outgoing.ok) {
