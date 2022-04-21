@@ -154,7 +154,7 @@ export default class GamesPlayer extends Component {
 							this.settings.set('favorites', favorites);
 						}}
 					>
-						{this.favorited ? 'favorite' : 'favorite_outlined'}
+						{this.favorited ? 'star' : 'star_outlined'}
 					</button>
 				</div>
 				<iframe
