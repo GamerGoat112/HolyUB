@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import { Obfuscated } from './obfuscate.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
-import proxyCompat from './proxy.json';
+import resolve_proxy from './ProxyResolver.js';
 import './styles/Service.scss';
 
 export default class ServiceFrame extends SleepingComponent {
@@ -48,40 +48,12 @@ export default class ServiceFrame extends SleepingComponent {
 			},
 		});
 	}
-	compatible_proxy(src) {
-		const { host } = new URL(src);
-
-		for (let { domain, proxy } of proxyCompat.compatibility) {
-			if (host === domain || host.endsWith(`.${domain}`)) {
-				return proxy;
-			}
-		}
-
-		return proxyCompat.default;
-	}
 	async proxy(input) {
-		let src = this.search.query(input);
-
-		let proxy = this.layout.current.settings.get('proxy');
-
-		if (proxy === 'auto') {
-			proxy = this.compatible_proxy(src);
-		}
-
-		let proxied_src;
-
-		switch (proxy) {
-			default:
-			case 'rh':
-				proxied_src = `/proxies/rh.html#${src}`;
-				break;
-			case 'uv':
-				proxied_src = `/proxies/uv.html#${src}`;
-				break;
-			case 'st':
-				proxied_src = `/proxies/st.html#${src}`;
-				break;
-		}
+		const src = this.search.query(input);
+		const proxied_src = resolve_proxy(
+			src,
+			this.layout.current.settings.get('proxy')
+		);
 
 		await this.setState({
 			title: src,
