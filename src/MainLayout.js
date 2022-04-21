@@ -4,7 +4,6 @@ import { ReactComponent as WavesSVG } from './assets/waves.svg';
 import { createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import Layout from './Layout.js';
-import Settings from './Settings.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
 
@@ -13,9 +12,6 @@ export default class MainLayout extends Layout {
 		...this.state,
 		expanded: false,
 	};
-	settings = new Settings('global settings', {
-		proxy: 'auto',
-	});
 	nav = createRef();
 	collapsable = createRef();
 	listen_click(event) {
@@ -38,14 +34,10 @@ export default class MainLayout extends Layout {
 		document.removeEventListener('click', this.listen_click);
 	}
 	lightswitch() {
-		if (this.state.theme === 'day') {
-			this.setState({
-				theme: 'night',
-			});
-		} else if (this.state.theme === 'night') {
-			this.setState({
-				theme: 'day',
-			});
+		if (this.settings.get('theme') === 'day') {
+			this.settings.set('theme', 'night');
+		} else if (this.settings.get('theme') === 'night') {
+			this.settings.set('theme', 'day');
 		}
 	}
 	render() {

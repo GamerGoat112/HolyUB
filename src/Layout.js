@@ -1,33 +1,21 @@
 import { Component } from 'react';
+import Settings from './Settings.js';
 
-const themes = ['night', 'day'];
+export const THEMES = ['night', 'day'];
 
 export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
-		theme: this.get_theme(),
 	};
+	settings = new Settings(
+		'global settings',
+		{
+			theme: THEMES[0],
+			proxy: 'auto',
+		},
+		this
+	);
 	last_theme = this.state.theme;
-	get_theme() {
-		if (!themes.includes(localStorage.getItem('theme'))) {
-			localStorage.setItem('theme', themes[0]);
-		}
-
-		return localStorage.getItem('theme');
-	}
-	set_theme(value) {
-		if (this.last_theme === value) {
-			return value;
-		}
-
-		if (!themes.includes(value)) {
-			throw new RangeError('Bad theme');
-		}
-
-		localStorage.setItem('theme', value);
-
-		return value;
-	}
 	get_fullscreen() {
 		return document.fullscreenElement !== null;
 	}
@@ -47,8 +35,7 @@ export default class Layout extends Component {
 		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
 	}
 	update() {
-		this.set_theme(this.state.theme);
-		document.documentElement.dataset.theme = this.state.theme;
+		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
 	}
 }
