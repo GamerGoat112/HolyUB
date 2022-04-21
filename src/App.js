@@ -6,10 +6,10 @@ import GamesLayout from './GamesLayout.js';
 import './styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
-const Games = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/Games.js')
+const GamesPopular = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
 );
-const Category = lazy(() =>
+const GamesCategory = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Category.js')
 );
 const Support = lazy(() =>
@@ -114,7 +114,7 @@ export default class App extends Component {
 							path=""
 							element={
 								<Suspense fallback={<></>}>
-									<Games layout={this.layout} />
+									<GamesPopular layout={this.layout} />
 								</Suspense>
 							}
 						/>
@@ -122,7 +122,11 @@ export default class App extends Component {
 							path="social.html"
 							element={
 								<Suspense fallback={<></>}>
-									<Category key="social" id="social" layout={this.layout} />
+									<GamesCategory
+										key="social"
+										id="social"
+										layout={this.layout}
+									/>
 								</Suspense>
 							}
 						/>
@@ -130,7 +134,7 @@ export default class App extends Component {
 							path="platformer.html"
 							element={
 								<Suspense fallback={<></>}>
-									<Category
+									<GamesCategory
 										key="platformer"
 										id="platformer"
 										layout={this.layout}
