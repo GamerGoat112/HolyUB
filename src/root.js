@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const bareCDN = _bareCDN;
 export const rhApp = _rhApp;
+export const gamesCDN = _gamesCDN;
 
 export default document.querySelector('#root');
 
