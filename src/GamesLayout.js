@@ -93,6 +93,9 @@ export default class GamesLayout extends Component {
 						<Link to="/games/social.html" className="entry text">
 							<span>Social Media</span>
 						</Link>
+						<Link to="/games/platformer.html" className="entry text">
+							<span>Platformer</span>
+						</Link>
 					</div>
 					<div className="shift-right" />
 					<button

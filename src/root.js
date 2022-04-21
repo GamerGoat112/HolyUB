@@ -9,7 +9,7 @@ let _gamesCDN;
 if (process.env.NODE_ENV === 'development') {
 	_bareCDN = 'http://localhost:8001/';
 	_rhApp = 'http://localhost:8002/';
-	_gamesCDN = 'http://localhost:3000/';
+	_gamesCDN = 'http://localhost:3001/';
 } else {
 	const { host } = global.location;
 	_bareCDN = `https://uv.${host}/bare/`;

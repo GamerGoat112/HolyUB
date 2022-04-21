@@ -52,36 +52,14 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 
-		const games = {
-			social: () => import(/* webpackPrefetch: true */ './games/social.json'),
-		};
-
-		for (let category in games) {
-			const data = games[category];
-			let cache;
-
+		for (let category of ['social', 'platformer']) {
 			this.game_categories.push(
 				<Route
 					key={category}
 					path={`${category}.html`}
 					element={
 						<Suspense fallback={<></>}>
-							<Category
-								ref={async category => {
-									if (category === undefined) {
-										return;
-									}
-
-									if (cache === undefined) {
-										cache = (await data()).default;
-									}
-
-									await category.setState({
-										data: cache,
-									});
-								}}
-								layout={this.layout}
-							/>
+							<Category id={category} layout={this.layout} />
 						</Suspense>
 					}
 				/>
