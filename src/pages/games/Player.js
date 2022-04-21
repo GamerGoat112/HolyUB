@@ -1,7 +1,8 @@
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { common_settings } from '../../GamesUtil.js';
-import { gamesAPI, gamesCDN, set_page } from '../../root.js';
+import { common_settings, GamesAPI } from '../../GamesUtil.js';
+import { gamesAPI, gamesCDN, hcaptchaKey, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import '../../styles/Games Player.scss';
 
@@ -32,9 +33,14 @@ function resolve_game(src, type, setting) {
 
 export default class GamesPlayer extends Component {
 	state = {};
+	api = new GamesAPI(gamesAPI);
 	get favorited() {
 		return common_settings.get('favorites').includes(this.id);
 	}
+	get seen() {
+		return common_settings.get('seen').includes(this.id);
+	}
+	captcha = createRef();
 	iframe = createRef();
 	/**
 	 * @returns {import('../Layout.js').default}
@@ -58,17 +64,13 @@ export default class GamesPlayer extends Component {
 	async componentDidMount() {
 		window.addEventListener('focus', this.focus_listener);
 
-		const outgoing = await fetch(new URL(`/games/${this.id}/`, gamesAPI));
-
-		if (!outgoing.ok) {
-			return this.setState({
-				error: await outgoing.json(),
-			});
+		try {
+			const data = await this.api.game(this.id);
+			await this.setState({ data });
+		} catch (error) {
+			this.setState({ error });
+			return;
 		}
-
-		this.setState({
-			data: await outgoing.json(),
-		});
 	}
 	componentWillUnmount() {
 		window.removeEventListener('focus', this.focus_listener);
@@ -104,6 +106,25 @@ export default class GamesPlayer extends Component {
 
 		return (
 			<main>
+				<HCaptcha
+					onLoad={async () => {
+						if (!this.seen) {
+							await this.captcha.current.ready;
+							this.captcha_seen = true;
+							await this.captcha.current.execute();
+						}
+					}}
+					onVerify={async token => {
+						if (this.captcha_seen === true) {
+							this.captcha_seen = false;
+							await this.api.add_play(this.id, token);
+						}
+					}}
+					sitekey={hcaptchaKey}
+					size="invisible"
+					ref={this.captcha}
+				/>
+
 				<div className="title">
 					<h3>
 						<Obfuscated>{this.state.data.name}</Obfuscated>

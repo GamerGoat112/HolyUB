@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"@craco/craco": "^7.0.0-alpha.3",
+		"@hcaptcha/react-hcaptcha": "^1.1.1",
 		"@mui/icons-material": "^5.5.1",
 		"@testing-library/jest-dom": "^5.16.2",
 		"@testing-library/react": "^12.1.4",

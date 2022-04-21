@@ -10,7 +10,7 @@ export default class Category extends Component {
 	};
 	api = new GamesAPI(gamesAPI);
 	settings = new Settings(`games category ${this.props.id} settings`, {
-		sort: 'Most Plays',
+		sort: 'Most Played',
 	});
 	abort = new AbortController();
 	async fetch() {

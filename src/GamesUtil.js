@@ -8,6 +8,7 @@ export const common_settings = new Settings(
 	'common games',
 	{
 		favorites: [],
+		seen: [],
 	},
 	this
 );
@@ -18,6 +19,26 @@ export class GamesAPI {
 	}
 	async game(id) {
 		const outgoing = await fetch(new URL(`./games/${id}/`, gamesAPI));
+
+		if (!outgoing.ok) {
+			throw await outgoing.json();
+		}
+
+		return await outgoing.json();
+	}
+	async add_play(id, token) {
+		const outgoing = await fetch(
+			new URL(
+				`./games/${id}/play?` +
+					new URLSearchParams({
+						token,
+					}),
+				gamesAPI
+			),
+			{
+				method: 'PUT',
+			}
+		);
 
 		if (!outgoing.ok) {
 			throw await outgoing.json();
