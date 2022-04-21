@@ -1,62 +1,48 @@
 import { Obfuscated } from './obfuscate.js';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, Navigate } from 'react-router-dom';
 import { Component } from 'react';
+import { set_page } from './root.js';
+import './styles/Games.scss';
 
 export const games_base = new URL('/games/', global.location);
 
 export class Item extends Component {
 	state = {
 		search: false,
+		redirect: '',
 	};
 	get layout() {
 		return this.props.layout.current;
 	}
-	get service_frame() {
-		return this.layout.service_frame.current;
-	}
 	open() {
-		switch (this.props.target) {
-			case 'proxy':
-				this.service_frame.proxy(this.props.src, this.props.name);
-				break;
-			case 'embed':
-				this.service_frame.embed(this.props.src, this.props.name);
-				break;
-			case 'flash':
-				this.service_frame.embed(
-					`/proxies/flash.html#${this.props.src}`,
-					this.props.name
-				);
-				break;
-			case 'webretro':
-				this.service_frame.embed(
-					new URL(
-						'webretro?' +
-							new URLSearchParams({
-								rom: this.props.src,
-								core: 'autodetect',
-							}),
-						games_base
-					),
-					this.props.name
-				);
-				break;
-			default:
-				throw new TypeError(`Unrecognized target: ${this.props.target}`);
-		}
+		this.setState({
+			redirect:
+				'/games/player.html?' +
+				new URLSearchParams({
+					id: this.props.id,
+				}),
+		});
 	}
 	render() {
-		const style = {
-			backgroundPosition: `${this.props.index * 200 * -1}px 0px`,
-		};
+		let redirect;
+
+		if (this.state.redirect !== '') {
+			redirect = <Navigate replace to={this.state.redirect} />;
+		}
 
 		return (
-			<div className="item" onClick={this.open.bind(this)}>
-				<div className="front" style={style}></div>
-				<div className="name">
-					<Obfuscated>{this.props.name}</Obfuscated>
+			<>
+				{redirect}
+				<div className="item" onClick={this.open.bind(this)}>
+					{
+						// todo: make <img src="...something with this.props.id in src"
+					}
+					<div className="front"></div>
+					<div className="name">
+						<Obfuscated>{this.props.name}</Obfuscated>
+					</div>
 				</div>
-			</div>
+			</>
 		);
 	}
 }
@@ -68,6 +54,8 @@ export default class GamesLayout extends Component {
 		search: false,
 	};
 	render() {
+		set_page('games');
+
 		return (
 			<>
 				<nav

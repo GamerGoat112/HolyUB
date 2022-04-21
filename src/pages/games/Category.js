@@ -73,13 +73,11 @@ export default class Category extends Component {
 
 		const items = [];
 
-		for (let i = 0; i < this.state.data.length; i++) {
-			const item = this.state.data[i];
-
+		for (let item of this.state.data) {
 			items.push(
 				<Item
-					key={i}
-					index={i}
+					key={item.id}
+					id={item.id}
 					layout={this.props.layout}
 					name={item.name}
 					src={new URL(item.src, games_base)}
