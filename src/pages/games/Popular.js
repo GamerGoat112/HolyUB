@@ -8,6 +8,12 @@ export default class Category extends Component {
 		data: [],
 	};
 	abort = new AbortController();
+	/**
+	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
+	 */
+	get layout() {
+		return this.props.layout;
+	}
 	async fetch() {
 		let leastGreatest = false;
 		let sort = 'Most Plays';

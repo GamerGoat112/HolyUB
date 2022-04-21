@@ -4,18 +4,12 @@ import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
 import { render } from 'react-dom';
 import { Obfuscated } from './obfuscate.js';
-import Settings from './Settings.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
 import proxyCompat from './proxy.json';
 import './styles/Service.scss';
 
-const default_settings = {
-	proxy: 'auto',
-};
-
 export default class ServiceFrame extends SleepingComponent {
-	settings = new Settings('service settings', default_settings);
 	state = {
 		title: '',
 		icon: 'globe',
@@ -37,6 +31,12 @@ export default class ServiceFrame extends SleepingComponent {
 	headless = createRef();
 	search = new SearchBuilder('https://www.google.com/search?q=%s');
 	bare = new BareClient(bareCDN);
+	/**
+	 * @returns {import('react').RefObject<import('../MainLayout.js').default>}
+	 */
+	get layout() {
+		return this.props.layout;
+	}
 	async embed(src, title = src, icon = 'globe') {
 		await this.setState({
 			title,
@@ -62,7 +62,7 @@ export default class ServiceFrame extends SleepingComponent {
 	async proxy(input) {
 		let src = this.search.query(input);
 
-		let proxy = this.settings.get('proxy');
+		let proxy = this.layout.current.settings.get('proxy');
 
 		if (proxy === 'auto') {
 			proxy = this.compatible_proxy(src);

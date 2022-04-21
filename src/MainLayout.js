@@ -1,10 +1,10 @@
-import ServiceFrame from './ServiceFrame.js';
 import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './assets/waves.svg';
 import { createRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import Layout from './Layout.js';
+import Settings from './Settings.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
 
@@ -13,8 +13,10 @@ export default class MainLayout extends Layout {
 		...this.state,
 		expanded: false,
 	};
+	settings = new Settings('global settings', {
+		proxy: 'auto',
+	});
 	nav = createRef();
-	service_frame = createRef();
 	collapsable = createRef();
 	listen_click(event) {
 		if (this.collapsable.current.contains(event.target)) {
@@ -90,7 +92,6 @@ export default class MainLayout extends Layout {
 					</button>
 				</nav>
 				{this.props.element || <Outlet />}
-				<ServiceFrame ref={this.service_frame} />
 				<footer>
 					<WavesSVG />
 					<div className="background">

@@ -1,6 +1,7 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
+import ServiceFrame from '../ServiceFrame.js';
 import '../styles/Proxy.scss';
 
 class Expand extends Component {
@@ -26,6 +27,7 @@ class Expand extends Component {
 }
 
 export default class Proxies extends Component {
+	service_frame = createRef();
 	input = createRef();
 	form = createRef();
 	suggested = createRef();
@@ -34,26 +36,19 @@ export default class Proxies extends Component {
 		input_focused: false,
 	};
 	/**
-	 * @returns {import('../Layout.js').default}
+	 * @returns {import('react').RefObject<import('../MainLayout.js').default>}
 	 */
 	get layout() {
-		return this.props.layout.current;
-	}
-	/**
-	 * @returns {import('../ServiceFrame.js').default}
-	 */
-	get service_frame() {
-		return this.layout.service_frame.current;
+		return this.props.layout;
 	}
 	async componentDidMount() {
-		await {};
 		this.on_input();
 	}
 	async on_input() {
 		if (this.state.input_value !== this.input.current.value) {
 			this.setState({
 				input_value: this.input.current.value,
-				omnibox_entries: await this.service_frame.omnibox_entries(
+				omnibox_entries: await this.service_frame.current.omnibox_entries(
 					this.input.current.value
 				),
 			});
@@ -61,7 +56,7 @@ export default class Proxies extends Component {
 	}
 	search_submit() {
 		this.setState({ input_focused: false });
-		this.service_frame.proxy(this.input.current.value);
+		this.service_frame.current.proxy(this.input.current.value);
 		this.on_input();
 	}
 	render() {
@@ -100,6 +95,7 @@ export default class Proxies extends Component {
 
 		return (
 			<>
+				<ServiceFrame layout={this.layout} ref={this.service_frame} />
 				<main>
 					<form
 						className="omnibox"
@@ -158,9 +154,9 @@ export default class Proxies extends Component {
 							<Obfuscated>Proxy</Obfuscated>:
 							<select
 								onChange={event =>
-									this.service_frame.settings.set('proxy', event.target.value)
+									this.layout.current.settings.set('proxy', event.target.value)
 								}
-								defaultValue={this.service_frame.settings.get('proxy')}
+								defaultValue={this.layout.current.settings.get('proxy')}
 							>
 								<option value="auto">Automatic (Default)</option>
 								<option value="uv">Ultraviolet</option>
