@@ -48,24 +48,6 @@ const Flash = lazy(() =>
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
-	game_categories = [];
-	constructor(props) {
-		super(props);
-
-		for (let category of ['social', 'platformer']) {
-			this.game_categories.push(
-				<Route
-					key={category}
-					path={`${category}.html`}
-					element={
-						<Suspense fallback={<></>}>
-							<Category id={category} layout={this.layout} />
-						</Suspense>
-					}
-				/>
-			);
-		}
-	}
 	layout = createRef();
 	render() {
 		return (
@@ -136,7 +118,26 @@ export default class App extends Component {
 								</Suspense>
 							}
 						/>
-						{this.game_categories}
+						<Route
+							path="social.html"
+							element={
+								<Suspense fallback={<></>}>
+									<Category key="social" id="social" layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="platformer.html"
+							element={
+								<Suspense fallback={<></>}>
+									<Category
+										key="platformer"
+										id="platformer"
+										layout={this.layout}
+									/>
+								</Suspense>
+							}
+						/>
 					</Route>
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>

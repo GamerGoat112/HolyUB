@@ -1,21 +1,52 @@
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import { gamesCDN, set_page } from '../../root.js';
-import { Obfuscated } from '../../obfuscate.js';
 import { games_base, Item } from '../../GamesLayout.js';
+import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
 export default class Category extends Component {
 	state = {
-		// leastGreatest: undefined,
+		data: [],
 	};
+	settings = new Settings(`games category ${this.props.id} settings`, {
+		sort: 'Most Plays',
+	});
 	abort = new AbortController();
 	async fetch() {
+		let leastGreatest = false;
+		let sort;
+
+		switch (this.settings.get('sort')) {
+			case 'Least Plays':
+				leastGreatest = true;
+			// falls through
+			case 'Most Plays':
+				sort = 'plays';
+				break;
+			case 'Least Favorites':
+				leastGreatest = true;
+			// falls through
+			case 'Most Favorites':
+				sort = 'favorites';
+				break;
+			case 'Name (Z-A)':
+				leastGreatest = true;
+			// falls through
+			case 'Name (A-Z)':
+				sort = 'name';
+				break;
+			default:
+				console.warn('Unknown sort', this.settings.get('sort'));
+				break;
+		}
+
 		const outgoing = await fetch(
 			new URL(
 				'/games/?' +
 					new URLSearchParams({
 						category: this.props.id,
-						leastGreatest: this.state.leastGreatest,
+						sort,
+						leastGreatest,
 					}),
 				gamesCDN
 			)
@@ -40,14 +71,6 @@ export default class Category extends Component {
 	render() {
 		set_page('games-category');
 
-		if (this.state.data === undefined) {
-			return (
-				<main>
-					Fetching <Obfuscated>Games</Obfuscated>...
-				</main>
-			);
-		}
-
 		const items = [];
 
 		for (let i = 0; i < this.state.data.length; i++) {
@@ -68,8 +91,19 @@ export default class Category extends Component {
 		return (
 			<main>
 				<div className="sort">
-					<select>
-						<option value="" name="test" />
+					<select
+						defaultValue={this.settings.get('sort')}
+						onChange={async event => {
+							this.settings.set('sort', event.target.value);
+							await this.fetch();
+						}}
+					>
+						<option value="Most Played">Most Played</option>
+						<option value="Least Played">Least Played</option>
+						<option value="Longest Played">Longest Played</option>
+						<option value="Shortest Played">Shortest Played</option>
+						<option value="Name (A-Z)">Name (A-Z)</option>
+						<option value="Name (Z-A)">Name (Z-A)</option>
 					</select>
 				</div>
 				<div className="items">{items}</div>
