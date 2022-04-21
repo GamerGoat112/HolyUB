@@ -48,10 +48,20 @@ export default class FavoritesCategory extends Component {
 			);
 		}
 
+		let content;
+
+		if (items.length === 0) {
+			content = (
+				<span className="no-games">You haven't added any favorite games.</span>
+			);
+		} else {
+			content = <div className="items">{items}</div>;
+		}
+
 		return (
 			<main>
 				<h1>Favorites</h1>
-				<div className="items">{items}</div>
+				{content}
 			</main>
 		);
 	}
