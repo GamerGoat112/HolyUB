@@ -111,7 +111,7 @@ export default class GamesPlayer extends Component {
 		}
 
 		const resolved = resolve_game(
-			new URL(this.state.data.src, gamesCDN),
+			new URL(this.state.data.src, gamesCDN).toString(),
 			this.state.data.type,
 			this.layout.current.settings.get('proxy')
 		);
