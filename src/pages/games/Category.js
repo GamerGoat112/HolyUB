@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { gamesAPI, set_page } from '../../root.js';
-import { GamesAPI, Section } from '../../GamesUtil.js';
+import { GamesAPI, Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
@@ -8,7 +8,12 @@ export default class Category extends Component {
 	state = {
 		data: [],
 	};
-	api = new GamesAPI(gamesAPI);
+	/**
+	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
+	 */
+	get games_layout() {
+		return this.props.games_layout;
+	}
 	settings = new Settings(`games category ${this.props.id} settings`, {
 		sort: 'Most Played',
 	});
@@ -42,7 +47,11 @@ export default class Category extends Component {
 		}
 
 		try {
-			const data = await this.api.category(this.props.id, sort, leastGreatest);
+			const data = await this.games_layout.current.api.category(
+				this.props.id,
+				sort,
+				leastGreatest
+			);
 
 			return this.setState({
 				data,

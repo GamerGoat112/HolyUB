@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { gamesAPI, set_page } from '../../root.js';
-import { Item, GamesAPI } from '../../GamesUtil.js';
+import { Item, GamesAPI } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 import categories from './categories.json';
 import { Link } from 'react-router-dom';

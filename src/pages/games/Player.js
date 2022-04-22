@@ -1,8 +1,7 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { common_settings, GamesAPI } from '../../GamesUtil.js';
-import { gamesAPI, gamesCDN, hcaptchaKey, set_page } from '../../root.js';
+import { gamesCDN, hcaptchaKey, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import '../../styles/Games Player.scss';
 
@@ -33,15 +32,16 @@ function resolve_game(src, type, setting) {
 
 export default class GamesPlayer extends Component {
 	state = {};
-	api = new GamesAPI(gamesAPI);
 	get favorited() {
-		return common_settings.get('favorites').includes(this.id);
+		return this.games_layout.current.settings
+			.get('favorites')
+			.includes(this.id);
 	}
 	get seen() {
-		return common_settings.get('seen').includes(this.id);
+		return this.games_layout.current.settings.get('seen').includes(this.id);
 	}
 	set seen(value) {
-		const seen = common_settings.get('seen');
+		const seen = this.games_layout.current.settings.get('seen');
 
 		if (value) {
 			seen.push(this.id);
@@ -50,15 +50,22 @@ export default class GamesPlayer extends Component {
 			seen.splice(i, 1);
 		}
 
-		common_settings.set('seen', seen);
+		this.games_layout.current.settings.set('seen', seen);
 	}
 	captcha = createRef();
 	iframe = createRef();
+
 	/**
-	 * @returns {import('../Layout.js').default}
+	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
+	}
+	/**
+	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
+	 */
+	get games_layout() {
+		return this.props.games_layout;
 	}
 	get id() {
 		const params = new URLSearchParams(global.location.search);
@@ -77,7 +84,7 @@ export default class GamesPlayer extends Component {
 		window.addEventListener('focus', this.focus_listener);
 
 		try {
-			const data = await this.api.game(this.id);
+			const data = await this.games_layout.current.api.game(this.id);
 			await this.setState({ data });
 		} catch (error) {
 			this.setState({ error });
@@ -149,7 +156,8 @@ export default class GamesPlayer extends Component {
 					<button
 						className="material-icons"
 						onClick={() => {
-							const favorites = common_settings.get('favorites');
+							const favorites =
+								this.games_layout.current.settings.get('favorites');
 							const i = favorites.indexOf(this.id);
 
 							if (i === -1) {
@@ -158,7 +166,7 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							common_settings.set('favorites', favorites);
+							this.games_layout.current.settings.set('favorites', favorites);
 							this.forceUpdate();
 						}}
 					>
@@ -182,7 +190,7 @@ export default class GamesPlayer extends Component {
 					onVerify={async token => {
 						if (this.captcha_seen === true) {
 							this.captcha_seen = false;
-							await this.api.game_plays(this.id, token);
+							await this.games_layout.current.api.game_plays(this.id, token);
 							this.seen = true;
 						}
 					}}

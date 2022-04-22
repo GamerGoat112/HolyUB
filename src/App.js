@@ -56,6 +56,7 @@ const Flash = lazy(() =>
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
+	games_layout = createRef();
 	categories = [];
 	constructor(props) {
 		super(props);
@@ -71,6 +72,7 @@ export default class App extends Component {
 								key={id}
 								id={id}
 								name={name}
+								games_layout={this.games_layout}
 								layout={this.layout}
 							/>
 						</Suspense>
@@ -139,12 +141,20 @@ export default class App extends Component {
 							</Suspense>
 						}
 					/>
-					<Route path="/games/" element={<GamesLayout layout={this.layout} />}>
+					<Route
+						path="/games/"
+						element={
+							<GamesLayout ref={this.games_layout} layout={this.layout} />
+						}
+					>
 						<Route
 							path="popular.html"
 							element={
 								<Suspense fallback={<></>}>
-									<GamesPopular layout={this.layout} />
+									<GamesPopular
+										games_layout={this.games_layout}
+										layout={this.layout}
+									/>
 								</Suspense>
 							}
 						/>
@@ -152,7 +162,10 @@ export default class App extends Component {
 							path="favorites.html"
 							element={
 								<Suspense fallback={<></>}>
-									<GamesFavorites layout={this.layout} />
+									<GamesFavorites
+										games_layout={this.games_layout}
+										layout={this.layout}
+									/>
 								</Suspense>
 							}
 						/>
@@ -160,7 +173,10 @@ export default class App extends Component {
 							path="player.html"
 							element={
 								<Suspense fallback={<></>}>
-									<GamesPlayer layout={this.layout} />
+									<GamesPlayer
+										games_layout={this.games_layout}
+										layout={this.layout}
+									/>
 								</Suspense>
 							}
 						/>

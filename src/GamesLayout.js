@@ -1,19 +1,28 @@
 import { Outlet, Link } from 'react-router-dom';
 import { Component } from 'react';
-import { set_page } from './root.js';
+import { gamesAPI, set_page } from './root.js';
+import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
+import Settings from './Settings.js';
 import './styles/Games.scss';
 
 export default class GamesLayout extends Component {
+	api = new GamesAPI(gamesAPI);
+	settings = new Settings('common games', {
+		favorites: [],
+		seen: [],
+	});
 	state = {
 		...this.state,
 		expanded: false,
 		search: false,
+		suggested: [],
 	};
 	componentDidMount() {
 		set_page('games');
 	}
 	categories = [];
+	abort = new AbortController();
 	constructor(props) {
 		super(props);
 
@@ -24,6 +33,43 @@ export default class GamesLayout extends Component {
 				</Link>
 			);
 		}
+	}
+	async search(query) {
+		if (this.abort !== undefined) {
+			this.abort.abort();
+		}
+
+		this.abort = new AbortController();
+
+		const category = await this.api.category(
+			undefined,
+			'search',
+			false,
+			query,
+			this.abort.signal
+		);
+
+		const suggested = [];
+
+		for (let game of category) {
+			suggested.push(
+				<div key={game.id} className="suggested">
+					<div className="left">
+						<div className="name">{game.name}</div>
+						<div className="category">{game.category}</div>
+					</div>
+					<img
+						src={`/thumbnails/${this.props.id}.webp`}
+						alt="thumbnail"
+						className="thumbnail"
+					></img>
+				</div>
+			);
+		}
+
+		this.setState({
+			suggested,
+		});
 	}
 	render() {
 		return (
@@ -64,10 +110,17 @@ export default class GamesLayout extends Component {
 					>
 						<span className="material-icons">search</span>
 					</button>
-					<div className="search">
+					<div
+						className="search"
+						data-suggested={Number(this.state.suggested.length)}
+					>
 						<div className="button button-search material-icons">search</div>
-						<input type="text" placeholder="Search by game name"></input>
-						<div className="suggested"></div>
+						<input
+							type="text"
+							placeholder="Search by game name"
+							onChange={event => this.search(event.target.value)}
+						></input>
+						<div className="suggested">{this.state.suggested}</div>
 						<button
 							className="button button-close material-icons"
 							onClick={() =>

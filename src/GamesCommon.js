@@ -1,17 +1,7 @@
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
-import Settings from './Settings.js';
-
-export const common_settings = new Settings(
-	'common games',
-	{
-		favorites: [],
-		seen: [],
-	},
-	this
-);
 
 export class GamesAPI {
 	constructor(server) {
@@ -46,23 +36,34 @@ export class GamesAPI {
 
 		return await outgoing.json();
 	}
-	async category(category, sort, leastGreatest) {
-		const params = {};
-
-		if (typeof category === 'string') {
-			params.category = category;
+	sort_params(params) {
+		for (let param in params) {
+			switch (typeof params[param]) {
+				case 'undefined':
+				case 'object':
+					delete params[param];
+					break;
+				// no default
+			}
 		}
 
-		if (typeof sort === 'string') {
-			params.sort = sort;
-		}
-
-		if (typeof leastGreatest === 'boolean') {
-			params.leastGreatest = leastGreatest.toString();
-		}
-
+		return params;
+	}
+	async category(category, sort, leastGreatest, search, signal) {
 		const outgoing = await fetch(
-			new URL('./games/?' + new URLSearchParams(params), gamesAPI)
+			new URL(
+				'./games/?' +
+					new URLSearchParams(
+						this.sort_params({
+							search,
+							category,
+							sort,
+							leastGreatest,
+						})
+					),
+				gamesAPI
+			),
+			{ signal }
 		);
 
 		if (!outgoing.ok) {
@@ -115,10 +116,7 @@ export class Item extends Component {
 			<>
 				{redirect}
 				<div className="item" onClick={this.open.bind(this)}>
-					<img
-						alt={this.props.name}
-						src={`/thumbnails/${this.props.id}.webp`}
-					></img>
+					<img alt="thumbnail" src={`/thumbnails/${this.props.id}.webp`}></img>
 					<div>
 						<Obfuscated>{this.props.name}</Obfuscated>
 					</div>
