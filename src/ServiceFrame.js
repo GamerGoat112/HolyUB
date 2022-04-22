@@ -89,8 +89,15 @@ export default class ServiceFrame extends SleepingComponent {
 		super.componentWillUnmount();
 	}
 	test_proxy_update() {
-		// tomp didn't hook our call to new Function
-		const location = new this.iframe_window.Function('return location')();
+		let location;
+
+		// * didn't hook our call to new Function
+		try {
+			location = new this.iframe_window.Function('return location')();
+		} catch (error) {
+			// possibly an x-frame error
+			return;
+		}
 
 		const titles = [];
 
