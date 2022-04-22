@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
@@ -58,7 +58,7 @@ export class GamesAPI {
 		}
 
 		if (typeof leastGreatest === 'boolean') {
-			params.leastGreatest = leastGreatest;
+			params.leastGreatest = leastGreatest.toString();
 		}
 
 		const outgoing = await fetch(
@@ -70,6 +70,23 @@ export class GamesAPI {
 		}
 
 		return await outgoing.json();
+	}
+}
+
+export class Section extends Component {
+	render() {
+		const items = [];
+
+		for (let item of this.props.items) {
+			items.push(<Item key={item.id} id={item.id} name={item.name} />);
+		}
+
+		return (
+			<section>
+				<h1>{this.props.name}</h1>
+				<div className="items">{items}</div>
+			</section>
+		);
 	}
 }
 

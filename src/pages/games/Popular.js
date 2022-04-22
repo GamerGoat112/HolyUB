@@ -3,6 +3,27 @@ import { gamesAPI, set_page } from '../../root.js';
 import { Item, GamesAPI } from '../../GamesUtil.js';
 import '../../styles/Games Category.scss';
 import categories from './categories.json';
+import { Link } from 'react-router-dom';
+
+export class ExpandSection extends Component {
+	render() {
+		const items = [];
+
+		for (let item of this.props.items) {
+			items.push(<Item key={item.id} id={item.id} name={item.name} />);
+		}
+
+		return (
+			<section className="expand">
+				<h1>{this.props.name}</h1>
+				<div className="items">{items}</div>
+				<Link to={this.props.href} className="expand-icon material-icons">
+					<div>expand_more</div>
+				</Link>
+			</section>
+		);
+	}
+}
 
 export default class Category extends Component {
 	state = {
@@ -45,21 +66,12 @@ export default class Category extends Component {
 				_categories[item.category] = [];
 			}
 
-			_categories[item.category].push(
-				<Item
-					key={item.id}
-					id={item.id}
-					layout={this.props.layout}
-					name={item.name}
-				/>
-			);
+			_categories[item.category].push(item);
 		}
 
 		const jsx_categories = [];
 
 		for (let id in _categories) {
-			const items = _categories[id];
-
 			let name;
 
 			for (let { id: i, name: n } of categories) {
@@ -69,10 +81,12 @@ export default class Category extends Component {
 			}
 
 			jsx_categories.push(
-				<section key={id}>
-					<h1>{name}</h1>
-					<div className="items">{items}</div>
-				</section>
+				<ExpandSection
+					href={`/games/${id}.html`}
+					items={_categories[id]}
+					name={name}
+					key={id}
+				/>
 			);
 		}
 

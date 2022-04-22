@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { gamesAPI, set_page } from '../../root.js';
-import { Item, common_settings, GamesAPI } from '../../GamesUtil.js';
+import { Item, common_settings, GamesAPI, Section } from '../../GamesUtil.js';
 import '../../styles/Games Category.scss';
 
 export default class FavoritesCategory extends Component {
@@ -48,21 +48,20 @@ export default class FavoritesCategory extends Component {
 			);
 		}
 
-		let content;
-
-		if (items.length === 0) {
-			content = (
-				<span className="no-games">You haven't added any favorite games.</span>
+		if (this.state.data.length === 0) {
+			return (
+				<main>
+					<span className="no-games">
+						You haven't added any favorite games.
+					</span>
+				</main>
 			);
 		} else {
-			content = <div className="items">{items}</div>;
+			return (
+				<main>
+					<Section name="Favorites" items={this.state.data} />
+				</main>
+			);
 		}
-
-		return (
-			<main>
-				<h1>Favorites</h1>
-				{content}
-			</main>
-		);
 	}
 }

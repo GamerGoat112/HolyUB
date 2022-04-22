@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { gamesAPI, set_page } from '../../root.js';
-import { Item, GamesAPI } from '../../GamesUtil.js';
+import { GamesAPI, Section } from '../../GamesUtil.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
@@ -62,22 +62,8 @@ export default class Category extends Component {
 	render() {
 		set_page('games-category');
 
-		const items = [];
-
-		for (let item of this.state.data) {
-			items.push(
-				<Item
-					key={item.id}
-					id={item.id}
-					layout={this.props.layout}
-					name={item.name}
-				/>
-			);
-		}
-
 		return (
 			<main>
-				<h1>{this.props.name}</h1>
 				<div className="sort">
 					<select
 						defaultValue={this.settings.get('sort')}
@@ -92,7 +78,7 @@ export default class Category extends Component {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</select>
 				</div>
-				<div className="items">{items}</div>
+				<Section name={this.props.name} items={this.state.data} />
 			</main>
 		);
 	}
