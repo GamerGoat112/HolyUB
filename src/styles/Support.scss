@@ -1,6 +1,6 @@
-@import "./Common.scss";
+@import './Common.scss';
 
-@include root_page("support") {
+@include root_page('support') {
 	> .banner {
 		width: 100%;
 		display: block;
@@ -8,6 +8,10 @@
 		color: var(--contrast-text);
 		padding: 60px 0px 80px 0px;
 		text-align: center;
+
+		> h1 {
+			margin: 10px 50px;
+		}
 
 		> .search {
 			position: relative;

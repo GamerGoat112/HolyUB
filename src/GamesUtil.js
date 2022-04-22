@@ -98,11 +98,11 @@ export class Item extends Component {
 			<>
 				{redirect}
 				<div className="item" onClick={this.open.bind(this)}>
-					{
-						// todo: make <img src="...something with this.props.id in src"
-					}
-					<div className="front"></div>
-					<div className="name">
+					<img
+						alt={this.props.name}
+						src={`/thumbnails/${this.props.id}.webp`}
+					></img>
+					<div>
 						<Obfuscated>{this.props.name}</Obfuscated>
 					</div>
 				</div>
