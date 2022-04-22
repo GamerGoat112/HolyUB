@@ -30,12 +30,6 @@ export default class Category extends Component {
 			case 'Most Favorites':
 				sort = 'favorites';
 				break;
-			case 'Shortest Played':
-				leastGreatest = true;
-			// falls through
-			case 'Longest Played':
-				sort = 'retention';
-				break;
 			case 'Name (Z-A)':
 				leastGreatest = true;
 			// falls through
@@ -94,8 +88,6 @@ export default class Category extends Component {
 					>
 						<option value="Most Played">Most Played</option>
 						<option value="Least Played">Least Played</option>
-						<option value="Longest Played">Longest Played</option>
-						<option value="Shortest Played">Shortest Played</option>
 						<option value="Name (A-Z)">Name (A-Z)</option>
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</select>
