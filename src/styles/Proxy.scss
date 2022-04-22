@@ -132,48 +132,48 @@
 
 			> .suggested {
 				display: none;
+				margin-top: calc($height + 2px);
+				width: calc(100% - 2px); // - border
+
+				@include screen_tablet {
+					width: calc(100% - 22px); // - padding - border
+				}
+
+				position: absolute;
+				flex-direction: column;
+				background-color: var(--background-accent);
+				overflow: hidden;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+				border: 1px solid var(--border);
+				border-top: none;
+				cursor: pointer;
+
+				> div {
+					color: var(--text);
+					height: $height;
+					position: relative;
+
+					&:hover {
+						background-color: var(--background);
+					}
+
+					> .text {
+						padding-left: $padding-left;
+						padding-right: 15px;
+						line-height: $height;
+						user-select: none;
+					}
+
+					> .eyeglass {
+						color: var(--text);
+					}
+				}
 			}
 
 			&[data-suggested='1'] {
 				> .suggested {
-					margin-top: calc($height + 2px);
-					width: calc(100% - 2px); // - border
-
-					@include screen_tablet {
-						width: calc(100% - 22px); // - padding - border
-					}
-
-					position: absolute;
 					display: flex;
-					flex-direction: column;
-					background-color: var(--background-accent);
-					overflow: hidden;
-					border-bottom-left-radius: 5px;
-					border-bottom-right-radius: 5px;
-					border: 1px solid var(--border);
-					border-top: none;
-					cursor: pointer;
-
-					> div {
-						color: var(--text);
-						height: $height;
-						position: relative;
-
-						&:hover {
-							background-color: var(--background);
-						}
-
-						> .text {
-							padding-left: $padding-left;
-							padding-right: 15px;
-							line-height: $height;
-							user-select: none;
-						}
-
-						> .eyeglass {
-							color: var(--text);
-						}
-					}
 				}
 
 				> input {

@@ -1,4 +1,8 @@
-[
-	{ "name": "Social Media", "id": "social" },
-	{ "name": "Platformer", "id": "platformer" }
-]
+{
+	"social": {
+		"name": "Social Media"
+	},
+	"platformer": {
+		"name": "Platformer"
+	}
+}

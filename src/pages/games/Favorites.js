@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { gamesAPI, set_page } from '../../root.js';
+import { set_page } from '../../root.js';
 import { Item, Section } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 

@@ -26,7 +26,8 @@ export default class GamesLayout extends Component {
 	constructor(props) {
 		super(props);
 
-		for (let { name, id } of categories) {
+		for (let id in categories) {
+			const { name } = categories[id];
 			this.categories.push(
 				<Link key={id} to={`/games/${id}.html`} className="entry text">
 					<span>{name}</span>
@@ -53,13 +54,11 @@ export default class GamesLayout extends Component {
 
 		for (let game of category) {
 			suggested.push(
-				<div key={game.id} className="suggested">
-					<div className="left">
-						<div className="name">{game.name}</div>
-						<div className="category">{game.category}</div>
-					</div>
+				<div key={game.id}>
+					<div className="name">{game.name}</div>
+					<div className="category">{categories[game.category].name}</div>
 					<img
-						src={`/thumbnails/${this.props.id}.webp`}
+						src={`/thumbnails/${game.id}.webp`}
 						alt="thumbnail"
 						className="thumbnail"
 					></img>
@@ -111,8 +110,8 @@ export default class GamesLayout extends Component {
 						<span className="material-icons">search</span>
 					</button>
 					<div
-						className="search"
-						data-suggested={Number(this.state.suggested.length)}
+						className="search-bar"
+						data-suggested={Number(this.state.suggested.length !== 0)}
 					>
 						<div className="button button-search material-icons">search</div>
 						<input

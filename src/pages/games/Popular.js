@@ -74,9 +74,9 @@ export default class Category extends Component {
 		for (let id in _categories) {
 			let name;
 
-			for (let { id: i, name: n } of categories) {
+			for (let i in categories) {
 				if (id === i) {
-					name = n;
+					name = categories[i].name;
 				}
 			}
 

@@ -61,7 +61,9 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 
-		for (let { name, id } of categories) {
+		for (let id in categories) {
+			const { name } = categories[id];
+
 			this.categories.push(
 				<Route
 					key={id}

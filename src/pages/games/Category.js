@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { gamesAPI, set_page } from '../../root.js';
-import { GamesAPI, Section } from '../../GamesCommon.js';
+import { set_page } from '../../root.js';
+import { Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
