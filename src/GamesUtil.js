@@ -26,10 +26,10 @@ export class GamesAPI {
 
 		return await outgoing.json();
 	}
-	async add_play(id, token) {
+	async game_plays(id, token) {
 		const outgoing = await fetch(
 			new URL(
-				`./games/${id}/play?` +
+				`./games/${id}/plays?` +
 					new URLSearchParams({
 						token,
 					}),

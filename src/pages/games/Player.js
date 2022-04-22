@@ -40,6 +40,18 @@ export default class GamesPlayer extends Component {
 	get seen() {
 		return common_settings.get('seen').includes(this.id);
 	}
+	set seen(value) {
+		const seen = common_settings.get('seen');
+
+		if (value) {
+			seen.push(this.id);
+		} else {
+			const i = seen.indexOf(this.id);
+			seen.splice(i, 1);
+		}
+
+		common_settings.set('seen', seen);
+	}
 	captcha = createRef();
 	iframe = createRef();
 	/**
@@ -106,25 +118,6 @@ export default class GamesPlayer extends Component {
 
 		return (
 			<main>
-				<HCaptcha
-					onLoad={async () => {
-						if (!this.seen) {
-							await this.captcha.current.ready;
-							this.captcha_seen = true;
-							await this.captcha.current.execute();
-						}
-					}}
-					onVerify={async token => {
-						if (this.captcha_seen === true) {
-							this.captcha_seen = false;
-							await this.api.add_play(this.id, token);
-						}
-					}}
-					sitekey={hcaptchaKey}
-					size="invisible"
-					ref={this.captcha}
-				/>
-
 				<div className="title">
 					<h3>
 						<Obfuscated>{this.state.data.name}</Obfuscated>
@@ -177,6 +170,25 @@ export default class GamesPlayer extends Component {
 					title="Embed"
 					onFocus={() => this.focus_listener()}
 					src={resolved}
+				/>
+				<HCaptcha
+					onLoad={async () => {
+						if (!this.seen) {
+							await this.captcha.current.ready;
+							this.captcha_seen = true;
+							await this.captcha.current.execute();
+						}
+					}}
+					onVerify={async token => {
+						if (this.captcha_seen === true) {
+							this.captcha_seen = false;
+							await this.api.game_plays(this.id, token);
+							this.seen = true;
+						}
+					}}
+					sitekey={hcaptchaKey}
+					size="invisible"
+					ref={this.captcha}
 				/>
 			</main>
 		);
