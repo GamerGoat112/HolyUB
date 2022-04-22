@@ -27,10 +27,14 @@ html[data-page*='games'] #root {
 				display: none;
 			}
 
+			.collapsable {
+				display: none;
+			}
+
 			> div.search {
 				$border: 1px;
 				$height: 44px;
-				width: 584px;
+				width: 100%;
 				height: $height;
 
 				display: flex;
@@ -70,7 +74,7 @@ html[data-page*='games'] #root {
 					}
 				}
 
-				> button {
+				> .button {
 					width: 44px;
 					height: 46px;
 					flex: none;
@@ -85,7 +89,6 @@ html[data-page*='games'] #root {
 
 					&.button-close {
 						border-radius: 5px;
-						border-left: none;
 						border-top-left-radius: 0px;
 						border-bottom-left-radius: 0px;
 					}

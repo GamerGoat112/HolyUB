@@ -65,20 +65,11 @@ export default class GamesLayout extends Component {
 						<span className="material-icons">search</span>
 					</button>
 					<div className="search">
+						<div className="button button-search material-icons">search</div>
 						<input type="text" placeholder="Search by game name"></input>
 						<div className="suggested"></div>
 						<button
-							className="button-search material-icons"
-							onClick={() =>
-								this.setState({
-									search: false,
-								})
-							}
-						>
-							search
-						</button>
-						<button
-							className="button-close material-icons"
+							className="button button-close material-icons"
 							onClick={() =>
 								this.setState({
 									search: false,
