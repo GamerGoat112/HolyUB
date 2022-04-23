@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
@@ -7,6 +7,7 @@ import './styles/Proxy Script.scss';
 
 export default class ProxyLayout extends Component {
 	layout = new Layout();
+	container = createRef();
 	state = {
 		error: undefined,
 		possible_error: undefined,
@@ -80,7 +81,7 @@ export default class ProxyLayout extends Component {
 
 		if (this.state.error === undefined) {
 			main = (
-				<main>
+				<main ref={this.container}>
 					<p>
 						<Obfuscated>{this.name}</Obfuscated> is loading...
 					</p>
@@ -96,7 +97,7 @@ export default class ProxyLayout extends Component {
 			}
 
 			main = (
-				<main>
+				<main ref={this.container}>
 					<span>
 						An error when loading <Obfuscated>{this.name}</Obfuscated>:
 						<br />

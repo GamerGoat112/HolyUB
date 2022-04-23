@@ -15,7 +15,7 @@ export default class Flash extends ProxyModule {
 
 		const ruffle = global.RufflePlayer.newest();
 		this.player = ruffle.createPlayer();
-		this.move_player(document.body);
+		this.move_player(this.container.current);
 
 		this.player.addEventListener('loadeddata', () => {
 			this.setState({
@@ -42,13 +42,14 @@ export default class Flash extends ProxyModule {
 		this.player.remove();
 	}
 	render() {
-		set_page('proxy-script-flash');
+		let render;
 
 		if (!this.state.error && this.state.ruffle_loaded) {
-			return (
+			render = (
 				<main
 					data-ruffle="1"
 					ref={main => {
+						this.container.current = main;
 						if (main === undefined) {
 							this.player.remove();
 						} else {
@@ -58,7 +59,11 @@ export default class Flash extends ProxyModule {
 				></main>
 			);
 		} else {
-			return super.render();
+			render = super.render();
 		}
+
+		set_page('proxy-script-flash');
+
+		return render;
 	}
 }
