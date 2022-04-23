@@ -48,9 +48,12 @@ export default class Category extends Component {
 
 		try {
 			const data = await this.games_layout.current.api.category(
-				this.props.id,
-				sort,
-				leastGreatest
+				{
+					category: this.props.id,
+					sort,
+					leastGreatest,
+				},
+				this.abort.signal
 			);
 
 			return this.setState({

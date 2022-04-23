@@ -3,6 +3,29 @@ import { Navigate } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
 
+/**
+ *
+ * @typedef {object} GamesCategoryParams
+ * @property {boolean} [leastGreatest]
+ * @property {string} [category]
+ * @property {string} [sort]
+ * @property {string} [search]
+ * @property {number} [limit]
+ */
+
+/**
+ *
+ * @typedef {object} LimitedGame
+ * @property {string} name
+ * @property {string} id
+ * @property {string} category
+ */
+
+/**
+ *
+ * @typedef {LimitedGame[]} GamesCategory
+ */
+
 export class GamesAPI {
 	constructor(server) {
 		this.server = server;
@@ -49,18 +72,16 @@ export class GamesAPI {
 
 		return params;
 	}
-	async category(category, sort, leastGreatest, search, signal) {
+	/**
+	 *
+	 * @param {GamesCategoryParams} params
+	 * @param {AbortSignal} signal
+	 * @returns {GamesCategory}
+	 */
+	async category(params, signal) {
 		const outgoing = await fetch(
 			new URL(
-				'./games/?' +
-					new URLSearchParams(
-						this.sort_params({
-							search,
-							category,
-							sort,
-							leastGreatest,
-						})
-					),
+				'./games/?' + new URLSearchParams(this.sort_params(params)),
 				gamesAPI
 			),
 			{ signal }

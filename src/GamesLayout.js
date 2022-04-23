@@ -43,10 +43,10 @@ export default class GamesLayout extends Component {
 		this.abort = new AbortController();
 
 		const category = await this.api.category(
-			undefined,
-			'search',
-			false,
-			query,
+			{
+				search: query,
+				limit: 8,
+			},
 			this.abort.signal
 		);
 
@@ -54,7 +54,7 @@ export default class GamesLayout extends Component {
 
 		for (let game of category) {
 			suggested.push(
-				<Link to={`/games/player.html?id=${game.id}`}>
+				<Link id={game.id} to={`/games/player.html?id=${game.id}`}>
 					<div key={game.id}>
 						<div className="name">{game.name}</div>
 						<div className="category">
