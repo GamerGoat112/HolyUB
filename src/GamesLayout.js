@@ -54,15 +54,21 @@ export default class GamesLayout extends Component {
 
 		for (let game of category) {
 			suggested.push(
-				<div key={game.id}>
-					<div className="name">{game.name}</div>
-					<div className="category">{categories[game.category].name}</div>
-					<img
-						src={`/thumbnails/${game.id}.webp`}
-						alt="thumbnail"
-						className="thumbnail"
-					></img>
-				</div>
+				<Link to={`/games/player.html?id=${game.id}`}>
+					<div key={game.id}>
+						<div className="name">{game.name}</div>
+						<div className="category">
+							{game.category in categories
+								? categories[game.category].name
+								: console.warn(game.cateogry)}
+						</div>
+						<img
+							src={`/thumbnails/${game.id}.webp`}
+							alt="thumbnail"
+							className="thumbnail"
+						></img>
+					</div>
+				</Link>
 			);
 		}
 

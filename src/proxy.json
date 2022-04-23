@@ -24,6 +24,10 @@
 		{
 			"domain": "example.org",
 			"proxy": "rh"
+		},
+		{
+			"domain": "stake.com",
+			"proxy": "uv"
 		}
 	]
 }

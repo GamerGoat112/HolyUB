@@ -105,28 +105,37 @@ html[data-page*='games'] #root {
 				top: calc(100% + 2px);
 				width: calc(100% - 2px);
 
-				> div {
-					color: var(--text);
-					height: $height;
-					position: relative;
-					display: flex;
-					flex-direction: row;
-					justify-content: space-around;
-					line-height: $height;
-
+				> a {
 					&:hover {
-						background-color: var(--background);
+						text-decoration: none;
 					}
 
-					> .name {
-						user-select: none;
-					}
+					> div {
+						color: var(--text);
+						height: $height;
+						position: relative;
+						display: flex;
+						flex-direction: row;
+						justify-content: space-around;
+						line-height: $height;
 
-					.category {
-						color: var(--text-placeholder);
-					}
+						&:hover {
+							background-color: var(--background);
+						}
 
-					> .thumbnail {
+						> .name {
+							width: 100%;
+							user-select: none;
+						}
+
+						.category {
+							width: 100%;
+							color: var(--text-placeholder);
+						}
+
+						> .thumbnail {
+							width: 100%;
+						}
 					}
 				}
 			}

@@ -132,7 +132,7 @@
 
 			> .suggested {
 				display: none;
-				margin-top: calc($height + 2px);
+				margin-top: calc($height + 3px);
 				width: calc(100% - 2px); // - border
 
 				@include screen_tablet {

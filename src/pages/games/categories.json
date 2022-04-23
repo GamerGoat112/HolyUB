@@ -2,7 +2,28 @@
 	"social": {
 		"name": "Social Media"
 	},
+	"action": {
+		"name": "Action & Adventure"
+	},
+	"entertainment": {
+		"name": "Entertainment"
+	},
 	"platformer": {
 		"name": "Platformer"
+	},
+	"shooter": {
+		"name": "Shooters & Strategy"
+	},
+	"mutliplayer": {
+		"name": "Multiplayer"
+	},
+	"rpg": {
+		"name": "RPG"
+	},
+	"survival": {
+		"name": "Survival & Horror"
+	},
+	"sports": {
+		"name": "Simulation & Sports"
 	}
 }
