@@ -65,6 +65,7 @@ export default class MainLayout extends Layout {
 					<Link to="/" className="entry logo">
 						<HatSVG />
 					</Link>
+					<div className="shift-right"></div>
 					<div className="collapsable" ref={this.collapsable}>
 						<Link to="/proxy.html" className="entry">
 							<span>Proxy</span>
