@@ -23,13 +23,23 @@ export default class GamesLayout extends Component {
 	}
 	categories = [];
 	abort = new AbortController();
+	category_click() {
+		this.setState({ expanded: false });
+	}
 	constructor(props) {
 		super(props);
+
+		this.category_click = this.category_click.bind(this);
 
 		for (let id in categories) {
 			const { name } = categories[id];
 			this.categories.push(
-				<Link key={id} to={`/games/${id}.html`} className="entry text">
+				<Link
+					onClick={this.category_click}
+					key={id}
+					to={`/games/${id}.html`}
+					className="entry text"
+				>
 					<span>{name}</span>
 				</Link>
 			);
@@ -64,10 +74,7 @@ export default class GamesLayout extends Component {
 			suggested.push(
 				<Link
 					key={game.id}
-					onClick={() => {
-						console.log('<link> clicked');
-						this.setState({ input_focused: false });
-					}}
+					onClick={() => this.setState({ input_focused: false })}
 					to={`/games/player.html?id=${game.id}`}
 				>
 					<div key={game.id}>
@@ -99,7 +106,6 @@ export default class GamesLayout extends Component {
 							});
 
 							if (this.state.expanded) {
-								console.log('steal focus');
 								this.collapsable.current.focus();
 							}
 						}}
@@ -116,17 +122,24 @@ export default class GamesLayout extends Component {
 						className="collapsable"
 						data-focused={Number(this.state.input_focused)}
 						ref={this.collapsable}
-						onClick={() => {
-							this.setState({ expanded: false });
-						}}
-						onBlur={() => {
-							this.setState({ expanded: false });
+						onBlur={event => {
+							if (!event.target.contains(event.relatedTarget)) {
+								this.setState({ expanded: false });
+							}
 						}}
 					>
-						<Link to="/games/popular.html" className="entry">
+						<Link
+							to="/games/popular.html"
+							onClick={this.category_click}
+							className="entry"
+						>
 							<span>Popular</span>
 						</Link>
-						<Link to="/games/favorites.html" className="entry">
+						<Link
+							to="/games/favorites.html"
+							onClick={this.category_click}
+							className="entry"
+						>
 							<span>Favorites</span>
 						</Link>
 						{this.categories}
