@@ -1,5 +1,5 @@
 import { Component, createRef, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
 import GamesLayout from './GamesLayout.js';
@@ -52,6 +52,17 @@ const Stomp = lazy(() =>
 const Flash = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/proxies/Flash.js')
 );
+
+function PlayerProxy(props) {
+	const [searchParams] = useSearchParams();
+	const id = searchParams.get('id');
+
+	return (
+		<Suspense fallback={<></>}>
+			<GamesPlayer {...props} key={id} id={id} />
+		</Suspense>
+	);
+}
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
@@ -172,14 +183,12 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path=":id/player.html"
+							path="player.html"
 							element={
-								<Suspense fallback={<></>}>
-									<GamesPlayer
-										games_layout={this.games_layout}
-										layout={this.layout}
-									/>
-								</Suspense>
+								<PlayerProxy
+									games_layout={this.games_layout}
+									layout={this.layout}
+								/>
 							}
 						/>
 						{this.categories}

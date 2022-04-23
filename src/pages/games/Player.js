@@ -2,7 +2,6 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { gamesCDN, hcaptchaKey, set_page } from '../../root.js';
-import withRouter from '../../withRouter.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import '../../styles/Games Player.scss';
 
@@ -30,23 +29,25 @@ function resolve_game(src, type, setting) {
 	}
 }
 
-class GamesPlayer extends Component {
+export default class GamesPlayer extends Component {
 	state = {};
 	get favorited() {
 		return this.games_layout.current.settings
 			.get('favorites')
-			.includes(this.id);
+			.includes(this.props.id);
 	}
 	get seen() {
-		return this.games_layout.current.settings.get('seen').includes(this.id);
+		return this.games_layout.current.settings
+			.get('seen')
+			.includes(this.props.id);
 	}
 	set seen(value) {
 		const seen = this.games_layout.current.settings.get('seen');
 
 		if (value) {
-			seen.push(this.id);
+			seen.push(this.props.id);
 		} else {
-			const i = seen.indexOf(this.id);
+			const i = seen.indexOf(this.props.id);
 			seen.splice(i, 1);
 		}
 
@@ -67,9 +68,6 @@ class GamesPlayer extends Component {
 	get games_layout() {
 		return this.props.games_layout;
 	}
-	get id() {
-		return this.props.router.params.id;
-	}
 	abort = new AbortController();
 	focus_listener() {
 		if (!this.iframe.current) {
@@ -86,7 +84,7 @@ class GamesPlayer extends Component {
 		window.addEventListener('focus', this.focus_listener);
 
 		try {
-			const data = await this.games_layout.current.api.game(this.id);
+			const data = await this.games_layout.current.api.game(this.props.id);
 			await this.setState({ data });
 		} catch (error) {
 			this.setState({ error });
@@ -160,10 +158,10 @@ class GamesPlayer extends Component {
 						onClick={() => {
 							const favorites =
 								this.games_layout.current.settings.get('favorites');
-							const i = favorites.indexOf(this.id);
+							const i = favorites.indexOf(this.props.id);
 
 							if (i === -1) {
-								favorites.push(this.id);
+								favorites.push(this.props.id);
 							} else {
 								favorites.splice(i, 1);
 							}
@@ -192,7 +190,10 @@ class GamesPlayer extends Component {
 					onVerify={async token => {
 						if (this.captcha_seen === true) {
 							this.captcha_seen = false;
-							await this.games_layout.current.api.game_plays(this.id, token);
+							await this.games_layout.current.api.game_plays(
+								this.props.id,
+								token
+							);
 							this.seen = true;
 						}
 					}}
@@ -204,5 +205,3 @@ class GamesPlayer extends Component {
 		);
 	}
 }
-
-export default withRouter(GamesPlayer);

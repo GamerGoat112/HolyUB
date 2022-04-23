@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { gamesAPI, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
@@ -12,6 +12,7 @@ export default class GamesLayout extends Component {
 		favorites: [],
 		seen: [],
 	});
+	collapsable = createRef();
 	state = {
 		expanded: false,
 		suggested: [],
@@ -55,13 +56,20 @@ export default class GamesLayout extends Component {
 			let category;
 
 			if (game.category in categories) {
-				category = categories[game.category];
+				category = categories[game.category].name;
 			} else {
 				console.warn(`Unknown category ${game.category}`);
 				category = '';
 			}
 			suggested.push(
-				<Link key={game.id} to={`/games/${game.id}/player.html`}>
+				<Link
+					key={game.id}
+					onClick={() => {
+						console.log('<link> clicked');
+						this.setState({ input_focused: false });
+					}}
+					to={`/games/player.html?id=${game.id}`}
+				>
 					<div key={game.id}>
 						<div className="name">{game.name}</div>
 						<div className="category">{category}</div>
@@ -85,7 +93,16 @@ export default class GamesLayout extends Component {
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
 					<div
 						className="expand"
-						onClick={() => this.setState({ expanded: !this.state.expanded })}
+						onClick={async () => {
+							await this.setState({
+								expanded: !this.state.expanded,
+							});
+
+							if (this.state.expanded) {
+								console.log('steal focus');
+								this.collapsable.current.focus();
+							}
+						}}
 					>
 						<div>
 							<span></span>
@@ -94,7 +111,18 @@ export default class GamesLayout extends Component {
 							<span></span>
 						</div>
 					</div>
-					<div className="collapsable">
+					<div
+						tabIndex="0"
+						className="collapsable"
+						data-focused={Number(this.state.input_focused)}
+						ref={this.collapsable}
+						onClick={() => {
+							this.setState({ expanded: false });
+						}}
+						onBlur={() => {
+							this.setState({ expanded: false });
+						}}
+					>
 						<Link to="/games/popular.html" className="entry">
 							<span>Popular</span>
 						</Link>
@@ -126,9 +154,9 @@ export default class GamesLayout extends Component {
 							onChange={event => this.search(event.target.value)}
 						></input>
 						<div className="suggested">
-							{this.state.input_focused &&
-								this.state.suggested.length !== 0 &&
-								this.state.suggested}
+							{this.state.input_focused && this.state.suggested.length !== 0
+								? this.state.suggested
+								: undefined}
 						</div>
 					</div>
 				</nav>

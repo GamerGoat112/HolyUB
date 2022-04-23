@@ -241,7 +241,7 @@ html[data-page*='games'] #root {
 				}
 			}
 
-			&[data-suggested='1'] {
+			&[data-focused='1'][data-suggested='1'] {
 				> .suggested {
 					display: flex;
 				}
