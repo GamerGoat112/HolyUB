@@ -17,14 +17,13 @@ function resolve_game(src, type, setting) {
 		case 'emulator.gba':
 		case 'emulator.nes':
 		case 'emulator.genesis':
-			return new URL(
-				'webretro?' +
-					new URLSearchParams({
-						rom: src,
-						core: 'autodetect',
-					}),
-				gamesCDN
-			).toString();
+			return (
+				'/webretro/?' +
+				new URLSearchParams({
+					rom: src,
+					core: 'autodetect',
+				})
+			);
 		default:
 			throw new TypeError(`Unrecognized target: ${type}`);
 	}
