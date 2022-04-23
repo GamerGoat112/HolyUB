@@ -25,5 +25,8 @@
 	},
 	"sports": {
 		"name": "Simulation & Sports"
+	},
+	"puzzle": {
+		"name": "Puzzle"
 	}
 }

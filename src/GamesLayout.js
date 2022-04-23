@@ -59,7 +59,7 @@ export default class GamesLayout extends Component {
 						<div className="category">
 							{game.category in categories
 								? categories[game.category].name
-								: console.warn(game.cateogry)}
+								: console.warn(game, game.category)}
 						</div>
 						<img
 							src={`/thumbnails/${game.id}.webp`}
