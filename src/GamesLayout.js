@@ -52,15 +52,19 @@ export default class GamesLayout extends Component {
 		const suggested = [];
 
 		for (let game of category) {
+			let category;
+
+			if (game.category in categories) {
+				category = categories[game.category];
+			} else {
+				console.warn(`Unknown category ${game.category}`);
+				category = '';
+			}
 			suggested.push(
 				<Link key={game.id} to={`/games/${game.id}/player.html`}>
 					<div key={game.id}>
 						<div className="name">{game.name}</div>
-						<div className="category">
-							{game.category in categories
-								? categories[game.category].name
-								: console.warn(game, game.category)}
-						</div>
+						<div className="category">{category}</div>
 						<img
 							src={`/thumbnails/${game.id}.webp`}
 							alt="thumbnail"
