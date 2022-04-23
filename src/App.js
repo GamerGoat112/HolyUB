@@ -176,6 +176,7 @@ export default class App extends Component {
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPlayer
+										key={new URLSearchParams(global.location.search).get('id')}
 										games_layout={this.games_layout}
 										layout={this.layout}
 									/>

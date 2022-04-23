@@ -39,7 +39,9 @@ export default class Category extends Component {
 	}
 	async fetch() {
 		try {
-			const data = await this.api.category(undefined, 'Most Plays', false);
+			const data = await this.api.category({
+				sort: 'Most Plays',
+			});
 
 			return this.setState({
 				data,

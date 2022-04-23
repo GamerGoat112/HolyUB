@@ -17,9 +17,76 @@ html[data-page*='games'] #root {
 		z-index: 9;
 		text-align: center;
 		background: var(--background);
+		justify-content: space-around;
+
+		> .expand {
+			position: relative;
+			display: block;
+			padding: 15px;
+			cursor: pointer;
+
+			> div {
+				width: 30px;
+				height: 20px;
+				position: relative;
+
+				span {
+					display: block;
+					position: absolute;
+					height: 0px;
+					width: 100%;
+					border-top: 1px solid var(--text);
+					left: 0;
+					transform: rotate(0deg);
+					transition: width 0.2s ease-in-out, left 0.2s ease-in-out,
+						transform 0.2s ease-in-out;
+
+					&:nth-child(1) {
+						top: 0px;
+					}
+
+					&:nth-child(2),
+					&:nth-child(3) {
+						top: 10px;
+					}
+
+					&:nth-child(4) {
+						top: 20px;
+					}
+				}
+			}
+		}
+
+		&[data-expanded='1'] {
+			.collapsable {
+				display: flex;
+			}
+
+			> .expand span {
+				&:nth-child(1) {
+					top: 10px;
+					width: 0%;
+					left: 50%;
+				}
+
+				&:nth-child(2) {
+					transform: rotate(45deg);
+				}
+
+				&:nth-child(3) {
+					transform: rotate(-45deg);
+				}
+
+				&:nth-child(4) {
+					top: 10;
+					width: 0%;
+					left: 50%;
+				}
+			}
+		}
 
 		> .search-bar {
-			display: none;
+			display: flex;
 			$border: 1px;
 			$height: 44px;
 			width: 100%;
@@ -43,6 +110,24 @@ html[data-page*='games'] #root {
 				}
 			}
 
+			$icon-size: 20px;
+			$icon-distance: calc($border + ($height / 2) - ($icon-size / 2));
+			$padding-left: calc(($icon-distance * 2) + $icon-size);
+
+			.eyeglass {
+				user-select: none;
+				font-size: $icon-size;
+				width: $icon-size;
+				height: $icon-size;
+				line-height: $icon-size;
+				padding: $icon-distance;
+				color: var(--text-placeholder);
+				position: absolute;
+				display: block;
+				text-align: center;
+				pointer-events: none;
+			}
+
 			> input {
 				width: 100%;
 				height: $height;
@@ -50,9 +135,8 @@ html[data-page*='games'] #root {
 				background: var(--background-accent);
 				color: var(--text-accent);
 				border: 1px solid var(--border);
-				border-left: none;
-				border-right: none;
-				padding: 0px 15px 0px 15px;
+				border-radius: 5px;
+				padding: 0px 15px 0px $padding-left;
 
 				&::placeholder {
 					color: var(--text-placeholder);
@@ -73,21 +157,10 @@ html[data-page*='games'] #root {
 
 				&.button-search {
 					color: var(--text-placeholder);
+
 					border-radius: 5px;
 					border-top-right-radius: 0px;
 					border-bottom-right-radius: 0px;
-				}
-
-				&.button-close {
-					cursor: pointer;
-
-					border-radius: 5px;
-					border-top-left-radius: 0px;
-					border-bottom-left-radius: 0px;
-
-					&:hover {
-						background-color: var(--background);
-					}
 				}
 			}
 
@@ -140,73 +213,9 @@ html[data-page*='games'] #root {
 				}
 			}
 
-			&[data-suggested='1'] {
-				> .suggested {
-					display: flex;
-				}
-
-				> .button {
-					border-bottom-left-radius: 0px;
-					border-bottom-right-radius: 0px;
-				}
-
-				> input {
-					height: $height;
-				}
-			}
-		}
-
-		&[data-search='1'] {
-			> .search {
-				display: none;
-			}
-
-			.collapsable {
-				display: none;
-			}
-
-			> .search-bar {
-				display: flex;
-			}
-		}
-
-		> .collapsable {
-			display: flex;
-			flex-direction: row;
-		}
-
-		@include screen_phone {
-			> .expand {
-				display: flex;
-			}
-
-			flex-direction: column;
-
-			> .collapsable {
-				display: flex;
-				flex-direction: column;
-				width: 100%;
-				top: 100%;
-				left: 0px;
-				right: 0px;
-				text-align: left;
-				background: var(--background);
-			}
-
-			> .logo {
-				position: absolute;
-				left: 0px;
-				right: 0px;
-				margin: auto;
-			}
-
 			&[data-expanded='1'] {
 				> *:not(.expand) {
 					display: none;
-				}
-
-				.collapsable {
-					display: flex;
 				}
 
 				> .expand span {
@@ -231,84 +240,55 @@ html[data-page*='games'] #root {
 					}
 				}
 			}
-		}
 
-		> button {
-			user-select: none;
-			box-sizing: content-box;
-			border: none;
-			background: none;
-			width: 25px;
-			height: 25px;
-			margin: auto 5px;
-			border-radius: 2px;
-			padding: 5px;
-			position: relative;
-			flex: none;
-			cursor: pointer;
-			color: inherit;
+			&[data-suggested='1'] {
+				> .suggested {
+					display: flex;
+				}
 
-			&:hover {
-				background: var(--background-accent);
+				> input {
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 0px;
+				}
 			}
 		}
 
-		.entry {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: var(--nav-height);
-			padding: 0px 15px;
-			color: inherit;
-			white-space: nowrap;
+		> .collapsable {
+			position: sticky;
+			display: none;
+			padding: 15px;
+			flex-direction: column;
+			overflow-y: auto;
+			background-color: var(--background);
+			top: 100%;
+			left: 0px;
+			width: 210px;
+			height: 100vh;
 
-			> svg,
-			> .material-icons {
-				height: 25px;
-				width: 25px;
+			> .entry {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: var(--nav-height);
+				padding: 0px 6px;
+				height: 30px;
+				border-radius: 5px;
+				font-size: 13px;
 				color: inherit;
-			}
+				white-space: nowrap;
 
-			&.logo {
-				width: 35px;
-				> svg {
-					width: inherit;
-					height: inherit;
+				span {
+					position: relative;
+				}
+
+				&:hover {
+					text-decoration: none;
+					background-color: var(--background-accent);
 				}
 			}
-
-			span {
-				position: relative;
-			}
-
-			span::after {
-				display: none;
-				content: '';
-				position: absolute;
-				border-bottom: 2px solid var(--text);
-				left: 0;
-				right: 0;
-				bottom: -0.125rem;
-			}
-
-			&:hover {
-				text-decoration: none;
-
-				span::after {
-					display: block;
-				}
-			}
-		}
-
-		> .shift-right {
-			margin-left: auto;
 		}
 
 		@include screen_tablet {
-			> .shift-right {
-				display: none;
-			}
-
 			justify-content: space-between;
 
 			.collapsable {

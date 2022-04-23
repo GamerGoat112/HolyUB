@@ -73,6 +73,10 @@ export default class GamesPlayer extends Component {
 	}
 	abort = new AbortController();
 	focus_listener() {
+		if (!this.iframe.current) {
+			return;
+		}
+
 		this.iframe.current.contentWindow.focus();
 	}
 	constructor(props) {

@@ -23,9 +23,18 @@ export default class FavoritesCategory extends Component {
 	async fetch() {
 		const data = [];
 
-		for (let id of this.games_layout.current.settings.get('favorites')) {
-			data.push(await this.games_layout.current.api.game(id));
+		const favorites = this.games_layout.current.settings.get('favorites');
+
+		for (let id of favorites) {
+			try {
+				data.push(await this.games_layout.current.api.game(id));
+			} catch (error) {
+				console.warn('Unable to fetch game:', id, error);
+				favorites.splice(favorites.indexOf(id), 1);
+			}
 		}
+
+		this.games_layout.current.settings.set('favorites', favorites);
 
 		return this.setState({
 			data,
