@@ -119,11 +119,7 @@ export class Item extends Component {
 	};
 	open() {
 		this.setState({
-			redirect:
-				'/games/player.html?' +
-				new URLSearchParams({
-					id: this.props.id,
-				}),
+			redirect: `/games/${this.props.id}/player.html`,
 		});
 	}
 	render() {

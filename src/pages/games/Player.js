@@ -2,6 +2,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { gamesCDN, hcaptchaKey, set_page } from '../../root.js';
+import withRouter from '../../withRouter.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import '../../styles/Games Player.scss';
 
@@ -29,7 +30,7 @@ function resolve_game(src, type, setting) {
 	}
 }
 
-export default class GamesPlayer extends Component {
+class GamesPlayer extends Component {
 	state = {};
 	get favorited() {
 		return this.games_layout.current.settings
@@ -67,9 +68,7 @@ export default class GamesPlayer extends Component {
 		return this.props.games_layout;
 	}
 	get id() {
-		const params = new URLSearchParams(global.location.search);
-
-		return params.get('id');
+		return this.props.router.params.id;
 	}
 	abort = new AbortController();
 	focus_listener() {
@@ -205,3 +204,5 @@ export default class GamesPlayer extends Component {
 		);
 	}
 }
+
+export default withRouter(GamesPlayer);

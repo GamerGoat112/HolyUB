@@ -172,11 +172,10 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path="player.html"
+							path=":id/player.html"
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPlayer
-										key={new URLSearchParams(global.location.search).get('id')}
 										games_layout={this.games_layout}
 										layout={this.layout}
 									/>

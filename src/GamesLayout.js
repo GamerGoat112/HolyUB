@@ -53,7 +53,7 @@ export default class GamesLayout extends Component {
 
 		for (let game of category) {
 			suggested.push(
-				<Link key={game.id} to={`/games/player.html?id=${game.id}`}>
+				<Link key={game.id} to={`/games/${game.id}/player.html`}>
 					<div key={game.id}>
 						<div className="name">{game.name}</div>
 						<div className="category">
