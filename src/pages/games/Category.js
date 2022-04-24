@@ -3,6 +3,7 @@ import { set_page } from '../../root.js';
 import { Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
+import PlainSelect from '../../PlainSelect.js';
 
 export default class Category extends Component {
 	state = {
@@ -76,20 +77,19 @@ export default class Category extends Component {
 
 		return (
 			<main>
-				<div className="sort">
-					<select
-						defaultValue={this.settings.get('sort')}
-						onChange={async event => {
-							this.settings.set('sort', event.target.value);
-							await this.fetch();
-						}}
-					>
-						<option value="Most Played">Most Played</option>
-						<option value="Least Played">Least Played</option>
-						<option value="Name (A-Z)">Name (A-Z)</option>
-						<option value="Name (Z-A)">Name (Z-A)</option>
-					</select>
-				</div>
+				<PlainSelect
+					className="sort"
+					defaultValue={this.settings.get('sort')}
+					onChange={async event => {
+						this.settings.set('sort', event.target.value);
+						await this.fetch();
+					}}
+				>
+					<option value="Most Played">Most Played</option>
+					<option value="Least Played">Least Played</option>
+					<option value="Name (A-Z)">Name (A-Z)</option>
+					<option value="Name (Z-A)">Name (Z-A)</option>
+				</PlainSelect>
 				<Section name={this.props.name} items={this.state.data} />
 			</main>
 		);

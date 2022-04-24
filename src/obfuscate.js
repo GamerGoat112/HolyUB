@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import { Component, createRef } from 'react';
 import { create } from 'random-seed';
 
 const rand = create(navigator.userAgent + global.location.origin);

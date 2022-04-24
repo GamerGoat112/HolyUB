@@ -16,7 +16,6 @@ export default class Rammerhead extends ProxyModule {
 	 */
 	set session(value) {
 		localStorage.rammerhead_session = value;
-		return value;
 	}
 	async _componentDidMount() {
 		await this.possible_error('Rammerhead server is unreachable.');
