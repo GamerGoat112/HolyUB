@@ -13,6 +13,7 @@ export default class GamesLayout extends Component {
 		seen: [],
 	});
 	collapsable = createRef();
+	expand = createRef();
 	state = {
 		expanded: false,
 		suggested: [],
@@ -99,7 +100,9 @@ export default class GamesLayout extends Component {
 			<>
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
 					<div
+						tabIndex="0"
 						className="expand"
+						ref={this.expand}
 						onClick={async () => {
 							await this.setState({
 								expanded: !this.state.expanded,
@@ -123,7 +126,10 @@ export default class GamesLayout extends Component {
 						data-focused={Number(this.state.input_focused)}
 						ref={this.collapsable}
 						onBlur={event => {
-							if (!event.target.contains(event.relatedTarget)) {
+							if (
+								!event.target.contains(event.relatedTarget) &&
+								!this.expand.current.contains(event.relatedTarget)
+							) {
 								this.setState({ expanded: false });
 							}
 						}}

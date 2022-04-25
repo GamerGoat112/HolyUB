@@ -80,9 +80,9 @@ export default class Category extends Component {
 				<PlainSelect
 					className="sort"
 					defaultValue={this.settings.get('sort')}
-					onChange={async event => {
+					onChange={event => {
 						this.settings.set('sort', event.target.value);
-						await this.fetch();
+						this.fetch();
 					}}
 				>
 					<option value="Most Played">Most Played</option>
