@@ -46,18 +46,18 @@
 			}
 
 			.content {
+				line-height: 40px;
 				margin-top: 15px;
 
 				label {
-					width: 200px;
+					width: 250px;
 					display: flex;
 					flex-direction: row;
 					text-align: right;
 
 					input,
-					select {
+					.plain-select {
 						margin-left: auto;
-						height: 20px;
 					}
 				}
 			}

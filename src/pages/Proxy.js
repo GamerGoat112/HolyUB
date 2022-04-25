@@ -3,6 +3,7 @@ import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import '../styles/Proxy.scss';
+import PlainSelect from '../PlainSelect.js';
 
 class Expand extends Component {
 	state = {
@@ -152,7 +153,7 @@ export default class Proxies extends Component {
 					<Expand title="Advanced Options">
 						<label>
 							<Obfuscated>Proxy</Obfuscated>:
-							<select
+							<PlainSelect
 								onChange={event =>
 									this.layout.current.settings.set('proxy', event.target.value)
 								}
@@ -162,7 +163,7 @@ export default class Proxies extends Component {
 								<option value="uv">Ultraviolet</option>
 								<option value="rh">Rammerhead</option>
 								<option value="st">Stomp</option>
-							</select>
+							</PlainSelect>
 						</label>
 					</Expand>
 				</main>
