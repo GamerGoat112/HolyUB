@@ -1,17 +1,5 @@
 import { Component, createRef } from 'react';
 
-class PlainOption extends Component {
-	render() {
-		const { children, select, value } = this.props;
-
-		return (
-			<div className={'plain-option'} onClick={() => select.set_value(value)}>
-				{children}
-			</div>
-		);
-	}
-}
-
 export default class PlainSelect extends Component {
 	options = [];
 	container = createRef();
@@ -30,7 +18,10 @@ export default class PlainSelect extends Component {
 		});
 
 		this.container.current.value = this.state.value;
-		this.container.current.dispatchEvent(new Event('change'));
+
+		if (typeof this.props.onChange === 'function') {
+			this.props.onChange({ target: this.container.current });
+		}
 	}
 	render() {
 		const { children, className, onChange, ...attributes } = this.props;
@@ -49,10 +40,27 @@ export default class PlainSelect extends Component {
 		const list = [];
 
 		for (let { name, value } of options) {
+			const classes = ['plain-option'];
+
+			if (value === this.state.last_select) {
+				classes.push('hover');
+			}
+
 			list.push(
-				<PlainOption key={value} value={value} select={this}>
+				<div
+					className={classes.join(' ')}
+					key={value}
+					onClick={() => {
+						this.set_value(value);
+					}}
+					onMouseOver={() => {
+						this.setState({
+							last_select: value,
+						});
+					}}
+				>
 					{name}
-				</PlainOption>
+				</div>
 			);
 		}
 
@@ -71,18 +79,76 @@ export default class PlainSelect extends Component {
 				tabIndex="0"
 				className={'plain-select' + (className ? ' ' + className : '')}
 				data-open={Number(this.state.open)}
-				ref={container => {
-					this.container.current = container;
+				ref={this.container}
+				onKeyDown={event => {
+					let prevent_default = true;
 
-					if (container !== null && typeof onChange === 'function') {
-						container.addEventListener('change', onChange);
+					switch (event.code) {
+						case 'ArrowDown':
+						case 'ArrowUp':
+							// eslint-disable-next-line no-lone-blocks
+							{
+								let last_i = 0;
+
+								for (let i = 0; i < options.length; i++) {
+									const { value } = options[i];
+
+									if (value === this.state.last_select) {
+										last_i = i;
+										break;
+									}
+								}
+
+								let next;
+
+								switch (event.code) {
+									case 'ArrowDown':
+										if (last_i === options.length - 1) {
+											next = options[0];
+										} else {
+											next = options[last_i + 1];
+										}
+										break;
+									case 'ArrowUp':
+										if (last_i === 0) {
+											next = options[options.length - 1];
+										} else {
+											next = options[last_i - 1];
+										}
+										break;
+									// no default
+								}
+
+								this.setState({
+									last_select: next.value,
+								});
+
+								if (!this.state.open) {
+									this.set_value(next.value);
+								}
+							}
+							break;
+						case 'Enter':
+							this.set_value(this.state.last_select);
+							break;
+						default:
+							prevent_default = false;
+							break;
+						// no default
+					}
+
+					if (prevent_default) {
+						event.preventDefault();
 					}
 				}}
 			>
 				<div
 					className="toggle"
 					onClick={async () => {
-						this.setState({ open: !this.state.open });
+						this.setState({
+							open: !this.state.open,
+							last_select: this.state.value,
+						});
 						this.container.current.focus();
 					}}
 				>
