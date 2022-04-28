@@ -150,7 +150,6 @@ export default class Proxies extends Component {
 							onKeyDown={event => {
 								let prevent_default = true;
 
-								console.log(event.code);
 								switch (event.code) {
 									case 'ArrowDown':
 									case 'ArrowUp':
