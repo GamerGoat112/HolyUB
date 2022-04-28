@@ -4,6 +4,7 @@ import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import '../styles/Proxy.scss';
 import PlainSelect from '../PlainSelect.js';
+import textContent from '../textContent.js';
 
 class Expand extends Component {
 	state = {
@@ -56,6 +57,15 @@ export default class Proxies extends Component {
 		}
 	}
 	search_submit() {
+		let value;
+
+		if (this.state.last_select === -1) {
+			value = this.input.current.value;
+		} else {
+			value = textContent(this.state.omnibox_entries[this.state.last_select]);
+			this.input.current.value = value;
+		}
+
 		this.setState({ input_focused: false });
 		this.service_frame.current.proxy(this.input.current.value);
 		this.on_input();
@@ -70,14 +80,25 @@ export default class Proxies extends Component {
 		if (render_suggested) {
 			for (let i = 0; i < this.state.omnibox_entries.length; i++) {
 				const text = createRef();
+				const classes = ['option'];
+
+				if (i === this.state.last_select) {
+					classes.push('hover');
+				}
 
 				suggested.push(
 					<div
 						key={i}
 						tabIndex="0"
+						className={classes.join(' ')}
 						onClick={() => {
 							this.input.current.value = text.current.textContent;
 							this.search_submit();
+						}}
+						onMouseOver={() => {
+							this.setState({
+								last_select: i,
+							});
 						}}
 					>
 						<span className="eyeglass material-icons">search</span>
@@ -117,18 +138,75 @@ export default class Proxies extends Component {
 						<input
 							type="text"
 							placeholder="Search Google or type a URL"
-							required
+							required={this.state.last_select === -1}
 							autoComplete="off"
 							list="proxy-omnibox"
 							ref={this.input}
 							onInput={this.on_input.bind(this)}
 							onFocus={() => {
 								this.on_input();
-								this.setState({ input_focused: true });
+								this.setState({ input_focused: true, last_select: -1 });
+							}}
+							onKeyDown={event => {
+								let prevent_default = true;
+
+								console.log(event.code);
+								switch (event.code) {
+									case 'ArrowDown':
+									case 'ArrowUp':
+										// eslint-disable-next-line no-lone-blocks
+										{
+											let last_i = this.state.last_select;
+
+											let next;
+
+											switch (event.code) {
+												case 'ArrowDown':
+													if (last_i >= this.state.omnibox_entries.length - 1) {
+														next = 0;
+													} else {
+														next = last_i + 1;
+													}
+													break;
+												case 'ArrowUp':
+													if (last_i <= 0) {
+														next = this.state.omnibox_entries.length - 1;
+													} else {
+														next = last_i - 1;
+													}
+													break;
+												case 'Enter':
+													this.search_submit();
+													break;
+												// no default
+											}
+
+											this.setState({
+												last_select: next,
+											});
+										}
+										break;
+									default:
+										prevent_default = false;
+										break;
+									// no default
+								}
+
+								if (prevent_default) {
+									event.preventDefault();
+								}
 							}}
 						/>
 						<span className="eyeglass material-icons">search</span>
-						<div ref={this.suggested} className="suggested">
+						<div
+							ref={this.suggested}
+							className="suggested"
+							onMouseLeave={() => {
+								this.setState({
+									last_select: -1,
+								});
+							}}
+						>
 							{suggested}
 						</div>
 					</form>

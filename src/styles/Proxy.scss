@@ -132,7 +132,7 @@
 
 			> .suggested {
 				display: none;
-				margin-top: calc($height + 3px);
+				margin-top: calc($height + 2px);
 				width: calc(100% - 2px); // - border
 
 				@include screen_tablet {
@@ -154,7 +154,7 @@
 					height: $height;
 					position: relative;
 
-					&:hover {
+					&.hover {
 						background-color: var(--background);
 					}
 

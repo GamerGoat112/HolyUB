@@ -155,7 +155,16 @@ export default class PlainSelect extends Component {
 					{active_option.name}
 					<span className="material-icons">expand_more</span>
 				</div>
-				<div className="list">{list}</div>
+				<div
+					className="list"
+					onMouseLeave={() => {
+						this.setState({
+							last_select: undefined,
+						});
+					}}
+				>
+					{list}
+				</div>
 			</div>
 		);
 	}
