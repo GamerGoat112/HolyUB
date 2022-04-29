@@ -263,9 +263,9 @@ class GamesLayout extends Component {
 }
 
 const GamesLayoutWrapper = forwardRef((props, ref) => {
-	const navigation = useNavigate();
+	const navigate = useNavigate();
 
-	return <GamesLayout ref={ref} {...props} navigate={navigation} />;
+	return <GamesLayout ref={ref} {...props} navigate={navigate} />;
 });
 
 export default GamesLayoutWrapper;
