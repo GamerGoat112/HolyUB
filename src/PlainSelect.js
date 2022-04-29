@@ -6,9 +6,21 @@ export default class PlainSelect extends Component {
 	constructor(props) {
 		super(props);
 
+		const options = [];
+
+		for (let child of this.props.children) {
+			if (child.type === 'option') {
+				options.push({
+					name: child.props.children,
+					value: child.props.value,
+				});
+			}
+		}
+
 		this.state = {
 			value: this.props.value || this.props.defaultValue,
 			open: false,
+			options,
 		};
 	}
 	async set_value(value) {
@@ -24,22 +36,11 @@ export default class PlainSelect extends Component {
 		}
 	}
 	render() {
-		const { children, className, onChange, ...attributes } = this.props;
-
-		const options = [];
-
-		for (let child of children) {
-			if (child.type === 'option') {
-				options.push({
-					name: child.props.children,
-					value: child.props.value,
-				});
-			}
-		}
+		const { className, onChange, ...attributes } = this.props;
 
 		const list = [];
 
-		for (let { name, value } of options) {
+		for (let { name, value } of this.state.options) {
 			const classes = ['plain-option'];
 
 			if (value === this.state.last_select) {
@@ -66,7 +67,7 @@ export default class PlainSelect extends Component {
 
 		let active_option;
 
-		for (let option of options) {
+		for (let option of this.state.options) {
 			if (option.value === this.state.value) {
 				active_option = option;
 				break;
@@ -90,8 +91,8 @@ export default class PlainSelect extends Component {
 							{
 								let last_i = 0;
 
-								for (let i = 0; i < options.length; i++) {
-									const { value } = options[i];
+								for (let i = 0; i < this.state.options.length; i++) {
+									const { value } = this.state.options[i];
 
 									if (value === this.state.last_select) {
 										last_i = i;
@@ -103,17 +104,17 @@ export default class PlainSelect extends Component {
 
 								switch (event.code) {
 									case 'ArrowDown':
-										if (last_i === options.length - 1) {
-											next = options[0];
+										if (last_i === this.state.options.length - 1) {
+											next = this.state.options[0];
 										} else {
-											next = options[last_i + 1];
+											next = this.state.options[last_i + 1];
 										}
 										break;
 									case 'ArrowUp':
 										if (last_i === 0) {
-											next = options[options.length - 1];
+											next = this.state.options[this.state.options.length - 1];
 										} else {
-											next = options[last_i - 1];
+											next = this.state.options[last_i - 1];
 										}
 										break;
 									// no default

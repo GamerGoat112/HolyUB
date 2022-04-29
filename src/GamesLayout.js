@@ -1,22 +1,23 @@
-import { Outlet, Link } from 'react-router-dom';
-import { Component, createRef } from 'react';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Component, createRef, forwardRef } from 'react';
 import { gamesAPI, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
 import './styles/Games.scss';
 
-export default class GamesLayout extends Component {
+class GamesLayout extends Component {
 	api = new GamesAPI(gamesAPI);
 	settings = new Settings('common games', {
 		favorites: [],
 		seen: [],
 	});
 	collapsable = createRef();
+	input = createRef();
 	expand = createRef();
 	state = {
 		expanded: false,
-		suggested: [],
+		category: [],
 		input_focused: false,
 	};
 	componentDidMount() {
@@ -61,26 +62,44 @@ export default class GamesLayout extends Component {
 			this.abort.signal
 		);
 
+		this.setState({
+			category,
+		});
+	}
+	render() {
 		const suggested = [];
 
-		for (let game of category) {
-			let category;
+		for (let i = 0; i < this.state.category.length; i++) {
+			const game = this.state.category[i];
+			let category_name;
 
 			if (game.category in categories) {
-				category = categories[game.category].name;
+				category_name = categories[game.category].name;
 			} else {
 				console.warn(`Unknown category ${game.category}`);
-				category = '';
+				category_name = '';
 			}
+
+			const classes = ['option'];
+
+			if (i === this.state.last_select) {
+				classes.push('hover');
+			}
+
 			suggested.push(
 				<Link
 					key={game.id}
 					onClick={() => this.setState({ input_focused: false })}
+					onMouseOver={() => {
+						this.setState({
+							last_select: i,
+						});
+					}}
 					to={`/games/player.html?id=${game.id}`}
 				>
-					<div key={game.id}>
+					<div className={classes.join(' ')} key={game.id}>
 						<div className="name">{game.name}</div>
-						<div className="category">{category}</div>
+						<div className="category">{category_name}</div>
 						<img
 							src={`/thumbnails/${game.id}.webp`}
 							alt="thumbnail"
@@ -91,11 +110,6 @@ export default class GamesLayout extends Component {
 			);
 		}
 
-		this.setState({
-			suggested,
-		});
-	}
-	render() {
 		return (
 			<>
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
@@ -154,28 +168,91 @@ export default class GamesLayout extends Component {
 					<div
 						className="search-bar"
 						data-focused={Number(this.state.input_focused)}
-						data-suggested={Number(this.state.suggested.length !== 0)}
+						data-suggested={Number(this.state.category.length !== 0)}
 						onBlur={event => {
 							const search_bar = event.target.parentNode;
 							if (!search_bar.contains(event.relatedTarget)) {
-								this.setState({ input_focused: false });
+								//this.setState({ input_focused: false });
 							}
 						}}
 					>
 						<span className="eyeglass material-icons">search</span>
 						<input
+							ref={this.input}
 							type="text"
 							placeholder="Search by game name"
 							onFocus={event => {
-								this.setState({ input_focused: true });
+								this.setState({ input_focused: true, last_select: -1 });
 								this.search(event.target.value);
+							}}
+							onKeyDown={event => {
+								let prevent_default = true;
+
+								switch (event.code) {
+									case 'ArrowDown':
+									case 'ArrowUp':
+										// eslint-disable-next-line no-lone-blocks
+										{
+											let last_i = this.state.last_select;
+
+											let next;
+
+											switch (event.code) {
+												case 'ArrowDown':
+													if (last_i >= this.state.category.length - 1) {
+														next = 0;
+													} else {
+														next = last_i + 1;
+													}
+													break;
+												case 'ArrowUp':
+													if (last_i <= 0) {
+														next = this.state.category.length - 1;
+													} else {
+														next = last_i - 1;
+													}
+													break;
+												// no default
+											}
+
+											this.setState({
+												last_select: next,
+											});
+										}
+										break;
+									case 'Enter':
+										// eslint-disable-next-line no-lone-blocks
+										{
+											const game = this.state.category[this.state.last_select];
+
+											this.input.current.blur();
+											this.setState({
+												input_focused: false,
+											});
+											this.props.navigate(`/games/player.html?id=${game.id}`);
+										}
+										break;
+									default:
+										prevent_default = false;
+										break;
+									// no default
+								}
+
+								if (prevent_default) {
+									event.preventDefault();
+								}
 							}}
 							onChange={event => this.search(event.target.value)}
 						></input>
-						<div className="suggested">
-							{this.state.input_focused && this.state.suggested.length !== 0
-								? this.state.suggested
-								: undefined}
+						<div
+							className="suggested"
+							onMouseLeave={() => {
+								this.setState({
+									last_select: -1,
+								});
+							}}
+						>
+							{this.state.input_focused ? suggested : undefined}
 						</div>
 					</div>
 				</nav>
@@ -184,3 +261,11 @@ export default class GamesLayout extends Component {
 		);
 	}
 }
+
+const GamesLayoutWrapper = forwardRef((props, ref) => {
+	const navigation = useNavigate();
+
+	return <GamesLayout ref={ref} {...props} navigate={navigation} />;
+});
+
+export default GamesLayoutWrapper;

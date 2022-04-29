@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 import { gamesAPI } from './root.js';
 
@@ -95,50 +94,30 @@ export class GamesAPI {
 	}
 }
 
-export class Section extends Component {
-	render() {
-		const items = [];
+export function Section(props) {
+	const items = [];
 
-		for (let item of this.props.items) {
-			items.push(<Item key={item.id} id={item.id} name={item.name} />);
-		}
-
-		return (
-			<section>
-				<h1>{this.props.name}</h1>
-				<div className="items">{items}</div>
-			</section>
-		);
+	for (let item of props.items) {
+		items.push(<Item key={item.id} id={item.id} name={item.name} />);
 	}
+
+	return (
+		<section>
+			<h1>{props.name}</h1>
+			<div className="items">{items}</div>
+		</section>
+	);
 }
 
-export class Item extends Component {
-	state = {
-		search: false,
-		redirect: '',
-	};
-	open() {
-		this.setState({
-			redirect: `/games/player.html?id=${this.props.id}`,
-		});
-	}
-	render() {
-		let redirect;
-
-		if (this.state.redirect !== '') {
-			redirect = <Navigate replace to={this.state.redirect} />;
-		}
-
-		return (
-			<>
-				{redirect}
-				<div className="item" onClick={this.open.bind(this)}>
-					<img alt="thumbnail" src={`/thumbnails/${this.props.id}.webp`}></img>
-					<div>
-						<Obfuscated>{this.props.name}</Obfuscated>
-					</div>
+export function Item(props) {
+	return (
+		<Link to={`/games/player.html?id=${props.id}`}>
+			<div className="item">
+				<img alt="thumbnail" src={`/thumbnails/${props.id}.webp`}></img>
+				<div>
+					<Obfuscated>{props.name}</Obfuscated>
 				</div>
-			</>
-		);
-	}
+			</div>
+		</Link>
+	);
 }
