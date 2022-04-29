@@ -115,7 +115,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/support.html"
+						path="/faq.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Support layout={this.layout} />

@@ -73,8 +73,8 @@ export default class MainLayout extends Layout {
 						<Link to="/games/popular.html" className="entry">
 							<span>Games</span>
 						</Link>
-						<Link to="/support.html" className="entry">
-							<span>Support</span>
+						<Link to="/faq.html" className="entry">
+							<span>FAQ</span>
 						</Link>
 					</div>
 					<button className="lightswitch" onClick={this.lightswitch.bind(this)}>

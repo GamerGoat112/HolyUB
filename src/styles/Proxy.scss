@@ -58,7 +58,7 @@
 					input,
 					.plain-select {
 						margin-left: auto;
-						width: 180px;
+						width: 200px;
 					}
 				}
 			}
@@ -135,6 +135,7 @@
 				display: none;
 				margin-top: calc($height + 2px);
 				width: calc(100% - 2px); // - border
+				z-index: 10;
 
 				@include screen_tablet {
 					width: calc(100% - 22px); // - padding - border

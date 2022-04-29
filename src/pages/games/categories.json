@@ -20,6 +20,9 @@
 	"rpg": {
 		"name": "RPG"
 	},
+	"sandbox": {
+		"name": "Sandbox"
+	},
 	"survival": {
 		"name": "Survival & Horror"
 	},
