@@ -179,6 +179,24 @@ export default class GamesPlayer extends Component {
 				<iframe
 					ref={this.iframe}
 					title="Embed"
+					onLoad={() => {
+						this.iframe.current.contentWindow.addEventListener(
+							'keydown',
+							event => {
+								switch (event.code) {
+									case 'Space':
+									case 'ArrowUp':
+									case 'ArrowDown':
+									case 'ArrowLeft':
+									case 'ArrowRight':
+										event.preventDefault();
+										break;
+									// no default
+								}
+							}
+						);
+					}}
+					onClick={() => this.focus_listener()}
 					onFocus={() => this.focus_listener()}
 					src={resolved}
 				/>
