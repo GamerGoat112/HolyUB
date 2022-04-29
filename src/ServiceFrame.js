@@ -113,7 +113,7 @@ export default class ServiceFrame extends SleepingComponent {
 			}
 
 			const selector =
-				this.iframe_window.document.querySelector(`link[rel*='icon']`);
+				this.iframe_window.document.querySelector('link[rel*="icon"]');
 
 			const icons = [];
 
@@ -155,9 +155,9 @@ export default class ServiceFrame extends SleepingComponent {
 	async omnibox_entries(query) {
 		const entries = [];
 
-		/*if (query === '') {
-			return entries;
-		}*/
+		if (query !== '') {
+			entries.push(query);
+		}
 
 		try {
 			if (this.abort !== undefined) {
@@ -167,7 +167,7 @@ export default class ServiceFrame extends SleepingComponent {
 			this.abort = new AbortController();
 
 			const outgoing = await this.bare.fetch(
-				`https://www.bing.com/AS/Suggestions?` +
+				'https://www.bing.com/AS/Suggestions?' +
 					new URLSearchParams({
 						qry: query,
 						cvid: '\u0001',

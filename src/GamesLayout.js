@@ -172,7 +172,7 @@ class GamesLayout extends Component {
 						onBlur={event => {
 							const search_bar = event.target.parentNode;
 							if (!search_bar.contains(event.relatedTarget)) {
-								this.setState({ input_focused: false });
+								//this.setState({ input_focused: false });
 							}
 						}}
 					>
