@@ -76,12 +76,15 @@ export default class GamesPlayer extends Component {
 
 		this.iframe.current.contentWindow.focus();
 	}
+	id = Math.random();
 	constructor(props) {
 		super(props);
 		this.focus_listener = this.focus_listener.bind(this);
 	}
 	async componentDidMount() {
 		window.addEventListener('focus', this.focus_listener);
+
+		await {};
 
 		try {
 			const data = await this.games_layout.current.api.game(this.props.id);
