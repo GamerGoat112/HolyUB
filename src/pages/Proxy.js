@@ -147,10 +147,19 @@ export default class Proxies extends Component {
 								this.on_input();
 								this.setState({ input_focused: true, last_select: -1 });
 							}}
+							onClick={() => {
+								this.on_input();
+								this.setState({ input_focused: true, last_select: -1 });
+							}}
 							onKeyDown={event => {
 								let prevent_default = true;
 
 								switch (event.code) {
+									case 'Escape':
+										this.setState({
+											input_focused: false,
+										});
+										break;
 									case 'ArrowDown':
 									case 'ArrowUp':
 										// eslint-disable-next-line no-lone-blocks

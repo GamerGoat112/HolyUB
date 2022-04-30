@@ -189,10 +189,17 @@ class GamesLayout extends Component {
 								this.setState({ input_focused: true, last_select: -1 });
 								this.search(event.target.value);
 							}}
+							onClick={event => {
+								this.setState({ input_focused: true, last_select: -1 });
+								this.search(event.target.value);
+							}}
 							onKeyDown={event => {
 								let prevent_default = true;
 
 								switch (event.code) {
+									case 'Escape':
+										this.setState({ input_focused: false });
+										break;
 									case 'ArrowDown':
 									case 'ArrowUp':
 										// eslint-disable-next-line no-lone-blocks
