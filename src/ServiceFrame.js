@@ -155,10 +155,6 @@ export default class ServiceFrame extends SleepingComponent {
 	async omnibox_entries(query) {
 		const entries = [];
 
-		if (query !== '') {
-			entries.push(query);
-		}
-
 		try {
 			if (this.abort !== undefined) {
 				this.abort.abort();
