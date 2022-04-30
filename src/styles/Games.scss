@@ -202,6 +202,7 @@ html[data-page*='games'] #root {
 						}
 
 						> .name {
+							text-align: left;
 							width: 100%;
 							user-select: none;
 							text-overflow: ellipsis;
@@ -211,7 +212,8 @@ html[data-page*='games'] #root {
 						}
 
 						.category {
-							width: 100%;
+							flex: none;
+							width: 25%;
 							color: var(--text-placeholder);
 						}
 

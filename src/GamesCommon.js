@@ -10,6 +10,7 @@ import { gamesAPI } from './root.js';
  * @property {string} [sort]
  * @property {string} [search]
  * @property {number} [limit]
+ * @property {number} [limitPerCategory]
  */
 
 /**

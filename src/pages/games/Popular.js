@@ -41,6 +41,7 @@ export default class Category extends Component {
 		try {
 			const data = await this.api.category({
 				sort: 'Most Plays',
+				limitPerCategory: 8,
 			});
 
 			return this.setState({

@@ -1,35 +1,42 @@
 {
 	"social": {
+		"short": "Social",
 		"name": "Social Media"
 	},
 	"action": {
+		"short": "Action",
 		"name": "Action & Adventure"
 	},
 	"entertainment": {
+		"short": "Entertainment",
 		"name": "Entertainment"
 	},
 	"platformer": {
+		"short": "Platformer",
 		"name": "Platformer"
 	},
 	"shooter": {
+		"short": "Shooters",
 		"name": "Shooters & Strategy"
 	},
-	"mutliplayer": {
-		"name": "Multiplayer"
-	},
 	"rpg": {
+		"short": "RPG",
 		"name": "RPG"
 	},
 	"sandbox": {
+		"short": "Sandbox",
 		"name": "Sandbox"
 	},
 	"survival": {
+		"short": "Survival",
 		"name": "Survival & Horror"
 	},
 	"sports": {
+		"short": "Sports",
 		"name": "Simulation & Sports"
 	},
 	"puzzle": {
+		"short": "Puzzle",
 		"name": "Puzzle"
 	}
 }

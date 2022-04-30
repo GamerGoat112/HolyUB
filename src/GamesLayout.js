@@ -1,11 +1,11 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Component, createRef, forwardRef } from 'react';
+import { Obfuscated } from './obfuscate.js';
 import { gamesAPI, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
 import './styles/Games.scss';
-import { Obfuscated } from './obfuscate.js';
 
 class GamesLayout extends Component {
 	api = new GamesAPI(gamesAPI);
@@ -76,7 +76,7 @@ class GamesLayout extends Component {
 			let category_name;
 
 			if (game.category in categories) {
-				category_name = categories[game.category].name;
+				category_name = categories[game.category].short;
 			} else {
 				console.warn(`Unknown category ${game.category}`);
 				category_name = '';
