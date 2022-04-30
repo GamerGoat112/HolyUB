@@ -2,22 +2,22 @@ import process from 'process';
 
 document.title = 'Holy Unblocker';
 
-let _bareCDN;
-let _rhApp;
-let _gamesAPI;
-let _hcaptchaKey;
+let _BARE_API;
+let _RH_APP;
+let _DB_API;
+let _HCAPTCHA_KEY;
 
 if (process.env.NODE_ENV === 'development') {
-	_bareCDN = 'http://localhost:8001/';
-	_rhApp = 'http://localhost:8002/';
-	_gamesAPI = 'http://localhost:3001/';
-	_hcaptchaKey = '10000000-ffff-ffff-ffff-000000000001';
+	_BARE_API = 'http://localhost:8001/';
+	_RH_APP = 'http://localhost:8002/';
+	_DB_API = 'http://localhost:3001/';
+	_HCAPTCHA_KEY = '10000000-ffff-ffff-ffff-000000000001';
 } else {
 	const { host } = global.location;
-	_bareCDN = `https://uv.${host}/bare/`;
-	_rhApp = `https://rh.${host}/`;
-	_gamesAPI = `https://gs.${host}/`;
-	_hcaptchaKey = 'e4953837-586a-40af-b26c-4e0c92b6ee13';
+	_BARE_API = `https://uv.${host}/bare/`;
+	_RH_APP = `https://rh.${host}/`;
+	_DB_API = `https://gs.${host}/`;
+	_HCAPTCHA_KEY = 'e4953837-586a-40af-b26c-4e0c92b6ee13';
 }
 
 /*Test Key Set: Publisher Account
@@ -26,11 +26,13 @@ Test parameter Value
 
 Site Key 10000000-ffff-ffff-ffff-000000000001 Secret Key 0x0000000000000000000000000000000000000000*/
 
-export const bareCDN = _bareCDN;
-export const rhApp = _rhApp;
-export const gamesAPI = _gamesAPI;
-export const gamesCDN = new URL('/games/', global.location);
-export const hcaptchaKey = _hcaptchaKey;
+export const BARE_API = _BARE_API;
+export const RH_APP = _RH_APP;
+export const DB_API = _DB_API;
+export const HCAPTCHA_KEY = _HCAPTCHA_KEY;
+
+export const DEFAULT_PROXY = 'ultraviolet';
+export const GAMES_CDN = new URL('/games/', global.location);
 
 export default document.querySelector('#root');
 

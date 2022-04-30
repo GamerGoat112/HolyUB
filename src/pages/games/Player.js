@@ -1,14 +1,14 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { gamesCDN, hcaptchaKey, set_page } from '../../root.js';
+import { GAMES_CDN, HCAPTCHA_KEY, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import '../../styles/Games Player.scss';
 
-function resolve_game(src, type, setting) {
+async function resolve_game(src, type, setting) {
 	switch (type) {
 		case 'proxy':
-			return resolve_proxy(src, setting);
+			return await resolve_proxy(src, setting);
 		case 'embed':
 			return src;
 		case 'flash':
@@ -88,7 +88,12 @@ export default class GamesPlayer extends Component {
 
 		try {
 			const data = await this.games_layout.current.api.game(this.props.id);
-			await this.setState({ data });
+			const resolved_src = await resolve_game(
+				new URL(this.state.data.src, GAMES_CDN).toString(),
+				this.state.data.type,
+				this.layout.current.settings.get('proxy')
+			);
+			await this.setState({ data, resolved_src });
 		} catch (error) {
 			this.setState({ error });
 			return;
@@ -119,12 +124,6 @@ export default class GamesPlayer extends Component {
 				</main>
 			);
 		}
-
-		const resolved = resolve_game(
-			new URL(this.state.data.src, gamesCDN).toString(),
-			this.state.data.type,
-			this.layout.current.settings.get('proxy')
-		);
 
 		return (
 			<main>
@@ -198,7 +197,7 @@ export default class GamesPlayer extends Component {
 					}}
 					onClick={() => this.focus_listener()}
 					onFocus={() => this.focus_listener()}
-					src={resolved}
+					src={this.state.resolved_src}
 				/>
 				<HCaptcha
 					onLoad={async () => {
@@ -218,7 +217,7 @@ export default class GamesPlayer extends Component {
 							this.seen = true;
 						}
 					}}
-					sitekey={hcaptchaKey}
+					sitekey={HCAPTCHA_KEY}
 					size="invisible"
 					ref={this.captcha}
 				/>

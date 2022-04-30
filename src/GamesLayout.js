@@ -1,14 +1,14 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Component, createRef, forwardRef } from 'react';
 import { Obfuscated } from './obfuscate.js';
-import { gamesAPI, set_page } from './root.js';
+import { DB_API, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
 import './styles/Games.scss';
 
 class GamesLayout extends Component {
-	api = new GamesAPI(gamesAPI);
+	api = new GamesAPI(DB_API);
 	settings = new Settings('common games', {
 		favorites: [],
 		seen: [],

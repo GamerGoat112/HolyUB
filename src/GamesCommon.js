@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
-import { gamesAPI } from './root.js';
 
 /**
  *
@@ -31,7 +30,7 @@ export class GamesAPI {
 		this.server = server;
 	}
 	async game(id) {
-		const outgoing = await fetch(new URL(`./games/${id}/`, gamesAPI));
+		const outgoing = await fetch(new URL(`./games/${id}/`, this.server));
 
 		if (!outgoing.ok) {
 			throw await outgoing.json();
@@ -46,7 +45,7 @@ export class GamesAPI {
 					new URLSearchParams({
 						token,
 					}),
-				gamesAPI
+				this.server
 			),
 			{
 				method: 'PUT',
@@ -82,7 +81,7 @@ export class GamesAPI {
 		const outgoing = await fetch(
 			new URL(
 				'./games/?' + new URLSearchParams(this.sort_params(params)),
-				gamesAPI
+				this.server
 			),
 			{ signal }
 		);

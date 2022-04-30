@@ -1,5 +1,5 @@
 import ProxyModule from '../../ProxyModule.js';
-import { bareCDN } from '../../root.js';
+import { BARE_API } from '../../root.js';
 
 /**
  * @callback UVEncode
@@ -49,7 +49,7 @@ export default class Ultraviolet extends ProxyModule {
 		await this.possible_error();
 
 		await this.possible_error('Bare server is unreachable.');
-		await fetch(bareCDN);
+		await fetch(BARE_API);
 		await this.possible_error();
 
 		this.redirect(

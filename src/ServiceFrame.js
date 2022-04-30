@@ -1,4 +1,4 @@
-import root, { bareCDN } from './root.js';
+import root, { BARE_API } from './root.js';
 import { ReactComponent as GlobeSVG } from './assets/globe.svg';
 import SleepingComponent from './SleepingComponent';
 import { createRef } from 'react';
@@ -30,7 +30,7 @@ export default class ServiceFrame extends SleepingComponent {
 	// headless client for serviceworker
 	headless = createRef();
 	search = new SearchBuilder('https://www.google.com/search?q=%s');
-	bare = new BareClient(bareCDN);
+	bare = new BareClient(BARE_API);
 	/**
 	 * @returns {import('react').RefObject<import('../MainLayout.js').default>}
 	 */
@@ -50,7 +50,7 @@ export default class ServiceFrame extends SleepingComponent {
 	}
 	async proxy(input) {
 		const src = this.search.query(input);
-		const proxied_src = resolve_proxy(
+		const proxied_src = await resolve_proxy(
 			src,
 			this.layout.current.settings.get('proxy')
 		);

@@ -1,10 +1,10 @@
 import ProxyModule from '../../ProxyModule.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
-import { rhApp } from '../../root.js';
+import { RH_APP } from '../../root.js';
 
 export default class Rammerhead extends ProxyModule {
 	name = 'Rammerhead';
-	api = new RammerheadAPI(rhApp);
+	api = new RammerheadAPI(RH_APP);
 	/**
 	 * @returns {string|undefined} value
 	 */
@@ -19,7 +19,7 @@ export default class Rammerhead extends ProxyModule {
 	}
 	async _componentDidMount() {
 		await this.possible_error('Rammerhead server is unreachable.');
-		await fetch(rhApp);
+		await fetch(RH_APP);
 		await this.possible_error();
 
 		await this.possible_error('Unable to check if the saved session exists.');
@@ -42,7 +42,7 @@ export default class Rammerhead extends ProxyModule {
 		const shuffler = new StrShuffler(dict);
 
 		this.redirect(
-			new URL(`${this.session}/${shuffler.shuffle(this.destination)}`, rhApp)
+			new URL(`${this.session}/${shuffler.shuffle(this.destination)}`, RH_APP)
 		);
 	}
 }

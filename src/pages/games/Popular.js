@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { gamesAPI, set_page } from '../../root.js';
+import { DB_API, set_page } from '../../root.js';
 import { Item, GamesAPI } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 import categories from './categories.json';
@@ -29,7 +29,7 @@ export default class Category extends Component {
 	state = {
 		data: [],
 	};
-	api = new GamesAPI(gamesAPI);
+	api = new GamesAPI(DB_API);
 	abort = new AbortController();
 	/**
 	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
@@ -41,7 +41,7 @@ export default class Category extends Component {
 		try {
 			const data = await this.api.category({
 				sort: 'Most Plays',
-				limitPerCategory: 8,
+				limitPerCategory: 6,
 			});
 
 			return this.setState({

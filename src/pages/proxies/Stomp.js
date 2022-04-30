@@ -1,6 +1,6 @@
 import ProxyModule from '../../ProxyModule.js';
 import process from 'process';
-import { bareCDN } from '../../root.js';
+import { BARE_API } from '../../root.js';
 
 export default class Stomp extends ProxyModule {
 	name = 'Stomp';
@@ -12,7 +12,7 @@ export default class Stomp extends ProxyModule {
 		const { StompBoot } = global;
 
 		const config = {
-			bare: bareCDN,
+			bare: BARE_API,
 			directory: '/stomp/',
 		};
 
@@ -31,7 +31,7 @@ export default class Stomp extends ProxyModule {
 		this.possible_error();
 
 		await this.possible_error('Bare server is unreachable.');
-		await fetch(bareCDN);
+		await fetch(BARE_API);
 		await this.possible_error();
 
 		this.redirect(this.boot.html(this.destination));
