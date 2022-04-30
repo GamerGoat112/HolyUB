@@ -89,12 +89,13 @@ export default class GamesPlayer extends Component {
 		try {
 			const data = await this.games_layout.current.api.game(this.props.id);
 			const resolved_src = await resolve_game(
-				new URL(this.state.data.src, GAMES_CDN).toString(),
-				this.state.data.type,
+				new URL(data.src, GAMES_CDN).toString(),
+				data.type,
 				this.layout.current.settings.get('proxy')
 			);
 			await this.setState({ data, resolved_src });
 		} catch (error) {
+			console.error(error);
 			this.setState({ error });
 			return;
 		}
