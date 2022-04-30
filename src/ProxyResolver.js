@@ -74,7 +74,7 @@ async function compatible_proxy(src) {
 	const api = new CompatAPI(DB_API);
 
 	try {
-		return await api.compat(host);
+		return await api.compat(host).proxy;
 	} catch (error) {
 		return DEFAULT_PROXY;
 	}
