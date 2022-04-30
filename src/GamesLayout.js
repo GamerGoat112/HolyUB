@@ -5,6 +5,7 @@ import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
 import './styles/Games.scss';
+import { Obfuscated } from './obfuscate.js';
 
 class GamesLayout extends Component {
 	api = new GamesAPI(gamesAPI);
@@ -56,6 +57,7 @@ class GamesLayout extends Component {
 
 		const category = await this.api.category(
 			{
+				sort: 'search',
 				search: query,
 				limit: 8,
 			},
@@ -98,7 +100,9 @@ class GamesLayout extends Component {
 					to={`/games/player.html?id=${game.id}`}
 				>
 					<div className={classes.join(' ')} key={game.id}>
-						<div className="name">{game.name}</div>
+						<div className="name">
+							<Obfuscated ellipsis>{game.name}</Obfuscated>
+						</div>
 						<div className="category">{category_name}</div>
 						<img
 							src={`/thumbnails/${game.id}.webp`}
@@ -172,7 +176,7 @@ class GamesLayout extends Component {
 						onBlur={event => {
 							const search_bar = event.target.parentNode;
 							if (!search_bar.contains(event.relatedTarget)) {
-								//this.setState({ input_focused: false });
+								// this.setState({ input_focused: false });
 							}
 						}}
 					>

@@ -204,6 +204,10 @@ html[data-page*='games'] #root {
 						> .name {
 							width: 100%;
 							user-select: none;
+							text-overflow: ellipsis;
+							overflow: hidden;
+							white-space: nowrap;
+							padding: 0px 10px;
 						}
 
 						.category {
