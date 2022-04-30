@@ -59,7 +59,7 @@ export default class Proxies extends Component {
 	search_submit() {
 		let value;
 
-		if (this.state.last_select === -1) {
+		if (this.state.last_select === -1 || this.last_input === 'input') {
 			value = this.input.current.value;
 		} else {
 			value = textContent(this.state.omnibox_entries[this.state.last_select]);
@@ -92,6 +92,7 @@ export default class Proxies extends Component {
 						tabIndex="0"
 						className={classes.join(' ')}
 						onClick={() => {
+							this.last_input = 'select';
 							this.input.current.value = text.current.textContent;
 							this.search_submit();
 						}}
@@ -151,6 +152,9 @@ export default class Proxies extends Component {
 								this.on_input();
 								this.setState({ input_focused: true, last_select: -1 });
 							}}
+							onChange={() => {
+								this.last_input = 'input';
+							}}
 							onKeyDown={event => {
 								let prevent_default = true;
 
@@ -188,6 +192,8 @@ export default class Proxies extends Component {
 													break;
 												// no default
 											}
+
+											this.last_input = 'select';
 
 											this.setState({
 												last_select: next,
@@ -245,10 +251,10 @@ export default class Proxies extends Component {
 								}
 								defaultValue={this.layout.current.settings.get('proxy')}
 							>
-								<option value="auto">Automatic (Default)</option>
-								<option value="uv">Ultraviolet</option>
-								<option value="rh">Rammerhead</option>
-								<option value="st">Stomp</option>
+								<option value="automatic">Automatic (Default)</option>
+								<option value="ultraviolet">Ultraviolet</option>
+								<option value="rammerhead">Rammerhead</option>
+								<option value="stomp">Stomp</option>
 							</PlainSelect>
 						</label>
 					</Expand>

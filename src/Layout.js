@@ -11,7 +11,7 @@ export default class Layout extends Component {
 		'global settings',
 		{
 			theme: THEMES[0],
-			proxy: 'auto',
+			proxy: 'automatic',
 		},
 		this
 	);

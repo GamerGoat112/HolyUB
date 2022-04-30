@@ -74,6 +74,10 @@ export default class PlainSelect extends Component {
 			}
 		}
 
+		if (active_option === undefined) {
+			active_option = this.state.options[0];
+		}
+
 		return (
 			<div
 				{...attributes}

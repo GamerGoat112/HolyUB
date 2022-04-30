@@ -69,17 +69,6 @@ export class CompatAPI {
 	}
 }
 
-async function compatible_proxy(src) {
-	const { host } = new URL(src);
-	const api = new CompatAPI(DB_API);
-
-	try {
-		return await api.compat(host).proxy;
-	} catch (error) {
-		return DEFAULT_PROXY;
-	}
-}
-
 /**
  *
  * @param {string} src
@@ -87,8 +76,15 @@ async function compatible_proxy(src) {
  * @returns {string}
  */
 export default async function resolve_proxy(src, setting) {
-	if (setting === 'auto') {
-		setting = await compatible_proxy(src);
+	if (setting === 'automatic') {
+		const { host } = new URL(src);
+		const api = new CompatAPI(DB_API);
+
+		try {
+			setting = (await api.compat(host)).proxy;
+		} catch (error) {
+			setting = DEFAULT_PROXY;
+		}
 	}
 
 	switch (setting) {

@@ -50,6 +50,8 @@ export default class ServiceFrame extends SleepingComponent {
 	}
 	async proxy(input) {
 		const src = this.search.query(input);
+
+		console.log(this.layout.current.settings.get('proxy'));
 		const proxied_src = await resolve_proxy(
 			src,
 			this.layout.current.settings.get('proxy')
