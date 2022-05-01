@@ -133,7 +133,18 @@ export default class PlainSelect extends Component {
 							}
 							break;
 						case 'Enter':
-							this.set_value(this.state.last_select);
+							if (this.state.open) {
+								this.set_value(this.state.last_select);
+							} else {
+								this.setState({
+									open: true,
+								});
+							}
+							break;
+						case 'Space':
+							this.setState({
+								open: true,
+							});
 							break;
 						default:
 							prevent_default = false;
