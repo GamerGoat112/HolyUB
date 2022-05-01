@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 export default class ProxyLayout extends Layout {
 	render() {
-		super.update();
+		this.update();
 
 		return (
 			<>

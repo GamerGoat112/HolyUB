@@ -1,7 +1,7 @@
 @import './Common.scss';
 @import './Screen.scss';
 
-html[data-page*='games'][data-service='1'] {
+html[data-page*='games'][data-expanded='1'] {
 	overflow: hidden;
 }
 
@@ -73,6 +73,7 @@ html[data-page*='games'] #root {
 				background-color: rgba(0, 0, 0, 0.5);
 				z-index: 3;
 			}
+
 			.collapsable {
 				display: flex;
 			}

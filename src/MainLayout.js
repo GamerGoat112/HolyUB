@@ -34,7 +34,7 @@ export default class MainLayout extends Layout {
 		document.removeEventListener('click', this.listen_click);
 	}
 	render() {
-		super.update();
+		this.update();
 
 		return (
 			<>

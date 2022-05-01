@@ -70,8 +70,12 @@ class GamesLayout extends Layout {
 			category,
 		});
 	}
-	render() {
+	update() {
 		super.update();
+		document.documentElement.dataset.expanded = Number(this.state.expanded);
+	}
+	render() {
+		this.update();
 
 		const suggested = [];
 
@@ -161,7 +165,9 @@ class GamesLayout extends Layout {
 							<span className="material-icons">chevron_left</span>
 							<span className="name">Home</span>
 						</button>
+
 						<p>Genre</p>
+
 						<div className="genres">
 							<Link
 								to="/games/popular.html"
