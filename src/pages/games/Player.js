@@ -30,7 +30,9 @@ async function resolve_game(src, type, setting) {
 }
 
 export default class GamesPlayer extends Component {
-	state = {};
+	state = {
+		panorama: false,
+	};
 	get favorited() {
 		return this.games_layout.current.settings
 			.get('favorites')
@@ -127,55 +129,7 @@ export default class GamesPlayer extends Component {
 		}
 
 		return (
-			<main>
-				<div className="title">
-					<h3>
-						<Obfuscated>{this.state.data.name}</Obfuscated>
-					</h3>
-					<div className="shift-right"></div>
-					<button
-						className="material-icons"
-						onClick={() => {
-							this.focus_listener();
-							this.iframe.current.requestFullscreen();
-						}}
-					>
-						fullscreen
-					</button>
-					<button
-						className="material-icons"
-						onClick={() => {
-							this.focus_listener();
-
-							this.iframe.current.scrollIntoView({
-								behavior: 'auto',
-								block: 'center',
-								inline: 'center',
-							});
-						}}
-					>
-						vertical_align_center
-					</button>
-					<button
-						className="material-icons"
-						onClick={() => {
-							const favorites =
-								this.games_layout.current.settings.get('favorites');
-							const i = favorites.indexOf(this.props.id);
-
-							if (i === -1) {
-								favorites.push(this.props.id);
-							} else {
-								favorites.splice(i, 1);
-							}
-
-							this.games_layout.current.settings.set('favorites', favorites);
-							this.forceUpdate();
-						}}
-					>
-						{this.favorited ? 'star' : 'star_outlined'}
-					</button>
-				</div>
+			<main data-panorama={Number(this.state.panorama)}>
 				<iframe
 					ref={this.iframe}
 					title="Embed"
@@ -200,6 +154,54 @@ export default class GamesPlayer extends Component {
 					onFocus={() => this.focus_listener()}
 					src={this.state.resolved_src}
 				/>
+				<div className="title">
+					<h3 className="name">
+						<Obfuscated>{this.state.data.name}</Obfuscated>
+					</h3>
+					<div className="shift-right"></div>
+					<button
+						className="material-icons"
+						onClick={() => {
+							this.focus_listener();
+							this.iframe.current.requestFullscreen();
+						}}
+					>
+						fullscreen
+					</button>
+					<button
+						className="material-icons"
+						onClick={async () => {
+							await this.setState({
+								panorama: !this.state.panorama,
+							});
+
+							if (this.state.panorama) {
+								this.focus_listener();
+							}
+						}}
+					>
+						{this.state.panorama ? 'chevron_left' : 'panorama'}
+					</button>
+					<button
+						className="material-icons"
+						onClick={() => {
+							const favorites =
+								this.games_layout.current.settings.get('favorites');
+							const i = favorites.indexOf(this.props.id);
+
+							if (i === -1) {
+								favorites.push(this.props.id);
+							} else {
+								favorites.splice(i, 1);
+							}
+
+							this.games_layout.current.settings.set('favorites', favorites);
+							this.forceUpdate();
+						}}
+					>
+						{this.favorited ? 'star' : 'star_outlined'}
+					</button>
+				</div>
 				<HCaptcha
 					onLoad={async () => {
 						if (!this.seen) {
