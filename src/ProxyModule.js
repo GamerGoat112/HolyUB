@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
+import './styles/Proxy Script.scss';
 
 export default class ProxyLayout extends Component {
 	layout = new Layout();
