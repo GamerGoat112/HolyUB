@@ -154,6 +154,9 @@ export default class Proxies extends Component {
 							}}
 							onChange={() => {
 								this.last_input = 'input';
+								this.setState({
+									last_select: -1,
+								});
 							}}
 							onKeyDown={event => {
 								let prevent_default = true;

@@ -266,7 +266,12 @@ class GamesLayout extends Layout {
 									event.preventDefault();
 								}
 							}}
-							onChange={event => this.search(event.target.value)}
+							onChange={event => {
+								this.search(event.target.value);
+								this.setState({
+									last_select: -1,
+								});
+							}}
 						></input>
 						<div
 							className="suggested"
