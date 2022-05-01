@@ -91,7 +91,6 @@ export default class PlainSelect extends Component {
 					switch (event.code) {
 						case 'ArrowDown':
 						case 'ArrowUp':
-							// eslint-disable-next-line no-lone-blocks
 							{
 								let last_i = 0;
 

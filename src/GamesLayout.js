@@ -217,7 +217,6 @@ class GamesLayout extends Layout {
 										break;
 									case 'ArrowDown':
 									case 'ArrowUp':
-										// eslint-disable-next-line no-lone-blocks
 										{
 											let last_i = this.state.last_select;
 
@@ -247,7 +246,6 @@ class GamesLayout extends Layout {
 										}
 										break;
 									case 'Enter':
-										// eslint-disable-next-line no-lone-blocks
 										{
 											const game = this.state.category[this.state.last_select];
 

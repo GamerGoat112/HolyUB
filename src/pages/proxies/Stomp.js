@@ -31,7 +31,12 @@ export default class Stomp extends ProxyModule {
 		this.possible_error();
 
 		await this.possible_error('Bare server is unreachable.');
-		await fetch(BARE_API);
+		{
+			const bare = await fetch(BARE_API);
+			if (!bare.ok) {
+				throw await bare.json();
+			}
+		}
 		await this.possible_error();
 
 		this.redirect(this.boot.html(this.destination));

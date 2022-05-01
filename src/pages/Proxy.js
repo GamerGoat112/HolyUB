@@ -166,7 +166,6 @@ export default class Proxies extends Component {
 										break;
 									case 'ArrowDown':
 									case 'ArrowUp':
-										// eslint-disable-next-line no-lone-blocks
 										{
 											let last_i = this.state.last_select;
 
