@@ -27,6 +27,7 @@ html[data-page*='games'] #root {
 			position: relative;
 			display: block;
 			cursor: pointer;
+			z-index: 5;
 
 			> div {
 				width: 15px;
@@ -62,6 +63,16 @@ html[data-page*='games'] #root {
 		}
 
 		&[data-expanded='1'] {
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 100vw;
+				height: 100vh;
+				background-color: rgba(0, 0, 0, 0.5);
+				z-index: 3;
+			}
 			.collapsable {
 				display: flex;
 			}
@@ -293,35 +304,70 @@ html[data-page*='games'] #root {
 		}
 
 		> .collapsable {
+			z-index: 4;
 			position: absolute;
 			display: none;
 			flex-direction: column;
 			overflow-y: auto;
 			background-color: var(--background);
-			border: 1px solid var(--border);
-			border-radius: 5px;
-			top: 100%;
-			left: 20px;
+			border-right: 1px solid var(--border);
+			$top: 71px;
+			top: 0px;
+			left: 0px;
+			height: calc(100vh - $top);
+			width: 340px;
+			padding: $top 15px 0px 15px;
+			text-align: left;
+			user-select: none;
 
-			> .entry {
+			.material-icons {
+				font-size: inherit !important;
+			}
+
+			> .button {
+				background-color: transparent;
+				border: none;
+				color: inherit;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				height: var(--nav-height);
-				padding: 0px 15px;
-				height: 30px;
-				border-radius: 5px;
-				font-size: 13px;
-				color: inherit;
-				white-space: nowrap;
+				cursor: pointer;
+				font: inherit;
+				font-size: 12px;
+			}
 
-				span {
-					position: relative;
-				}
+			> p {
+				font-size: 12px;
+				color: var(--text-placeholder);
+			}
 
-				&:hover {
-					text-decoration: none;
-					background-color: var(--background-accent);
+			> .genres {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: row;
+
+				> .entry {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 2px 8px;
+					margin: 2px;
+					height: 20px;
+					border: 1px solid var(--border);
+					border-radius: 5px;
+					font-size: 11px;
+					font-family: 'Montserrat Alternates';
+					color: var(--text-placeholder);
+					color: inherit;
+					white-space: nowrap;
+
+					span {
+						position: relative;
+					}
+
+					&:hover {
+						text-decoration: none;
+						background-color: var(--background-accent);
+					}
 				}
 			}
 		}
@@ -330,7 +376,6 @@ html[data-page*='games'] #root {
 			justify-content: space-between;
 
 			.collapsable {
-				justify-content: space-around;
 				width: 100%;
 			}
 		}

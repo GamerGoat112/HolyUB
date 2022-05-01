@@ -122,9 +122,6 @@ class GamesLayout extends Layout {
 			<>
 				<ObfuscateLayout />
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
-					<button className="button" onClick={() => this.props.navigate('/')}>
-						<span className="material-icons">chevron_left</span>
-					</button>
 					<button
 						tabIndex="0"
 						className="expand button"
@@ -160,21 +157,28 @@ class GamesLayout extends Layout {
 							}
 						}}
 					>
-						<Link
-							to="/games/popular.html"
-							onClick={this.category_click}
-							className="entry"
-						>
-							<span>Popular</span>
-						</Link>
-						<Link
-							to="/games/favorites.html"
-							onClick={this.category_click}
-							className="entry"
-						>
-							<span>Favorites</span>
-						</Link>
-						{this.categories}
+						<button className="button" onClick={() => this.props.navigate('/')}>
+							<span className="material-icons">chevron_left</span>
+							<span className="name">Home</span>
+						</button>
+						<p>Genre</p>
+						<div className="genres">
+							<Link
+								to="/games/popular.html"
+								onClick={this.category_click}
+								className="entry"
+							>
+								<span>Popular</span>
+							</Link>
+							<Link
+								to="/games/favorites.html"
+								onClick={this.category_click}
+								className="entry"
+							>
+								<span>Favorites</span>
+							</Link>
+							{this.categories}
+						</div>
 					</div>
 					<div
 						className="search-bar"
