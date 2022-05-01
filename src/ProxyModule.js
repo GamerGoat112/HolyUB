@@ -78,15 +78,15 @@ export default class ProxyLayout extends Component {
 
 		let main;
 
-		//if (this.state.error === undefined) {
-		main = (
-			<main ref={this.container}>
-				<p>
-					<Obfuscated>{this.name}</Obfuscated> is loading...
-				</p>
-			</main>
-		);
-		/*} else {
+		if (this.state.error === undefined) {
+			main = (
+				<main ref={this.container}>
+					<p>
+						<Obfuscated>{this.name}</Obfuscated> is loading...
+					</p>
+				</main>
+			);
+		} else {
 			let description;
 
 			if (this.state.possible_error === undefined) {
@@ -128,7 +128,7 @@ export default class ProxyLayout extends Component {
 					</p>
 				</main>
 			);
-		}*/
+		}
 
 		return main;
 	}
