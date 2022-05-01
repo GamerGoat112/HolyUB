@@ -164,20 +164,6 @@ export default class GamesPlayer extends Component {
 					</button>
 					<button
 						className="material-icons"
-						onClick={async () => {
-							await this.setState({
-								panorama: !this.state.panorama,
-							});
-
-							if (this.state.panorama) {
-								this.focus_listener();
-							}
-						}}
-					>
-						{this.state.panorama ? 'chevron_left' : 'panorama'}
-					</button>
-					<button
-						className="material-icons"
 						onClick={() => {
 							const favorites =
 								this.layout.current.games_settings.get('favorites');
@@ -194,6 +180,20 @@ export default class GamesPlayer extends Component {
 						}}
 					>
 						{this.favorited ? 'star' : 'star_outlined'}
+					</button>
+					<button
+						className="material-icons"
+						onClick={async () => {
+							await this.setState({
+								panorama: !this.state.panorama,
+							});
+
+							if (this.state.panorama) {
+								this.focus_listener();
+							}
+						}}
+					>
+						{this.state.panorama ? 'chevron_left' : 'panorama'}
 					</button>
 				</div>
 				<HCaptcha
