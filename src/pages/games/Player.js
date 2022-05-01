@@ -34,17 +34,17 @@ export default class GamesPlayer extends Component {
 		panorama: false,
 	};
 	get favorited() {
-		return this.games_layout.current.settings
+		return this.layout.current.games_settings
 			.get('favorites')
 			.includes(this.props.id);
 	}
 	get seen() {
-		return this.games_layout.current.settings
+		return this.layout.current.games_settings
 			.get('seen')
 			.includes(this.props.id);
 	}
 	set seen(value) {
-		const seen = this.games_layout.current.settings.get('seen');
+		const seen = this.layout.current.games_settings.get('seen');
 
 		if (value) {
 			seen.push(this.props.id);
@@ -53,22 +53,16 @@ export default class GamesPlayer extends Component {
 			seen.splice(i, 1);
 		}
 
-		this.games_layout.current.settings.set('seen', seen);
+		this.layout.current.games_settings.set('seen', seen);
 	}
 	captcha = createRef();
 	iframe = createRef();
 
 	/**
-	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
-	}
-	/**
-	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
-	 */
-	get games_layout() {
-		return this.props.games_layout;
 	}
 	abort = new AbortController();
 	focus_listener() {
@@ -89,7 +83,7 @@ export default class GamesPlayer extends Component {
 		await {};
 
 		try {
-			const data = await this.games_layout.current.api.game(this.props.id);
+			const data = await this.layout.current.games_api.game(this.props.id);
 			const resolved_src = await resolve_game(
 				new URL(data.src, GAMES_CDN).toString(),
 				data.type,
@@ -186,7 +180,7 @@ export default class GamesPlayer extends Component {
 						className="material-icons"
 						onClick={() => {
 							const favorites =
-								this.games_layout.current.settings.get('favorites');
+								this.layout.current.games_settings.get('favorites');
 							const i = favorites.indexOf(this.props.id);
 
 							if (i === -1) {
@@ -195,7 +189,7 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							this.games_layout.current.settings.set('favorites', favorites);
+							this.layout.current.games_settings.set('favorites', favorites);
 							this.forceUpdate();
 						}}
 					>
@@ -213,7 +207,7 @@ export default class GamesPlayer extends Component {
 					onVerify={async token => {
 						if (this.captcha_seen === true) {
 							this.captcha_seen = false;
-							await this.games_layout.current.api.game_plays(
+							await this.layout.current.games_api.game_plays(
 								this.props.id,
 								token
 							);

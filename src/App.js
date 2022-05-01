@@ -67,7 +67,6 @@ function PlayerProxy(props) {
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
-	games_layout = createRef();
 	categories = [];
 	constructor(props) {
 		super(props);
@@ -85,7 +84,6 @@ export default class App extends Component {
 								key={id}
 								id={id}
 								name={name}
-								games_layout={this.games_layout}
 								layout={this.layout}
 							/>
 						</Suspense>
@@ -154,45 +152,32 @@ export default class App extends Component {
 							</Suspense>
 						}
 					/>
+				</Route>
+				<Route
+					path="/games/"
+					element={<GamesLayout ref={this.layout} layout={this.layout} />}
+				>
 					<Route
-						path="/games/"
+						path="popular.html"
 						element={
-							<GamesLayout ref={this.games_layout} layout={this.layout} />
+							<Suspense fallback={<></>}>
+								<GamesPopular layout={this.layout} />
+							</Suspense>
 						}
-					>
-						<Route
-							path="popular.html"
-							element={
-								<Suspense fallback={<></>}>
-									<GamesPopular
-										games_layout={this.games_layout}
-										layout={this.layout}
-									/>
-								</Suspense>
-							}
-						/>
-						<Route
-							path="favorites.html"
-							element={
-								<Suspense fallback={<></>}>
-									<GamesFavorites
-										games_layout={this.games_layout}
-										layout={this.layout}
-									/>
-								</Suspense>
-							}
-						/>
-						<Route
-							path="player.html"
-							element={
-								<PlayerProxy
-									games_layout={this.games_layout}
-									layout={this.layout}
-								/>
-							}
-						/>
-						{this.categories}
-					</Route>
+					/>
+					<Route
+						path="favorites.html"
+						element={
+							<Suspense fallback={<></>}>
+								<GamesFavorites layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="player.html"
+						element={<PlayerProxy layout={this.layout} />}
+					/>
+					{this.categories}
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
 					<Route

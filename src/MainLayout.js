@@ -33,13 +33,6 @@ export default class MainLayout extends Layout {
 		super.componentWillUnmount();
 		document.removeEventListener('click', this.listen_click);
 	}
-	lightswitch() {
-		if (this.settings.get('theme') === 'day') {
-			this.settings.set('theme', 'night');
-		} else if (this.settings.get('theme') === 'night') {
-			this.settings.set('theme', 'day');
-		}
-	}
 	render() {
 		super.update();
 
@@ -77,7 +70,16 @@ export default class MainLayout extends Layout {
 							<span>FAQ</span>
 						</Link>
 					</div>
-					<button className="lightswitch" onClick={this.lightswitch.bind(this)}>
+					<button
+						className="lightswitch"
+						onClick={() => {
+							if (this.settings.get('theme') === 'day') {
+								this.settings.set('theme', 'night');
+							} else if (this.settings.get('theme') === 'night') {
+								this.settings.set('theme', 'day');
+							}
+						}}
+					>
 						<span className="material-icons">
 							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}
 						</span>

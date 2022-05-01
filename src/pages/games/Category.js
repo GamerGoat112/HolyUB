@@ -12,8 +12,8 @@ export default class Category extends Component {
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
 	 */
-	get games_layout() {
-		return this.props.games_layout;
+	get layout() {
+		return this.props.layout;
 	}
 	settings = new Settings(`games category ${this.props.id} settings`, {
 		sort: 'Most Played',
@@ -48,7 +48,7 @@ export default class Category extends Component {
 		}
 
 		try {
-			const data = await this.games_layout.current.api.category(
+			const data = await this.layout.current.games_api.category(
 				{
 					category: this.props.id,
 					sort,

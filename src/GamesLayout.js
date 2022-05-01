@@ -1,15 +1,16 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Component, createRef, forwardRef } from 'react';
-import { Obfuscated } from './obfuscate.js';
+import { createRef, forwardRef } from 'react';
+import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
 import { DB_API, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
+import Layout from './Layout.js';
 import './styles/Games.scss';
 
-class GamesLayout extends Component {
-	api = new GamesAPI(DB_API);
-	settings = new Settings('common games', {
+class GamesLayout extends Layout {
+	games_api = new GamesAPI(DB_API);
+	games_settings = new Settings('common games', {
 		favorites: [],
 		seen: [],
 	});
@@ -17,6 +18,7 @@ class GamesLayout extends Component {
 	input = createRef();
 	expand = createRef();
 	state = {
+		...this.state,
 		expanded: false,
 		category: [],
 		input_focused: false,
@@ -55,7 +57,7 @@ class GamesLayout extends Component {
 
 		this.abort = new AbortController();
 
-		const category = await this.api.category(
+		const category = await this.games_api.category(
 			{
 				sort: 'search',
 				search: query,
@@ -69,6 +71,8 @@ class GamesLayout extends Component {
 		});
 	}
 	render() {
+		super.update();
+
 		const suggested = [];
 
 		for (let i = 0; i < this.state.category.length; i++) {
@@ -116,10 +120,14 @@ class GamesLayout extends Component {
 
 		return (
 			<>
+				<ObfuscateLayout />
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
-					<div
+					<button className="button" onClick={() => this.props.navigate('/')}>
+						<span className="material-icons">chevron_left</span>
+					</button>
+					<button
 						tabIndex="0"
-						className="expand"
+						className="expand button"
 						ref={this.expand}
 						onClick={async () => {
 							await this.setState({
@@ -137,7 +145,7 @@ class GamesLayout extends Component {
 							<span></span>
 							<span></span>
 						</div>
-					</div>
+					</button>
 					<div
 						tabIndex="0"
 						className="collapsable"
@@ -266,6 +274,20 @@ class GamesLayout extends Component {
 							{this.state.input_focused ? suggested : undefined}
 						</div>
 					</div>
+					<button
+						className="button"
+						onClick={() => {
+							if (this.settings.get('theme') === 'day') {
+								this.settings.set('theme', 'night');
+							} else if (this.settings.get('theme') === 'night') {
+								this.settings.set('theme', 'day');
+							}
+						}}
+					>
+						<span className="material-icons">
+							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}
+						</span>
+					</button>
 				</nav>
 				<Outlet />
 			</>

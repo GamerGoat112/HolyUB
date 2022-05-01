@@ -9,32 +9,26 @@ export default class FavoritesCategory extends Component {
 	};
 	abort = new AbortController();
 	/**
-	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
 	}
-	/**
-	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
-	 */
-	get games_layout() {
-		return this.props.games_layout;
-	}
 	async fetch() {
 		const data = [];
 
-		const favorites = this.games_layout.current.settings.get('favorites');
+		const favorites = this.layout.current.games_settings.get('favorites');
 
 		for (let id of favorites) {
 			try {
-				data.push(await this.games_layout.current.api.game(id));
+				data.push(await this.layout.current.games_api.game(id));
 			} catch (error) {
 				console.warn('Unable to fetch game:', id, error);
 				favorites.splice(favorites.indexOf(id), 1);
 			}
 		}
 
-		this.games_layout.current.settings.set('favorites', favorites);
+		this.layout.current.games_settings.set('favorites', favorites);
 
 		return this.setState({
 			data,
