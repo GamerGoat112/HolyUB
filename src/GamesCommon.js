@@ -115,7 +115,7 @@ export function Item(props) {
 			<div className="item">
 				<img alt="thumbnail" src={`/thumbnails/${props.id}.webp`}></img>
 				<div>
-					<Obfuscated>{props.name}</Obfuscated>
+					<Obfuscated ellipsis>{props.name}</Obfuscated>
 				</div>
 			</div>
 		</Link>
