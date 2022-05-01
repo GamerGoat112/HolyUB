@@ -14,9 +14,9 @@ if (process.env.NODE_ENV === 'development') {
 	_HCAPTCHA_KEY = '10000000-ffff-ffff-ffff-000000000001';
 } else {
 	const { host } = global.location;
-	_BARE_API = `https://uv.${host}/bare/`;
+	_BARE_API = `https://uv.${host}/`;
 	_RH_APP = `https://rh.${host}/`;
-	_DB_API = `https://gs.${host}/`;
+	_DB_API = new URL('/db/', global.location);
 	_HCAPTCHA_KEY = 'e4953837-586a-40af-b26c-4e0c92b6ee13';
 }
 
