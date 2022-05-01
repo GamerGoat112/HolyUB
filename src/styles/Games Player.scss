@@ -3,11 +3,12 @@
 @include root_page('games-player') {
 	> main {
 		border-radius: 10px;
-		margin: 1% 1%;
-		padding: 15px 15px;
+		margin: auto;
 		background-color: var(--background-accent);
 		display: flex;
 		flex-direction: column;
+		width: 80%;
+		height: calc(100vh - 110px);
 
 		> .title {
 			display: flex;
@@ -16,7 +17,7 @@
 			height: 40px;
 			line-height: 20px;
 			align-items: center;
-			margin-top: 10px;
+			margin: 10px 0px;
 
 			> .name {
 				margin: 0px;
@@ -46,8 +47,10 @@
 
 		> iframe {
 			border: none;
-			width: 80%;
-			height: 70vh;
+			margin: 10px 10px;
+			margin-bottom: 0px;
+			width: 100%;
+			height: 100%;
 		}
 
 		&[data-panorama='1'] {
@@ -62,9 +65,7 @@
 			border-radius: 0px;
 
 			> .title {
-				padding: 5px;
 				width: calc(100% - 20px);
-				margin-top: 0px;
 
 				> .name {
 					display: none;
@@ -72,6 +73,7 @@
 			}
 
 			> iframe {
+				margin: 0px;
 				width: 100%;
 				height: 100%;
 			}

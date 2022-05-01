@@ -17,8 +17,11 @@ html[data-page*='games'] #root {
 		z-index: 10;
 		text-align: center;
 		background: var(--background);
-		justify-content: space-around;
 		align-items: center;
+
+		> .shift-right {
+			margin-left: auto;
+		}
 
 		> .expand {
 			position: relative;
@@ -109,12 +112,16 @@ html[data-page*='games'] #root {
 			display: flex;
 			$border: 1px;
 			$height: 44px;
-			width: 100%;
+			width: 700px;
 			height: $height;
 			position: relative;
 			flex-direction: row;
 			max-height: 100%;
 			margin: 0px 10px;
+
+			@media only screen and (max-width: 700px) {
+				width: 100%;
+			}
 
 			@include screen_tablet {
 				width: 100%;

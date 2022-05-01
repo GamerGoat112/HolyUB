@@ -176,7 +176,6 @@ class GamesLayout extends Layout {
 						</Link>
 						{this.categories}
 					</div>
-					<div className="shift-right" />
 					<div
 						className="search-bar"
 						data-focused={Number(this.state.input_focused)}
@@ -274,6 +273,7 @@ class GamesLayout extends Layout {
 							{this.state.input_focused ? suggested : undefined}
 						</div>
 					</div>
+					<div className="shift-right" />
 					<button
 						className="button"
 						onClick={() => {
