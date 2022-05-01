@@ -137,6 +137,9 @@ class GamesLayout extends Layout {
 
 							if (this.state.expanded) {
 								this.collapsable.current.focus();
+								this.collapsable.current.scrollIntoView({
+									block: 'start',
+								});
 							}
 						}}
 					>
