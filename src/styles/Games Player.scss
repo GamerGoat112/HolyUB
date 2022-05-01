@@ -12,6 +12,10 @@
 		padding: 0px 15px;
 		border-radius: 10px;
 
+		> span {
+			margin-top: 15px;
+		}
+
 		> .title {
 			display: flex;
 			flex-direction: row;

@@ -117,7 +117,9 @@ export default class GamesPlayer extends Component {
 		if (this.state.data === undefined) {
 			return (
 				<main>
-					Fetching <Obfuscated>game</Obfuscated> info...
+					<span>
+						Fetching <Obfuscated>game</Obfuscated> info...
+					</span>
 				</main>
 			);
 		}
