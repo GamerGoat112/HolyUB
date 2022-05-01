@@ -3,7 +3,6 @@ import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
 import GamesLayout from './GamesLayout.js';
-import categories from './pages/games/categories.json';
 import './styles/App.scss';
 
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
@@ -64,34 +63,20 @@ function PlayerProxy(props) {
 	);
 }
 
+function CategoryProxy(props) {
+	const [searchParams] = useSearchParams();
+	const id = searchParams.get('id');
+
+	return (
+		<Suspense fallback={<></>}>
+			<GamesCategory {...props} key={id} id={id} />
+		</Suspense>
+	);
+}
+
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default class App extends Component {
 	layout = createRef();
-	categories = [];
-	constructor(props) {
-		super(props);
-
-		for (let id in categories) {
-			const { name } = categories[id];
-
-			this.categories.push(
-				<Route
-					key={id}
-					path={`${id}.html`}
-					element={
-						<Suspense fallback={<></>}>
-							<GamesCategory
-								key={id}
-								id={id}
-								name={name}
-								layout={this.layout}
-							/>
-						</Suspense>
-					}
-				/>
-			);
-		}
-	}
 	render() {
 		return (
 			<Routes>
@@ -177,7 +162,10 @@ export default class App extends Component {
 						path="player.html"
 						element={<PlayerProxy layout={this.layout} />}
 					/>
-					{this.categories}
+					<Route
+						path="category.html"
+						element={<CategoryProxy layout={this.layout} />}
+					/>
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
 					<Route

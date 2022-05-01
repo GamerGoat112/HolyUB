@@ -42,7 +42,7 @@ class GamesLayout extends Layout {
 				<Link
 					onClick={this.category_click}
 					key={id}
-					to={`/games/${id}.html`}
+					to={`/games/category.html?id=${id}`}
 					className="entry text"
 				>
 					<span>{name}</span>

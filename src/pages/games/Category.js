@@ -4,6 +4,7 @@ import { Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 import PlainSelect from '../../PlainSelect.js';
+import categories from './categories.json';
 
 export default class Category extends Component {
 	state = {
@@ -90,7 +91,10 @@ export default class Category extends Component {
 					<option value="Name (A-Z)">Name (A-Z)</option>
 					<option value="Name (Z-A)">Name (Z-A)</option>
 				</PlainSelect>
-				<Section name={this.props.name} items={this.state.data} />
+				<Section
+					name={categories[this.props.id].name}
+					items={this.state.data}
+				/>
 			</main>
 		);
 	}
