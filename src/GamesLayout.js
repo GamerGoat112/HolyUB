@@ -112,11 +112,6 @@ class GamesLayout extends Layout {
 							<Obfuscated ellipsis>{game.name}</Obfuscated>
 						</div>
 						<div className="category">{category_name}</div>
-						<img
-							src={`/thumbnails/${game.id}.webp`}
-							alt="thumbnail"
-							className="thumbnail"
-						></img>
 					</div>
 				</Link>
 			);
