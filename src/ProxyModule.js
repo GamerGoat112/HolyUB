@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
-import './styles/Proxy Script.scss';
 
 export default class ProxyLayout extends Component {
 	layout = new Layout();
@@ -79,15 +78,15 @@ export default class ProxyLayout extends Component {
 
 		let main;
 
-		if (this.state.error === undefined) {
-			main = (
-				<main ref={this.container}>
-					<p>
-						<Obfuscated>{this.name}</Obfuscated> is loading...
-					</p>
-				</main>
-			);
-		} else {
+		//if (this.state.error === undefined) {
+		main = (
+			<main ref={this.container}>
+				<p>
+					<Obfuscated>{this.name}</Obfuscated> is loading...
+				</p>
+			</main>
+		);
+		/*} else {
 			let description;
 
 			if (this.state.possible_error === undefined) {
@@ -129,8 +128,8 @@ export default class ProxyLayout extends Component {
 					</p>
 				</main>
 			);
-		}
+		}*/
 
-		return <>{main}</>;
+		return main;
 	}
 }

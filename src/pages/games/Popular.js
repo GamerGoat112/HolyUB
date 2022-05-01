@@ -85,7 +85,7 @@ export default class Category extends Component {
 
 			jsx_categories.push(
 				<ExpandSection
-					href={`/games/${id}.html`}
+					href={`/games/category.html?id=${id}`}
 					items={_categories[id]}
 					name={name}
 					key={id}
