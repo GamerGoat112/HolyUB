@@ -40,7 +40,7 @@ export default class Category extends Component {
 	async fetch() {
 		try {
 			const data = await this.api.category({
-				sort: 'Most Plays',
+				sort: 'plays',
 				limitPerCategory: 6,
 			});
 
