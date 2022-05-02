@@ -55,7 +55,9 @@ html[data-page='games-category'][data-service='1'] {
 
 						> div {
 							font-size: 14px;
-							width: 200px;
+							$padding-lr: 10px;
+							padding: 0px $padding-lr;
+							width: calc(200px - $padding-lr * 2);
 							height: 40px;
 							line-height: 40px;
 							text-align: center;
