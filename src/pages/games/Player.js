@@ -31,6 +31,7 @@ async function resolve_game(src, type, setting) {
 
 export default class GamesPlayer extends Component {
 	state = {
+		controls_expanded: false,
 		panorama: false,
 	};
 	get favorited() {
@@ -57,7 +58,7 @@ export default class GamesPlayer extends Component {
 	}
 	captcha = createRef();
 	iframe = createRef();
-
+	controls_popup = createRef();
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
 	 */
@@ -124,32 +125,90 @@ export default class GamesPlayer extends Component {
 			);
 		}
 
-		return (
-			<main data-panorama={Number(this.state.panorama)}>
-				<iframe
-					ref={this.iframe}
-					title="Embed"
-					onLoad={() => {
-						this.iframe.current.contentWindow.addEventListener(
-							'keydown',
-							event => {
-								switch (event.code) {
-									case 'Space':
-									case 'ArrowUp':
-									case 'ArrowDown':
-									case 'ArrowLeft':
-									case 'ArrowRight':
-										event.preventDefault();
-										break;
-									// no default
-								}
-							}
+		const controls = [];
+
+		for (let control of this.state.data.controls) {
+			const visuals = [];
+
+			for (let key of control.keys) {
+				switch (key) {
+					case 'arrows':
+						visuals.push(
+							<div key={key} className="move">
+								<div className="key">W</div>
+								<div className="key">A</div>
+								<div className="key">S</div>
+								<div className="key">D</div>
+							</div>
 						);
-					}}
-					onClick={() => this.focus_listener()}
-					onFocus={() => this.focus_listener()}
-					src={this.state.resolved_src}
-				/>
+						break;
+					default:
+						visuals.push(
+							<div key={key} className="key">
+								{key}
+							</div>
+						);
+						break;
+				}
+			}
+
+			controls.push(
+				<div key={control.label} className="control">
+					<div className="visuals">{visuals}</div>
+					<span className="label">{control.label}</span>
+				</div>
+			);
+		}
+
+		return (
+			<main
+				data-panorama={Number(this.state.panorama)}
+				data-controls={Number(this.state.controls_expanded)}
+			>
+				<div className="frame">
+					<iframe
+						ref={this.iframe}
+						title="Embed"
+						onLoad={() => {
+							this.iframe.current.contentWindow.addEventListener(
+								'keydown',
+								event => {
+									switch (event.code) {
+										case 'Space':
+										case 'ArrowUp':
+										case 'ArrowDown':
+										case 'ArrowLeft':
+										case 'ArrowRight':
+											event.preventDefault();
+											break;
+										// no default
+									}
+								}
+							);
+						}}
+						onClick={() => this.focus_listener()}
+						onFocus={() => this.focus_listener()}
+						src={this.state.resolved_src}
+					/>
+					<div
+						tabIndex={0}
+						className="controls"
+						ref={this.controls_popup}
+						onBlur={event => {
+							if (!event.target.contains(event.relatedTarget)) {
+								this.setState({ controls_expanded: false });
+							}
+						}}
+					>
+						<button
+							className="close"
+							onClick={() => this.setState({ controls_expanded: false })}
+						>
+							<span className="material-icons">close</span>
+						</button>
+						<div className="controls">{controls}</div>
+					</div>
+				</div>
 				<div className="title">
 					<h3 className="name">
 						<Obfuscated>{this.state.data.name}</Obfuscated>
@@ -164,6 +223,20 @@ export default class GamesPlayer extends Component {
 					>
 						fullscreen
 					</button>
+					{controls.length !== 0 && (
+						<button
+							className="material-icons"
+							onClick={() => {
+								this.setState({
+									controls_expanded: !this.state.controls_expanded,
+								});
+
+								this.controls_popup.current.focus();
+							}}
+						>
+							videogame_asset
+						</button>
+					)}
 					<button
 						className="material-icons"
 						onClick={() => {
