@@ -135,16 +135,28 @@ export default class GamesPlayer extends Component {
 					case 'arrows':
 						visuals.push(
 							<div key={key} className="move">
-								<div className="key">W</div>
-								<div className="key">A</div>
-								<div className="key">S</div>
-								<div className="key">D</div>
+								<div className="control-key material-icons">arrow_drop_up</div>
+								<div className="control-key material-icons">arrow_left</div>
+								<div className="control-key material-icons">
+									arrow_drop_down
+								</div>
+								<div className="control-key material-icons">arrow_right</div>
+							</div>
+						);
+						break;
+					case 'wasd':
+						visuals.push(
+							<div key={key} className="move">
+								<div className="control-key">W</div>
+								<div className="control-key">A</div>
+								<div className="control-key">S</div>
+								<div className="control-key">D</div>
 							</div>
 						);
 						break;
 					default:
 						visuals.push(
-							<div key={key} className="key">
+							<div key={key} className={`control-key key-${key}`}>
 								{key}
 							</div>
 						);
