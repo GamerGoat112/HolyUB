@@ -1,6 +1,6 @@
 @import './Screen.scss';
 
-#root > nav.main {
+#root > nav {
 	display: flex;
 	min-height: var(--nav-height);
 	align-content: center;
@@ -11,6 +11,7 @@
 	z-index: 10;
 	text-align: center;
 	background: var(--background);
+	align-items: center;
 
 	> .collapsable {
 		display: flex;
@@ -18,15 +19,14 @@
 	}
 
 	> .expand {
-		position: relative;
+		z-index: 5;
 		display: none;
-		padding: 15px;
-		cursor: pointer;
 
 		> div {
-			width: 30px;
-			height: 20px;
+			width: 15px;
+			height: 10px;
 			position: relative;
+			margin: auto;
 
 			span {
 				display: block;
@@ -45,12 +45,36 @@
 
 				&:nth-child(2),
 				&:nth-child(3) {
-					top: 10px;
+					top: 5px;
 				}
 
 				&:nth-child(4) {
-					top: 20px;
+					top: 10px;
 				}
+			}
+		}
+	}
+
+	&[data-expanded='1'] {
+		> .expand span {
+			&:nth-child(1) {
+				top: 5px;
+				width: 0%;
+				left: 50%;
+			}
+
+			&:nth-child(2) {
+				transform: rotate(45deg);
+			}
+
+			&:nth-child(3) {
+				transform: rotate(-45deg);
+			}
+
+			&:nth-child(4) {
+				top: 5px;
+				width: 0%;
+				left: 50%;
 			}
 		}
 	}
@@ -88,28 +112,6 @@
 			.collapsable {
 				display: flex;
 			}
-
-			> .expand span {
-				&:nth-child(1) {
-					top: 10px;
-					width: 0%;
-					left: 50%;
-				}
-
-				&:nth-child(2) {
-					transform: rotate(45deg);
-				}
-
-				&:nth-child(3) {
-					transform: rotate(-45deg);
-				}
-
-				&:nth-child(4) {
-					top: 10;
-					width: 0%;
-					left: 50%;
-				}
-			}
 		}
 	}
 
@@ -132,7 +134,8 @@
 		}
 	}
 
-	.entry {
+	> .logo,
+	> .collapsable > .entry {
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -44,7 +44,8 @@ export default class MainLayout extends Layout {
 					ref={this.nav}
 					data-expanded={Number(this.state.expanded)}
 				>
-					<div
+					<button
+						tabindex="0"
 						className="expand"
 						onClick={() => this.setState({ expanded: !this.state.expanded })}
 					>
@@ -54,7 +55,7 @@ export default class MainLayout extends Layout {
 							<span></span>
 							<span></span>
 						</div>
-					</div>
+					</button>
 					<Link to="/" className="entry logo">
 						<HatSVG />
 					</Link>

@@ -7,6 +7,7 @@ import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
 import Layout from './Layout.js';
 import './styles/Games.scss';
+import './styles/Navigation.scss';
 
 class GamesLayout extends Layout {
 	games_api = new GamesAPI(DB_API);
@@ -14,7 +15,7 @@ class GamesLayout extends Layout {
 		favorites: [],
 		seen: [],
 	});
-	collapsable = createRef();
+	menu = createRef();
 	input = createRef();
 	expand = createRef();
 	state = {
@@ -119,7 +120,7 @@ class GamesLayout extends Layout {
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
 					<button
 						tabIndex="0"
-						className="expand button"
+						className="expand"
 						ref={this.expand}
 						onClick={async () => {
 							await this.setState({
@@ -127,8 +128,8 @@ class GamesLayout extends Layout {
 							});
 
 							if (this.state.expanded) {
-								this.collapsable.current.focus();
-								this.collapsable.current.scrollIntoView({
+								this.menu.current.focus();
+								this.menu.current.scrollIntoView({
 									block: 'start',
 								});
 							}
@@ -143,8 +144,8 @@ class GamesLayout extends Layout {
 					</button>
 					<div
 						tabIndex="0"
-						className="collapsable"
-						ref={this.collapsable}
+						className="menu"
+						ref={this.menu}
 						onBlur={event => {
 							if (
 								!event.target.contains(event.relatedTarget) &&
@@ -156,7 +157,7 @@ class GamesLayout extends Layout {
 					>
 						<Link to="/" onClick={() => this.setState({ expanded: false })}>
 							<div className="navigate">
-								<span className="material-icons">chevron_left</span>
+								<span className="material-icons">home</span>
 								<span className="name">
 									<Obfuscated>Home</Obfuscated>
 								</span>
@@ -319,7 +320,6 @@ class GamesLayout extends Layout {
 					</div>
 					<div className="shift-right" />
 					<button
-						className="button"
 						onClick={() => {
 							if (this.settings.get('theme') === 'day') {
 								this.settings.set('theme', 'night');
