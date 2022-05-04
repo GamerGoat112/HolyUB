@@ -79,7 +79,13 @@
 		}
 	}
 
-	@include screen_phone {
+	@include screen_mobile {
+		> .shift-right {
+			display: none;
+		}
+
+		justify-content: space-between;
+
 		> .expand {
 			display: flex;
 		}
@@ -184,18 +190,5 @@
 
 	> .shift-right {
 		margin-left: auto;
-	}
-
-	@include screen_tablet {
-		> .shift-right {
-			display: none;
-		}
-
-		justify-content: space-between;
-
-		.collapsable {
-			justify-content: space-around;
-			width: 100%;
-		}
 	}
 }

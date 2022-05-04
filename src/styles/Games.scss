@@ -43,7 +43,7 @@ html[data-page*='games'] #root {
 				width: 100%;
 			}
 
-			@include screen_tablet {
+			@include screen_mobile {
 				&[data-focused='1'] {
 					position: fixed;
 					z-index: 100;
@@ -125,7 +125,7 @@ html[data-page*='games'] #root {
 				top: calc(100% + 2px);
 				width: calc(100% - 2px);
 
-				@include screen_tablet {
+				@include screen_mobile {
 					top: 56px;
 					width: calc(100% - 22px);
 				}
@@ -206,6 +206,10 @@ html[data-page*='games'] #root {
 			text-align: left;
 			user-select: none;
 
+			@include screen_mobile {
+				width: auto;
+			}
+
 			.material-icons {
 				font-size: inherit !important;
 			}
@@ -267,12 +271,6 @@ html[data-page*='games'] #root {
 						background-color: var(--background-accent);
 					}
 				}
-			}
-		}
-
-		@include screen_tablet {
-			.menu {
-				width: auto;
 			}
 		}
 	}
