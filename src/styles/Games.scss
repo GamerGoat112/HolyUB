@@ -352,6 +352,11 @@ html[data-page*='games'] #root {
 				color: var(--contrast-background);
 			}
 
+			> .bar {
+				width: 100%;
+				border-bottom: 1px solid var(--text);
+			}
+
 			> .genres {
 				display: flex;
 				flex-wrap: wrap;
@@ -372,10 +377,6 @@ html[data-page*='games'] #root {
 					color: inherit;
 					white-space: nowrap;
 
-					span {
-						position: relative;
-					}
-
 					&:hover {
 						text-decoration: none;
 						background-color: var(--background-accent);
@@ -388,7 +389,7 @@ html[data-page*='games'] #root {
 			justify-content: space-between;
 
 			.collapsable {
-				width: 100%;
+				width: auto;
 			}
 		}
 	}

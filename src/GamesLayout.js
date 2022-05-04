@@ -105,7 +105,9 @@ class GamesLayout extends Layout {
 					to={`/games/category.html?id=${id}`}
 					className="entry text"
 				>
-					<span>{name}</span>
+					<span>
+						<Obfuscated>{name}</Obfuscated>
+					</span>
 				</Link>
 			);
 		}
@@ -154,9 +156,37 @@ class GamesLayout extends Layout {
 						<Link to="/" onClick={() => this.setState({ expanded: false })}>
 							<div className="navigate">
 								<span className="material-icons">chevron_left</span>
-								<span className="name">Home</span>
+								<span className="name">
+									<Obfuscated>Home</Obfuscated>
+								</span>
 							</div>
 						</Link>
+
+						<Link
+							to="/proxy.html"
+							onClick={() => this.setState({ expanded: false })}
+						>
+							<div className="navigate">
+								<span className="material-icons">web_asset</span>
+								<span className="name">
+									<Obfuscated>Proxy</Obfuscated>
+								</span>
+							</div>
+						</Link>
+
+						<Link
+							to="/faq.html"
+							onClick={() => this.setState({ expanded: false })}
+						>
+							<div className="navigate">
+								<span className="material-icons">question_mark</span>
+								<span className="name">
+									<Obfuscated>FAQ</Obfuscated>
+								</span>
+							</div>
+						</Link>
+
+						<div className="bar" />
 
 						<Link
 							to="/games/popular.html"
@@ -164,7 +194,9 @@ class GamesLayout extends Layout {
 						>
 							<div className="navigate">
 								<span className="material-icons">sort</span>
-								<span className="name">Popular</span>
+								<span className="name">
+									<Obfuscated>Popular</Obfuscated>
+								</span>
 							</div>
 						</Link>
 
@@ -174,7 +206,9 @@ class GamesLayout extends Layout {
 						>
 							<div className="navigate">
 								<span className="material-icons">star</span>
-								<span className="name">Favorites</span>
+								<span className="name">
+									<Obfuscated>Favorites</Obfuscated>
+								</span>
 							</div>
 						</Link>
 
