@@ -175,28 +175,6 @@ html[data-page*='games'] #root {
 				> *:not(.expand) {
 					display: none;
 				}
-
-				> .expand span {
-					&:nth-child(1) {
-						top: 10px;
-						width: 0%;
-						left: 50%;
-					}
-
-					&:nth-child(2) {
-						transform: rotate(45deg);
-					}
-
-					&:nth-child(3) {
-						transform: rotate(-45deg);
-					}
-
-					&:nth-child(4) {
-						top: 10;
-						width: 0%;
-						left: 50%;
-					}
-				}
 			}
 
 			&[data-focused='1'][data-suggested='1'] {
