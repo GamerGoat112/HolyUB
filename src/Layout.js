@@ -7,14 +7,30 @@ export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
 	};
-	settings = new Settings(
-		'global settings',
-		{
-			theme: THEMES[0],
-			proxy: 'automatic',
-		},
-		this
-	);
+	constructor(props) {
+		super(props);
+
+		let theme;
+
+		const prefers_light = matchMedia('(prefers-color-scheme: light)');
+
+		if (prefers_light.matches) {
+			theme = 'day';
+		} else {
+			theme = 'night';
+		}
+
+		this.settings = new Settings(
+			'global settings',
+			{
+				theme,
+				proxy: 'automatic',
+			},
+			this
+		);
+
+		this.listen_fullscreen = this.listen_fullscreen.bind(this);
+	}
 	last_theme = this.state.theme;
 	get_fullscreen() {
 		return document.fullscreenElement !== null;
@@ -23,10 +39,6 @@ export default class Layout extends Component {
 		this.setState({
 			fullscreen: this.get_fullscreen(),
 		});
-	}
-	constructor(props) {
-		super(props);
-		this.listen_fullscreen = this.listen_fullscreen.bind(this);
 	}
 	componentDidMount() {
 		document.addEventListener('fullscreenchange', this.listen_fullscreen);
