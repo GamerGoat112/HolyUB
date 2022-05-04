@@ -1,5 +1,5 @@
-@use "sass:map";
-@import "~nord/src/sass/nord.scss";
+@use 'sass:map';
+@import '~nord/src/sass/nord.scss';
 
 /*
 Design for dark theme first.
@@ -28,21 +28,28 @@ $day: (
 );
 
 @function offsetHex($color, $ness) {
-	@return "rgb(" + (red($color) + $ness) + ", " + (green($color) + $ness) + ", " + (blue($color) + $ness) + ")";
+	@return 'rgb(' + (red($color) + $ness) + ', ' + (green($color) + $ness) + ', ' +
+		(blue($color) + $ness) + ')';
 }
 
 @mixin theme-rules($theme, $contrast) {
-	--background: #{map.get($theme, "background")};
-	--contrast-background: #{map.get($contrast, "background")};
-	--text: #{map.get($theme, "text")};
-	--contrast-text: #{map.get($contrast, "text")};
-	--text-placeholder: #{map.get($theme, "text-placeholder")};
-	--text-accent: #{map.get($theme, "text-accent")};
-	--background-accent: #{map.get($theme, "background-accent")};
-	--background-accent-deep-1: #{offsetHex(map.get($theme, "background-accent"), -5)};
-	--background-accent-deep-2: #{offsetHex(map.get($theme, "background-accent"), -8)};
-	--border: #{map.get($theme, "border")};
-	--link: #{map.get($theme, "link")};
+	--background: #{map.get($theme, 'background')};
+	--contrast-background: #{map.get($contrast, 'background')};
+	--text: #{map.get($theme, 'text')};
+	--contrast-text: #{map.get($contrast, 'text')};
+	--text-placeholder: #{map.get($theme, 'text-placeholder')};
+	--text-accent: #{map.get($theme, 'text-accent')};
+	--background-accent: #{map.get($theme, 'background-accent')};
+	--background-accent-deep-1: #{offsetHex(
+			map.get($theme, 'background-accent'),
+			-5
+		)};
+	--background-accent-deep-2: #{offsetHex(
+			map.get($theme, 'background-accent'),
+			-8
+		)};
+	--border: #{map.get($theme, 'border')};
+	--link: #{map.get($theme, 'link')};
 	--subtle: #ddd;
 	--blue: #0078d4;
 	--blue-link: #006cbe;
@@ -56,7 +63,7 @@ html {
 
 	@include theme-rules($night, $day);
 
-	&[data-theme="day"] {
+	&[data-theme='day'] {
 		@include theme-rules($day, $night);
 	}
 }
