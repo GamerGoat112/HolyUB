@@ -63,6 +63,7 @@ h3 {
 	}
 
 	> .list {
+		z-index: 1;
 		display: none;
 		position: absolute;
 		flex-direction: column;
