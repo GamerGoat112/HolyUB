@@ -1,7 +1,7 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { createRef, forwardRef } from 'react';
 import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
-import { DB_API, set_page } from './root.js';
+import { DB_API } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
@@ -23,9 +23,6 @@ class GamesLayout extends Layout {
 		category: [],
 		input_focused: false,
 	};
-	componentDidMount() {
-		set_page('games');
-	}
 	abort = new AbortController();
 	async search(query) {
 		if (this.abort !== undefined) {
