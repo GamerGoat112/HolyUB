@@ -39,3 +39,7 @@ export default document.querySelector('#root');
 export function set_page(page) {
 	document.documentElement.dataset.page = page;
 }
+
+export function get_page(page) {
+	return document.documentElement.dataset.page;
+}

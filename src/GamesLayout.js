@@ -1,7 +1,7 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { createRef, forwardRef } from 'react';
 import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
-import { DB_API } from './root.js';
+import { DB_API, get_page, set_page } from './root.js';
 import { GamesAPI } from './GamesCommon.js';
 import categories from './pages/games/categories.json';
 import Settings from './Settings.js';
@@ -49,6 +49,10 @@ class GamesLayout extends Layout {
 		document.documentElement.dataset.expanded = Number(this.state.expanded);
 	}
 	render() {
+		if (!get_page()?.startsWith('games-')) {
+			set_page('games');
+		}
+
 		this.update();
 
 		const suggested = [];
