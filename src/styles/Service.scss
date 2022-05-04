@@ -1,20 +1,24 @@
-@use "sass:selector";
+@use 'sass:selector';
 
 html {
-	&[data-service="1"] {
+	&[data-service='1'] {
+		body {
+			overflow: hidden;
+		}
+
 		#root > .service {
 			display: flex;
 		}
 	}
 
-	&[data-appearance="dark"] {
+	&[data-appearance='dark'] {
 		#root > .service {
 			background: #000;
 			color: #fff;
 		}
 	}
 
-	&[data-fullscreen="1"] {
+	&[data-fullscreen='1'] {
 		#root > .service {
 			.buttons {
 				display: none;
@@ -24,8 +28,8 @@ html {
 
 	#root > .service {
 		display: none;
-		width: 100%;
-		height: 100%;
+		width: 100vw;
+		height: 100vh;
 		flex-direction: column;
 		background: var(--background);
 		position: fixed;
@@ -44,7 +48,7 @@ html {
 			height: 100%;
 			background: var(--background);
 
-			&[data-first-load="1"] {
+			&[data-first-load='1'] {
 				background: #fff;
 			}
 		}
