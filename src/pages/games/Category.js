@@ -7,9 +7,22 @@ import PlainSelect from '../../PlainSelect.js';
 import categories from './categories.json';
 
 export default class Category extends Component {
-	state = {
-		data: [],
-	};
+	constructor(props) {
+		super(props);
+
+		const data = [];
+
+		for (let i = 0; i < 40; i++) {
+			data.push({
+				id: i,
+				loading: true,
+			});
+		}
+
+		this.state = {
+			data,
+		};
+	}
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
 	 */

@@ -1,17 +1,11 @@
 import { Component } from 'react';
 import { DB_API, set_page } from '../../root.js';
-import { Item, GamesAPI } from '../../GamesCommon.js';
+import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 import categories from './categories.json';
 import { Link } from 'react-router-dom';
 
 function ExpandSection(props) {
-	const items = [];
-
-	for (let item of props.items) {
-		items.push(<Item key={item.id} id={item.id} name={item.name} />);
-	}
-
 	return (
 		<section className="expand">
 			<div className="name">
@@ -21,15 +15,34 @@ function ExpandSection(props) {
 					<span className="material-icons">arrow_forward</span>
 				</Link>
 			</div>
-			<div className="items">{items}</div>
+			<div className="items">
+				<ItemList items={props.items} />
+			</div>
 		</section>
 	);
 }
 
 export default class Category extends Component {
-	state = {
-		data: [],
-	};
+	limit = 8;
+	constructor(props) {
+		super(props);
+
+		const data = [];
+
+		for (let category in categories) {
+			for (let i = 0; i < this.limit; i++) {
+				data.push({
+					id: i,
+					loading: true,
+					category,
+				});
+			}
+		}
+
+		this.state = {
+			data,
+		};
+	}
 	api = new GamesAPI(DB_API);
 	abort = new AbortController();
 	/**
@@ -42,7 +55,7 @@ export default class Category extends Component {
 		try {
 			const data = await this.api.category({
 				sort: 'plays',
-				limitPerCategory: 8,
+				limitPerCategory: this.limit,
 			});
 
 			return this.setState({

@@ -119,10 +119,15 @@ export function Item(props) {
 }
 
 export function LoadingItem(props) {
-	return <div className="item loading"></div>;
+	return (
+		<div className="item loading">
+			<div className="thumbnail" />
+			<div className="name" />
+		</div>
+	);
 }
 
-export function Section(props) {
+export function ItemList(props) {
 	const items = [];
 
 	for (let item of props.items) {
@@ -133,12 +138,18 @@ export function Section(props) {
 		}
 	}
 
+	return items;
+}
+
+export function Section(props) {
 	return (
 		<section>
 			<div className="name">
 				<h1>{props.name}</h1>
 			</div>
-			<div className="items">{items}</div>
+			<div className="items">
+				<ItemList items={props.items} />
+			</div>
 		</section>
 	);
 }
