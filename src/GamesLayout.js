@@ -26,30 +26,7 @@ class GamesLayout extends Layout {
 	componentDidMount() {
 		set_page('games');
 	}
-	categories = [];
 	abort = new AbortController();
-	category_click() {
-		this.setState({ expanded: false });
-	}
-	constructor(props) {
-		super(props);
-
-		this.category_click = this.category_click.bind(this);
-
-		for (let id in categories) {
-			const { name } = categories[id];
-			this.categories.push(
-				<Link
-					onClick={this.category_click}
-					key={id}
-					to={`/games/category.html?id=${id}`}
-					className="entry text"
-				>
-					<span>{name}</span>
-				</Link>
-			);
-		}
-	}
 	async search(query) {
 		if (this.abort !== undefined) {
 			this.abort.abort();
@@ -117,6 +94,22 @@ class GamesLayout extends Layout {
 			);
 		}
 
+		const ui_categories = [];
+
+		for (let id in categories) {
+			const { name } = categories[id];
+			ui_categories.push(
+				<Link
+					onClick={() => this.setState({ expanded: false })}
+					key={id}
+					to={`/games/category.html?id=${id}`}
+					className="entry text"
+				>
+					<span>{name}</span>
+				</Link>
+			);
+		}
+
 		return (
 			<>
 				<ObfuscateLayout />
@@ -148,7 +141,6 @@ class GamesLayout extends Layout {
 					<div
 						tabIndex="0"
 						className="collapsable"
-						data-focused={Number(this.state.input_focused)}
 						ref={this.collapsable}
 						onBlur={event => {
 							if (
@@ -159,30 +151,36 @@ class GamesLayout extends Layout {
 							}
 						}}
 					>
-						<button className="button" onClick={() => this.props.navigate('/')}>
-							<span className="material-icons">chevron_left</span>
-							<span className="name">Home</span>
-						</button>
+						<Link to="/" onClick={() => this.setState({ expanded: false })}>
+							<div className="navigate">
+								<span className="material-icons">chevron_left</span>
+								<span className="name">Home</span>
+							</div>
+						</Link>
+
+						<Link
+							to="/games/popular.html"
+							onClick={() => this.setState({ expanded: false })}
+						>
+							<div className="navigate">
+								<span className="material-icons">sort</span>
+								<span className="name">Popular</span>
+							</div>
+						</Link>
+
+						<Link
+							to="/games/favorites.html"
+							onClick={() => this.setState({ expanded: false })}
+						>
+							<div className="navigate">
+								<span className="material-icons">star</span>
+								<span className="name">Favorites</span>
+							</div>
+						</Link>
 
 						<p>Genre</p>
 
-						<div className="genres">
-							<Link
-								to="/games/popular.html"
-								onClick={this.category_click}
-								className="entry"
-							>
-								<span>Popular</span>
-							</Link>
-							<Link
-								to="/games/favorites.html"
-								onClick={this.category_click}
-								className="entry"
-							>
-								<span>Favorites</span>
-							</Link>
-							{this.categories}
-						</div>
+						<div className="genres">{ui_categories}</div>
 					</div>
 					<div
 						className="search-bar"

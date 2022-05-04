@@ -1,12 +1,27 @@
 import { Component } from 'react';
 import { set_page } from '../../root.js';
-import { Item, Section } from '../../GamesCommon.js';
+import { Section } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 
+const FETCH_FAILED = /TypeError: Failed to fetch/;
+
 export default class FavoritesCategory extends Component {
-	state = {
-		data: [],
-	};
+	constructor(props) {
+		super(props);
+
+		const data = [];
+
+		for (let id of this.set_favorites) {
+			data.push({
+				loading: true,
+				id,
+			});
+		}
+
+		this.state = {
+			data,
+		};
+	}
 	abort = new AbortController();
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
@@ -14,17 +29,23 @@ export default class FavoritesCategory extends Component {
 	get layout() {
 		return this.props.layout;
 	}
+	get set_favorites() {
+		return this.layout.current.games_settings.get('favorites');
+	}
 	async fetch() {
 		const data = [];
 
-		const favorites = this.layout.current.games_settings.get('favorites');
+		const favorites = this.set_favorites;
 
 		for (let id of favorites) {
 			try {
 				data.push(await this.layout.current.games_api.game(id));
 			} catch (error) {
-				console.warn('Unable to fetch game:', id, error);
-				favorites.splice(favorites.indexOf(id), 1);
+				// cancelled? page unload?
+				if (!FETCH_FAILED.test(error)) {
+					console.warn('Unable to fetch game:', id, error);
+					favorites.splice(favorites.indexOf(id), 1);
+				}
 			}
 		}
 
@@ -43,20 +64,7 @@ export default class FavoritesCategory extends Component {
 	render() {
 		set_page('games-category');
 
-		const items = [];
-
-		for (let item of this.state.data) {
-			items.push(
-				<Item
-					key={item.id}
-					id={item.id}
-					layout={this.props.layout}
-					name={item.name}
-				/>
-			);
-		}
-
-		if (this.state.data.length === 0) {
+		if (this.set_favorites.length === 0) {
 			return (
 				<main>
 					<span className="no-games">

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
 
@@ -94,30 +95,50 @@ export class GamesAPI {
 	}
 }
 
-export function Section(props) {
-	const items = [];
-
-	for (let item of props.items) {
-		items.push(<Item key={item.id} id={item.id} name={item.name} />);
-	}
-
-	return (
-		<section>
-			<h1>{props.name}</h1>
-			<div className="items">{items}</div>
-		</section>
-	);
-}
-
 export function Item(props) {
+	const [loaded, set_loaded] = useState(false);
+
 	return (
 		<Link to={`/games/player.html?id=${props.id}`}>
 			<div className="item">
-				<img alt="thumbnail" src={`/thumbnails/${props.id}.webp`}></img>
-				<div>
+				<div className="thumbnail">
+					<img
+						alt=""
+						loading="lazy"
+						onLoad={() => set_loaded(true)}
+						data-loaded={Number(loaded)}
+						src={`/thumbnails/${props.id}.webp`}
+					></img>
+				</div>
+				<div className="name">
 					<Obfuscated ellipsis>{props.name}</Obfuscated>
 				</div>
 			</div>
 		</Link>
+	);
+}
+
+export function LoadingItem(props) {
+	return <div className="item loading"></div>;
+}
+
+export function Section(props) {
+	const items = [];
+
+	for (let item of props.items) {
+		if (item.loading) {
+			items.push(<LoadingItem key={item.id} id={item.id} />);
+		} else {
+			items.push(<Item key={item.id} id={item.id} name={item.name} />);
+		}
+	}
+
+	return (
+		<section>
+			<div className="name">
+				<h1>{props.name}</h1>
+			</div>
+			<div className="items">{items}</div>
+		</section>
 	);
 }

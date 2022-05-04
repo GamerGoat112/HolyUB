@@ -5,24 +5,25 @@ import '../../styles/Games Category.scss';
 import categories from './categories.json';
 import { Link } from 'react-router-dom';
 
-export class ExpandSection extends Component {
-	render() {
-		const items = [];
+function ExpandSection(props) {
+	const items = [];
 
-		for (let item of this.props.items) {
-			items.push(<Item key={item.id} id={item.id} name={item.name} />);
-		}
-
-		return (
-			<section className="expand">
-				<h1>{this.props.name}</h1>
-				<div className="items">{items}</div>
-				<Link to={this.props.href} className="expand-icon material-icons">
-					<div>expand_more</div>
-				</Link>
-			</section>
-		);
+	for (let item of props.items) {
+		items.push(<Item key={item.id} id={item.id} name={item.name} />);
 	}
+
+	return (
+		<section className="expand">
+			<div className="name">
+				<h1>{props.name}</h1>
+				<Link to={props.href} className="see-all">
+					See All
+					<span className="material-icons">arrow_forward</span>
+				</Link>
+			</div>
+			<div className="items">{items}</div>
+		</section>
+	);
 }
 
 export default class Category extends Component {
@@ -41,7 +42,7 @@ export default class Category extends Component {
 		try {
 			const data = await this.api.category({
 				sort: 'plays',
-				limitPerCategory: 6,
+				limitPerCategory: 8,
 			});
 
 			return this.setState({
