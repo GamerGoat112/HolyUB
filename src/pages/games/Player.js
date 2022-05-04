@@ -58,6 +58,7 @@ export default class GamesPlayer extends Component {
 	}
 	captcha = createRef();
 	iframe = createRef();
+	controls_open = createRef();
 	controls_popup = createRef();
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
@@ -207,7 +208,10 @@ export default class GamesPlayer extends Component {
 						className="controls"
 						ref={this.controls_popup}
 						onBlur={event => {
-							if (!event.target.contains(event.relatedTarget)) {
+							if (
+								!event.target.contains(event.relatedTarget) &&
+								!this.controls_open.current.contains(event.relatedTarget)
+							) {
 								this.setState({ controls_expanded: false });
 							}
 						}}
@@ -238,6 +242,7 @@ export default class GamesPlayer extends Component {
 					{controls.length !== 0 && (
 						<button
 							className="material-icons"
+							ref={this.controls_open}
 							onClick={async () => {
 								await this.setState({
 									controls_expanded: !this.state.controls_expanded,
