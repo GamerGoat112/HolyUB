@@ -73,6 +73,11 @@ export default class GamesPlayer extends Component {
 		}
 
 		this.iframe.current.contentWindow.focus();
+
+		if (document.activeElement) {
+			document.activeElement.blur();
+			document.activeElement.dispatchEvent(new Event('blur'));
+		}
 	}
 	id = Math.random();
 	constructor(props) {
