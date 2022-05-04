@@ -203,7 +203,7 @@ export default class GamesPlayer extends Component {
 						src={this.state.resolved_src}
 					/>
 					<div
-						tabIndex={0}
+						tabIndex="0"
 						className="controls"
 						ref={this.controls_popup}
 						onBlur={event => {
@@ -238,8 +238,8 @@ export default class GamesPlayer extends Component {
 					{controls.length !== 0 && (
 						<button
 							className="material-icons"
-							onClick={() => {
-								this.setState({
+							onClick={async () => {
+								await this.setState({
 									controls_expanded: !this.state.controls_expanded,
 								});
 
