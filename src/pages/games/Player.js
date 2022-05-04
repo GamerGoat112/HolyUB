@@ -74,7 +74,10 @@ export default class GamesPlayer extends Component {
 
 		this.iframe.current.contentWindow.focus();
 
-		if (document.activeElement) {
+		if (
+			document.activeElement &&
+			!this.iframe.current.contains(document.activeElement)
+		) {
 			document.activeElement.blur();
 			document.activeElement.dispatchEvent(new Event('blur'));
 		}
