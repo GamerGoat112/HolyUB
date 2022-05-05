@@ -156,6 +156,11 @@ export default class PlainSelect extends Component {
 						event.preventDefault();
 					}
 				}}
+				onBlur={event => {
+					if (!event.target.contains(event.relatedTarget)) {
+						this.setState({ open: false });
+					}
+				}}
 			>
 				<div
 					className="toggle"

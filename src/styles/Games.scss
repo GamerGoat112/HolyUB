@@ -11,6 +11,15 @@ html[data-page*='games'] #root {
 			display: flex;
 		}
 
+		@keyframes slidein {
+			0% {
+				left: -100%;
+			}
+			100% {
+				left: 0;
+			}
+		}
+
 		&[data-expanded='1'] {
 			&::before {
 				content: '';
@@ -24,7 +33,9 @@ html[data-page*='games'] #root {
 			}
 
 			.menu {
+				animation: slidein ease-in-out 0.3s;
 				display: flex;
+				left: 0px;
 			}
 		}
 
@@ -199,12 +210,13 @@ html[data-page*='games'] #root {
 			border-right: 1px solid var(--border);
 			$top: 71px;
 			top: 0px;
-			left: 0px;
+			left: -100%;
 			height: calc(100vh - $top);
 			width: 340px;
 			padding: $top 25px 0px 25px;
 			text-align: left;
 			user-select: none;
+			transition: left ease-in-out 0.7s;
 
 			@include screen_mobile {
 				width: auto;

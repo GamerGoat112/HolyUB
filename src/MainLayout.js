@@ -45,7 +45,7 @@ export default class MainLayout extends Layout {
 					data-expanded={Number(this.state.expanded)}
 				>
 					<button
-						tabindex="0"
+						tabIndex="0"
 						className="expand"
 						onClick={() => this.setState({ expanded: !this.state.expanded })}
 					>
@@ -71,20 +71,11 @@ export default class MainLayout extends Layout {
 							<span>FAQ</span>
 						</Link>
 					</div>
-					<button
-						className="lightswitch"
-						onClick={() => {
-							if (this.settings.get('theme') === 'day') {
-								this.settings.set('theme', 'night');
-							} else if (this.settings.get('theme') === 'night') {
-								this.settings.set('theme', 'day');
-							}
-						}}
-					>
-						<span className="material-icons">
-							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}
-						</span>
-					</button>
+					<Link to="/settings.html">
+						<button>
+							<span className="material-icons">settings</span>
+						</button>
+					</Link>
 				</nav>
 				{this.props.element || <Outlet />}
 				<footer>

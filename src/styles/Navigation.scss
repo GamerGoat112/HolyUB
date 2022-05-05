@@ -121,7 +121,8 @@
 		}
 	}
 
-	> button {
+	> button,
+	> a > button {
 		box-sizing: content-box;
 		border: none;
 		background: none;
@@ -133,7 +134,7 @@
 		position: relative;
 		flex: none;
 		cursor: pointer;
-		color: inherit;
+		color: var(--text);
 
 		&:hover {
 			background: var(--background-accent);

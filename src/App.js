@@ -5,7 +5,6 @@ import ProxyLayout from './ProxyLayout.js';
 import GamesLayout from './GamesLayout.js';
 import './styles/App.scss';
 
-const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
 );
@@ -17,6 +16,10 @@ const GamesCategory = lazy(() =>
 );
 const GamesPlayer = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Player.js')
+);
+const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
+const Settings = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/Settings.js')
 );
 const Support = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Support.js')
@@ -126,6 +129,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Terms layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/settings.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Settings layout={this.layout} />
 							</Suspense>
 						}
 					/>

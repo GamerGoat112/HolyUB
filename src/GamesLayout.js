@@ -319,19 +319,11 @@ class GamesLayout extends Layout {
 						</div>
 					</div>
 					<div className="shift-right" />
-					<button
-						onClick={() => {
-							if (this.settings.get('theme') === 'day') {
-								this.settings.set('theme', 'night');
-							} else if (this.settings.get('theme') === 'night') {
-								this.settings.set('theme', 'day');
-							}
-						}}
-					>
-						<span className="material-icons">
-							{this.state.theme === 'night' ? 'brightness_7' : 'brightness_4'}
-						</span>
-					</button>
+					<Link to="/settings.html">
+						<button>
+							<span className="material-icons">settings</span>
+						</button>
+					</Link>
 				</nav>
 				<Outlet />
 			</>

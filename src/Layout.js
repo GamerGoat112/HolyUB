@@ -31,7 +31,6 @@ export default class Layout extends Component {
 
 		this.listen_fullscreen = this.listen_fullscreen.bind(this);
 	}
-	last_theme = this.state.theme;
 	get_fullscreen() {
 		return document.fullscreenElement !== null;
 	}
