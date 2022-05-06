@@ -24,7 +24,7 @@ html[data-page*='games'] #root {
 			}
 
 			.menu {
-				transition: transform cubic-bezier(0.65, 0.05, 0.36, 1) 0.3s;
+				transition: transform ease 0.3s;
 				transform: translateX(0%);
 				visibility: visible;
 			}
