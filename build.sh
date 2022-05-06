@@ -14,6 +14,7 @@ pages=(
 	"proxies/st.html"
 	"proxies/uv.html"
 	"proxies/flash.html"
+	"settings/"
 	"settings/general.html"
 	"settings/appearance.html"
 	"settings/tabcloak.html"
