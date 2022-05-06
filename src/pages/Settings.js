@@ -1,6 +1,7 @@
+import { Brush, Home, HomeOutlined, Tab } from '@mui/icons-material';
 import { Component } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import { Obfuscated } from '../obfuscate.js';
+import { Outlet } from 'react-router-dom';
+import { MenuTab } from '../MainLayout.js';
 import { set_page } from '../root.js';
 import '../styles/Settings.scss';
 
@@ -15,37 +16,29 @@ export default class Settings extends Component {
 		set_page('settings');
 
 		return (
-			<main>
-				<div className="menu">
-					<Link to="/settings/general.html">
-						<div className="navigate">
-							<span className="material-icons">home</span>
-							<div className="name">
-								<Obfuscated>General</Obfuscated>
-							</div>
-						</div>
-					</Link>
-					<Link to="/settings/appearance.html">
-						<div className="navigate">
-							<span className="material-icons">brush</span>
-							<div className="name">
-								<Obfuscated>Appearance</Obfuscated>
-							</div>
-						</div>
-					</Link>
-					<Link to="/settings/tabcloak.html">
-						<div className="navigate">
-							<span className="material-icons">tab</span>
-							<div className="name">
-								<Obfuscated>Tab Cloak</Obfuscated>
-							</div>
-						</div>
-					</Link>
+			<>
+				<div className="page-menu menu-like">
+					<MenuTab
+						route="/settings/general.html"
+						name="General"
+						iconFilled={<Home />}
+						iconOutlined={<HomeOutlined />}
+					/>
+					<MenuTab
+						route="/settings/appearance.html"
+						name="Appearance"
+						iconFilled={<Brush />}
+					/>
+					<MenuTab
+						route="/settings/tabcloak.html"
+						name="Tab Cloak"
+						iconFilled={<Tab />}
+					/>
 				</div>
-				<div className="content">
+				<main>
 					<Outlet />
-				</div>
-			</main>
+				</main>
+			</>
 		);
 	}
 }

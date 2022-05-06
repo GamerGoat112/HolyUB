@@ -2,8 +2,6 @@
 @import './Montserrat Alternates.scss';
 @import './Banner.scss';
 @import './Theme.scss';
-$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-@import '~material-design-icons-iconfont/src/material-design-icons';
 
 html {
 	background-color: var(--background);
@@ -33,7 +31,7 @@ h3 {
 	// hide "absolute" overflow
 	overflow: hidden;
 
-	> main {
+	main {
 		padding: 0px 5%;
 		margin: 20px 0px;
 		flex: none;
@@ -55,6 +53,7 @@ h3 {
 		border: 1px solid var(--border);
 		background-color: var(--background-accent);
 		cursor: pointer;
+		align-items: center;
 
 		> span {
 			margin-left: auto;

@@ -5,7 +5,7 @@ html[data-page='games-category'][data-service='1'] {
 }
 
 @include root_page('games-category') {
-	> main {
+	main {
 		display: flex;
 		flex-direction: column;
 

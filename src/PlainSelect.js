@@ -1,3 +1,4 @@
+import { ExpandMore } from '@mui/icons-material';
 import { Component, createRef } from 'react';
 
 export default class PlainSelect extends Component {
@@ -173,7 +174,7 @@ export default class PlainSelect extends Component {
 					}}
 				>
 					{active_option.name}
-					<span className="material-icons">expand_more</span>
+					<ExpandMore />
 				</div>
 				<div
 					className="list"

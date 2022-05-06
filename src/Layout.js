@@ -6,6 +6,7 @@ export const THEMES = ['night', 'day'];
 export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
+		expanded: true,
 	};
 	constructor(props) {
 		super(props);
@@ -58,6 +59,7 @@ export default class Layout extends Component {
 	update() {
 		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
+		document.documentElement.dataset.expanded = Number(this.state.expanded);
 
 		if (this.cloak.get('title') === '') {
 			document.title = 'Holy Unblocker';

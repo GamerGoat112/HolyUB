@@ -1,7 +1,7 @@
 @import './Common.scss';
 
 @include root_page('proxy-script-flash') {
-	> main {
+	main {
 		> ruffle-player {
 			display: none;
 			width: 100%;

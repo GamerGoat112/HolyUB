@@ -1,7 +1,7 @@
-@import "./Common.scss";
+@import './Common.scss';
 
-@include root_page("home") {
-	> main {
+@include root_page('home') {
+	main {
 		margin: auto;
 
 		.landing {

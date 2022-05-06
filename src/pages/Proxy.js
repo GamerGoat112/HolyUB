@@ -4,6 +4,7 @@ import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import '../styles/Proxy.scss';
 import textContent from '../textContent.js';
+import { Search } from '@mui/icons-material';
 
 export default class Proxies extends Component {
 	service_frame = createRef();
@@ -79,7 +80,7 @@ export default class Proxies extends Component {
 							});
 						}}
 					>
-						<span className="eyeglass material-icons">search</span>
+						<Search />
 						<span
 							className="text"
 							ref={text}

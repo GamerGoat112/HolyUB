@@ -1,38 +1,51 @@
 import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './assets/waves.svg';
-import { createRef } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { createRef, forwardRef } from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import {
+	Home,
+	HomeOutlined,
+	QuestionMark,
+	SortRounded,
+	StarOutlineRounded,
+	StarRounded,
+	WebAsset,
+	Menu,
+	Settings,
+} from '@mui/icons-material';
 import Layout from './Layout.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
 
-export default class MainLayout extends Layout {
-	state = {
-		...this.state,
-		expanded: false,
-	};
-	nav = createRef();
-	collapsable = createRef();
-	listen_click(event) {
-		if (this.collapsable.current.contains(event.target)) {
-			this.setState({
-				expanded: false,
-			});
-		}
-	}
+export function MenuTab(props) {
+	const location = useLocation();
+	const selected = location.pathname === props.route;
+
+	return (
+		<Link to={props.route} className="entry">
+			<span className="icon">
+				{(selected && props.iconFilled) ||
+					props.iconOutlined ||
+					props.iconFilled}
+			</span>
+			<span className="name">
+				<Obfuscated>{props.name}</Obfuscated>
+			</span>
+		</Link>
+	);
+}
+
+class MainLayout extends Layout {
 	constructor(props) {
 		super(props);
-		this.listen_click = this.listen_click.bind(this);
+
+		this.state = {
+			...this.state,
+			expanded: !this.props.location.pathname.startsWith('/settings/'),
+		};
 	}
-	componentDidMount() {
-		super.componentDidMount();
-		document.addEventListener('click', this.listen_click);
-	}
-	componentWillUnmount() {
-		super.componentWillUnmount();
-		document.removeEventListener('click', this.listen_click);
-	}
+	nav = createRef();
 	render() {
 		this.update();
 
@@ -45,40 +58,65 @@ export default class MainLayout extends Layout {
 					ref={this.nav}
 					data-expanded={Number(this.state.expanded)}
 				>
-					<button
-						tabIndex="0"
-						className="expand"
+					<div
+						className="button"
 						onClick={() => this.setState({ expanded: !this.state.expanded })}
 					>
-						<div>
-							<span></span>
-							<span></span>
-							<span></span>
-							<span></span>
-						</div>
-					</button>
+						<Menu />
+					</div>
 					<Link to="/" className="entry logo">
 						<HatSVG />
 					</Link>
 					<div className="shift-right"></div>
-					<div className="collapsable" ref={this.collapsable}>
-						<Link to="/proxy.html" className="entry">
-							<span>Proxy</span>
-						</Link>
-						<Link to="/games/popular.html" className="entry">
-							<span>Games</span>
-						</Link>
-						<Link to="/faq.html" className="entry">
-							<span>FAQ</span>
-						</Link>
-					</div>
-					<Link to="/settings/general.html">
-						<button>
-							<span className="material-icons">settings</span>
-						</button>
+					<Link
+						className="button"
+						to="/settings/general.html"
+						onClick={() => this.setState({ expanded: false })}
+					>
+						<Settings />
 					</Link>
 				</nav>
-				{this.props.element || <Outlet />}
+				<div className="content">
+					<div tabIndex="0" className="menu menu-like" ref={this.menu}>
+						<MenuTab
+							route="/"
+							name="Home"
+							iconFilled={<Home />}
+							iconOutlined={<HomeOutlined />}
+						/>
+						<MenuTab
+							route="/proxy.html"
+							name="Proxy"
+							iconFilled={<WebAsset />}
+						/>
+						<MenuTab
+							route="/faq.html"
+							name="FAQ"
+							iconFilled={<QuestionMark />}
+						/>
+
+						<div className="bar" />
+
+						<p>
+							<Obfuscated>Games</Obfuscated>
+						</p>
+
+						<MenuTab
+							route="/games/popular.html"
+							name="Popular"
+							iconFilled={<SortRounded />}
+						/>
+						<MenuTab
+							route="/games/favorites.html"
+							name="Favorites"
+							iconFilled={<StarRounded />}
+							iconOutlined={<StarOutlineRounded />}
+						/>
+
+						{/*<p>Genre</p><div className="genres">{ui_categories}</div>*/}
+					</div>
+					<Outlet />
+				</div>
 				<footer>
 					<WavesSVG />
 					<div className="background">
@@ -98,3 +136,7 @@ export default class MainLayout extends Layout {
 		);
 	}
 }
+
+export default forwardRef((props, ref) => {
+	return <MainLayout ref={ref} location={useLocation()} {...props} />;
+});
