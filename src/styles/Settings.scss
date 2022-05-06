@@ -1,0 +1,165 @@
+@import './Common.scss';
+
+@include root_page('settings') {
+	height: 100vh;
+
+	> footer {
+		display: none;
+	}
+
+	> main {
+		margin: 0;
+		padding: 0;
+		height: auto;
+		flex: auto;
+		display: flex;
+		flex-direction: row;
+
+		> .menu {
+			z-index: 4;
+			flex-direction: column;
+			overflow-y: auto;
+			display: flex;
+			background-color: var(--background);
+			border-right: 1px solid var(--border);
+			height: auto;
+			width: 140px;
+			flex: none;
+			padding: 20px 30px;
+			text-align: left;
+			user-select: none;
+
+			.material-icons {
+				font-size: inherit !important;
+			}
+
+			> a {
+				&:hover {
+					text-decoration: unset;
+				}
+			}
+
+			.navigate {
+				background-color: transparent;
+				border: none;
+				color: var(--contrast-background);
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				font: inherit;
+				font-size: 14px;
+				padding: 10px 10px;
+
+				.material-icons {
+					margin-right: 5px;
+				}
+
+				&:hover {
+					background: var(--background-accent);
+				}
+			}
+
+			> p {
+				font-size: 14px;
+				color: var(--contrast-background);
+			}
+
+			> .bar {
+				margin: 10px 0px;
+				width: 100%;
+				border-bottom: 1px solid var(--contrast-background);
+			}
+
+			> .genres {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: row;
+
+				> .entry {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 2px 8px;
+					margin: 2px;
+					height: 20px;
+					border: 1px solid var(--border);
+					border-radius: 5px;
+					font-size: 12px;
+					font-family: 'Montserrat Alternates';
+					color: var(--text-placeholder);
+					white-space: nowrap;
+
+					&:hover {
+						text-decoration: none;
+						background-color: var(--background-accent);
+					}
+				}
+			}
+		}
+
+		> .content {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			height: auto;
+			padding: 30px;
+
+			input {
+				height: 44px;
+				width: 500px;
+
+				@media only screen and (max-width: 795px) {
+					width: auto;
+				}
+
+				font-family: inherit;
+				background-color: var(--background-accent);
+				color: var(--text-accent);
+				border: 1px solid var(--border);
+				border-radius: 5px;
+				padding: 0px 15px;
+
+				&::placeholder {
+					color: var(--text-placeholder);
+				}
+			}
+
+			button {
+				cursor: pointer;
+				height: 44px;
+				width: fit-content;
+
+				font-family: inherit;
+				background-color: var(--background-accent);
+				color: var(--text-accent);
+				border: 1px solid var(--border);
+				border-radius: 5px;
+				padding: 0px 15px;
+
+				&:hover {
+					background-color: var(--background-accent-deep-2);
+				}
+			}
+
+			.plain-select {
+				width: 200px;
+			}
+
+			.error {
+				color: red;
+			}
+
+			label {
+				display: flex;
+				flex-direction: column;
+				margin-bottom: 10px;
+				width: 100%;
+
+				> span {
+					display: block;
+					margin-bottom: 5px;
+				}
+			}
+		}
+	}
+}

@@ -21,6 +21,15 @@ const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const Settings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Settings.js')
 );
+const GeneralSettings = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/settings/General.js')
+);
+const AppearanceSettings = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/settings/Appearance.js')
+);
+const TabCloakSettings = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/settings/TabCloak.js')
+);
 const Support = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Support.js')
 );
@@ -133,13 +142,38 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/settings.html"
+						path="/settings/"
 						element={
 							<Suspense fallback={<></>}>
 								<Settings layout={this.layout} />
 							</Suspense>
 						}
-					/>
+					>
+						<Route
+							path="general.html"
+							element={
+								<Suspense fallback={<></>}>
+									<GeneralSettings layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="appearance.html"
+							element={
+								<Suspense fallback={<></>}>
+									<AppearanceSettings layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="tabcloak.html"
+							element={
+								<Suspense fallback={<></>}>
+									<TabCloakSettings layout={this.layout} />
+								</Suspense>
+							}
+						/>
+					</Route>
 					<Route
 						path="/licenses.html"
 						element={

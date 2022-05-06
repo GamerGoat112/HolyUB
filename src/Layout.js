@@ -29,6 +29,16 @@ export default class Layout extends Component {
 			this
 		);
 
+		this.cloak = new Settings(
+			'cloak settings',
+			{
+				url: '',
+				title: '',
+				icon: '',
+			},
+			this
+		);
+
 		this.listen_fullscreen = this.listen_fullscreen.bind(this);
 	}
 	get_fullscreen() {
@@ -48,5 +58,18 @@ export default class Layout extends Component {
 	update() {
 		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
+
+		if (this.cloak.get('title') === '') {
+			document.title = 'Holy Unblocker';
+		} else {
+			document.title = this.cloak.get('title');
+		}
+	}
+	render() {
+		if (this.cloak.get('icon') === '') {
+			return <link rel="icon" href="/favicon.ico"></link>;
+		} else {
+			return <link rel="icon" href={this.cloak.get('icon')}></link>;
+		}
 	}
 }

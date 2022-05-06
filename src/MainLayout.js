@@ -38,6 +38,7 @@ export default class MainLayout extends Layout {
 
 		return (
 			<>
+				{super.render()}
 				<ObfuscateLayout />
 				<nav
 					className="main"
@@ -71,7 +72,7 @@ export default class MainLayout extends Layout {
 							<span>FAQ</span>
 						</Link>
 					</div>
-					<Link to="/settings.html">
+					<Link to="/settings/general.html">
 						<button>
 							<span className="material-icons">settings</span>
 						</button>

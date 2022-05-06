@@ -3,30 +3,7 @@ import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import '../styles/Proxy.scss';
-import PlainSelect from '../PlainSelect.js';
 import textContent from '../textContent.js';
-
-class Expand extends Component {
-	state = {
-		expanded: false,
-	};
-	render() {
-		return (
-			<div className="expand" data-expanded={Number(this.state.expanded)}>
-				<div
-					className="title"
-					onClick={() => this.setState({ expanded: !this.state.expanded })}
-				>
-					<span>{this.props.title}</span>
-					<div className="toggle material-icons">
-						{this.state.expanded ? 'expand_less' : 'expand_more'}
-					</div>
-				</div>
-				<div className="content">{this.props.children}</div>
-			</div>
-		);
-	}
-}
 
 export default class Proxies extends Component {
 	service_frame = createRef();
@@ -244,22 +221,6 @@ export default class Proxies extends Component {
 							to join our Discord for access to new Holy Unblocker links.
 						</Obfuscated>
 					</p>
-					<Expand title="Advanced Options">
-						<label>
-							<Obfuscated>Proxy</Obfuscated>:
-							<PlainSelect
-								onChange={event =>
-									this.layout.current.settings.set('proxy', event.target.value)
-								}
-								defaultValue={this.layout.current.settings.get('proxy')}
-							>
-								<option value="automatic">Automatic (Default)</option>
-								<option value="ultraviolet">Ultraviolet</option>
-								<option value="rammerhead">Rammerhead</option>
-								<option value="stomp">Stomp</option>
-							</PlainSelect>
-						</label>
-					</Expand>
 				</main>
 			</>
 		);

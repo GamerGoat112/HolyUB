@@ -1,7 +1,8 @@
 import { Component } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import { Obfuscated } from '../obfuscate.js';
-import PlainSelect from '../PlainSelect.js';
 import { set_page } from '../root.js';
+import '../styles/Settings.scss';
 
 export default class Settings extends Component {
 	/**
@@ -15,32 +16,35 @@ export default class Settings extends Component {
 
 		return (
 			<main>
-				<label>
-					Theme:
-					<PlainSelect
-						defaultValue={this.layout.current.settings.get('theme')}
-						onChange={event => {
-							this.layout.current.settings.set('theme', event.target.value);
-						}}
-					>
-						<option value="day">Day</option>
-						<option value="night">Night</option>
-					</PlainSelect>
-				</label>
-				<label>
-					<Obfuscated>Proxy</Obfuscated>:
-					<PlainSelect
-						onChange={event =>
-							this.layout.current.settings.set('proxy', event.target.value)
-						}
-						defaultValue={this.layout.current.settings.get('proxy')}
-					>
-						<option value="automatic">Automatic (Default)</option>
-						<option value="ultraviolet">Ultraviolet</option>
-						<option value="rammerhead">Rammerhead</option>
-						<option value="stomp">Stomp</option>
-					</PlainSelect>
-				</label>
+				<div className="menu">
+					<Link to="/settings/general.html">
+						<div className="navigate">
+							<span className="material-icons">home</span>
+							<div className="name">
+								<Obfuscated>General</Obfuscated>
+							</div>
+						</div>
+					</Link>
+					<Link to="/settings/appearance.html">
+						<div className="navigate">
+							<span className="material-icons">brush</span>
+							<div className="name">
+								<Obfuscated>Appearance</Obfuscated>
+							</div>
+						</div>
+					</Link>
+					<Link to="/settings/tabcloak.html">
+						<div className="navigate">
+							<span className="material-icons">tab</span>
+							<div className="name">
+								<Obfuscated>Tab Cloak</Obfuscated>
+							</div>
+						</div>
+					</Link>
+				</div>
+				<div className="content">
+					<Outlet />
+				</div>
 			</main>
 		);
 	}

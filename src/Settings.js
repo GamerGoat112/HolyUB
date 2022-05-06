@@ -55,7 +55,32 @@ export default class Settings {
 	get(key) {
 		return this.value[key];
 	}
+	set_object(object) {
+		let updated = false;
+
+		for (let key in object) {
+			if (this.valid_value(key, object[key])) {
+				this.value[key] = object[key];
+				updated = true;
+			}
+		}
+
+		if (updated) {
+			localStorage[this.key] = JSON.stringify(this.value);
+
+			if (this.component !== undefined) {
+				this.component.forceUpdate();
+			}
+		}
+
+		return updated;
+	}
 	set(key, value) {
+		if (typeof key === 'object') {
+			this.set_object(key);
+			return;
+		}
+
 		if (this.valid_value(key, value)) {
 			this.value[key] = value;
 			localStorage[this.key] = JSON.stringify(this.value);

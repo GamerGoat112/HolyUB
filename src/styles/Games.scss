@@ -11,15 +11,6 @@ html[data-page*='games'] #root {
 			display: flex;
 		}
 
-		@keyframes slidein {
-			0% {
-				left: -100%;
-			}
-			100% {
-				left: 0;
-			}
-		}
-
 		&[data-expanded='1'] {
 			&::before {
 				content: '';
@@ -33,9 +24,9 @@ html[data-page*='games'] #root {
 			}
 
 			.menu {
-				animation: slidein ease-in-out 0.3s;
-				display: flex;
-				left: 0px;
+				transition: transform cubic-bezier(0.65, 0.05, 0.36, 1) 0.3s;
+				transform: translateX(0%);
+				visibility: visible;
 			}
 		}
 
@@ -203,20 +194,23 @@ html[data-page*='games'] #root {
 		> .menu {
 			z-index: 4;
 			position: absolute;
-			display: none;
 			flex-direction: column;
 			overflow-y: auto;
+			display: flex;
+			visibility: hidden;
 			background-color: var(--background);
 			border-right: 1px solid var(--border);
+			transform: translateX(-100%);
 			$top: 71px;
 			top: 0px;
-			left: -100%;
+			left: 0px;
 			height: calc(100vh - $top);
 			width: 340px;
 			padding: $top 25px 0px 25px;
 			text-align: left;
 			user-select: none;
-			transition: left ease-in-out 0.7s;
+			transition: transform cubic-bezier(0.65, 0.05, 0.36, 1) 0.3s,
+				visibility 0s 0.3s;
 
 			@include screen_mobile {
 				width: auto;
@@ -241,10 +235,14 @@ html[data-page*='games'] #root {
 				cursor: pointer;
 				font: inherit;
 				font-size: 14px;
-				padding: 9px 0px;
+				padding: 10px 10px;
 
 				.material-icons {
 					margin-right: 5px;
+				}
+
+				&:hover {
+					background: var(--background-accent);
 				}
 			}
 

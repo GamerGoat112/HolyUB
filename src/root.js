@@ -1,7 +1,5 @@
 import process from 'process';
 
-document.title = 'Holy Unblocker';
-
 let _BARE_API;
 let _RH_APP;
 let _DB_API;

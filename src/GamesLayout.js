@@ -50,11 +50,11 @@ class GamesLayout extends Layout {
 		document.documentElement.dataset.expanded = Number(this.state.expanded);
 	}
 	render() {
+		this.update();
+
 		if (!get_page()?.startsWith('games-')) {
 			set_page('games');
 		}
-
-		this.update();
 
 		const suggested = [];
 
@@ -116,6 +116,7 @@ class GamesLayout extends Layout {
 
 		return (
 			<>
+				{super.render()}
 				<ObfuscateLayout />
 				<nav className="games" data-expanded={Number(this.state.expanded)}>
 					<button
@@ -319,7 +320,7 @@ class GamesLayout extends Layout {
 						</div>
 					</div>
 					<div className="shift-right" />
-					<Link to="/settings.html">
+					<Link to="/settings/general.html">
 						<button>
 							<span className="material-icons">settings</span>
 						</button>

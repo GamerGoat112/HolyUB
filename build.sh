@@ -14,6 +14,9 @@ pages=(
 	"proxies/st.html"
 	"proxies/uv.html"
 	"proxies/flash.html"
+	"settings/general.html"
+	"settings/appearance.html"
+	"settings/tabcloak.html"
 )
 
 npm run build

@@ -116,21 +116,21 @@ export default class ServiceFrame extends SleepingComponent {
 			const selector =
 				this.iframe_window.document.querySelector('link[rel*="icon"]');
 
-			const icons = [];
+			let icon;
 
 			if (selector !== null && selector.href !== '') {
-				icons.push(selector.href);
+				icon = selector.href;
 			} else {
-				icons.push(new URL('/favicon.ico', location).href);
+				icon = new URL('/favicon.ico', location).toString();
 			}
 
 			if (!this.links_tried.has(location)) {
 				this.links_tried.set(location, new Set());
 			}
 
-			if (!this.links_tried.get(location).has(icons[0])) {
-				this.links_tried.get(location).add(icons[0]);
-				this.load_icon(icons[0]);
+			if (!this.links_tried.get(location).has(icon)) {
+				this.links_tried.get(location).add(icon);
+				this.load_icon(icon);
 			}
 		}
 

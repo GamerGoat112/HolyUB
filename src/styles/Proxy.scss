@@ -11,59 +11,6 @@
 			width: auto;
 		}
 
-		.expand {
-			display: flex;
-			flex-direction: column;
-			margin-top: 20px;
-
-			.title {
-				font-size: 22px;
-				align-items: center;
-				cursor: pointer;
-				user-select: none;
-				display: inline-flex;
-				width: fit-content;
-				flex-direction: row;
-				align-items: center;
-
-				.toggle {
-					margin-left: 4px;
-					padding: 3px;
-				}
-			}
-
-			&[data-expanded='0'] {
-				.content {
-					display: none;
-				}
-			}
-
-			&[data-expanded='1'] {
-				.content {
-					display: flex;
-					flex-direction: column;
-				}
-			}
-
-			.content {
-				line-height: 40px;
-				margin-top: 15px;
-
-				label {
-					width: 250px;
-					display: flex;
-					flex-direction: row;
-					text-align: right;
-
-					input,
-					.plain-select {
-						margin-left: auto;
-						width: 200px;
-					}
-				}
-			}
-		}
-
 		> .omnibox {
 			$border: 1px;
 			$height: 44px;
