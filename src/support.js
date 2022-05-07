@@ -55,7 +55,7 @@ export const qna = [
 		a: (
 			<>
 				The proxies used on this website can be found in{' '}
-				<Link to="/licenses.html">licenses and open-source credits</Link>.
+				<Link to="/credits.html">credits and open-source licenses</Link>.
 			</>
 		),
 	},

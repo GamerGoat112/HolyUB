@@ -44,8 +44,8 @@ const NotFound = lazy(() =>
 const Proxy = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Proxy.js')
 );
-const Licenses = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Licenses.js')
+const Credits = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/Credits.js')
 );
 const Terms = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Terms.js')
@@ -141,10 +141,10 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/licenses.html"
+						path="/credits.html"
 						element={
 							<Suspense fallback={<></>}>
-								<Licenses layout={this.layout} />
+								<Credits layout={this.layout} />
 							</Suspense>
 						}
 					/>

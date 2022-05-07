@@ -2,13 +2,15 @@ import { Component } from 'react';
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 
-export default class Licenses extends Component {
+export default class Credits extends Component {
 	render() {
-		set_page('licenses');
+		set_page('credits');
 
 		return (
 			<main>
-				<h2>Licenses and open-source credits.</h2>
+				<h2>Credits</h2>
+
+				<h2>Open-source licenses</h2>
 
 				<ul>
 					<li>

@@ -165,7 +165,7 @@ class MainLayout extends Layout {
 						<WavesSVG />
 						<div className="background">
 							<div className="content">
-								<Link to="/licenses.html">Licenses</Link>
+								<Link to="/credits.html">Credits</Link>
 								<Link to="/contact.html">Contact</Link>
 								<Link to="/privacy.html">Privacy</Link>
 								<Link to="/terms.html">Terms of use</Link>
