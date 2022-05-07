@@ -10,6 +10,8 @@ export default class Credits extends Component {
 			<main>
 				<h2>Credits</h2>
 
+				<ul></ul>
+
 				<h2>Open-source licenses</h2>
 
 				<ul>
