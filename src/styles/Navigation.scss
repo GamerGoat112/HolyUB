@@ -1,14 +1,24 @@
-@import './Screen.scss';
+@import './Common.scss';
+
+@include screen_mobile {
+	html[data-expanded='1'] {
+		body {
+			overflow: hidden;
+		}
+	}
+}
 
 #root {
 	> nav {
 		display: flex;
-		min-height: var(--nav-height);
+		height: var(--nav-height);
+		width: 100%;
+		box-sizing: border-box;
 		align-content: center;
-		position: relative;
+		position: fixed;
 		color: var(--text);
 		border-bottom: var(--border) 1px solid;
-		padding: 10px 5vw;
+		padding: 0px 5vw;
 		z-index: 10;
 		text-align: center;
 		background: var(--background);
@@ -44,16 +54,6 @@
 				left: 0px;
 				right: 0px;
 				margin: auto;
-			}
-
-			&[data-expanded='1'] {
-				> *:not(.expand) {
-					display: none;
-				}
-
-				.collapsable {
-					display: flex;
-				}
 			}
 		}
 
@@ -103,15 +103,17 @@
 	}
 
 	> .content {
+		padding-top: var(--nav-height-border);
 		padding-left: 300px;
-		display: flex;
-		flex-direction: row;
 		transition: padding-left 0.3s;
+		flex-direction: column;
+		min-height: calc(100vh - var(--nav-height-border));
+		overflow: hidden;
+		display: flex;
 
 		> .menu {
-			height: 100%;
 			position: fixed;
-			z-index: 4;
+			z-index: 11;
 			flex-direction: column;
 			overflow-y: auto;
 			display: flex;
@@ -119,9 +121,9 @@
 			border-right: 1px solid var(--border);
 			left: 0;
 			top: 0;
-			margin-top: 71px;
+			margin-top: var(--nav-height-border);
 			width: 300px;
-			height: calc(100vh - 71px);
+			height: calc(100vh - var(--nav-height-border));
 			box-sizing: border-box;
 			transform: translateX(0);
 			padding: 20px 25px;
@@ -130,7 +132,8 @@
 			transition: transform 0.3s;
 
 			@include screen_mobile {
-				width: auto;
+				width: 100vw;
+				height: 100vh;
 			}
 
 			> .genres {

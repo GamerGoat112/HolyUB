@@ -4,6 +4,7 @@ import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
 import { qna } from '../support.js';
 import '../styles/Support.scss';
+import { Search } from '@mui/icons-material';
 
 export default class Support extends Component {
 	main = createRef();
@@ -69,7 +70,7 @@ export default class Support extends Component {
 						<Obfuscated>HolyUnblocker</Obfuscated> Knowledgebase
 					</h1>
 					<div className="search">
-						<span className="icon material-icons">search</span>
+						<Search className="icon" />
 						<input
 							className="bar"
 							type="text"

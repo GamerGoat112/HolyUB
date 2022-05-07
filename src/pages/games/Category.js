@@ -107,6 +107,7 @@ export default class Category extends Component {
 				<Section
 					name={categories[this.props.id].name}
 					items={this.state.data}
+					layout={this.layout}
 				/>
 			</main>
 		);

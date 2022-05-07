@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import { set_page } from '../../root.js';
-import { Section } from '../../GamesCommon.js';
+import { DB_API, set_page } from '../../root.js';
+import { GamesAPI, Section } from '../../GamesCommon.js';
+import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
@@ -22,6 +23,11 @@ export default class FavoritesCategory extends Component {
 			data,
 		};
 	}
+	games_api = new GamesAPI(DB_API);
+	games_settings = new Settings('common games', {
+		favorites: [],
+		seen: [],
+	});
 	abort = new AbortController();
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
@@ -30,7 +36,7 @@ export default class FavoritesCategory extends Component {
 		return this.props.layout;
 	}
 	get set_favorites() {
-		return this.layout.current.games_settings.get('favorites');
+		return this.games_settings.get('favorites');
 	}
 	async fetch() {
 		const data = [];
@@ -39,7 +45,7 @@ export default class FavoritesCategory extends Component {
 
 		for (let id of favorites) {
 			try {
-				data.push(await this.layout.current.games_api.game(id));
+				data.push(await this.games_api.game(id));
 			} catch (error) {
 				// cancelled? page unload?
 				if (!FETCH_FAILED.test(error)) {
@@ -49,7 +55,7 @@ export default class FavoritesCategory extends Component {
 			}
 		}
 
-		this.layout.current.games_settings.set('favorites', favorites);
+		this.games_settings.set('favorites', favorites);
 
 		return this.setState({
 			data,
@@ -75,7 +81,11 @@ export default class FavoritesCategory extends Component {
 		} else {
 			return (
 				<main>
-					<Section name="Favorites" items={this.state.data} />
+					<Section
+						name="Favorites"
+						items={this.state.data}
+						layout={this.layout}
+					/>
 				</main>
 			);
 		}

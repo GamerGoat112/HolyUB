@@ -4,6 +4,7 @@ import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import '../../styles/Games Category.scss';
 import categories from './categories.json';
 import { Link } from 'react-router-dom';
+import { ArrowForward } from '@mui/icons-material';
 
 function ExpandSection(props) {
 	return (
@@ -12,11 +13,11 @@ function ExpandSection(props) {
 				<h1>{props.name}</h1>
 				<Link to={props.href} className="see-all">
 					See All
-					<span className="material-icons">arrow_forward</span>
+					<ArrowForward />
 				</Link>
 			</div>
 			<div className="items">
-				<ItemList items={props.items} />
+				<ItemList items={props.items} layout={props.layout} />
 			</div>
 		</section>
 	);
@@ -103,6 +104,7 @@ export default class Category extends Component {
 					items={_categories[id]}
 					name={name}
 					key={id}
+					layout={this.layout}
 				/>
 			);
 		}

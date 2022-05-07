@@ -2,9 +2,9 @@ import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { set_page } from '../root.js';
 import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
-import '../styles/Proxy.scss';
 import textContent from '../textContent.js';
-import { Search } from '@mui/icons-material';
+import { NorthWest, Search } from '@mui/icons-material';
+import '../styles/Proxy.scss';
 
 export default class Proxies extends Component {
 	service_frame = createRef();
@@ -80,7 +80,7 @@ export default class Proxies extends Component {
 							});
 						}}
 					>
-						<Search />
+						<Search className="search" />
 						<span
 							className="text"
 							ref={text}
@@ -88,7 +88,7 @@ export default class Proxies extends Component {
 								__html: this.state.omnibox_entries[i],
 							}}
 						/>
-						<span className="open material-icons">north_west</span>
+						<NorthWest className="open" />
 					</div>
 				);
 			}
@@ -106,10 +106,9 @@ export default class Proxies extends Component {
 							event.preventDefault();
 							this.search_submit();
 						}}
-						onBlur={async event => {
-							await {};
+						onBlur={event => {
 							if (!this.form.current.contains(event.relatedTarget)) {
-								this.setState({ input_focused: false });
+								// this.setState({ input_focused: false });
 							}
 						}}
 						ref={this.form}
@@ -191,7 +190,7 @@ export default class Proxies extends Component {
 								}
 							}}
 						/>
-						<span className="eyeglass material-icons">search</span>
+						<Search className="search" />
 						<div
 							ref={this.suggested}
 							className="suggested"

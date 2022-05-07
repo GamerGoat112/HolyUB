@@ -22,9 +22,9 @@
 			border-right: 1px solid var(--border);
 			left: 0;
 			top: 0;
-			margin-top: 71px;
+			margin-top: var(--nav-height-border);
 			width: 300px;
-			height: calc(100vh - 71px);
+			height: calc(100vh - var(--nav-height-border));
 			box-sizing: border-box;
 			transform: translateX(0);
 			padding: 20px 25px;

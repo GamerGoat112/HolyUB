@@ -59,7 +59,8 @@ $day: (
 }
 
 html {
-	--nav-height: 50px;
+	--nav-height: 70px;
+	--nav-height-border: 71px;
 
 	@include theme-rules($night, $day);
 

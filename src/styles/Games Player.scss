@@ -3,12 +3,14 @@
 @include root_page('games-player') {
 	main {
 		border-radius: 10px;
-		margin: auto;
+		margin: calc(var(--nav-height-border) / 4) auto;
 		background-color: var(--background-accent);
 		display: flex;
 		flex-direction: column;
-		width: 80%;
-		height: calc(100vh - 110px);
+		margin: 20px auto 0px auto;
+		width: 95%;
+		height: calc(100vh - var(--nav-height-border) - 40px);
+		box-sizing: border-box;
 		padding: 0px 15px;
 		border-radius: 10px;
 
@@ -34,7 +36,7 @@
 				margin-left: auto;
 			}
 
-			> button {
+			> .button {
 				cursor: pointer;
 				margin-left: 15px;
 				border: 1px solid var(--border);
@@ -43,6 +45,8 @@
 				border-radius: 5px;
 				width: 40px;
 				height: 40px;
+				padding: 7px;
+				box-sizing: border-box;
 
 				&:hover {
 					background-color: var(--background-accent);
@@ -80,8 +84,9 @@
 				> .close {
 					margin: 10px;
 					margin-left: auto;
-					width: 30px;
-					height: 30px;
+					width: 20px;
+					height: 20px;
+					padding: 5px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -107,7 +112,7 @@
 						font-family: 'Montserrat Alternates';
 						justify-content: space-around;
 						align-items: center;
-						margin: 5px 0px;
+						margin: 3px 0px;
 
 						> .visuals {
 							width: 100%;

@@ -1,5 +1,11 @@
 @mixin root_page($page) {
-	html[data-page="#{$page}"] #root {
+	html[data-page='#{$page}'] #root {
+		@content;
+	}
+}
+
+@mixin screen_mobile {
+	@media only screen and (max-width: 650px) {
 		@content;
 	}
 }

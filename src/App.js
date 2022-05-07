@@ -2,7 +2,6 @@ import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
-import GamesLayout from './GamesLayout.js';
 import './styles/App.scss';
 
 const GamesPopular = lazy(() =>
@@ -142,6 +141,40 @@ export default class App extends Component {
 						}
 					/>
 					<Route
+						path="/licenses.html"
+						element={
+							<Suspense fallback={<></>}>
+								<Licenses layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route path="/games/">
+						<Route
+							path="popular.html"
+							element={
+								<Suspense fallback={<></>}>
+									<GamesPopular layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="favorites.html"
+							element={
+								<Suspense fallback={<></>}>
+									<GamesFavorites layout={this.layout} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="player.html"
+							element={<PlayerProxy layout={this.layout} />}
+						/>
+						<Route
+							path="category.html"
+							element={<CategoryProxy layout={this.layout} />}
+						/>
+					</Route>
+					<Route
 						path="/settings/"
 						element={
 							<Suspense fallback={<></>}>
@@ -174,43 +207,6 @@ export default class App extends Component {
 							}
 						/>
 					</Route>
-					<Route
-						path="/licenses.html"
-						element={
-							<Suspense fallback={<></>}>
-								<Licenses layout={this.layout} />
-							</Suspense>
-						}
-					/>
-				</Route>
-				<Route
-					path="/games/"
-					element={<GamesLayout ref={this.layout} layout={this.layout} />}
-				>
-					<Route
-						path="popular.html"
-						element={
-							<Suspense fallback={<></>}>
-								<GamesPopular layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path="favorites.html"
-						element={
-							<Suspense fallback={<></>}>
-								<GamesFavorites layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path="player.html"
-						element={<PlayerProxy layout={this.layout} />}
-					/>
-					<Route
-						path="category.html"
-						element={<CategoryProxy layout={this.layout} />}
-					/>
 				</Route>
 				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
 					<Route

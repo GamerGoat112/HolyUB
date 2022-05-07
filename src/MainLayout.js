@@ -3,6 +3,7 @@ import { ReactComponent as HatSVG } from './assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './assets/waves.svg';
 import { createRef, forwardRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import categories from './pages/games/categories.json';
 import {
 	Home,
 	HomeOutlined,
@@ -19,20 +20,34 @@ import './styles/Navigation.scss';
 import './styles/Footer.scss';
 
 export function MenuTab(props) {
+	const { route, iconFilled, iconOutlined, name, ...attributes } = props;
 	const location = useLocation();
-	const selected = location.pathname === props.route;
+	const selected = location.pathname === route;
 
 	return (
-		<Link to={props.route} className="entry">
+		<Link to={route} className="entry" {...attributes}>
 			<span className="icon">
-				{(selected && props.iconFilled) ||
-					props.iconOutlined ||
-					props.iconFilled}
+				{(selected && iconFilled) || iconOutlined || iconFilled}
 			</span>
 			<span className="name">
-				<Obfuscated>{props.name}</Obfuscated>
+				<Obfuscated>{name}</Obfuscated>
 			</span>
 		</Link>
+	);
+}
+
+function MainMenuTab(props) {
+	return (
+		<MenuTab
+			onClick={() => {
+				if (props.layout.mobile) {
+					props.layout.setState({
+						expanded: false,
+					});
+				}
+			}}
+			{...props}
+		/>
 	);
 }
 
@@ -42,12 +57,29 @@ class MainLayout extends Layout {
 
 		this.state = {
 			...this.state,
-			expanded: !this.props.location.pathname.startsWith('/settings/'),
+			expanded:
+				!this.props.location.pathname.startsWith('/settings/') &&
+				this.state.expanded,
 		};
 	}
 	nav = createRef();
 	render() {
 		this.update();
+
+		const ui_categories = [];
+
+		for (let id in categories) {
+			const { name } = categories[id];
+			ui_categories.push(
+				<Link
+					key={id}
+					to={`/games/category.html?id=${id}`}
+					className="entry text"
+				>
+					<Obfuscated>{name}</Obfuscated>
+				</Link>
+			);
+		}
 
 		return (
 			<>
@@ -78,21 +110,24 @@ class MainLayout extends Layout {
 				</nav>
 				<div className="content">
 					<div tabIndex="0" className="menu menu-like" ref={this.menu}>
-						<MenuTab
+						<MainMenuTab
 							route="/"
 							name="Home"
 							iconFilled={<Home />}
 							iconOutlined={<HomeOutlined />}
+							layout={this}
 						/>
-						<MenuTab
+						<MainMenuTab
 							route="/proxy.html"
 							name="Proxy"
 							iconFilled={<WebAsset />}
+							layout={this}
 						/>
-						<MenuTab
+						<MainMenuTab
 							route="/faq.html"
 							name="FAQ"
 							iconFilled={<QuestionMark />}
+							layout={this}
 						/>
 
 						<div className="bar" />
@@ -101,37 +136,41 @@ class MainLayout extends Layout {
 							<Obfuscated>Games</Obfuscated>
 						</p>
 
-						<MenuTab
+						<MainMenuTab
 							route="/games/popular.html"
 							name="Popular"
 							iconFilled={<SortRounded />}
+							layout={this}
 						/>
-						<MenuTab
+						<MainMenuTab
 							route="/games/favorites.html"
 							name="Favorites"
 							iconFilled={<StarRounded />}
 							iconOutlined={<StarOutlineRounded />}
+							layout={this}
 						/>
 
-						{/*<p>Genre</p><div className="genres">{ui_categories}</div>*/}
+						<p>Genre</p>
+
+						<div className="genres">{ui_categories}</div>
 					</div>
 					<Outlet />
-				</div>
-				<footer>
-					<WavesSVG />
-					<div className="background">
-						<div className="content">
-							<Link to="/licenses.html">Licenses</Link>
-							<Link to="/contact.html">Contact</Link>
-							<Link to="/privacy.html">Privacy</Link>
-							<Link to="/terms.html">Terms of use</Link>
-							<span>
-								&copy; <Obfuscated>Holy Unblocker</Obfuscated>{' '}
-								{new Date().getUTCFullYear()}
-							</span>
+					<footer>
+						<WavesSVG />
+						<div className="background">
+							<div className="content">
+								<Link to="/licenses.html">Licenses</Link>
+								<Link to="/contact.html">Contact</Link>
+								<Link to="/privacy.html">Privacy</Link>
+								<Link to="/terms.html">Terms of use</Link>
+								<span>
+									&copy; <Obfuscated>Holy Unblocker</Obfuscated>{' '}
+									{new Date().getUTCFullYear()}
+								</span>
+							</div>
 						</div>
-					</div>
-				</footer>
+					</footer>
+				</div>
 			</>
 		);
 	}

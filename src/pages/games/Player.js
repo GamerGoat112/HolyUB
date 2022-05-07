@@ -1,9 +1,24 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { GAMES_CDN, HCAPTCHA_KEY, set_page } from '../../root.js';
+import { DB_API, GAMES_CDN, HCAPTCHA_KEY, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
+import { GamesAPI } from '../../GamesCommon.js';
+import Settings from '../../Settings.js';
 import '../../styles/Games Player.scss';
+import {
+	ArrowDropDown,
+	ArrowDropUp,
+	ArrowLeft,
+	ArrowRight,
+	ChevronLeft,
+	Close,
+	Fullscreen,
+	Panorama,
+	Star,
+	StarBorder,
+	VideogameAsset,
+} from '@mui/icons-material';
 
 async function resolve_game(src, type, setting) {
 	switch (type) {
@@ -34,18 +49,19 @@ export default class GamesPlayer extends Component {
 		controls_expanded: false,
 		panorama: false,
 	};
+	games_api = new GamesAPI(DB_API);
+	games_settings = new Settings('common games', {
+		favorites: [],
+		seen: [],
+	});
 	get favorited() {
-		return this.layout.current.games_settings
-			.get('favorites')
-			.includes(this.props.id);
+		return this.games_settings.get('favorites').includes(this.props.id);
 	}
 	get seen() {
-		return this.layout.current.games_settings
-			.get('seen')
-			.includes(this.props.id);
+		return this.games_settings.get('seen').includes(this.props.id);
 	}
 	set seen(value) {
-		const seen = this.layout.current.games_settings.get('seen');
+		const seen = this.games_settings.get('seen');
 
 		if (value) {
 			seen.push(this.props.id);
@@ -54,7 +70,7 @@ export default class GamesPlayer extends Component {
 			seen.splice(i, 1);
 		}
 
-		this.layout.current.games_settings.set('seen', seen);
+		this.games_settings.set('seen', seen);
 	}
 	captcha = createRef();
 	iframe = createRef();
@@ -93,7 +109,7 @@ export default class GamesPlayer extends Component {
 		await {};
 
 		try {
-			const data = await this.layout.current.games_api.game(this.props.id);
+			const data = await this.games_api.game(this.props.id);
 			const resolved_src = await resolve_game(
 				new URL(data.src, GAMES_CDN).toString(),
 				data.type,
@@ -144,12 +160,10 @@ export default class GamesPlayer extends Component {
 					case 'arrows':
 						visuals.push(
 							<div key={key} className="move">
-								<div className="control-key material-icons">arrow_drop_up</div>
-								<div className="control-key material-icons">arrow_left</div>
-								<div className="control-key material-icons">
-									arrow_drop_down
-								</div>
-								<div className="control-key material-icons">arrow_right</div>
+								<ArrowDropUp className="control-key" />
+								<ArrowLeft className="control-key" />
+								<ArrowDropDown className="control-key" />
+								<ArrowRight className="control-key" />
 							</div>
 						);
 						break;
@@ -224,12 +238,10 @@ export default class GamesPlayer extends Component {
 							}
 						}}
 					>
-						<button
+						<Close
 							className="close"
 							onClick={() => this.setState({ controls_expanded: false })}
-						>
-							<span className="material-icons">close</span>
-						</button>
+						/>
 						<div className="controls">{controls}</div>
 					</div>
 				</div>
@@ -238,18 +250,18 @@ export default class GamesPlayer extends Component {
 						<Obfuscated>{this.state.data.name}</Obfuscated>
 					</h3>
 					<div className="shift-right"></div>
-					<button
-						className="material-icons"
+					<div
+						className="button"
 						onClick={() => {
 							this.focus_listener();
 							this.iframe.current.requestFullscreen();
 						}}
 					>
-						fullscreen
-					</button>
+						<Fullscreen />
+					</div>
 					{controls.length !== 0 && (
-						<button
-							className="material-icons"
+						<div
+							className="button"
 							ref={this.controls_open}
 							onClick={async () => {
 								await this.setState({
@@ -259,14 +271,13 @@ export default class GamesPlayer extends Component {
 								this.controls_popup.current.focus();
 							}}
 						>
-							videogame_asset
-						</button>
+							<VideogameAsset />
+						</div>
 					)}
-					<button
-						className="material-icons"
+					<div
+						className="button"
 						onClick={() => {
-							const favorites =
-								this.layout.current.games_settings.get('favorites');
+							const favorites = this.games_settings.get('favorites');
 							const i = favorites.indexOf(this.props.id);
 
 							if (i === -1) {
@@ -275,14 +286,14 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							this.layout.current.games_settings.set('favorites', favorites);
+							this.games_settings.set('favorites', favorites);
 							this.forceUpdate();
 						}}
 					>
-						{this.favorited ? 'star' : 'star_outlined'}
-					</button>
-					<button
-						className="material-icons"
+						{this.favorited ? <Star /> : <StarBorder />}
+					</div>
+					<div
+						className="button"
 						onClick={async () => {
 							await this.setState({
 								panorama: !this.state.panorama,
@@ -293,8 +304,8 @@ export default class GamesPlayer extends Component {
 							}
 						}}
 					>
-						{this.state.panorama ? 'chevron_left' : 'panorama'}
-					</button>
+						{this.state.panorama ? <ChevronLeft /> : <Panorama />}
+					</div>
 				</div>
 				<HCaptcha
 					onLoad={async () => {
@@ -307,10 +318,7 @@ export default class GamesPlayer extends Component {
 					onVerify={async token => {
 						if (this.captcha_seen === true) {
 							this.captcha_seen = false;
-							await this.layout.current.games_api.game_plays(
-								this.props.id,
-								token
-							);
+							await this.games_api.game_plays(this.props.id, token);
 							this.seen = true;
 						}
 					}}

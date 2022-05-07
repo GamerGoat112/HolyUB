@@ -8,6 +8,7 @@ import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
 import resolve_proxy from './ProxyResolver.js';
 import './styles/Service.scss';
+import { ChevronLeft, Fullscreen } from '@mui/icons-material';
 
 export default class ServiceFrame extends SleepingComponent {
 	state = {
@@ -249,12 +250,7 @@ export default class ServiceFrame extends SleepingComponent {
 		return (
 			<div className="service" ref={this.container} data-current={current}>
 				<div className="buttons">
-					<div
-						className="material-icons button"
-						onClick={this.close.bind(this)}
-					>
-						chevron_left
-					</div>
+					<ChevronLeft className="button" onClick={this.close.bind(this)} />
 					{this.state.icon === 'globe' ? (
 						<GlobeSVG className="icon" />
 					) : (
@@ -270,12 +266,7 @@ export default class ServiceFrame extends SleepingComponent {
 						<Obfuscated ellipsis>{this.state.title}</Obfuscated>
 					</p>
 					<div className="shift-right"></div>
-					<div
-						className="material-icons button"
-						onClick={this.fullscreen.bind(this)}
-					>
-						fullscreen
-					</div>
+					<Fullscreen className="button" />
 				</div>
 				<iframe
 					className="headless"

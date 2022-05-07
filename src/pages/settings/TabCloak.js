@@ -109,6 +109,7 @@ export default function TabCloak(props) {
 					props.layout.current.cloak.set({
 						title: '',
 						icon: '',
+						url: '',
 					});
 				}}
 			>

@@ -99,7 +99,10 @@ export function Item(props) {
 	const [loaded, set_loaded] = useState(false);
 
 	return (
-		<Link to={`/games/player.html?id=${props.id}`}>
+		<Link
+			to={`/games/player.html?id=${props.id}`}
+			onClick={() => props.layout.current.setState({ expanded: false })}
+		>
 			<div className="item">
 				<div className="thumbnail">
 					<img
@@ -132,9 +135,18 @@ export function ItemList(props) {
 
 	for (let item of props.items) {
 		if (item.loading) {
-			items.push(<LoadingItem key={item.id} id={item.id} />);
+			items.push(
+				<LoadingItem key={item.id} id={item.id} layout={props.layout} />
+			);
 		} else {
-			items.push(<Item key={item.id} id={item.id} name={item.name} />);
+			items.push(
+				<Item
+					key={item.id}
+					id={item.id}
+					name={item.name}
+					layout={props.layout}
+				/>
+			);
 		}
 	}
 
@@ -148,7 +160,7 @@ export function Section(props) {
 				<h1>{props.name}</h1>
 			</div>
 			<div className="items">
-				<ItemList items={props.items} />
+				<ItemList items={props.items} layout={props.layout} />
 			</div>
 		</section>
 	);

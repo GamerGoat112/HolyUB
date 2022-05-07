@@ -1,7 +1,7 @@
 @import './Common.scss';
 
 @include root_page('support') {
-	> .banner {
+	.banner {
 		width: 100%;
 		display: block;
 		background-color: var(--contrast-background);
@@ -26,12 +26,11 @@
 
 			> .icon {
 				position: absolute;
-				width: 20px;
-				height: 20px;
-				padding: 5px;
+				width: 18px;
+				height: 18px;
+				padding: 6px;
 				pointer-events: none;
 				color: var(--text-placeholder);
-				font-size: 18px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
