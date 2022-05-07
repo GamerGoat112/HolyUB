@@ -1,4 +1,11 @@
-import { Brush, Home, HomeOutlined, Tab } from '@mui/icons-material';
+import {
+	Brush,
+	BrushOutlined,
+	DriveFileRenameOutline,
+	DriveFileRenameOutlineOutlined,
+	Home,
+	HomeOutlined,
+} from '@mui/icons-material';
 import { Component } from 'react';
 import { Outlet } from 'react-router-dom';
 import { MenuTab } from '../MainLayout.js';
@@ -28,11 +35,13 @@ export default class Settings extends Component {
 						route="/settings/appearance.html"
 						name="Appearance"
 						iconFilled={<Brush />}
+						iconOutlined={<BrushOutlined />}
 					/>
 					<MenuTab
 						route="/settings/tabcloak.html"
 						name="Tab Cloak"
-						iconFilled={<Tab />}
+						iconFilled={<DriveFileRenameOutline />}
+						iconOutlined={<DriveFileRenameOutlineOutlined />}
 					/>
 				</div>
 				<main>

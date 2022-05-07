@@ -25,7 +25,12 @@ export function MenuTab(props) {
 	const selected = location.pathname === route;
 
 	return (
-		<Link to={route} className="entry" {...attributes}>
+		<Link
+			to={route}
+			data-selected={Number(selected)}
+			className="entry"
+			{...attributes}
+		>
 			<span className="icon">
 				{(selected && iconFilled) || iconOutlined || iconFilled}
 			</span>
@@ -37,16 +42,17 @@ export function MenuTab(props) {
 }
 
 function MainMenuTab(props) {
+	const { layout, ...attributes } = props;
 	return (
 		<MenuTab
 			onClick={() => {
-				if (props.layout.mobile) {
-					props.layout.setState({
+				if (layout.mobile) {
+					layout.setState({
 						expanded: false,
 					});
 				}
 			}}
-			{...props}
+			{...attributes}
 		/>
 	);
 }
@@ -69,14 +75,14 @@ class MainLayout extends Layout {
 		const ui_categories = [];
 
 		for (let id in categories) {
-			const { name } = categories[id];
+			const { short } = categories[id];
 			ui_categories.push(
 				<Link
 					key={id}
 					to={`/games/category.html?id=${id}`}
 					className="entry text"
 				>
-					<Obfuscated>{name}</Obfuscated>
+					<Obfuscated>{short}</Obfuscated>
 				</Link>
 			);
 		}
@@ -132,9 +138,9 @@ class MainLayout extends Layout {
 
 						<div className="bar" />
 
-						<p>
+						<div className="title">
 							<Obfuscated>Games</Obfuscated>
-						</p>
+						</div>
 
 						<MainMenuTab
 							route="/games/popular.html"
@@ -150,7 +156,7 @@ class MainLayout extends Layout {
 							layout={this}
 						/>
 
-						<p>Genre</p>
+						<div className="title">Genre</div>
 
 						<div className="genres">{ui_categories}</div>
 					</div>
