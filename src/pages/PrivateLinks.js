@@ -23,8 +23,27 @@ export default class PrivateLinks extends Component {
 					<ObfuscatedA href={VOUCHER_URL}>here</ObfuscatedA>.
 				</p>
 				<form
-					onSubmit={event => {
+					onSubmit={async event => {
 						event.preventDefault();
+
+						try {
+							// PLACEHOLDER
+							// no idea what to do with this data...
+							// see https://discord.com/channels/956789074121863178/957489824909111317/972748339223334962
+							await this.api.redeem_voucher(
+								this.voucher.current.value,
+								this.domain.current.value,
+								this.abort.signal
+							);
+						} catch (error) {
+							if (error.message !== 'The user aborted a request.') {
+								console.error(error);
+
+								this.setState({
+									error,
+								});
+							}
+						}
 					}}
 					className="redeem"
 				>
