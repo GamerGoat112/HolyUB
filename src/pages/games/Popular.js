@@ -84,7 +84,11 @@ export default class Popular extends Component {
 			});
 		} catch (error) {
 			if (error.message !== 'The user aborted a request.') {
-				throw error;
+				console.error(error);
+
+				return this.setState({
+					error,
+				});
 			}
 		}
 	}
@@ -99,6 +103,8 @@ export default class Popular extends Component {
 				data,
 			});
 		} catch (error) {
+			console.error(error);
+
 			return this.setState({
 				error,
 			});
