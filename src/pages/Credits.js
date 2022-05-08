@@ -26,7 +26,7 @@ export default class Credits extends Component {
 				<ul>
 					<li>
 						<Obfuscated>Our</Obfuscated>{' '}
-						<ObfuscatedA href={PATREON_URL}>Patreons</ObfuscatedA>
+						<ObfuscatedA href={PATREON_URL}>Patrons</ObfuscatedA>
 						<Obfuscated>.</Obfuscated>
 					</li>
 					<li>

@@ -23,7 +23,7 @@
 			height: calc(100vh - var(--nav-height-border));
 			box-sizing: border-box;
 			transform: translateX(0);
-			text-align: left;
+			z-index: 1;
 		}
 
 		@include screen_mobile {
@@ -37,6 +37,7 @@
 				width: 100%;
 				flex-direction: row;
 				overflow: hidden;
+				border-bottom: var(--border) 1px solid;
 
 				> .menu-list {
 					width: 100%;
@@ -44,6 +45,7 @@
 					flex-direction: row;
 					overflow-y: hidden;
 					padding: 5px;
+					box-sizing: border-box;
 
 					> .entry {
 						display: flex;
