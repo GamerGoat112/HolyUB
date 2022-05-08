@@ -1,6 +1,7 @@
-import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
+import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
 import { ReactComponent as HatSVG } from './assets/hat-small.svg';
 import { ReactComponent as WavesSVG } from './assets/waves.svg';
+import { ReactComponent as Patreon } from './assets/patreon.svg';
 import { createRef, forwardRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import categories from './pages/games/categories.json';
@@ -20,25 +21,43 @@ import './styles/Navigation.scss';
 import './styles/Footer.scss';
 
 export function MenuTab(props) {
-	const { route, iconFilled, iconOutlined, name, ...attributes } = props;
+	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;
 	const location = useLocation();
 	const selected = location.pathname === route;
-
-	return (
-		<Link
-			to={route}
-			data-selected={Number(selected)}
-			className="entry"
-			{...attributes}
-		>
+	const content = (
+		<>
 			<span className="icon">
 				{(selected && iconFilled) || iconOutlined || iconFilled}
 			</span>
 			<span className="name">
 				<Obfuscated>{name}</Obfuscated>
 			</span>
-		</Link>
+		</>
 	);
+
+	if (route === undefined) {
+		return (
+			<ObfuscatedA
+				href={href}
+				data-selected={Number(selected)}
+				className="entry"
+				{...attributes}
+			>
+				{content}
+			</ObfuscatedA>
+		);
+	} else {
+		return (
+			<Link
+				to={route}
+				data-selected={Number(selected)}
+				className="entry"
+				{...attributes}
+			>
+				{content}
+			</Link>
+		);
+	}
 }
 
 function MainMenuTab(props) {
@@ -140,6 +159,14 @@ class MainLayout extends Layout {
 								route="/faq.html"
 								name="FAQ"
 								iconFilled={<QuestionMark />}
+								layout={this}
+							/>
+							<MainMenuTab
+								href="https://www.patreon.com/holyunblocker"
+								name="Patreon"
+								iconFilled={
+									<Patreon style={{ width: '18px', height: '18px' }} />
+								}
 								layout={this}
 							/>
 
