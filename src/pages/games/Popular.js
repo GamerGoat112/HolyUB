@@ -69,18 +69,24 @@ export default class Popular extends Component {
 
 		this.abort = new AbortController();
 
-		const category = await this.api.category(
-			{
-				sort: 'search',
-				search: query,
-				limit: this.limit,
-			},
-			this.abort.signal
-		);
+		try {
+			const category = await this.api.category(
+				{
+					sort: 'search',
+					search: query,
+					limit: this.limit,
+				},
+				this.abort.signal
+			);
 
-		this.setState({
-			category,
-		});
+			this.setState({
+				category,
+			});
+		} catch (error) {
+			if (error.message !== 'The user aborted a request.') {
+				throw error;
+			}
+		}
 	}
 	async fetch() {
 		try {
