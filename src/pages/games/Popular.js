@@ -83,7 +83,10 @@ export default class Popular extends Component {
 				category,
 			});
 		} catch (error) {
-			if (error.message !== 'The user aborted a request.') {
+			if (
+				error.message !== 'The operation was aborted' &&
+				error.message !== 'The user aborted a request.'
+			) {
 				console.error(error);
 
 				return this.setState({

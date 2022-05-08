@@ -191,7 +191,10 @@ export default class ServiceFrame extends SleepingComponent {
 			// likely abort error
 			if (error.message === 'Failed to fetch') {
 				console.error('Error fetching Bare server.');
-			} else if (error.message !== 'The user aborted a request.') {
+			} else if (
+				error.message !== 'The operation was aborted' &&
+				error.message !== 'The user aborted a request.'
+			) {
 				throw error;
 			}
 		}

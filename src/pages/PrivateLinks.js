@@ -36,7 +36,10 @@ export default class PrivateLinks extends Component {
 								this.abort.signal
 							);
 						} catch (error) {
-							if (error.message !== 'The user aborted a request.') {
+							if (
+								error.message !== 'The operation was aborted' &&
+								error.message !== 'The user aborted a request.'
+							) {
 								console.error(error);
 
 								this.setState({
