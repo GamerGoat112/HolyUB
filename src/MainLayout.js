@@ -97,6 +97,11 @@ class MainLayout extends Layout {
 					key={id}
 					to={`/games/category.html?id=${id}`}
 					className="entry text"
+					onClick={() => {
+						this.setState({
+							expanded: false,
+						});
+					}}
 				>
 					<Obfuscated>{short}</Obfuscated>
 				</Link>

@@ -1,5 +1,9 @@
 @import './Common.scss';
 
+html[data-page='games-player'] body > div[style*='2147483647'] {
+	width: 100%;
+}
+
 @include root_page('games-player') {
 	main {
 		border-radius: 10px;
@@ -170,7 +174,7 @@
 		}
 
 		&[data-panorama='1'] {
-			position: absolute;
+			position: fixed;
 			top: 0px;
 			left: 0px;
 			z-index: 11;
