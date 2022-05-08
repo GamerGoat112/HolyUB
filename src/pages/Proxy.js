@@ -1,5 +1,5 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { set_page } from '../root.js';
+import { PATREON_URL, set_page, TN_DISCORD_URL } from '../root.js';
 import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
@@ -25,9 +25,10 @@ export default class Proxies extends Component {
 		this.on_input();
 	}
 	async on_input() {
-		if (this.state.input_value !== this.input.current.value) {
+		if (this.input_value !== this.input.current.value) {
+			this.input_value = this.input.current.value;
+
 			this.setState({
-				input_value: this.input.current.value,
 				omnibox_entries: await this.service_frame.current.omnibox_entries(
 					this.input.current.value
 				),
@@ -213,17 +214,17 @@ export default class Proxies extends Component {
 							This is a free service paid for by our Patreons. If you want
 							faster servers, donate to Holy Unblocker on{' '}
 						</Obfuscated>
-						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
+						<ObfuscatedA href={PATREON_URL}>
 							<Obfuscated>Patreon</Obfuscated>
 						</ObfuscatedA>
 						.
 					</p>
 					<p>
 						<Obfuscated>Click </Obfuscated>
-						<ObfuscatedA href="https://discord.gg/unblock">here</ObfuscatedA>
+						<ObfuscatedA href={TN_DISCORD_URL}>here</ObfuscatedA>
 						<Obfuscated>
 							{' '}
-							to join our Discord for access to new Holy Unblocker links.
+							to join the TN Discord for access to new Holy Unblocker links.
 						</Obfuscated>
 					</p>
 				</main>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Obfuscated, ObfuscatedA } from './obfuscate';
+import { PATREON_URL } from './root';
 
 export const qna = [
 	{
@@ -12,7 +13,7 @@ export const qna = [
 			<>
 				Our <Obfuscated>proxy</Obfuscated> servers are paid for by our
 				supporters on{' '}
-				<ObfuscatedA href="https://www.patreon.com/holyunblocker">
+				<ObfuscatedA href={PATREON_URL}>
 					<Obfuscated>Patreon</Obfuscated>
 				</ObfuscatedA>
 				. If you subscribe, you can help us purchase faster servers in the

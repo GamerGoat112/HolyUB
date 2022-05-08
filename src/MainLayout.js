@@ -15,10 +15,12 @@ import {
 	WebAsset,
 	Menu,
 	Settings,
+	ShoppingCart,
 } from '@mui/icons-material';
 import Layout from './Layout.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
+import { PATREON_URL } from './root.js';
 
 export function MenuTab(props) {
 	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;
@@ -161,8 +163,17 @@ class MainLayout extends Layout {
 								iconFilled={<QuestionMark />}
 								layout={this}
 							/>
+
+							<div className="bar" />
+
 							<MainMenuTab
-								href="https://www.patreon.com/holyunblocker"
+								route="/privatelinks.html"
+								name="Private Links"
+								iconFilled={<ShoppingCart />}
+								layout={this}
+							/>
+							<MainMenuTab
+								href={PATREON_URL}
 								name="Patreon"
 								iconFilled={
 									<Patreon style={{ width: '18px', height: '18px' }} />

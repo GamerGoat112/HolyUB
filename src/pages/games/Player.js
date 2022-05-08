@@ -5,7 +5,7 @@ import { DB_API, GAMES_CDN, HCAPTCHA_KEY, set_page } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { GamesAPI } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
-import '../../styles/Games Player.scss';
+import '../../styles/GamesPlayer.scss';
 import {
 	ArrowDropDown,
 	ArrowDropUp,
@@ -49,19 +49,19 @@ export default class GamesPlayer extends Component {
 		controls_expanded: false,
 		panorama: false,
 	};
-	games_api = new GamesAPI(DB_API);
-	games_settings = new Settings('common games', {
+	api = new GamesAPI(DB_API);
+	settings = new Settings('common games', {
 		favorites: [],
 		seen: [],
 	});
 	get favorited() {
-		return this.games_settings.get('favorites').includes(this.props.id);
+		return this.settings.get('favorites').includes(this.props.id);
 	}
 	get seen() {
-		return this.games_settings.get('seen').includes(this.props.id);
+		return this.settings.get('seen').includes(this.props.id);
 	}
 	set seen(value) {
-		const seen = this.games_settings.get('seen');
+		const seen = this.settings.get('seen');
 
 		if (value) {
 			seen.push(this.props.id);
@@ -70,7 +70,7 @@ export default class GamesPlayer extends Component {
 			seen.splice(i, 1);
 		}
 
-		this.games_settings.set('seen', seen);
+		this.settings.set('seen', seen);
 	}
 	captcha = createRef();
 	iframe = createRef();
@@ -109,7 +109,7 @@ export default class GamesPlayer extends Component {
 		await {};
 
 		try {
-			const data = await this.games_api.game(this.props.id);
+			const data = await this.api.game(this.props.id);
 			const resolved_src = await resolve_game(
 				new URL(data.src, GAMES_CDN).toString(),
 				data.type,
@@ -277,7 +277,7 @@ export default class GamesPlayer extends Component {
 					<div
 						className="button"
 						onClick={() => {
-							const favorites = this.games_settings.get('favorites');
+							const favorites = this.settings.get('favorites');
 							const i = favorites.indexOf(this.props.id);
 
 							if (i === -1) {
@@ -286,7 +286,7 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							this.games_settings.set('favorites', favorites);
+							this.settings.set('favorites', favorites);
 							this.forceUpdate();
 						}}
 					>
@@ -318,7 +318,7 @@ export default class GamesPlayer extends Component {
 					onVerify={async token => {
 						if (this.captcha_seen === true) {
 							this.captcha_seen = false;
-							await this.games_api.game_plays(this.props.id, token);
+							await this.api.game_plays(this.props.id, token);
 							this.seen = true;
 						}
 					}}

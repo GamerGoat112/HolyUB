@@ -65,6 +65,7 @@
 				border-radius: 5px;
 				display: flex;
 				flex-direction: row;
+				box-sizing: border-box;
 
 				> input {
 					width: 100%;
@@ -82,10 +83,10 @@
 			}
 
 			> .suggested {
+				box-sizing: border-box;
 				display: none;
-				margin-top: calc($height + 2px);
-				width: calc(100%);
-				z-index: 10;
+				margin-top: $height;
+				width: 100%;
 
 				@include screen_mobile {
 					width: calc(100% - 20px); // - padding - border

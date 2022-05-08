@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { set_page } from '../root.js';
+import { HU_DISCORD_URL, set_page } from '../root.js';
 
 export default class Contact extends Component {
 	render() {
@@ -24,8 +24,8 @@ export default class Contact extends Component {
 					</li>
 					<li>
 						<Obfuscated>Discord</Obfuscated>:{' '}
-						<ObfuscatedA href="https://discord.gg/QKMwvd6tx6">
-							<Obfuscated>https://discord.gg/QKMwvd6tx6</Obfuscated>
+						<ObfuscatedA href={HU_DISCORD_URL}>
+							<Obfuscated>{HU_DISCORD_URL}</Obfuscated>
 						</ObfuscatedA>
 					</li>
 				</ul>

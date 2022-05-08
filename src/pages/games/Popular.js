@@ -1,10 +1,12 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { DB_API, set_page } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
-import '../../styles/Games Category.scss';
-import categories from './categories.json';
 import { Link } from 'react-router-dom';
-import { ArrowForward } from '@mui/icons-material';
+import { ArrowForward, Search } from '@mui/icons-material';
+import categories from './categories.json';
+import { Obfuscated } from '../../obfuscate.js';
+import Settings from '../../Settings.js';
+import '../../styles/GamesCategory.scss';
 
 function ExpandSection(props) {
 	return (
@@ -23,7 +25,7 @@ function ExpandSection(props) {
 	);
 }
 
-export default class Category extends Component {
+export default class Popular extends Component {
 	limit = 8;
 	constructor(props) {
 		super(props);
@@ -42,8 +44,16 @@ export default class Category extends Component {
 
 		this.state = {
 			data,
+			category: [],
+			input_focused: false,
 		};
 	}
+	searchbar = createRef();
+	input = createRef();
+	settings = new Settings('common games', {
+		favorites: [],
+		seen: [],
+	});
 	api = new GamesAPI(DB_API);
 	abort = new AbortController();
 	/**
@@ -51,6 +61,26 @@ export default class Category extends Component {
 	 */
 	get layout() {
 		return this.props.layout;
+	}
+	async search(query) {
+		if (this.abort !== undefined) {
+			this.abort.abort();
+		}
+
+		this.abort = new AbortController();
+
+		const category = await this.api.category(
+			{
+				sort: 'search',
+				search: query,
+				limit: this.limit,
+			},
+			this.abort.signal
+		);
+
+		this.setState({
+			category,
+		});
 	}
 	async fetch() {
 		try {
@@ -76,6 +106,49 @@ export default class Category extends Component {
 	}
 	render() {
 		set_page('games-category');
+
+		const render_suggested =
+			this.state.input_focused && this.state.category.length !== 0;
+		const suggested = [];
+
+		if (render_suggested) {
+			for (let i = 0; i < this.state.category.length; i++) {
+				const game = this.state.category[i];
+				let category_name;
+
+				if (game.category in categories) {
+					category_name = categories[game.category].short;
+				} else {
+					console.warn(`Unknown category ${game.category}`);
+					category_name = '';
+				}
+
+				const classes = ['option'];
+
+				if (i === this.state.last_select) {
+					classes.push('hover');
+				}
+
+				suggested.push(
+					<Link
+						key={game.id}
+						onClick={() => this.setState({ input_focused: false })}
+						onMouseOver={() => {
+							this.setState({
+								last_select: i,
+							});
+						}}
+						to={`/games/player.html?id=${game.id}`}
+						className={classes.join(' ')}
+					>
+						<div className="name">
+							<Obfuscated ellipsis>{game.name}</Obfuscated>
+						</div>
+						<div className="category">{category_name}</div>
+					</Link>
+				);
+			}
+		}
 
 		const _categories = {};
 
@@ -109,6 +182,112 @@ export default class Category extends Component {
 			);
 		}
 
-		return <main>{jsx_categories}</main>;
+		return (
+			<main>
+				<div
+					className="search-bar"
+					data-focused={Number(this.state.input_focused)}
+					data-suggested={Number(render_suggested)}
+					ref={this.searchbar}
+					onBlur={event => {
+						if (!this.searchbar.current.contains(event.relatedTarget)) {
+							this.setState({ input_focused: false });
+						}
+					}}
+				>
+					<div className="bar">
+						<Search className="search" />
+						<input
+							ref={this.input}
+							type="text"
+							placeholder="Search by game name"
+							onFocus={event => {
+								this.setState({ input_focused: true, last_select: -1 });
+								this.search(event.target.value);
+							}}
+							onClick={event => {
+								this.setState({ input_focused: true, last_select: -1 });
+								this.search(event.target.value);
+							}}
+							onKeyDown={event => {
+								let prevent_default = true;
+
+								switch (event.code) {
+									case 'Escape':
+										this.setState({ input_focused: false });
+										break;
+									case 'ArrowDown':
+									case 'ArrowUp':
+										{
+											let last_i = this.state.last_select;
+
+											let next;
+
+											switch (event.code) {
+												case 'ArrowDown':
+													if (last_i >= this.state.category.length - 1) {
+														next = 0;
+													} else {
+														next = last_i + 1;
+													}
+													break;
+												case 'ArrowUp':
+													if (last_i <= 0) {
+														next = this.state.category.length - 1;
+													} else {
+														next = last_i - 1;
+													}
+													break;
+												// no default
+											}
+
+											this.setState({
+												last_select: next,
+											});
+										}
+										break;
+									case 'Enter':
+										{
+											const game = this.state.category[this.state.last_select];
+
+											this.input.current.blur();
+											this.setState({
+												input_focused: false,
+											});
+											this.props.navigate(`/games/player.html?id=${game.id}`);
+										}
+										break;
+									default:
+										prevent_default = false;
+										break;
+									// no default
+								}
+
+								if (prevent_default) {
+									event.preventDefault();
+								}
+							}}
+							onChange={event => {
+								this.search(event.target.value);
+								this.setState({
+									last_select: -1,
+								});
+							}}
+						></input>
+					</div>
+					<div
+						className="suggested"
+						onMouseLeave={() => {
+							this.setState({
+								last_select: -1,
+							});
+						}}
+					>
+						{suggested}
+					</div>
+				</div>
+				{jsx_categories}
+			</main>
+		);
 	}
 }

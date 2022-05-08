@@ -17,6 +17,9 @@ const GamesPlayer = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Player.js')
 );
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
+const PrivateLinks = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/PrivateLinks.js')
+);
 const Settings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Settings.js')
 );
@@ -129,6 +132,14 @@ export default class App extends Component {
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy layout={this.layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="/privatelinks.html"
+						element={
+							<Suspense fallback={<></>}>
+								<PrivateLinks layout={this.layout} />
 							</Suspense>
 						}
 					/>

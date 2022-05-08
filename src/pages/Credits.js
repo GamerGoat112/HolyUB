@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { set_page } from '../root.js';
+import { PATREON_URL, set_page } from '../root.js';
 
 export default class Credits extends Component {
 	render() {
@@ -26,9 +26,7 @@ export default class Credits extends Component {
 				<ul>
 					<li>
 						<Obfuscated>Our</Obfuscated>{' '}
-						<ObfuscatedA href="https://www.patreon.com/holyunblocker">
-							Patreons
-						</ObfuscatedA>
+						<ObfuscatedA href={PATREON_URL}>Patreons</ObfuscatedA>
 						<Obfuscated>.</Obfuscated>
 					</li>
 					<li>

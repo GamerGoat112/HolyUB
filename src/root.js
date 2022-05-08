@@ -32,6 +32,11 @@ export const HCAPTCHA_KEY = _HCAPTCHA_KEY;
 export const DEFAULT_PROXY = 'ultraviolet';
 export const GAMES_CDN = new URL('/games/', global.location);
 
+export const PATREON_URL = 'https://www.patreon.com/holyunblocker';
+export const VOUCHER_URL = 'https://example.org/';
+export const TN_DISCORD_URL = 'https://discord.gg/unblock';
+export const HU_DISCORD_URL = 'https://discord.gg/QKMwvd6tx6';
+
 export default document.querySelector('#root');
 
 export function set_page(page) {

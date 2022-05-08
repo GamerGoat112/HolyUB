@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { DB_API, set_page } from '../../root.js';
 import { GamesAPI, Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
-import '../../styles/Games Category.scss';
+import '../../styles/GamesCategory.scss';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
@@ -23,8 +23,8 @@ export default class FavoritesCategory extends Component {
 			data,
 		};
 	}
-	games_api = new GamesAPI(DB_API);
-	games_settings = new Settings('common games', {
+	api = new GamesAPI(DB_API);
+	settings = new Settings('common games', {
 		favorites: [],
 		seen: [],
 	});
@@ -36,7 +36,7 @@ export default class FavoritesCategory extends Component {
 		return this.props.layout;
 	}
 	get set_favorites() {
-		return this.games_settings.get('favorites');
+		return this.settings.get('favorites');
 	}
 	async fetch() {
 		const data = [];
@@ -45,7 +45,7 @@ export default class FavoritesCategory extends Component {
 
 		for (let id of favorites) {
 			try {
-				data.push(await this.games_api.game(id));
+				data.push(await this.api.game(id));
 			} catch (error) {
 				// cancelled? page unload?
 				if (!FETCH_FAILED.test(error)) {
@@ -55,7 +55,7 @@ export default class FavoritesCategory extends Component {
 			}
 		}
 
-		this.games_settings.set('favorites', favorites);
+		this.settings.set('favorites', favorites);
 
 		return this.setState({
 			data,

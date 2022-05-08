@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { DB_API, set_page } from '../../root.js';
 import { GamesAPI, Section } from '../../GamesCommon.js';
+import { Link } from 'react-router-dom';
 import Settings from '../../Settings.js';
-import '../../styles/Games Category.scss';
 import PlainSelect from '../../PlainSelect.js';
 import categories from './categories.json';
-import { Link } from 'react-router-dom';
+import '../../styles/GamesCategory.scss';
 
 export default class Category extends Component {
 	constructor(props) {
@@ -38,11 +38,32 @@ export default class Category extends Component {
 	get layout() {
 		return this.props.layout;
 	}
-	games_api = new GamesAPI(DB_API);
+	api = new GamesAPI(DB_API);
 	settings = new Settings(`games category ${this.props.id} settings`, {
 		sort: 'Most Played',
 	});
 	abort = new AbortController();
+	async search(query) {
+		if (this.abort !== undefined) {
+			this.abort.abort();
+		}
+
+		this.abort = new AbortController();
+
+		const category = await this.api.category(
+			{
+				sort: 'search',
+				search: query,
+				limit: 8,
+			},
+			this.abort.signal
+		);
+
+		this.setState({
+			category,
+		});
+	}
+
 	async fetch() {
 		let leastGreatest = false;
 		let sort;
@@ -74,7 +95,7 @@ export default class Category extends Component {
 		try {
 			await this.possible_error('Unable to fetch the category data.');
 
-			const data = await this.games_api.category(
+			const data = await this.api.category(
 				{
 					category: this.props.id,
 					sort,

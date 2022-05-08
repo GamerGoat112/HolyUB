@@ -9,6 +9,145 @@ html[data-page='games-category'][data-service='1'] {
 		display: flex;
 		flex-direction: column;
 
+		> .search-bar {
+			display: flex;
+			$border: 1px;
+			$height: 44px;
+			width: 700px;
+			height: $height;
+			position: relative;
+			flex-direction: row;
+			max-height: 100%;
+			margin: 10px auto;
+			@media only screen and (max-width: 700px) {
+				width: 100%;
+			}
+			@include screen_mobile {
+				&[data-focused='1'] {
+					position: fixed;
+					z-index: 100;
+					top: 0px;
+					left: 0px;
+					margin: 0px;
+					padding: 10px;
+					width: calc(100% - 20px);
+					height: calc(100% - 20px);
+					background: rgba(0, 0, 0, 0.5);
+				}
+			}
+
+			> .bar {
+				width: 100%;
+				height: $height;
+				background: var(--background-accent);
+				color: var(--text-accent);
+				border: 1px solid var(--border);
+				border-radius: 5px;
+				display: flex;
+				flex-direction: row;
+				box-sizing: border-box;
+
+				> .search {
+					user-select: none;
+					width: 20px;
+					height: 20px;
+					padding: 12px;
+					color: var(--text-placeholder);
+					display: block;
+					text-align: center;
+					pointer-events: none;
+				}
+
+				> input {
+					width: 100%;
+					height: 100%;
+					padding: 0px 15px 0px 0px;
+					font-family: inherit;
+					background-color: transparent;
+					color: inherit;
+					border: none;
+
+					&::placeholder {
+						color: var(--text-placeholder);
+					}
+				}
+			}
+
+			> .suggested {
+				display: none;
+				margin-top: calc($height);
+				width: 100%;
+				box-sizing: border-box;
+				z-index: 1;
+
+				@include screen_mobile {
+					width: calc(100% - 20px); // - padding - border
+				}
+
+				position: absolute;
+				flex-direction: column;
+				background-color: var(--background-accent);
+				overflow: hidden;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+				border: 1px solid var(--border);
+				border-top: none;
+
+				> .option {
+					cursor: pointer;
+					color: var(--text);
+					height: $height;
+					position: relative;
+					display: flex;
+					flex-direction: row;
+
+					&.hover {
+						* {
+							text-decoration: none;
+						}
+						background-color: var(--background);
+					}
+
+					> .name {
+						text-align: left;
+						width: 100%;
+						user-select: none;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						white-space: nowrap;
+						padding: 0px 10px;
+					}
+
+					> .name,
+					> .category {
+						align-items: center;
+						display: flex;
+					}
+
+					> .category {
+						flex: none;
+						width: 25%;
+						color: var(--text-placeholder);
+					}
+
+					> .search {
+						color: var(--text);
+					}
+				}
+			}
+
+			&[data-suggested='1'] {
+				> .suggested {
+					display: flex;
+				}
+
+				> .bar {
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 0px;
+				}
+			}
+		}
+
 		> .sort {
 			display: block;
 			margin-left: auto;
