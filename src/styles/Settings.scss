@@ -127,10 +127,14 @@
 			}
 		}
 
-		button {
+		.button {
 			cursor: pointer;
 			height: 44px;
 			width: fit-content;
+			user-select: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 
 			font-family: inherit;
 			background-color: var(--background-accent);

@@ -104,7 +104,8 @@ export default function TabCloak(props) {
 				</form>
 				<span className="error">{error}</span>
 			</label>
-			<button
+			<div
+				className="button"
 				onClick={() => {
 					props.layout.current.cloak.set({
 						title: '',
@@ -114,7 +115,7 @@ export default function TabCloak(props) {
 				}}
 			>
 				<Obfuscated>Reset Cloak</Obfuscated>
-			</button>
+			</div>
 		</>
 	);
 }

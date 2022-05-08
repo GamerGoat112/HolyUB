@@ -56,24 +56,13 @@ function MainMenuTab(props) {
 }
 
 class MainLayout extends Layout {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			...this.state,
-		};
-
-		this.set_last_location();
-	}
-	set_last_location() {
-		this.last_location = this.props.location.toString();
-	}
+	last_location = this.props.location.toString();
 	nav = createRef();
 	render() {
 		if (this.props.location.toString() !== this.last_location) {
 			this.state.expanded = false;
 
-			this.set_last_location();
+			this.last_location = this.props.location.toString();
 		}
 
 		this.update();
