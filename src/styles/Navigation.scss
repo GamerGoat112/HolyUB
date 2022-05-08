@@ -134,7 +134,6 @@
 			box-sizing: border-box;
 			transform: translateX(-100%);
 			text-align: left;
-			user-select: none;
 			transition: transform 0.3s, visibility 0.3s 0.3s;
 			overflow: hidden;
 
@@ -177,6 +176,7 @@
 			overflow-y: auto;
 			scrollbar-width: thin;
 			height: 100%;
+			user-select: none;
 
 			> .entry {
 				background-color: transparent;

@@ -57,7 +57,8 @@ html {
 			display: flex;
 			width: auto;
 			height: var(--nav-height);
-			margin: 0px 5vw;
+			border-bottom: var(--border) 1px solid;
+			padding: 0px 18px;
 			user-select: none;
 
 			> .icon {

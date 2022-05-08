@@ -112,7 +112,7 @@ class MainLayout extends Layout {
 			<>
 				{super.render()}
 				<ObfuscateLayout />
-				<nav className="main" ref={this.nav}>
+				<nav ref={this.nav}>
 					<div
 						className="button"
 						onClick={() => this.setState({ expanded: true })}
