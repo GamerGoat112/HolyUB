@@ -108,89 +108,94 @@ export default class Proxies extends Component {
 						}}
 						onBlur={event => {
 							if (!this.form.current.contains(event.relatedTarget)) {
-								// this.setState({ input_focused: false });
+								//this.setState({ input_focused: false });
 							}
 						}}
 						ref={this.form}
 					>
-						<input
-							type="text"
-							placeholder="Search Google or type a URL"
-							required={this.state.last_select === -1}
-							autoComplete="off"
-							list="proxy-omnibox"
-							ref={this.input}
-							onInput={this.on_input.bind(this)}
-							onFocus={() => {
-								this.on_input();
-								this.setState({ input_focused: true, last_select: -1 });
-							}}
-							onClick={() => {
-								this.on_input();
-								this.setState({ input_focused: true, last_select: -1 });
-							}}
-							onChange={() => {
-								this.last_input = 'input';
-								this.setState({
-									last_select: -1,
-								});
-							}}
-							onKeyDown={event => {
-								let prevent_default = true;
+						<div className="bar">
+							<Search className="search" />
+							<input
+								type="text"
+								placeholder="Search Google or type a URL"
+								required={this.state.last_select === -1}
+								autoComplete="off"
+								list="proxy-omnibox"
+								ref={this.input}
+								onInput={this.on_input.bind(this)}
+								onFocus={() => {
+									this.on_input();
+									this.setState({ input_focused: true, last_select: -1 });
+								}}
+								onClick={() => {
+									this.on_input();
+									this.setState({ input_focused: true, last_select: -1 });
+								}}
+								onChange={() => {
+									this.last_input = 'input';
+									this.setState({
+										last_select: -1,
+									});
+								}}
+								onKeyDown={event => {
+									let prevent_default = true;
 
-								switch (event.code) {
-									case 'Escape':
-										this.setState({
-											input_focused: false,
-										});
-										break;
-									case 'ArrowDown':
-									case 'ArrowUp':
-										{
-											let last_i = this.state.last_select;
-
-											let next;
-
-											switch (event.code) {
-												case 'ArrowDown':
-													if (last_i >= this.state.omnibox_entries.length - 1) {
-														next = 0;
-													} else {
-														next = last_i + 1;
-													}
-													break;
-												case 'ArrowUp':
-													if (last_i <= 0) {
-														next = this.state.omnibox_entries.length - 1;
-													} else {
-														next = last_i - 1;
-													}
-													break;
-												case 'Enter':
-													this.search_submit();
-													break;
-												// no default
-											}
-
-											this.last_input = 'select';
-
+									switch (event.code) {
+										case 'Escape':
 											this.setState({
-												last_select: next,
+												input_focused: false,
 											});
-										}
-										break;
-									default:
-										prevent_default = false;
-										break;
-									// no default
-								}
+											break;
+										case 'ArrowDown':
+										case 'ArrowUp':
+											{
+												let last_i = this.state.last_select;
 
-								if (prevent_default) {
-									event.preventDefault();
-								}
-							}}
-						/>
-						<Search className="search" />
+												let next;
+
+												switch (event.code) {
+													case 'ArrowDown':
+														if (
+															last_i >=
+															this.state.omnibox_entries.length - 1
+														) {
+															next = 0;
+														} else {
+															next = last_i + 1;
+														}
+														break;
+													case 'ArrowUp':
+														if (last_i <= 0) {
+															next = this.state.omnibox_entries.length - 1;
+														} else {
+															next = last_i - 1;
+														}
+														break;
+													case 'Enter':
+														this.search_submit();
+														break;
+													// no default
+												}
+
+												this.last_input = 'select';
+
+												this.setState({
+													last_select: next,
+												});
+											}
+											break;
+										default:
+											prevent_default = false;
+											break;
+										// no default
+									}
+
+									if (prevent_default) {
+										event.preventDefault();
+									}
+								}}
+							/>
+						</div>
 						<div
 							ref={this.suggested}
 							className="suggested"

@@ -1,14 +1,54 @@
 @import './Common.scss';
 
-@include screen_mobile {
-	html[data-expanded='1'] {
-		body {
-			overflow: hidden;
+#root {
+	> nav,
+	> .content > .menu,
+	> .content > .cover {
+		z-index: 2;
+	}
+
+	> nav > .logo,
+	> .content > .menu > .top > .logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: var(--nav-height);
+		padding: 0px 15px;
+		color: inherit;
+		white-space: nowrap;
+
+		> svg {
+			width: inherit;
+			height: inherit;
+		}
+
+		width: 35px;
+	}
+
+	> nav > .button,
+	> .content > .menu > .top > .button {
+		box-sizing: content-box;
+		border: none;
+		background: none;
+		width: 20px;
+		height: 20px;
+		margin: auto 5px;
+		border-radius: 2px;
+		padding: 5px;
+		position: relative;
+		flex: none;
+		cursor: pointer;
+		color: var(--text);
+
+		> svg {
+			font-size: 20px;
+		}
+
+		&:hover {
+			background: var(--background-accent);
 		}
 	}
-}
 
-#root {
 	> nav {
 		display: flex;
 		height: var(--nav-height);
@@ -18,8 +58,7 @@
 		position: fixed;
 		color: var(--text);
 		border-bottom: var(--border) 1px solid;
-		padding: 0px 5vw;
-		z-index: 10;
+		padding: 0px 18px;
 		text-align: center;
 		background: var(--background);
 		align-items: center;
@@ -57,46 +96,6 @@
 			}
 		}
 
-		> .button {
-			box-sizing: content-box;
-			border: none;
-			background: none;
-			width: 20px;
-			height: 20px;
-			margin: auto 5px;
-			border-radius: 2px;
-			padding: 5px;
-			position: relative;
-			flex: none;
-			cursor: pointer;
-			color: var(--text);
-
-			> svg {
-				font-size: 20px;
-			}
-
-			&:hover {
-				background: var(--background-accent);
-			}
-		}
-
-		> .logo {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: var(--nav-height);
-			padding: 0px 15px;
-			color: inherit;
-			white-space: nowrap;
-
-			> svg {
-				width: inherit;
-				height: inherit;
-			}
-
-			width: 35px;
-		}
-
 		> .shift-right {
 			margin-left: auto;
 		}
@@ -104,69 +103,81 @@
 
 	> .content {
 		padding-top: var(--nav-height-border);
-		padding-left: 300px;
-		transition: padding-left 0.3s;
 		flex-direction: column;
 		min-height: calc(100vh - var(--nav-height-border));
 		overflow: hidden;
 		display: flex;
 
+		> .cover {
+			background-color: rgba(0, 0, 0, 0.2);
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			transition: opacity 0.3s, visibility 0.3s;
+			opacity: 0;
+			visibility: hidden;
+		}
+
 		> .menu {
 			position: fixed;
-			z-index: 11;
 			flex-direction: column;
-			overflow-y: auto;
-			scrollbar-width: thin;
 			display: flex;
+			visibility: visible;
 			background-color: var(--background);
 			border-right: 1px solid var(--border);
 			left: 0;
 			top: 0;
-			margin-top: var(--nav-height-border);
 			width: 300px;
-			height: calc(100vh - var(--nav-height-border));
+			height: 100vh;
 			box-sizing: border-box;
-			transform: translateX(0);
-			padding: 5px 0px;
+			transform: translateX(-100%);
 			text-align: left;
 			user-select: none;
-			transition: transform 0.3s;
-			padding-right: 5px;
+			transition: transform 0.3s, visibility 0.3s 0.3s;
+			overflow: hidden;
 
 			@include screen_mobile {
 				width: 100vw;
 				height: 100vh;
 			}
 
-			> .genres {
+			> .top {
+				padding-left: 18px;
+				height: var(--nav-height);
+				box-sizing: border-box;
+				border-bottom: var(--border) 1px solid;
+				width: inherit;
 				display: flex;
-				flex-wrap: wrap;
 				flex-direction: row;
-				padding: 10px 25px;
 
-				> .entry {
+				> .logo {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					padding: 2px 8px;
-					margin: 2px;
-					height: 20px;
-					border: 1px solid var(--border);
-					border-radius: 5px;
-					font-size: 13px;
-					font-family: 'Montserrat Alternates';
-					color: var(--text-placeholder);
+					height: var(--nav-height);
+					padding: 0px 15px;
+					color: inherit;
 					white-space: nowrap;
 
-					&:hover {
-						text-decoration: none;
-						background-color: var(--background-accent);
+					> svg {
+						width: inherit;
+						height: inherit;
 					}
+
+					width: 35px;
 				}
 			}
 		}
 
-		.menu-like {
+		.menu-list {
+			padding: 6px 5px 0px 0px;
+			flex-direction: column;
+			overflow-y: auto;
+			scrollbar-width: thin;
+			height: 100%;
+
 			> .entry {
 				background-color: transparent;
 				border: none;
@@ -177,8 +188,8 @@
 				font-size: 14px;
 				height: 24px;
 				padding: 10px 25px;
-				border-top-left-radius: 5px;
 				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
 
 				&[data-selected='1'] {
 					background-color: var(--background-accent-deep-1);
@@ -221,16 +232,52 @@
 				width: 100%;
 				border-bottom: 1px solid var(--text-accent);
 			}
+
+			> .genres {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: row;
+				padding: 10px 25px;
+
+				> .entry {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 2px 8px;
+					margin: 2px;
+					height: 20px;
+					border: 1px solid var(--border);
+					border-radius: 5px;
+					font-size: 13px;
+					font-family: 'Montserrat Alternates';
+					color: var(--text-placeholder);
+					white-space: nowrap;
+
+					&:hover {
+						text-decoration: none;
+						background-color: var(--background-accent);
+					}
+				}
+			}
 		}
 	}
 }
 
-html[data-expanded='0'] #root {
-	> .content {
-		padding-left: 0;
+html[data-expanded='1'] {
+	body {
+		overflow: hidden;
+	}
 
-		> .menu {
-			transform: translateX(-100%);
+	#root {
+		> .content {
+			> .menu {
+				transform: translateX(0%);
+			}
+
+			> .cover {
+				opacity: 1;
+				visibility: visible;
+			}
 		}
 	}
 }

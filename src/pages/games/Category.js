@@ -1,10 +1,11 @@
 import { Component } from 'react';
-import { set_page } from '../../root.js';
-import { Section } from '../../GamesCommon.js';
+import { DB_API, set_page } from '../../root.js';
+import { GamesAPI, Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/Games Category.scss';
 import PlainSelect from '../../PlainSelect.js';
 import categories from './categories.json';
+import { Link } from 'react-router-dom';
 
 export default class Category extends Component {
 	constructor(props) {
@@ -21,7 +22,15 @@ export default class Category extends Component {
 
 		this.state = {
 			data,
+			error: undefined,
+			possible_error: undefined,
 		};
+	}
+	async possible_error(message) {
+		// errors must be VERY verbose for the user
+		this.setState({
+			possible_error: message,
+		});
 	}
 	/**
 	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
@@ -29,6 +38,7 @@ export default class Category extends Component {
 	get layout() {
 		return this.props.layout;
 	}
+	games_api = new GamesAPI(DB_API);
 	settings = new Settings(`games category ${this.props.id} settings`, {
 		sort: 'Most Played',
 	});
@@ -62,7 +72,9 @@ export default class Category extends Component {
 		}
 
 		try {
-			const data = await this.layout.current.games_api.category(
+			await this.possible_error('Unable to fetch the category data.');
+
+			const data = await this.games_api.category(
 				{
 					category: this.props.id,
 					sort,
@@ -71,10 +83,14 @@ export default class Category extends Component {
 				this.abort.signal
 			);
 
+			await this.possible_error();
+
 			return this.setState({
 				data,
 			});
 		} catch (error) {
+			console.error(error);
+
 			return this.setState({
 				error,
 			});
@@ -88,6 +104,49 @@ export default class Category extends Component {
 	}
 	render() {
 		set_page('games-category');
+
+		if (this.state.error !== undefined) {
+			let description;
+
+			if (this.state.possible_error === undefined) {
+				description = <pre>{this.state.error}</pre>;
+			} else {
+				description = <pre>{this.state.possible_error}</pre>;
+			}
+
+			return (
+				<main ref={this.container}>
+					<span>
+						An error occured when loading the category:
+						<br />
+						{description}
+					</span>
+					<p>
+						Try again by clicking{' '}
+						<a
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								global.location.reload();
+							}}
+						>
+							here
+						</a>
+						.
+						<br />
+						If this problem still occurs, check{' '}
+						<Link to="/support.html" target="_parent">
+							Support
+						</Link>{' '}
+						or{' '}
+						<Link to="/contact.html" target="_parent">
+							Contact Us
+						</Link>
+						.
+					</p>
+				</main>
+			);
+		}
 
 		return (
 			<main>

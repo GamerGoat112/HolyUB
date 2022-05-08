@@ -24,25 +24,27 @@ export default class Settings extends Component {
 
 		return (
 			<>
-				<div className="page-menu menu-like">
-					<MenuTab
-						route="/settings/general.html"
-						name="General"
-						iconFilled={<Home />}
-						iconOutlined={<HomeOutlined />}
-					/>
-					<MenuTab
-						route="/settings/appearance.html"
-						name="Appearance"
-						iconFilled={<Brush />}
-						iconOutlined={<BrushOutlined />}
-					/>
-					<MenuTab
-						route="/settings/tabcloak.html"
-						name="Tab Cloak"
-						iconFilled={<DriveFileRenameOutline />}
-						iconOutlined={<DriveFileRenameOutlineOutlined />}
-					/>
+				<div className="page-menu">
+					<div className="menu-list">
+						<MenuTab
+							route="/settings/general.html"
+							name="General"
+							iconFilled={<Home />}
+							iconOutlined={<HomeOutlined />}
+						/>
+						<MenuTab
+							route="/settings/appearance.html"
+							name="Appearance"
+							iconFilled={<Brush />}
+							iconOutlined={<BrushOutlined />}
+						/>
+						<MenuTab
+							route="/settings/tabcloak.html"
+							name="Tab Cloak"
+							iconFilled={<DriveFileRenameOutline />}
+							iconOutlined={<DriveFileRenameOutlineOutlined />}
+						/>
+					</div>
 				</div>
 				<main>
 					<Outlet />

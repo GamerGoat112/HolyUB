@@ -8,13 +8,11 @@
 	}
 
 	> .content {
-		transition: none;
 		padding-left: 300px;
 
 		> .page-menu {
 			height: 100%;
 			position: fixed;
-			z-index: 4;
 			flex-direction: column;
 			overflow-y: auto;
 			display: flex;
@@ -27,7 +25,6 @@
 			height: calc(100vh - var(--nav-height-border));
 			box-sizing: border-box;
 			transform: translateX(0);
-			padding: 20px 25px;
 			text-align: left;
 			user-select: none;
 			transition: transform 0.3s;

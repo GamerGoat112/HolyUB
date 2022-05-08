@@ -77,17 +77,7 @@ export default class ProxyLayout extends Component {
 	render() {
 		set_page('proxy-script');
 
-		let main;
-
-		if (this.state.error === undefined) {
-			main = (
-				<main ref={this.container}>
-					<p>
-						<Obfuscated>{this.name}</Obfuscated> is loading...
-					</p>
-				</main>
-			);
-		} else {
+		if (this.state.error !== undefined) {
 			let description;
 
 			if (this.state.possible_error === undefined) {
@@ -96,10 +86,10 @@ export default class ProxyLayout extends Component {
 				description = <pre>{this.state.possible_error}</pre>;
 			}
 
-			main = (
+			return (
 				<main ref={this.container}>
 					<span>
-						An error when loading <Obfuscated>{this.name}</Obfuscated>:
+						An error occured when loading <Obfuscated>{this.name}</Obfuscated>:
 						<br />
 						{description}
 					</span>
@@ -115,8 +105,7 @@ export default class ProxyLayout extends Component {
 							here
 						</a>
 						.
-					</p>
-					<p>
+						<br />
 						If this problem still occurs, check{' '}
 						<Link to="/support.html" target="_parent">
 							Support
@@ -131,6 +120,12 @@ export default class ProxyLayout extends Component {
 			);
 		}
 
-		return main;
+		return (
+			<main ref={this.container}>
+				<p>
+					<Obfuscated>{this.name}</Obfuscated> is loading...
+				</p>
+			</main>
+		);
 	}
 }

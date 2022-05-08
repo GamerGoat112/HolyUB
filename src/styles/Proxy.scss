@@ -16,22 +16,16 @@
 			width: 584px;
 			height: $height;
 			display: flex;
-			position: relative;
 			flex-direction: column;
-
-			$icon-size: 20px;
-			$icon-distance: calc($border + ($height / 2) - ($icon-size / 2));
-			$padding-left: calc(($icon-distance * 2) + $icon-size);
+			position: relative;
 
 			.search,
 			.open {
 				user-select: none;
-				width: $icon-size;
-				height: $icon-size;
-				line-height: $icon-size;
-				padding: $icon-distance;
+				width: 20px;
+				height: 20px;
+				padding: 12px;
 				color: var(--text-placeholder);
-				position: absolute;
 				display: block;
 				text-align: center;
 				pointer-events: none;
@@ -62,28 +56,39 @@
 				}
 			}
 
-			> input {
+			> .bar {
+				width: 100%;
 				height: $height;
-				flex: none;
-				font-family: inherit;
 				background: var(--background-accent);
 				color: var(--text-accent);
 				border: 1px solid var(--border);
 				border-radius: 5px;
-				padding: 0px 15px 0px $padding-left;
-				&::placeholder {
-					color: var(--text-placeholder);
+				display: flex;
+				flex-direction: row;
+
+				> input {
+					width: 100%;
+					height: 100%;
+					padding: 0px 15px 0px 0px;
+					font-family: inherit;
+					background-color: transparent;
+					color: inherit;
+					border: none;
+
+					&::placeholder {
+						color: var(--text-placeholder);
+					}
 				}
 			}
 
 			> .suggested {
 				display: none;
 				margin-top: calc($height + 2px);
-				width: calc(100% - 2px); // - border
+				width: calc(100%);
 				z-index: 10;
 
 				@include screen_mobile {
-					width: calc(100% - 22px); // - padding - border
+					width: calc(100% - 20px); // - padding - border
 				}
 
 				position: absolute;
@@ -94,20 +99,21 @@
 				border-bottom-right-radius: 5px;
 				border: 1px solid var(--border);
 				border-top: none;
-				cursor: pointer;
 
-				> div {
+				> .option {
+					cursor: pointer;
 					color: var(--text);
 					height: $height;
 					position: relative;
+					display: flex;
+					flex-direction: row;
 
 					&.hover {
 						background-color: var(--background);
 					}
 
 					> .text {
-						padding-left: $padding-left;
-						padding-right: 15px;
+						padding: 0px 15px 0px 0px;
 						line-height: $height;
 						user-select: none;
 					}
@@ -123,8 +129,7 @@
 					display: flex;
 				}
 
-				> input {
-					height: $height;
+				> .bar {
 					border-bottom-left-radius: 0px;
 					border-bottom-right-radius: 0px;
 				}

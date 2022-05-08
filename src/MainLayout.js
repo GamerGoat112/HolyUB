@@ -46,11 +46,9 @@ function MainMenuTab(props) {
 	return (
 		<MenuTab
 			onClick={() => {
-				if (layout.mobile) {
-					layout.setState({
-						expanded: false,
-					});
-				}
+				layout.setState({
+					expanded: false,
+				});
 			}}
 			{...attributes}
 		/>
@@ -63,13 +61,21 @@ class MainLayout extends Layout {
 
 		this.state = {
 			...this.state,
-			expanded:
-				!this.props.location.pathname.startsWith('/settings/') &&
-				this.state.expanded,
 		};
+
+		this.set_last_location();
+	}
+	set_last_location() {
+		this.last_location = this.props.location.toString();
 	}
 	nav = createRef();
 	render() {
+		if (this.props.location.toString() !== this.last_location) {
+			this.state.expanded = false;
+
+			this.set_last_location();
+		}
+
 		this.update();
 
 		const ui_categories = [];
@@ -91,14 +97,10 @@ class MainLayout extends Layout {
 			<>
 				{super.render()}
 				<ObfuscateLayout />
-				<nav
-					className="main"
-					ref={this.nav}
-					data-expanded={Number(this.state.expanded)}
-				>
+				<nav className="main" ref={this.nav}>
 					<div
 						className="button"
-						onClick={() => this.setState({ expanded: !this.state.expanded })}
+						onClick={() => this.setState({ expanded: true })}
 					>
 						<Menu />
 					</div>
@@ -115,50 +117,66 @@ class MainLayout extends Layout {
 					</Link>
 				</nav>
 				<div className="content">
-					<div tabIndex="0" className="menu menu-like" ref={this.menu}>
-						<MainMenuTab
-							route="/"
-							name="Home"
-							iconFilled={<Home />}
-							iconOutlined={<HomeOutlined />}
-							layout={this}
-						/>
-						<MainMenuTab
-							route="/proxy.html"
-							name="Proxy"
-							iconFilled={<WebAsset />}
-							layout={this}
-						/>
-						<MainMenuTab
-							route="/faq.html"
-							name="FAQ"
-							iconFilled={<QuestionMark />}
-							layout={this}
-						/>
-
-						<div className="bar" />
-
-						<div className="title">
-							<Obfuscated>Games</Obfuscated>
+					<div
+						className="cover"
+						onClick={() => this.setState({ expanded: false })}
+					></div>
+					<div tabIndex="0" className="menu" ref={this.menu}>
+						<div className="top">
+							<div
+								className="button"
+								onClick={() => this.setState({ expanded: false })}
+							>
+								<Menu />
+							</div>
+							<Link to="/" className="entry logo">
+								<HatSVG />
+							</Link>
 						</div>
+						<div className="menu-list">
+							<MainMenuTab
+								route="/"
+								name="Home"
+								iconFilled={<Home />}
+								iconOutlined={<HomeOutlined />}
+								layout={this}
+							/>
+							<MainMenuTab
+								route="/proxy.html"
+								name="Proxy"
+								iconFilled={<WebAsset />}
+								layout={this}
+							/>
+							<MainMenuTab
+								route="/faq.html"
+								name="FAQ"
+								iconFilled={<QuestionMark />}
+								layout={this}
+							/>
 
-						<MainMenuTab
-							route="/games/popular.html"
-							name="Popular"
-							iconFilled={<SortRounded />}
-							layout={this}
-						/>
-						<MainMenuTab
-							route="/games/favorites.html"
-							name="Favorites"
-							iconFilled={<StarRounded />}
-							iconOutlined={<StarOutlineRounded />}
-							layout={this}
-						/>
+							<div className="bar" />
 
-						<div className="title">Genre</div>
+							<div className="title">
+								<Obfuscated>Games</Obfuscated>
+							</div>
 
-						<div className="genres">{ui_categories}</div>
+							<MainMenuTab
+								route="/games/popular.html"
+								name="Popular"
+								iconFilled={<SortRounded />}
+								layout={this}
+							/>
+							<MainMenuTab
+								route="/games/favorites.html"
+								name="Favorites"
+								iconFilled={<StarRounded />}
+								iconOutlined={<StarOutlineRounded />}
+								layout={this}
+							/>
+							<div className="title">Genre</div>
+
+							<div className="genres">{ui_categories}</div>
+						</div>
 					</div>
 					<Outlet />
 					<footer>

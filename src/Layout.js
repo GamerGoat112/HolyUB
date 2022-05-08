@@ -6,7 +6,7 @@ export const THEMES = ['night', 'day'];
 export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
-		expanded: !this.mobile,
+		expanded: false,
 	};
 	get mobile() {
 		const mobile = matchMedia('only screen and (max-width: 650px)');
