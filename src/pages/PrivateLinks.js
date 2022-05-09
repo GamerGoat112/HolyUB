@@ -8,6 +8,7 @@ export default class PrivateLinks extends Component {
 	voucher = createRef();
 	domain = createRef();
 	api = new VoucherAPI(VO_API);
+	abort = new AbortController();
 	constructor(props) {
 		super(props);
 
@@ -25,6 +26,8 @@ export default class PrivateLinks extends Component {
 				<form
 					onSubmit={async event => {
 						event.preventDefault();
+						this.abort.abort();
+						this.abort = new AbortController();
 
 						try {
 							// PLACEHOLDER
@@ -52,10 +55,7 @@ export default class PrivateLinks extends Component {
 				>
 					<input
 						onChange={async () => {
-							if (this.abort) {
-								this.abort.abort();
-							}
-
+							this.abort.abort();
 							this.abort = new AbortController();
 
 							try {
