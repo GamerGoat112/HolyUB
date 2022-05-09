@@ -79,6 +79,24 @@ function MainMenuTab(props) {
 class MainLayout extends Layout {
 	last_location = this.props.location.toString();
 	nav = createRef();
+	constructor(props) {
+		super(props);
+
+		this.listen_keydown = this.keydown.bind(this);
+	}
+	keydown(event) {
+		if (this.state.expanded && event.key === 'Escape') {
+			this.setState({
+				expanded: false,
+			});
+		}
+	}
+	componentDidMount() {
+		document.addEventListener('keydown', this.listen_keydown);
+	}
+	componentWillUnmount() {
+		document.removeEventListener('keydown', this.listen_keydown);
+	}
 	render() {
 		if (this.props.location.toString() !== this.last_location) {
 			this.state.expanded = false;
