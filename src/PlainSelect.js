@@ -83,7 +83,7 @@ export default class PlainSelect extends Component {
 			<div
 				{...attributes}
 				tabIndex="0"
-				className={'plain-select' + (className ? ' ' + className : '')}
+				className={'theme-select' + (className ? ' ' + className : '')}
 				data-open={Number(this.state.open)}
 				ref={this.container}
 				onKeyDown={event => {

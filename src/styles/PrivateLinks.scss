@@ -3,22 +3,9 @@
 @include root_page('private-links') {
 	main {
 		> .redeem {
-			> .voucher,
-			> .domain {
+			> .theme-input,
+			> .theme-input-bar {
 				margin-bottom: 10px;
-			}
-
-			> .voucher {
-				width: 500px;
-				height: 44px;
-				background: var(--background-accent);
-				color: var(--text-accent);
-				border: 1px solid var(--border);
-				border-radius: 5px;
-				display: flex;
-				flex-direction: row;
-				box-sizing: border-box;
-				padding: 0px 15px;
 			}
 
 			> button {
@@ -40,16 +27,8 @@
 				}
 			}
 
-			> .domain {
+			> .theme-input-bar {
 				width: 500px;
-				height: 44px;
-				background: var(--background-accent);
-				color: var(--text-accent);
-				border: 1px solid var(--border);
-				border-radius: 5px;
-				display: flex;
-				flex-direction: row;
-				box-sizing: border-box;
 
 				> input {
 					width: 100%;

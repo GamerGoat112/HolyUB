@@ -22,7 +22,7 @@ export default class Home extends Component {
 					<Obfuscated>Privacy right at your fingertips.</Obfuscated>
 				</h2>
 				<div
-					className="button"
+					className="theme-button"
 					onClick={() => this.layout.current.setState({ expanded: true })}
 				>
 					<Obfuscated>Get Started</Obfuscated>

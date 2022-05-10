@@ -36,16 +36,8 @@ html[data-page='games-category'][data-service='1'] {
 				}
 			}
 
-			> .bar {
-				width: 100%;
+			> .theme-input-bar {
 				height: $height;
-				background: var(--background-accent);
-				color: var(--text-accent);
-				border: 1px solid var(--border);
-				border-radius: 5px;
-				display: flex;
-				flex-direction: row;
-				box-sizing: border-box;
 
 				> .search {
 					user-select: none;
@@ -136,7 +128,7 @@ html[data-page='games-category'][data-service='1'] {
 					display: flex;
 				}
 
-				> .bar {
+				> .theme-input-bar {
 					border-bottom-left-radius: 0px;
 					border-bottom-right-radius: 0px;
 				}

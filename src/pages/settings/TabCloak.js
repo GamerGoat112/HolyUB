@@ -100,12 +100,13 @@ export default function TabCloak(props) {
 						ref={input}
 						defaultValue={props.layout.current.cloak.get('url')}
 						placeholder="https://example.org/"
+						className="theme-input"
 					></input>
 				</form>
 				<span className="error">{error}</span>
 			</label>
 			<div
-				className="button"
+				className="theme-button"
 				onClick={() => {
 					props.layout.current.cloak.set({
 						title: '',

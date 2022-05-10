@@ -79,9 +79,9 @@ export default class PrivateLinks extends Component {
 						}}
 						ref={this.voucher}
 						placeholder="Voucher"
-						className="voucher"
+						className="theme-input"
 					></input>
-					<div className="domain">
+					<div className="theme-input-bar">
 						<input placeholder="Domain" ref={this.domain}></input>
 						<div className="tld">{this.state.tld || '.com'}</div>
 					</div>

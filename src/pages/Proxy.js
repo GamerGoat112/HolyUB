@@ -109,12 +109,12 @@ export default class Proxies extends Component {
 						}}
 						onBlur={event => {
 							if (!this.form.current.contains(event.relatedTarget)) {
-								//this.setState({ input_focused: false });
+								this.setState({ input_focused: false });
 							}
 						}}
 						ref={this.form}
 					>
-						<div className="bar">
+						<div className="theme-input-bar">
 							<Search className="search" />
 							<input
 								type="text"

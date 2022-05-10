@@ -210,7 +210,7 @@ export default class Popular extends Component {
 						}
 					}}
 				>
-					<div className="bar">
+					<div className="theme-input-bar">
 						<Search className="search" />
 						<input
 							ref={this.input}
