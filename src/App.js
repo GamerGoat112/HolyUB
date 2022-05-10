@@ -227,7 +227,7 @@ export default class App extends Component {
 				</Route>
 				<Route path="/compat/" element={<ProxyLayout ref={this.layout} />}>
 					<Route
-						path="rh.html"
+						path="rammerhead.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Rammerhead layout={this.layout} />
@@ -235,7 +235,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="st.html"
+						path="stomp.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Stomp layout={this.layout} />
@@ -243,7 +243,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="uv.html"
+						path="ultraviolet.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Ultraviolet layout={this.layout} />
@@ -251,7 +251,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="fl.html"
+						path="flash.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Flash layout={this.layout} />
