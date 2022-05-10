@@ -90,10 +90,10 @@ export default async function resolve_proxy(src, setting) {
 	switch (setting) {
 		default:
 		case 'rammerhead':
-			return `/proxies/rh.html#${src}`;
+			return `/compat/rh.html#${src}`;
 		case 'ultraviolet':
-			return `/proxies/uv.html#${src}`;
+			return `/compat/uv.html#${src}`;
 		case 'stomp':
-			return `/proxies/st.html#${src}`;
+			return `/compat/st.html#${src}`;
 	}
 }

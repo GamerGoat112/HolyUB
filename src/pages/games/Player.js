@@ -27,7 +27,7 @@ async function resolve_game(src, type, setting) {
 		case 'embed':
 			return src;
 		case 'flash':
-			return `/proxies/flash.html#${src}`;
+			return `/compat/flash.html#${src}`;
 		case 'emulator':
 		case 'emulator.gba':
 		case 'emulator.nes':

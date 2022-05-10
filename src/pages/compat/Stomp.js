@@ -1,8 +1,8 @@
-import ProxyModule from '../../ProxyModule.js';
+import CompatModule from '../../CompatModule.js';
 import process from 'process';
 import { BARE_API } from '../../root.js';
 
-export default class Stomp extends ProxyModule {
+export default class Stomp extends CompatModule {
 	name = 'Stomp';
 	async _componentDidMount() {
 		await this.possible_error('Failure loading the Stomp bootstrapper.');

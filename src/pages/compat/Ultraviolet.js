@@ -1,4 +1,4 @@
-import ProxyModule from '../../ProxyModule.js';
+import CompatModule from '../../CompatModule.js';
 import { BARE_API } from '../../root.js';
 
 /**
@@ -24,7 +24,7 @@ import { BARE_API } from '../../root.js';
  * @property {UVDecode} decodeUrl
  */
 
-export default class Ultraviolet extends ProxyModule {
+export default class Ultraviolet extends CompatModule {
 	name = 'Ultraviolet';
 	async _componentDidMount() {
 		await this.possible_error('Failure loading the Ultraviolet bundle.');

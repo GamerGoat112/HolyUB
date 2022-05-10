@@ -1,6 +1,6 @@
 @import './Common.scss';
 
-@include root_page('proxy-script-flash') {
+@include root_page('compat-flash') {
 	main {
 		> ruffle-player {
 			display: none;

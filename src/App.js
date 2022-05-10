@@ -52,16 +52,16 @@ const Terms = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Terms.js')
 );
 const Ultraviolet = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/proxies/Ultraviolet.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Ultraviolet.js')
 );
 const Rammerhead = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/proxies/Rammerhead.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Rammerhead.js')
 );
 const Stomp = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/proxies/Stomp.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Stomp.js')
 );
 const Flash = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/proxies/Flash.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Flash.js')
 );
 
 function PlayerProxy(props) {
@@ -217,7 +217,7 @@ export default class App extends Component {
 						/>
 					</Route>
 				</Route>
-				<Route path="/proxies/" element={<ProxyLayout ref={this.layout} />}>
+				<Route path="/compat/" element={<ProxyLayout ref={this.layout} />}>
 					<Route
 						path="rh.html"
 						element={
@@ -243,7 +243,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="flash.html"
+						path="fl.html"
 						element={
 							<Suspense fallback={<></>}>
 								<Flash layout={this.layout} />

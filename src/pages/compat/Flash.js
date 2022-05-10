@@ -1,7 +1,7 @@
-import ProxyModule from '../../ProxyModule.js';
+import CompatModule from '../../CompatModule.js';
 import { set_page } from '../../root.js';
 
-export default class Flash extends ProxyModule {
+export default class Flash extends CompatModule {
 	name = 'Flash';
 	constructor(props) {
 		super(props);
@@ -62,7 +62,7 @@ export default class Flash extends ProxyModule {
 			render = super.render();
 		}
 
-		set_page('proxy-script-flash');
+		set_page('compat-flash');
 
 		return render;
 	}

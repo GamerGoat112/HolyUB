@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
-import './styles/ProxyScript.scss';
+import './styles/Compat.scss';
 
-export default class ProxyLayout extends Component {
+export default class CompatModule extends Component {
 	layout = new Layout();
 	container = createRef();
 	state = {
@@ -75,7 +75,7 @@ export default class ProxyLayout extends Component {
 		});
 	}
 	render() {
-		set_page('proxy-script');
+		set_page('compat');
 
 		if (this.state.error !== undefined) {
 			let description;
