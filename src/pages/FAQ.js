@@ -1,19 +1,19 @@
 import { Component } from 'react';
 import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
-import { qna } from '../support.js';
+import faq from '../faq.js';
 
-export default class Support extends Component {
+export default class FAQ extends Component {
 	state = {
 		search: '',
 	};
 	render() {
-		set_page('support');
+		set_page('faq');
 
 		const sections = [];
 
-		for (let i = 0; i < qna.length; i++) {
-			const { q, a } = qna[i];
+		for (let i = 0; i < faq.length; i++) {
+			const { q, a } = faq[i];
 
 			sections.push(
 				<section key={i}>

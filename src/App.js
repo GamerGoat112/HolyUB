@@ -32,9 +32,7 @@ const AppearanceSettings = lazy(() =>
 const TabCloakSettings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/settings/TabCloak.js')
 );
-const Support = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Support.js')
-);
+const FAQ = lazy(() => import(/* webpackPrefetch: true */ './pages/FAQ.js'));
 const Contact = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Contact.js')
 );
@@ -115,7 +113,7 @@ export default class App extends Component {
 						path="/faq.html"
 						element={
 							<Suspense fallback={<></>}>
-								<Support layout={this.layout} />
+								<FAQ layout={this.layout} />
 							</Suspense>
 						}
 					/>

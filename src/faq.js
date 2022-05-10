@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Obfuscated, ObfuscatedA } from './obfuscate';
 import { PATREON_URL } from './root';
 
-export const qna = [
+const faq = [
 	{
 		q: (
 			<>
@@ -75,3 +75,5 @@ export const qna = [
 		),
 	},
 ];
+
+export default faq;
