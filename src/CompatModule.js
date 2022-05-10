@@ -1,5 +1,5 @@
 import { Component, createRef, forwardRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
@@ -130,13 +130,6 @@ export default class CompatModule extends Component {
 
 export function wrapCompat(Element) {
 	return forwardRef((props, ref) => {
-		return (
-			<Element
-				{...props}
-				ref={ref}
-				location={useLocation()}
-				navigate={useNavigate()}
-			/>
-		);
+		return <Element {...props} ref={ref} location={useLocation()} />;
 	});
 }
