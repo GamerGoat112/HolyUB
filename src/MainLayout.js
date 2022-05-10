@@ -104,8 +104,6 @@ class MainLayout extends Layout {
 			this.last_location = this.props.location.toString();
 		}
 
-		this.update();
-
 		const ui_categories = [];
 
 		for (let id in categories) {

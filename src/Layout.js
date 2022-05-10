@@ -8,6 +8,7 @@ export default class Layout extends Component {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
 	};
+	icon = document.querySelector('link[rel="icon"]');
 	get mobile() {
 		const mobile = matchMedia('only screen and (max-width: 650px)');
 
@@ -62,7 +63,7 @@ export default class Layout extends Component {
 	componentWillUnmount() {
 		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
 	}
-	update() {
+	render() {
 		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
 		document.documentElement.dataset.expanded = Number(this.state.expanded);
@@ -72,12 +73,23 @@ export default class Layout extends Component {
 		} else {
 			document.title = this.cloak.get('title');
 		}
-	}
-	render() {
-		if (this.cloak.get('icon') === '') {
-			return <link rel="icon" href="/favicon.ico"></link>;
-		} else {
-			return <link rel="icon" href={this.cloak.get('icon')}></link>;
+
+		let href;
+
+		switch (this.cloak.get('icon')) {
+			case '':
+				href = '/favicon.ico';
+				break;
+			case 'none':
+				href = 'data:,';
+				break;
+			default:
+				href = this.cloak.get('icon');
+				break;
 		}
+
+		this.icon.href = href;
+
+		return <></>;
 	}
 }

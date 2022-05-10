@@ -60,6 +60,24 @@ function resolve_url(input) {
 	}
 }
 
+/**
+ *
+ * @param {string} url
+ * @returns {{title:string,icon:string,url:string}}
+ */
+async function cloak_url(url) {
+	switch (url) {
+		case 'about:blank':
+			return {
+				title: 'about:blank',
+				icon: 'none',
+				url: 'about:blank',
+			};
+		default:
+			return await extract_data(resolve_url(url));
+	}
+}
+
 export default function TabCloak(props) {
 	const input = useRef();
 	const [error, set_error] = useState();
@@ -81,9 +99,7 @@ export default function TabCloak(props) {
 						event.preventDefault();
 
 						try {
-							const { title, icon, url } = await extract_data(
-								resolve_url(input.current.value)
-							);
+							const { title, icon, url } = await cloak_url(input.current.value);
 
 							props.layout.current.cloak.set({
 								title,

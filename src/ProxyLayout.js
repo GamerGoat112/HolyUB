@@ -4,10 +4,9 @@ import { Outlet } from 'react-router-dom';
 
 export default class ProxyLayout extends Layout {
 	render() {
-		this.update();
-
 		return (
 			<>
+				{super.render()}
 				<ObfuscateLayout />
 				<Outlet />
 			</>
