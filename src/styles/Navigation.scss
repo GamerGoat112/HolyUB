@@ -200,8 +200,11 @@
 				}
 
 				&:hover {
+					* {
+						text-decoration: none;
+					}
+
 					color: var(--text);
-					text-decoration: none;
 					background: var(--background-accent);
 
 					&[data-selected='1'] {
@@ -244,7 +247,10 @@
 					white-space: nowrap;
 
 					&:hover {
-						text-decoration: none;
+						* {
+							text-decoration: none;
+						}
+
 						background-color: var(--background-accent);
 					}
 				}
