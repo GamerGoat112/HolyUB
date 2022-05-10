@@ -216,6 +216,14 @@ export default class App extends Component {
 							}
 						/>
 					</Route>
+					<Route
+						path="*"
+						element={
+							<Suspense fallback={<></>}>
+								<NotFound layout={this.layout} />
+							</Suspense>
+						}
+					/>
 				</Route>
 				<Route path="/compat/" element={<ProxyLayout ref={this.layout} />}>
 					<Route
@@ -251,18 +259,6 @@ export default class App extends Component {
 						}
 					/>
 				</Route>
-				<Route
-					path="*"
-					element={
-						<MainLayout
-							element={
-								<Suspense fallback={<></>}>
-									<NotFound layout={this.layout} />
-								</Suspense>
-							}
-						/>
-					}
-				/>
 			</Routes>
 		);
 	}

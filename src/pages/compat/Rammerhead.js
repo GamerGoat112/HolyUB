@@ -1,8 +1,8 @@
-import CompatModule from '../../CompatModule.js';
+import CompatModule, { wrapCompat } from '../../CompatModule.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
 import { RH_APP } from '../../root.js';
 
-export default class Rammerhead extends CompatModule {
+class Rammerhead extends CompatModule {
 	name = 'Rammerhead';
 	api = new RammerheadAPI(RH_APP);
 	/**
@@ -46,3 +46,5 @@ export default class Rammerhead extends CompatModule {
 		);
 	}
 }
+
+export default wrapCompat(Rammerhead);

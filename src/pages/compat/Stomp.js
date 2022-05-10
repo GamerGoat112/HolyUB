@@ -1,8 +1,8 @@
-import CompatModule from '../../CompatModule.js';
+import CompatModule, { wrapCompat } from '../../CompatModule.js';
 import process from 'process';
 import { BARE_API } from '../../root.js';
 
-export default class Stomp extends CompatModule {
+class Stomp extends CompatModule {
 	name = 'Stomp';
 	async _componentDidMount() {
 		await this.possible_error('Failure loading the Stomp bootstrapper.');
@@ -42,3 +42,5 @@ export default class Stomp extends CompatModule {
 		this.redirect(this.boot.html(this.destination));
 	}
 }
+
+export default wrapCompat(Stomp);

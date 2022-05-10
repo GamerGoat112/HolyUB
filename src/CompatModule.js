@@ -1,5 +1,5 @@
-import { Component, createRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Component, createRef, forwardRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
@@ -40,16 +40,14 @@ export default class CompatModule extends Component {
 		return promise;
 	}
 	get destination() {
-		const { hash } = global.location;
-
-		if (hash === '') {
+		if (this.props.location.hash === '') {
 			throw new Error('No hash was provided');
 		}
 
-		return new URL(hash.slice(1));
+		return new URL(this.props.location.hash.slice(1));
 	}
 	redirect(url) {
-		global.location.replace(url);
+		global.location.assign(url);
 	}
 	async _componentDidMount() {}
 	async componentDidMount() {
@@ -128,4 +126,17 @@ export default class CompatModule extends Component {
 			</main>
 		);
 	}
+}
+
+export function wrapCompat(Element) {
+	return forwardRef((props, ref) => {
+		return (
+			<Element
+				{...props}
+				ref={ref}
+				location={useLocation()}
+				navigate={useNavigate()}
+			/>
+		);
+	});
 }

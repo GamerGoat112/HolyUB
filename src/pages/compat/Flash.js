@@ -1,7 +1,7 @@
-import CompatModule from '../../CompatModule.js';
+import CompatModule, { wrapCompat } from '../../CompatModule.js';
 import { set_page } from '../../root.js';
 
-export default class Flash extends CompatModule {
+class Flash extends CompatModule {
 	name = 'Flash';
 	constructor(props) {
 		super(props);
@@ -67,3 +67,5 @@ export default class Flash extends CompatModule {
 		return render;
 	}
 }
+
+export default wrapCompat(Flash);

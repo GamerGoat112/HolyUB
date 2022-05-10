@@ -1,4 +1,4 @@
-import CompatModule from '../../CompatModule.js';
+import CompatModule, { wrapCompat } from '../../CompatModule.js';
 import { BARE_API } from '../../root.js';
 
 /**
@@ -24,7 +24,7 @@ import { BARE_API } from '../../root.js';
  * @property {UVDecode} decodeUrl
  */
 
-export default class Ultraviolet extends CompatModule {
+class Ultraviolet extends CompatModule {
 	name = 'Ultraviolet';
 	async _componentDidMount() {
 		await this.possible_error('Failure loading the Ultraviolet bundle.');
@@ -65,3 +65,5 @@ export default class Ultraviolet extends CompatModule {
 		);
 	}
 }
+
+export default wrapCompat(Ultraviolet);
