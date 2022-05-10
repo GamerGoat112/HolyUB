@@ -31,7 +31,7 @@ export default function Search(props) {
 					defaultValue={props.layout.current.settings.get('search')}
 				>
 					<option value="https://www.google.com/search?q=%s">Google</option>
-					<option value="https://duckduckgo.com/?t=%s">DuckDuckGo</option>
+					<option value="https://duckduckgo.com/?q=%s">DuckDuckGo</option>
 					<option value="https://www.bing.com/search?q=%s">Bing</option>
 					<option value="https://en.wikipedia.org/wiki/Special:Search?search=%s">
 						Wikipedia
