@@ -60,6 +60,8 @@ html {
 			border-bottom: var(--border) 1px solid;
 			padding: 0px 18px;
 			user-select: none;
+			box-sizing: border-box;
+			flex: none;
 
 			> .icon {
 				width: 24px;

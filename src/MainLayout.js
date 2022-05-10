@@ -143,7 +143,7 @@ class MainLayout extends Layout {
 					<div className="shift-right"></div>
 					<Link
 						className="button"
-						to="/settings/general.html"
+						to="/settings/search.html"
 						onClick={() => this.setState({ expanded: false })}
 					>
 						<Settings />
