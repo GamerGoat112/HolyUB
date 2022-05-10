@@ -3,8 +3,7 @@ import {
 	BrushOutlined,
 	DriveFileRenameOutline,
 	DriveFileRenameOutlineOutlined,
-	Home,
-	HomeOutlined,
+	Public,
 } from '@mui/icons-material';
 import { Component } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -27,10 +26,9 @@ export default class Settings extends Component {
 				<div className="page-menu">
 					<div className="menu-list">
 						<MenuTab
-							route="/settings/general.html"
-							name="General"
-							iconFilled={<Home />}
-							iconOutlined={<HomeOutlined />}
+							route="/settings/search.html"
+							name="Search & Proxy"
+							iconFilled={<Public />}
 						/>
 						<MenuTab
 							route="/settings/appearance.html"

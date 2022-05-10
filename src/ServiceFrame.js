@@ -30,10 +30,9 @@ export default class ServiceFrame extends SleepingComponent {
 	iframe = createRef();
 	// headless client for serviceworker
 	headless = createRef();
-	search = new SearchBuilder('https://www.google.com/search?q=%s');
 	bare = new BareClient(BARE_API);
 	/**
-	 * @returns {import('react').RefObject<import('../MainLayout.js').default>}
+	 * @returns {import('react').RefObject<import('./MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
@@ -50,7 +49,11 @@ export default class ServiceFrame extends SleepingComponent {
 		});
 	}
 	async proxy(input) {
-		const src = this.search.query(input);
+		const builder = new SearchBuilder(
+			this.layout.current.settings.get('search')
+		);
+
+		const src = builder.query(input);
 
 		const proxied_src = await resolve_proxy(
 			src,

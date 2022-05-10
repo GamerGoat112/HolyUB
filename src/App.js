@@ -23,8 +23,8 @@ const PrivateLinks = lazy(() =>
 const Settings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Settings.js')
 );
-const GeneralSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/General.js')
+const SearchSettings = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/settings/Search.js')
 );
 const AppearanceSettings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/settings/Appearance.js')
@@ -192,10 +192,10 @@ export default class App extends Component {
 						}
 					>
 						<Route
-							path="general.html"
+							path="search.html"
 							element={
 								<Suspense fallback={<></>}>
-									<GeneralSettings layout={this.layout} />
+									<SearchSettings layout={this.layout} />
 								</Suspense>
 							}
 						/>
