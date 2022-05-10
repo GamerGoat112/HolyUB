@@ -115,7 +115,7 @@ export default class Proxies extends Component {
 						ref={this.form}
 					>
 						<div className="theme-input-bar">
-							<Search className="search" />
+							<Search className="icon" />
 							<input
 								type="text"
 								placeholder="Search Google or type a URL"

@@ -211,7 +211,7 @@ export default class Popular extends Component {
 					}}
 				>
 					<div className="theme-input-bar">
-						<Search className="search" />
+						<Search className="icon" />
 						<input
 							ref={this.input}
 							type="text"

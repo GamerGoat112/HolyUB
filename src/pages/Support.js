@@ -1,43 +1,12 @@
-import { Obfuscated } from '../obfuscate.js';
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
 import { qna } from '../support.js';
-import '../styles/Support.scss';
-import { Search } from '@mui/icons-material';
 
 export default class Support extends Component {
-	main = createRef();
-	input = createRef();
 	state = {
 		search: '',
 	};
-	on_input(event) {
-		this.setState({
-			search: event.target.value,
-		});
-	}
-	children_text(node) {
-		const children = node.props.children;
-
-		if (typeof children === 'string') {
-			return children;
-		} else if (Array.isArray(children)) {
-			let text = '';
-
-			for (let child of children) {
-				if (typeof child === 'string') {
-					text += child;
-				} else {
-					text += this.children_text(child);
-				}
-			}
-
-			return text;
-		} else {
-			return ' ';
-		}
-	}
 	render() {
 		set_page('support');
 
@@ -46,17 +15,8 @@ export default class Support extends Component {
 		for (let i = 0; i < qna.length; i++) {
 			const { q, a } = qna[i];
 
-			const visible = this.children_text(q)
-				.toLowerCase()
-				.includes(this.state.search.toLowerCase());
-			const style = {};
-
-			if (!visible) {
-				style.display = 'none';
-			}
-
 			sections.push(
-				<section key={i} style={style}>
+				<section key={i}>
 					<h1>{q}</h1>
 					<p>{a}</p>
 				</section>
@@ -65,23 +25,9 @@ export default class Support extends Component {
 
 		return (
 			<>
-				<form className="banner" onSubmit={event => event.preventDefault()}>
-					<h1>
-						<Obfuscated>HolyUnblocker</Obfuscated> Knowledgebase
-					</h1>
-					<div className="search">
-						<Search className="icon" />
-						<input
-							className="bar"
-							type="text"
-							placeholder="Search"
-							onInput={this.on_input.bind(this)}
-						></input>
-					</div>
-				</form>
-				<main ref={this.main}>
+				<main>
 					{sections}
-					<p className="note">
+					<p style={{ marginTop: '30px', opacity: 0.75 }}>
 						Not what you're looking for?{' '}
 						<Link to="/contact.html">Contact Us</Link>.
 					</p>

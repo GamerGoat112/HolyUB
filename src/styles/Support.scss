@@ -1,69 +1,19 @@
 @import './Common.scss';
 
 @include root_page('support') {
-	.banner {
-		width: 100%;
-		display: block;
-		background-color: var(--contrast-background);
-		color: var(--contrast-text);
-		padding: 60px 0px 80px 0px;
-		text-align: center;
-
-		> h1 {
-			margin: 10px 50px;
-		}
-
-		> .search {
-			position: relative;
-			width: 420px;
-			height: 30px;
-			margin: auto;
-			display: flex;
-
-			@media only screen and (max-width: 600px) {
-				width: 70%;
-			}
-
-			> .icon {
-				position: absolute;
-				width: 18px;
-				height: 18px;
-				padding: 6px;
-				pointer-events: none;
-				color: var(--text-placeholder);
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			> .bar {
-				width: 100%;
-				padding-left: 32px;
-				padding-right: 16px;
-				border-radius: 2px;
-				font-size: 14px;
-				border: 1px solid var(--border);
-				transition: 0.1s ease box-shadow;
-				background: var(--background-accent);
-				color: var(--text-accent);
-				outline: none;
-
-				&:hover {
-					border-color: var(--blue);
-				}
-
-				&:focus {
-					box-shadow: 0 0 0 0.125rem var(--blue);
-					border-color: var(--blue);
-				}
-			}
-		}
-	}
-
 	main {
+		> .theme-input-bar {
+			> input {
+				width: 100%;
+				height: 100%;
+				padding: 0px 15px 0px 0px;
+				background-color: transparent;
+				color: inherit;
+				border: none;
+			}
+		}
+
 		> .note {
-			margin-top: 30px;
-			opacity: 0.75;
 		}
 	}
 }

@@ -38,26 +38,6 @@ html[data-page='games-category'][data-service='1'] {
 
 			> .theme-input-bar {
 				height: $height;
-
-				> .search {
-					user-select: none;
-					width: 20px;
-					height: 20px;
-					padding: 12px;
-					color: var(--text-placeholder);
-					display: block;
-					text-align: center;
-					pointer-events: none;
-				}
-
-				> input {
-					width: 100%;
-					height: 100%;
-					padding: 0px 15px 0px 0px;
-					background-color: transparent;
-					color: inherit;
-					border: none;
-				}
 			}
 
 			> .suggested {
