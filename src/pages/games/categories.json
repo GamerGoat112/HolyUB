@@ -8,11 +8,9 @@
 		"name": "Action & Adventure"
 	},
 	"entertainment": {
-		"short": "Entertainment",
 		"name": "Entertainment"
 	},
 	"platformer": {
-		"short": "Platformer",
 		"name": "Platformer"
 	},
 	"shooter": {
@@ -20,11 +18,9 @@
 		"name": "Shooters & Strategy"
 	},
 	"rpg": {
-		"short": "RPG",
 		"name": "RPG"
 	},
 	"sandbox": {
-		"short": "Sandbox",
 		"name": "Sandbox"
 	},
 	"survival": {
@@ -36,7 +32,9 @@
 		"name": "Simulation & Sports"
 	},
 	"puzzle": {
-		"short": "Puzzle",
 		"name": "Puzzle"
+	},
+	"tools": {
+		"name": "Tools"
 	}
 }

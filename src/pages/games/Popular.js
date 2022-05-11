@@ -132,7 +132,8 @@ export default class Popular extends Component {
 				let category_name;
 
 				if (game.category in categories) {
-					category_name = categories[game.category].short;
+					const category = categories[game.category];
+					category_name = category.short || category.name;
 				} else {
 					console.warn(`Unknown category ${game.category}`);
 					category_name = '';

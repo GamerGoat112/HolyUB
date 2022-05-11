@@ -108,7 +108,7 @@ class MainLayout extends Layout {
 		const ui_categories = [];
 
 		for (let id in categories) {
-			const { short } = categories[id];
+			const { short, name } = categories[id];
 			ui_categories.push(
 				<Link
 					key={id}
@@ -120,7 +120,7 @@ class MainLayout extends Layout {
 						});
 					}}
 				>
-					<Obfuscated>{short}</Obfuscated>
+					<Obfuscated>{short || name}</Obfuscated>
 				</Link>
 			);
 		}
