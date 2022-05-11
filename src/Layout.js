@@ -3,12 +3,26 @@ import Settings from './Settings.js';
 
 export const THEMES = ['night', 'day'];
 
+class Scroll {
+	constructor(
+		x = document.documentElement.scrollLeft,
+		y = document.documentElement.scrollTop
+	) {
+		this.x = x;
+		this.y = y;
+	}
+	scroll() {
+		document.documentElement.scrollTo(this.x, this.y);
+	}
+}
+
 export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
 		page: undefined,
 	};
+	scrolls = new Map();
 	icon = document.querySelector('link[rel="icon"]');
 	get mobile() {
 		const mobile = matchMedia('only screen and (max-width: 650px)');
@@ -74,7 +88,17 @@ export default class Layout extends Component {
 		document.removeEventListener('keydown', this.listen_keydown);
 		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
 	}
+	last_page = '';
 	render() {
+		if (this.last_page !== this.state.page) {
+			this.scrolls.set(this.last_page, new Scroll());
+			if (!this.scrolls.has(this.state.page)) {
+				this.scrolls.set(this.state.page, new Scroll());
+
+				this.scrolls.get(this.state.page).scroll();
+			}
+		}
+
 		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.page = this.state.page;
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
