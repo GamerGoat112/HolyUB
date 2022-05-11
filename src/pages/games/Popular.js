@@ -162,7 +162,7 @@ export default class Popular extends Component {
 								last_select: i,
 							});
 						}}
-						to={`${resolveRoute('/', 'player')}?id=${game.id}`}
+						to={`${resolveRoute('/games/', 'player')}?id=${game.id}`}
 						className={classes.join(' ')}
 					>
 						<div className="name">
