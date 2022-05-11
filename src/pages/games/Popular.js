@@ -7,6 +7,7 @@ import categories from './categories.json';
 import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
 import '../../styles/GamesCategory.scss';
+import { resolveRoute } from '../../Routes.js';
 
 function ExpandSection(props) {
 	return (
@@ -162,7 +163,7 @@ export default class Popular extends Component {
 								last_select: i,
 							});
 						}}
-						to={`/games/player.html?id=${game.id}`}
+						to={`${resolveRoute('/', 'player')}?id=${game.id}`}
 						className={classes.join(' ')}
 					>
 						<div className="name">
@@ -197,7 +198,7 @@ export default class Popular extends Component {
 
 			jsx_categories.push(
 				<ExpandSection
-					href={`/games/category.html?id=${id}`}
+					href={`${resolveRoute('games', 'category')}?id=${id}`}
 					items={_categories[id]}
 					name={name}
 					key={id}
@@ -278,7 +279,9 @@ export default class Popular extends Component {
 											this.setState({
 												input_focused: false,
 											});
-											this.props.navigate(`/games/player.html?id=${game.id}`);
+											this.props.navigate(
+												`${resolveRoute('/games/', 'player')}?id=${game.id}`
+											);
 										}
 										break;
 									default:

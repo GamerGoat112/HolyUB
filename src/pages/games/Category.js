@@ -6,6 +6,7 @@ import Settings from '../../Settings.js';
 import PlainSelect from '../../PlainSelect.js';
 import categories from './categories.json';
 import '../../styles/GamesCategory.scss';
+import { resolveRoute } from '../../Routes.js';
 
 export default class Category extends Component {
 	constructor(props) {
@@ -156,11 +157,11 @@ export default class Category extends Component {
 						.
 						<br />
 						If this problem still occurs, check{' '}
-						<Link to="/support.html" target="_parent">
+						<Link to={resolveRoute('/', 'support')} target="_parent">
 							Support
 						</Link>{' '}
 						or{' '}
-						<Link to="/contact.html" target="_parent">
+						<Link to={resolveRoute('/', 'contact')} target="_parent">
 							Contact Us
 						</Link>
 						.
