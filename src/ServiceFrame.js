@@ -112,7 +112,7 @@ export default class ServiceFrame extends SleepingComponent {
 			const current_title = this.iframe_window.document.title;
 
 			if (current_title === '') {
-				titles.push(location.href);
+				titles.push(location.toString());
 			} else {
 				titles.push(current_title);
 			}

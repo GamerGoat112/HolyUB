@@ -33,13 +33,14 @@ async function resolve_game(src, type, setting) {
 		case 'emulator.gba':
 		case 'emulator.nes':
 		case 'emulator.genesis':
-			return (
-				'/games/webretro/?' +
-				new URLSearchParams({
-					rom: src,
-					core: 'autodetect',
-				})
-			);
+			return new URL(
+				'./webretro/?' +
+					new URLSearchParams({
+						rom: src,
+						core: 'autodetect',
+					}),
+				GAMES_CDN
+			).toString();
 		default:
 			throw new TypeError(`Unrecognized target: ${type}`);
 	}
