@@ -47,20 +47,30 @@ export default class Layout extends Component {
 			this
 		);
 
-		this.listen_fullscreen = this.listen_fullscreen.bind(this);
+		this.listen_fullscreen = this.fullscreen.bind(this);
+		this.listen_keydown = this.keydown.bind(this);
 	}
 	get_fullscreen() {
 		return document.fullscreenElement !== null;
 	}
-	listen_fullscreen() {
+	fullscreen() {
 		this.setState({
 			fullscreen: this.get_fullscreen(),
 		});
 	}
+	keydown(event) {
+		if (this.state.expanded && event.key === 'Escape') {
+			this.setState({
+				expanded: false,
+			});
+		}
+	}
 	componentDidMount() {
+		document.addEventListener('keydown', this.listen_keydown);
 		document.addEventListener('fullscreenchange', this.listen_fullscreen);
 	}
 	componentWillUnmount() {
+		document.removeEventListener('keydown', this.listen_keydown);
 		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
 	}
 	render() {
