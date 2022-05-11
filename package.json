@@ -25,6 +25,7 @@
 		"react-scripts": "^5.0.0",
 		"sass": "^1.49.9",
 		"stomp": "github:sysce/stomp",
+		"string-replace-loader": "^3.1.0",
 		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet",
 		"unzipper": "^0.10.11",
 		"web-vitals": "^2.1.4",

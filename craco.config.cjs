@@ -13,6 +13,14 @@ module.exports = {
 			config.plugins.push(
 				new EnvironmentPlugin(['NODE_ENV', 'REACT_APP_ROUTER'])
 			);
+			config.module.rules.push({
+				test: /\.js$/,
+				loader: 'string-replace-loader',
+				options: {
+					search: /process.env.(NODE_ENV|REACT_APP_ROUTER)/g,
+					replace: (match, env) => JSON.stringify(process.env[env]),
+				},
+			});
 
 			if (config.mode === 'production') {
 				config.module.rules.push({
