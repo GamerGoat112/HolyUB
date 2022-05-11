@@ -1,10 +1,22 @@
-const WebpackObfuscator = require('webpack-obfuscator');
 const { resolve } = require('path');
+const WebpackObfuscator = require('webpack-obfuscator');
+const { EnvironmentPlugin } = require('webpack');
+
+console.log(process.env.REACT_APP_ROUTER);
 
 module.exports = {
 	webpack: {
+		/**
+		 *
+		 * @param {import('webpack').Configuration} config
+		 * @returns {import('webpack').Configuration}
+		 */
 		configure(config) {
-			if (config.mode === 'production') {
+			config.plugins.push(
+				new EnvironmentPlugin(['NODE_ENV', 'REACT_APP_ROUTER'])
+			);
+
+			if (config.mode === 'x') {
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',

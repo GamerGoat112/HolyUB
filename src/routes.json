@@ -1,0 +1,28 @@
+[
+	{
+		"dir": "/",
+		"pages": [
+			"404",
+			"faq",
+			"contact",
+			"privacy",
+			"terms",
+			"credits",
+			"proxy",
+			"licenses",
+			"privatelinks"
+		]
+	},
+	{
+		"dir": "/games/",
+		"pages": ["popular", "favorites", "category", "player"]
+	},
+	{
+		"dir": "/compat/",
+		"pages": ["rammerhead", "stomp", "ultraviolet", "flash"]
+	},
+	{
+		"dir": "/settings/",
+		"pages": ["search", "appearance", "tabcloak"]
+	}
+]

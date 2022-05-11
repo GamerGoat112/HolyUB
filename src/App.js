@@ -2,6 +2,7 @@ import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import ProxyLayout from './ProxyLayout.js';
+import { resolveRoute } from './Routes.js';
 import './styles/App.scss';
 
 const GamesPopular = lazy(() =>
@@ -92,7 +93,10 @@ export default class App extends Component {
 	render() {
 		return (
 			<Routes>
-				<Route path="/" element={<MainLayout ref={this.layout} />}>
+				<Route
+					path={resolveRoute('/', '')}
+					element={<MainLayout ref={this.layout} />}
+				>
 					<Route
 						index
 						element={
@@ -102,7 +106,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/proxy.html"
+						path={resolveRoute('/', 'proxy')}
 						element={
 							<Suspense fallback={<></>}>
 								<Proxy layout={this.layout} />
@@ -110,7 +114,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/faq.html"
+						path={resolveRoute('/', 'faq')}
 						element={
 							<Suspense fallback={<></>}>
 								<FAQ layout={this.layout} />
@@ -118,7 +122,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/contact.html"
+						path={resolveRoute('/', 'contact')}
 						element={
 							<Suspense fallback={<></>}>
 								<Contact layout={this.layout} />
@@ -126,7 +130,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/privacy.html"
+						path={resolveRoute('/', 'privacy')}
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy layout={this.layout} />
@@ -134,7 +138,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/privatelinks.html"
+						path={resolveRoute('/', 'privatelinks')}
 						element={
 							<Suspense fallback={<></>}>
 								<PrivateLinks layout={this.layout} />
@@ -142,7 +146,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/terms.html"
+						path={resolveRoute('/', 'terms')}
 						element={
 							<Suspense fallback={<></>}>
 								<Terms layout={this.layout} />
@@ -150,16 +154,19 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="/credits.html"
+						path={resolveRoute('/', 'credits')}
 						element={
 							<Suspense fallback={<></>}>
 								<Credits layout={this.layout} />
 							</Suspense>
 						}
 					/>
-					<Route path="/games/">
+					<Route path={resolveRoute('/games/', '')}>
 						<Route
-							path="popular.html"
+							path={
+								(console.log(resolveRoute('/games/', 'popular', false)),
+								resolveRoute('/games/', 'popular', false))
+							}
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPopular layout={this.layout} />
@@ -167,7 +174,7 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path="favorites.html"
+							path={resolveRoute('/games/', 'favorites', false)}
 							element={
 								<Suspense fallback={<></>}>
 									<GamesFavorites layout={this.layout} />
@@ -175,16 +182,16 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path="player.html"
+							path={resolveRoute('/games/', 'player', false)}
 							element={<PlayerProxy layout={this.layout} />}
 						/>
 						<Route
-							path="category.html"
+							path={resolveRoute('/games/', 'category', false)}
 							element={<CategoryProxy layout={this.layout} />}
 						/>
 					</Route>
 					<Route
-						path="/settings/"
+						path={resolveRoute('/settings/', '')}
 						element={
 							<Suspense fallback={<></>}>
 								<Settings layout={this.layout} />
@@ -192,7 +199,7 @@ export default class App extends Component {
 						}
 					>
 						<Route
-							path="search.html"
+							path={resolveRoute('/settings/', 'search', false)}
 							element={
 								<Suspense fallback={<></>}>
 									<SearchSettings layout={this.layout} />
@@ -200,7 +207,7 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path="appearance.html"
+							path={resolveRoute('/settings/', 'appearance', false)}
 							element={
 								<Suspense fallback={<></>}>
 									<AppearanceSettings layout={this.layout} />
@@ -208,7 +215,7 @@ export default class App extends Component {
 							}
 						/>
 						<Route
-							path="tabcloak.html"
+							path={resolveRoute('/settings/', 'tabcloak', false)}
 							element={
 								<Suspense fallback={<></>}>
 									<TabCloakSettings layout={this.layout} />
@@ -225,9 +232,12 @@ export default class App extends Component {
 						}
 					/>
 				</Route>
-				<Route path="/compat/" element={<ProxyLayout ref={this.layout} />}>
+				<Route
+					path={resolveRoute('/compat/', '')}
+					element={<ProxyLayout ref={this.layout} />}
+				>
 					<Route
-						path="rammerhead.html"
+						path={resolveRoute('/compat/', 'rammerhead', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Rammerhead layout={this.layout} />
@@ -235,7 +245,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="stomp.html"
+						path={resolveRoute('/compat/', 'stomp', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Stomp layout={this.layout} />
@@ -243,7 +253,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="ultraviolet.html"
+						path={resolveRoute('/compat/', 'ultraviolet', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Ultraviolet layout={this.layout} />
@@ -251,7 +261,7 @@ export default class App extends Component {
 						}
 					/>
 					<Route
-						path="flash.html"
+						path={resolveRoute('/compat/', 'flash', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Flash layout={this.layout} />

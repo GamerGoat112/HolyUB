@@ -12,7 +12,8 @@
 		"@testing-library/user-event": "^13.5.0",
 		"arraybuffer-loader": "^1.0.8",
 		"bare-client": "github:tomphttp/bare-client",
-		"commander": "^9.1.0",
+		"commander": "^9.2.0",
+		"http-server": "^14.1.0",
 		"javascript-obfuscator": "^4.0.0",
 		"modify-source-webpack-plugin": "^3.0.0",
 		"node-fetch": "^3.2.3",
@@ -42,8 +43,8 @@
 	"scripts": {
 		"build-stomp": "node ./build-scripts/stomp.mjs",
 		"build-uv": "node ./build-scripts/ultraviolet.mjs",
-		"start": "NODE_ENV=development craco start",
-		"build": "NODE_ENV=production craco build",
+		"start": "craco start",
+		"build": "craco build",
 		"test": "craco test",
 		"prepare": "husky install"
 	},

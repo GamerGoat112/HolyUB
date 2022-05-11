@@ -1,0 +1,63 @@
+import routes from './routes.json';
+
+export function resolveRoute(dir, page, absolute = true) {
+	let pages;
+	let route_i;
+
+	for (route_i = 0; route_i < routes.length; route_i++) {
+		const route = routes[route_i];
+
+		if (dir === route.dir) {
+			pages = route.pages;
+			break;
+		}
+	}
+
+	if (pages === undefined) {
+		throw new Error(`Unknown directory ${dir}`);
+	}
+
+	let res_dir = '';
+	let res_file = '';
+
+	let x = 'id';
+	//process.env.REACT_APP_ROUTER
+
+	if (page !== '') {
+		switch (x) {
+			case 'id': {
+				const index = pages.indexOf(page);
+
+				if (index === -1) {
+					throw new TypeError(`Unknown page ${page}`);
+				}
+
+				res_file = `${index}.html`;
+				break;
+			}
+			default:
+			case 'file':
+				res_file = `${page}.html`;
+				break;
+		}
+	}
+
+	if (dir !== '/') {
+		switch (x) {
+			case 'id': {
+				res_dir = `/${route_i}/`;
+				break;
+			}
+			default:
+			case 'file':
+				res_dir = dir;
+				break;
+		}
+	}
+
+	if (absolute) {
+		return `${res_dir}${res_file}`;
+	} else {
+		return res_file;
+	}
+}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Obfuscated, ObfuscatedA } from './obfuscate';
 import { PATREON_URL } from './root';
+import { resolveRoute } from './Routes';
 
 const faq = [
 	{
@@ -56,7 +57,10 @@ const faq = [
 		a: (
 			<>
 				The proxies used on this website can be found in{' '}
-				<Link to="/credits.html">credits and open-source licenses</Link>.
+				<Link to={resolveRoute('/', 'credits')}>
+					credits and open-source licenses
+				</Link>
+				.
 			</>
 		),
 	},
@@ -70,7 +74,7 @@ const faq = [
 			<>
 				We do not collect any data, your information is only as secure as the
 				sites you are accessing. For privacy concerns, you can review our{' '}
-				<Link to="/privacy.html">Privacy Policy</Link>.
+				<Link to={resolveRoute('/', 'privacy')}>Privacy Policy</Link>.
 			</>
 		),
 	},

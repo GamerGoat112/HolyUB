@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from '../obfuscate.js';
 import { set_page } from '../root.js';
+import { resolveRoute } from '../Routes.js';
 
 export default class Contact extends Component {
 	render() {
@@ -55,7 +56,8 @@ export default class Contact extends Component {
 
 				<p>
 					For any additional information or clarification regarding the privacy
-					policy, please <Link to="/contact.html">Contact Us</Link>.
+					policy, please{' '}
+					<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
 				</p>
 			</main>
 		);

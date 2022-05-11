@@ -21,6 +21,7 @@ import Layout from './Layout.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
 import { PATREON_URL } from './root.js';
+import { resolveRoute } from './Routes.js';
 
 export function MenuTab(props) {
 	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;
@@ -111,7 +112,7 @@ class MainLayout extends Layout {
 			ui_categories.push(
 				<Link
 					key={id}
-					to={`/games/category.html?id=${id}`}
+					to={`${resolveRoute('/games/', 'category')}?id=${id}`}
 					className="entry text"
 					onClick={() => {
 						this.setState({
@@ -141,7 +142,7 @@ class MainLayout extends Layout {
 					<div className="shift-right"></div>
 					<Link
 						className="button"
-						to="/settings/search.html"
+						to={resolveRoute('/settings/', 'search')}
 						onClick={() => this.setState({ expanded: false })}
 					>
 						<Settings />
@@ -166,20 +167,20 @@ class MainLayout extends Layout {
 						</div>
 						<div className="menu-list">
 							<MainMenuTab
-								route="/"
+								route={resolveRoute('/', '')}
 								name="Home"
 								iconFilled={<Home />}
 								iconOutlined={<HomeOutlined />}
 								layout={this}
 							/>
 							<MainMenuTab
-								route="/proxy.html"
+								route={resolveRoute('/', 'proxy')}
 								name="Proxy"
 								iconFilled={<WebAsset />}
 								layout={this}
 							/>
 							<MainMenuTab
-								route="/faq.html"
+								route={resolveRoute('/', 'faq')}
 								name="FAQ"
 								iconFilled={<QuestionMark />}
 								layout={this}
@@ -188,7 +189,7 @@ class MainLayout extends Layout {
 							<div className="bar" />
 
 							<MainMenuTab
-								route="/privatelinks.html"
+								route={resolveRoute('/', 'privatelinks')}
 								name="Private Links"
 								iconFilled={<ShoppingCart />}
 								layout={this}
@@ -209,13 +210,13 @@ class MainLayout extends Layout {
 							</div>
 
 							<MainMenuTab
-								route="/games/popular.html"
+								route={resolveRoute('/games/', 'popular')}
 								name="Popular"
 								iconFilled={<SortRounded />}
 								layout={this}
 							/>
 							<MainMenuTab
-								route="/games/favorites.html"
+								route={resolveRoute('/games/', 'favorites')}
 								name="Favorites"
 								iconFilled={<StarRounded />}
 								iconOutlined={<StarOutlineRounded />}
@@ -231,10 +232,10 @@ class MainLayout extends Layout {
 						<WavesSVG />
 						<div className="background">
 							<div className="content">
-								<Link to="/credits.html">Credits</Link>
-								<Link to="/contact.html">Contact</Link>
-								<Link to="/privacy.html">Privacy</Link>
-								<Link to="/terms.html">Terms of use</Link>
+								<Link to={resolveRoute('/', 'credits')}>Credits</Link>
+								<Link to={resolveRoute('/', 'contact')}>Contact</Link>
+								<Link to={resolveRoute('/', 'privacy')}>Privacy</Link>
+								<Link to={resolveRoute('/', 'terms')}>Terms of use</Link>
 								<span>
 									&copy; <Obfuscated>Holy Unblocker</Obfuscated>{' '}
 									{new Date().getUTCFullYear()}

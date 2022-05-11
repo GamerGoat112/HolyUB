@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
 import { set_page } from './root.js';
+import { resolveRoute } from './Routes.js';
 import './styles/Compat.scss';
 
 export default class CompatModule extends Component {
@@ -104,12 +105,12 @@ export default class CompatModule extends Component {
 						</a>
 						.
 						<br />
-						If this problem still occurs, check{' '}
-						<Link to="/support.html" target="_parent">
-							Support
+						If this problem still occurs, check our{' '}
+						<Link to={resolveRoute('/', 'faq')} target="_parent">
+							FAQ
 						</Link>{' '}
 						or{' '}
-						<Link to="/contact.html" target="_parent">
+						<Link to={resolveRoute('/', 'contact')} target="_parent">
 							Contact Us
 						</Link>
 						.

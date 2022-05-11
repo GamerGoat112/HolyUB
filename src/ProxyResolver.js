@@ -1,4 +1,5 @@
 import { DB_API, DEFAULT_PROXY } from './root.js';
+import { resolveRoute } from './Routes.js';
 
 export class CompatAPI {
 	constructor(server) {
@@ -87,13 +88,20 @@ export default async function resolve_proxy(src, setting) {
 		}
 	}
 
+	let route;
+
 	switch (setting) {
+		case 'stomp':
+			route = resolveRoute('/compat/', 'stomp');
+			break;
+		case 'ultraviolet':
+			route = resolveRoute('/compat/', 'ultraviolet');
+			break;
 		default:
 		case 'rammerhead':
-			return `/compat/rammerhead.html#${src}`;
-		case 'ultraviolet':
-			return `/compat/ultraviolet.html#${src}`;
-		case 'stomp':
-			return `/compat/stomp.html#${src}`;
+			route = resolveRoute('/compat/', 'rammerhead');
+			break;
 	}
+
+	return `${route}#${src}`;
 }

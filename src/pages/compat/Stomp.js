@@ -1,5 +1,4 @@
 import CompatModule, { wrapCompat } from '../../CompatModule.js';
-import process from 'process';
 import { BARE_API } from '../../root.js';
 
 class Stomp extends CompatModule {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
+import { resolveRoute } from './Routes.js';
 
 /**
  *
@@ -100,7 +101,7 @@ export function Item(props) {
 
 	return (
 		<Link
-			to={`/games/player.html?id=${props.id}`}
+			to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}
 			onClick={() => props.layout.current.setState({ expanded: false })}
 		>
 			<div className="item">

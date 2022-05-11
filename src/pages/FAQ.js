@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
 import faq from '../faq.js';
+import { resolveRoute } from '../Routes.js';
 
 export default class FAQ extends Component {
 	state = {
@@ -29,7 +30,7 @@ export default class FAQ extends Component {
 					{sections}
 					<p style={{ marginTop: '30px', opacity: 0.75 }}>
 						Not what you're looking for?{' '}
-						<Link to="/contact.html">Contact Us</Link>.
+						<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
 					</p>
 				</main>
 			</>
