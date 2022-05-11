@@ -39,7 +39,9 @@ export function resolveRoute(dir, page, absolute = true) {
 		}
 	}
 
-	if (dir !== '/') {
+	if (dir === '/') {
+		res_dir = '/';
+	} else {
 		switch (process.env.REACT_APP_ROUTER) {
 			case 'id': {
 				res_dir = `/${route_i}/`;
