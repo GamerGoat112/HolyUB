@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { PATREON_URL, set_page } from '../root.js';
+import { PATREON_URL } from '../root.js';
 
 export default class Credits extends Component {
 	render() {
-		set_page('credits');
+		this.props.layout.current.set_page('credits');
 
 		return (
 			<main>

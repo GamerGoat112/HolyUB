@@ -1,5 +1,5 @@
 import { Component, createRef } from 'react';
-import { DB_API, set_page } from '../../root.js';
+import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward, Search } from '@mui/icons-material';
@@ -58,7 +58,7 @@ export default class Popular extends Component {
 	api = new GamesAPI(DB_API);
 	abort = new AbortController();
 	/**
-	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
@@ -129,7 +129,7 @@ export default class Popular extends Component {
 		this.abort.abort();
 	}
 	render() {
-		set_page('games-category');
+		this.layout.current.set_page('games-category');
 
 		const render_suggested =
 			this.state.input_focused && this.state.category.length !== 0;

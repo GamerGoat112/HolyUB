@@ -1,7 +1,7 @@
 import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
-import ProxyLayout from './ProxyLayout.js';
+import CompatLayout from './CompatLayout.js';
 import { resolveRoute } from './Routes.js';
 import './styles/App.scss';
 
@@ -231,7 +231,7 @@ export default class App extends Component {
 				</Route>
 				<Route
 					path={resolveRoute('/compat/', '')}
-					element={<ProxyLayout ref={this.layout} />}
+					element={<CompatLayout ref={this.layout} />}
 				>
 					<Route
 						path={resolveRoute('/compat/', 'rammerhead', false)}

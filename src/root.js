@@ -44,11 +44,3 @@ export const TN_DISCORD_URL = 'https://discord.gg/unblock';
 export const HU_DISCORD_URL = 'https://discord.gg/QKMwvd6tx6';
 
 export default document.querySelector('#root');
-
-export function set_page(page) {
-	document.documentElement.dataset.page = page;
-}
-
-export function get_page(page) {
-	return document.documentElement.dataset.page;
-}

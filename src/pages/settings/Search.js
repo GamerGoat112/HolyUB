@@ -1,5 +1,5 @@
-import PlainSelect from '../../PlainSelect';
-import { Obfuscated } from '../../obfuscate';
+import PlainSelect from '../../PlainSelect.js';
+import { Obfuscated } from '../../obfuscate.js';
 
 export default function Search(props) {
 	return (

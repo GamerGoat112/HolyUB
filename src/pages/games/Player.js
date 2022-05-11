@@ -1,7 +1,7 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { DB_API, GAMES_CDN, HCAPTCHA_KEY, set_page } from '../../root.js';
+import { DB_API, GAMES_CDN, HCAPTCHA_KEY } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { GamesAPI } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
@@ -79,7 +79,7 @@ export default class GamesPlayer extends Component {
 	controls_open = createRef();
 	controls_popup = createRef();
 	/**
-	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
@@ -129,7 +129,7 @@ export default class GamesPlayer extends Component {
 		this.abort.abort();
 	}
 	render() {
-		set_page('games-player');
+		this.layout.current.set_page('games-player');
 
 		if (this.state.error !== undefined) {
 			return (

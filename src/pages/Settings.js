@@ -8,7 +8,6 @@ import {
 import { Component } from 'react';
 import { Outlet } from 'react-router-dom';
 import { MenuTab } from '../MainLayout.js';
-import { set_page } from '../root.js';
 import { resolveRoute } from '../Routes.js';
 import '../styles/Settings.scss';
 
@@ -20,7 +19,7 @@ export default class Settings extends Component {
 		return this.props.layout;
 	}
 	render() {
-		set_page('settings');
+		this.layout.current.set_page('settings');
 
 		return (
 			<>

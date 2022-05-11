@@ -1,6 +1,6 @@
 import { Component, createRef } from 'react';
 import { ObfuscatedA } from '../obfuscate.js';
-import { set_page, VOUCHER_URL, VO_API } from '../root.js';
+import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
 import '../styles/PrivateLinks.scss';
 
@@ -15,7 +15,7 @@ export default class PrivateLinks extends Component {
 		this.state = {};
 	}
 	render() {
-		set_page('private-links');
+		this.props.layout.current.set_page('private-links');
 
 		return (
 			<main>

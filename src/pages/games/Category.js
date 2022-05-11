@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { DB_API, set_page } from '../../root.js';
+import { DB_API } from '../../root.js';
 import { GamesAPI, Section } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import Settings from '../../Settings.js';
@@ -34,7 +34,7 @@ export default class Category extends Component {
 		});
 	}
 	/**
-	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
@@ -125,7 +125,7 @@ export default class Category extends Component {
 		this.abort.abort();
 	}
 	render() {
-		set_page('games-category');
+		this.layout.current.set_page('games-category');
 
 		if (this.state.error !== undefined) {
 			let description;

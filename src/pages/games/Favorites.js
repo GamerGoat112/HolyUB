@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { DB_API, set_page } from '../../root.js';
+import { DB_API } from '../../root.js';
 import { GamesAPI, Section } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
 import '../../styles/GamesCategory.scss';
@@ -30,7 +30,7 @@ export default class FavoritesCategory extends Component {
 	});
 	abort = new AbortController();
 	/**
-	 * @returns {import('react').Ref<import('../../GamesLayout.js').default>}
+	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
 	 */
 	get layout() {
 		return this.props.layout;
@@ -68,7 +68,7 @@ export default class FavoritesCategory extends Component {
 		this.abort.abort();
 	}
 	render() {
-		set_page('games-category');
+		this.layout.current.set_page('games-category');
 
 		if (this.set_favorites.length === 0) {
 			return (

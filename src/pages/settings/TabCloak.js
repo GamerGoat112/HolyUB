@@ -1,8 +1,8 @@
 import BareClient from 'bare-client';
 import { useRef, useState } from 'react';
-import { Obfuscated } from '../../obfuscate';
-import { BARE_API } from '../../root';
-import { http_s_protocol, whitespace } from '../../SearchBuilder';
+import { Obfuscated } from '../../obfuscate.js';
+import { BARE_API } from '../../root.js';
+import { http_s_protocol, whitespace } from '../../SearchBuilder.js';
 
 async function extract_data(url) {
 	const bare = new BareClient(BARE_API);

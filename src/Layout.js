@@ -7,6 +7,7 @@ export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
+		page: undefined,
 	};
 	icon = document.querySelector('link[rel="icon"]');
 	get mobile() {
@@ -75,6 +76,7 @@ export default class Layout extends Component {
 	}
 	render() {
 		document.documentElement.dataset.theme = this.settings.get('theme');
+		document.documentElement.dataset.page = this.state.page;
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
 		document.documentElement.dataset.expanded = Number(this.state.expanded);
 

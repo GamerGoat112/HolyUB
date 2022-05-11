@@ -1,12 +1,11 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from '../obfuscate.js';
-import { set_page } from '../root.js';
 import { resolveRoute } from '../Routes.js';
 
-export default class Contact extends Component {
+export default class Privacy extends Component {
 	render() {
-		set_page('contact');
+		this.props.layout.current.set_page('privacy');
 
 		return (
 			<main>

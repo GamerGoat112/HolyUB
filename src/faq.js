@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Obfuscated, ObfuscatedA } from './obfuscate';
-import { PATREON_URL } from './root';
-import { resolveRoute } from './Routes';
+import { Obfuscated, ObfuscatedA } from './obfuscate.js';
+import { PATREON_URL } from './root.js';
+import { resolveRoute } from './Routes.js';
 
 const faq = [
 	{

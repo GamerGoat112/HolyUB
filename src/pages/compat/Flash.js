@@ -1,5 +1,4 @@
 import CompatModule, { wrapCompat } from '../../CompatModule.js';
-import { set_page } from '../../root.js';
 
 class Flash extends CompatModule {
 	name = 'Flash';
@@ -62,7 +61,7 @@ class Flash extends CompatModule {
 			render = super.render();
 		}
 
-		set_page('compat-flash');
+		this.layout.current.set_page('compat-flash');
 
 		return render;
 	}

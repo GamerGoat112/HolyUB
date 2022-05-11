@@ -1,11 +1,10 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { set_page } from '../root.js';
 import { resolveRoute } from '../Routes.js';
 
 export default class NotFound extends Component {
 	render() {
-		set_page('notfound');
+		this.props.layout.current.set_page('notfound');
 
 		return (
 			<main>

@@ -1,18 +1,21 @@
 import { Component, createRef, forwardRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Layout from './Layout.js';
 import { Obfuscated } from './obfuscate.js';
-import { set_page } from './root.js';
 import { resolveRoute } from './Routes.js';
 import './styles/Compat.scss';
 
 export default class CompatModule extends Component {
-	layout = new Layout();
 	container = createRef();
 	state = {
 		error: undefined,
 		possible_error: undefined,
 	};
+	/**
+	 * @returns {import('react').RefObject<import('./CompatLayout.js').default>}
+	 */
+	get layout() {
+		return this.props.layout;
+	}
 	name = 'Generic Proxy';
 	scripts = new Map();
 	load_script(src) {
@@ -74,7 +77,7 @@ export default class CompatModule extends Component {
 		});
 	}
 	render() {
-		set_page('compat');
+		this.layout.current.set_page('compat');
 
 		if (this.state.error !== undefined) {
 			let description;

@@ -1,4 +1,4 @@
-import PlainSelect from '../../PlainSelect';
+import PlainSelect from '../../PlainSelect.js';
 
 export default function Appearance(props) {
 	return (

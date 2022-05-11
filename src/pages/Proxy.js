@@ -1,5 +1,5 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { PATREON_URL, set_page, TN_DISCORD_URL } from '../root.js';
+import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
 import { Component, createRef } from 'react';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
@@ -50,7 +50,7 @@ export default class Proxies extends Component {
 		this.on_input();
 	}
 	render() {
-		set_page('proxy');
+		this.layout.current.set_page('proxy');
 
 		const render_suggested =
 			this.state.input_focused && this.state.omnibox_entries.length !== 0;

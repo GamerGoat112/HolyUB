@@ -1,15 +1,14 @@
 import { Component } from 'react';
-import { set_page } from '../root.js';
 import { Link } from 'react-router-dom';
-import faq from '../faq.js';
 import { resolveRoute } from '../Routes.js';
+import faq from '../faq.js';
 
 export default class FAQ extends Component {
 	state = {
 		search: '',
 	};
 	render() {
-		set_page('faq');
+		this.props.layout.current.set_page('faq');
 
 		const sections = [];
 
