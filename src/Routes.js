@@ -20,11 +20,8 @@ export function resolveRoute(dir, page, absolute = true) {
 	let res_dir = '';
 	let res_file = '';
 
-	let x = 'id';
-	//process.env.REACT_APP_ROUTER
-
 	if (page !== '') {
-		switch (x) {
+		switch (process.env.REACT_APP_ROUTER) {
 			case 'id': {
 				const index = pages.indexOf(page);
 
@@ -43,7 +40,7 @@ export function resolveRoute(dir, page, absolute = true) {
 	}
 
 	if (dir !== '/') {
-		switch (x) {
+		switch (process.env.REACT_APP_ROUTER) {
 			case 'id': {
 				res_dir = `/${route_i}/`;
 				break;

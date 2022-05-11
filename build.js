@@ -104,13 +104,18 @@ program
 	.description('Build script')
 	.option('-d, --development')
 	.option('-s, --skip-npm', 'Skips NPM in the build process')
-	.requiredOption(`-r, --router <${Object.keys(routers)}>`, 'Router', value => {
-		if (!(value in routers)) {
-			throw new RangeError(`${value} was not a valid route.`);
-		}
+	.requiredOption(
+		`-r, --router <${Object.keys(routers)}>`,
+		'Router',
+		value => {
+			if (!(value in routers)) {
+				throw new RangeError(`${value} was not a valid route.`);
+			}
 
-		return value;
-	})
+			return value;
+		},
+		'id'
+	)
 	.action(main);
 
 program.parse(process.argv);

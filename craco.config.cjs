@@ -2,8 +2,6 @@ const { resolve } = require('path');
 const WebpackObfuscator = require('webpack-obfuscator');
 const { EnvironmentPlugin } = require('webpack');
 
-console.log(process.env.REACT_APP_ROUTER);
-
 module.exports = {
 	webpack: {
 		/**
@@ -16,7 +14,7 @@ module.exports = {
 				new EnvironmentPlugin(['NODE_ENV', 'REACT_APP_ROUTER'])
 			);
 
-			if (config.mode === 'x') {
+			if (config.mode === 'production') {
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',
