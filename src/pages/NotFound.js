@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { set_page } from '../root.js';
+import { resolveRoute } from '../Routes.js';
 
 export default class NotFound extends Component {
 	render() {
@@ -14,7 +15,7 @@ export default class NotFound extends Component {
 					If you typed in the URL yourself, please double-check the spelling.
 					<br />
 					If you got here from a link within our site, please{' '}
-					<Link to="/contact">Contact Us</Link>.
+					<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
 				</p>
 			</main>
 		);
