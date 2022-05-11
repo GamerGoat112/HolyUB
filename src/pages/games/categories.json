@@ -3,12 +3,12 @@
 		"short": "Social",
 		"name": "Social Media"
 	},
+	"entertainment": {
+		"name": "Entertainment"
+	},
 	"action": {
 		"short": "Action",
 		"name": "Action & Adventure"
-	},
-	"entertainment": {
-		"name": "Entertainment"
 	},
 	"platformer": {
 		"name": "Platformer"
@@ -34,7 +34,7 @@
 	"puzzle": {
 		"name": "Puzzle"
 	},
-	"tools": {
+	"tool": {
 		"name": "Tools"
 	}
 }

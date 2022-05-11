@@ -102,6 +102,14 @@ export default class Popular extends Component {
 				limitPerCategory: this.limit,
 			});
 
+			const categories_keys = Object.keys(categories);
+
+			data.sort(
+				(a, b) =>
+					categories_keys.indexOf(a.category) -
+					categories_keys.indexOf(b.category)
+			);
+
 			return this.setState({
 				data,
 			});

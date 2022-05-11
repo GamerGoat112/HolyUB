@@ -19,6 +19,7 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
+import { resolveRoute } from '../../Routes.js';
 
 async function resolve_game(src, type, setting) {
 	switch (type) {
@@ -27,13 +28,13 @@ async function resolve_game(src, type, setting) {
 		case 'embed':
 			return src;
 		case 'flash':
-			return `/compat/flash.html#${src}`;
+			return `${resolveRoute('/compat/', 'flash')}#${src} `;
 		case 'emulator':
 		case 'emulator.gba':
 		case 'emulator.nes':
 		case 'emulator.genesis':
 			return (
-				'/webretro/?' +
+				'/games/webretro/?' +
 				new URLSearchParams({
 					rom: src,
 					core: 'autodetect',
