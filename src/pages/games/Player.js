@@ -106,9 +106,8 @@ export default class GamesPlayer extends Component {
 		this.focus_listener = this.focus_listener.bind(this);
 	}
 	async componentDidMount() {
+		this.props.layout.current.setState({ page: 'games-player' });
 		window.addEventListener('focus', this.focus_listener);
-
-		await {};
 
 		try {
 			const data = await this.api.game(this.props.id);
@@ -129,8 +128,6 @@ export default class GamesPlayer extends Component {
 		this.abort.abort();
 	}
 	render() {
-		this.layout.current.set_page('games-player');
-
 		if (this.state.error !== undefined) {
 			return (
 				<main className="error">

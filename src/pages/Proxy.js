@@ -21,7 +21,8 @@ export default class Proxies extends Component {
 	get layout() {
 		return this.props.layout;
 	}
-	async componentDidMount() {
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'proxy' });
 		this.on_input();
 	}
 	async on_input() {
@@ -50,8 +51,6 @@ export default class Proxies extends Component {
 		this.on_input();
 	}
 	render() {
-		this.layout.current.set_page('proxy');
-
 		const render_suggested =
 			this.state.input_focused && this.state.omnibox_entries.length !== 0;
 		const suggested = [];

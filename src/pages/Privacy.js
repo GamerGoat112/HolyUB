@@ -4,9 +4,10 @@ import { Obfuscated } from '../obfuscate.js';
 import { resolveRoute } from '../Routes.js';
 
 export default class Privacy extends Component {
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'privacy' });
+	}
 	render() {
-		this.props.layout.current.set_page('privacy');
-
 		return (
 			<main>
 				<p>

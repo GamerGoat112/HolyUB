@@ -7,7 +7,8 @@ class Flash extends CompatModule {
 
 		this.state.ruffle_loaded = false;
 	}
-	async _componentDidMount() {
+	async componentDidMount() {
+		await this.props.layout.current.setState({ page: 'compat-flash' });
 		await this.possible_error('Error loading Ruffle player.');
 		await this.load_script('/ruffle/ruffle.js');
 		await this.possible_error();
@@ -41,10 +42,8 @@ class Flash extends CompatModule {
 		this.player.remove();
 	}
 	render() {
-		let render;
-
 		if (!this.state.error && this.state.ruffle_loaded) {
-			render = (
+			return (
 				<main
 					data-ruffle="1"
 					ref={main => {
@@ -57,13 +56,9 @@ class Flash extends CompatModule {
 					}}
 				></main>
 			);
-		} else {
-			render = super.render();
 		}
 
-		this.layout.current.set_page('compat-flash');
-
-		return render;
+		return super.render();
 	}
 }
 

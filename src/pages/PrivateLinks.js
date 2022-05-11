@@ -9,14 +9,11 @@ export default class PrivateLinks extends Component {
 	domain = createRef();
 	api = new VoucherAPI(VO_API);
 	abort = new AbortController();
-	constructor(props) {
-		super(props);
-
-		this.state = {};
+	state = {};
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'private-links' });
 	}
 	render() {
-		this.props.layout.current.set_page('private-links');
-
 		return (
 			<main>
 				<p>

@@ -12,15 +12,10 @@ import { resolveRoute } from '../Routes.js';
 import '../styles/Settings.scss';
 
 export default class Settings extends Component {
-	/**
-	 * @returns {import('react').RefObject<import('../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'settings' });
 	}
 	render() {
-		this.layout.current.set_page('settings');
-
 		return (
 			<>
 				<div className="page-menu">

@@ -3,7 +3,7 @@ import { BARE_API } from '../../root.js';
 
 class Stomp extends CompatModule {
 	name = 'Stomp';
-	async _componentDidMount() {
+	async componentDidMount() {
 		await this.possible_error('Failure loading the Stomp bootstrapper.');
 		await this.load_script('/stomp/bootstrapper.js');
 		await this.possible_error();

@@ -3,9 +3,10 @@ import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { PATREON_URL } from '../root.js';
 
 export default class Credits extends Component {
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'credits' });
+	}
 	render() {
-		this.props.layout.current.set_page('credits');
-
 		return (
 			<main>
 				<h2>Credits</h2>

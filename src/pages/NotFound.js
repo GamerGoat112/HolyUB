@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { resolveRoute } from '../Routes.js';
 
 export default class NotFound extends Component {
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'notfound' });
+	}
 	render() {
-		this.props.layout.current.set_page('notfound');
-
 		return (
 			<main>
 				<h1>The page you are looking for is not available.</h1>

@@ -62,14 +62,13 @@ export default class FavoritesCategory extends Component {
 		});
 	}
 	componentDidMount() {
+		this.props.layout.current.setState({ page: 'games-category' });
 		this.fetch();
 	}
 	componentWillUnmount() {
 		this.abort.abort();
 	}
 	render() {
-		this.layout.current.set_page('games-category');
-
 		if (this.set_favorites.length === 0) {
 			return (
 				<main>

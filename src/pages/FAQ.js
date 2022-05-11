@@ -7,9 +7,10 @@ export default class FAQ extends Component {
 	state = {
 		search: '',
 	};
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'faq' });
+	}
 	render() {
-		this.props.layout.current.set_page('faq');
-
 		const sections = [];
 
 		for (let i = 0; i < faq.length; i++) {

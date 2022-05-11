@@ -3,9 +3,10 @@ import { Obfuscated } from '../obfuscate.js';
 import '../styles/Home.scss';
 
 export default class Home extends Component {
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'home' });
+	}
 	render() {
-		this.props.layout.current.set_page('home');
-
 		return (
 			<main>
 				<h1>

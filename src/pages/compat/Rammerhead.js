@@ -17,7 +17,7 @@ class Rammerhead extends CompatModule {
 	set session(value) {
 		localStorage.rammerhead_session = value;
 	}
-	async _componentDidMount() {
+	async componentDidMount() {
 		await this.possible_error('Rammerhead server is unreachable.');
 		await fetch(RH_APP);
 		await this.possible_error();

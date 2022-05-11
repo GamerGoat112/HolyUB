@@ -53,16 +53,13 @@ export default class CompatModule extends Component {
 	redirect(url) {
 		global.location.assign(url);
 	}
-	async _componentDidMount() {}
 	async componentDidMount() {
-		try {
-			await this._componentDidMount();
-		} catch (error) {
-			console.error(error);
-			this.setState({
-				error: error.stack,
-			});
-		}
+		await this.props.layout.current.setState({ page: 'compat' });
+	}
+	async componentDidCatch(error, info) {
+		await this.setState({
+			error: error.toString(),
+		});
 	}
 	async componentWillUnmount() {
 		for (let [src, script] of this.scripts) {
@@ -77,8 +74,6 @@ export default class CompatModule extends Component {
 		});
 	}
 	render() {
-		this.layout.current.set_page('compat');
-
 		if (this.state.error !== undefined) {
 			let description;
 

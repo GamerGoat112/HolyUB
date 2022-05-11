@@ -4,15 +4,10 @@ import { Obfuscated } from '../obfuscate.js';
 import { resolveRoute } from '../Routes.js';
 
 export default class Terms extends Component {
-	/**
-	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'terms' });
 	}
 	render() {
-		this.layout.current.set_page('contact');
-
 		return (
 			<main>
 				<h2>Security</h2>

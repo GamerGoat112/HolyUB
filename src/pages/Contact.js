@@ -3,15 +3,10 @@ import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { HU_DISCORD_URL } from '../root.js';
 
 export default class Contact extends Component {
-	/**
-	 * @returns {import('react').Ref<import('../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
+	componentDidMount() {
+		this.props.layout.current.setState({ page: 'contact' });
 	}
 	render() {
-		this.layout.current.set_page('contact');
-
 		return (
 			<main>
 				<h1>Contact:</h1>

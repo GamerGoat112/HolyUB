@@ -123,14 +123,13 @@ export default class Popular extends Component {
 		}
 	}
 	componentDidMount() {
+		this.props.layout.current.setState({ page: 'games-category' });
 		this.fetch();
 	}
 	componentWillUnmount() {
 		this.abort.abort();
 	}
 	render() {
-		this.layout.current.set_page('games-category');
-
 		const render_suggested =
 			this.state.input_focused && this.state.category.length !== 0;
 		const suggested = [];

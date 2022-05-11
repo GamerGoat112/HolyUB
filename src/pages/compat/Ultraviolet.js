@@ -26,7 +26,7 @@ import { BARE_API } from '../../root.js';
 
 class Ultraviolet extends CompatModule {
 	name = 'Ultraviolet';
-	async _componentDidMount() {
+	async componentDidMount() {
 		await this.possible_error('Failure loading the Ultraviolet bundle.');
 		await this.load_script('/uv/uv.bundle.js');
 		await this.possible_error('Failure loading the Ultraviolet config.');
