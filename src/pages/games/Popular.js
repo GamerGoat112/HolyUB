@@ -198,7 +198,7 @@ export default class Popular extends Component {
 
 			jsx_categories.push(
 				<ExpandSection
-					href={`${resolveRoute('games', 'category')}?id=${id}`}
+					href={`${resolveRoute('/games/', 'category')}?id=${id}`}
 					items={_categories[id]}
 					name={name}
 					key={id}
