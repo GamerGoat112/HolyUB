@@ -163,10 +163,7 @@ export default class App extends Component {
 					/>
 					<Route path={resolveRoute('/games/', '')}>
 						<Route
-							path={
-								(console.log(resolveRoute('/games/', 'popular', false)),
-								resolveRoute('/games/', 'popular', false))
-							}
+							path={resolveRoute('/games/', 'popular', false)}
 							element={
 								<Suspense fallback={<></>}>
 									<GamesPopular layout={this.layout} />
