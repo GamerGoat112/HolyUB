@@ -15,10 +15,9 @@ const routers = {
 			const dir_name = dir;
 			const dir_abs = join(build, dir_name);
 
-			console.log('Create', dir);
-
 			try {
 				await mkdir(dir_abs);
+				console.log('Create', dir);
 			} catch (error) {
 				if (error.code !== 'EEXIST') {
 					throw error;
@@ -30,8 +29,8 @@ const routers = {
 				const page_abs = join(dir_abs, page_name);
 
 				try {
-					console.log('Copy', index, `${dir}${page_name}`);
-					copyFile(index, page_abs);
+					await copyFile(index, page_abs);
+					console.log('Copy', index, `${dir_name}/${page_name}`);
 				} catch (error) {
 					if (error.code !== 'EEXIST') {
 						throw error;
@@ -42,14 +41,13 @@ const routers = {
 	},
 	async id() {
 		for (let dir_i in routes) {
-			const { pages } = routes[dir_i];
-			const dir_name = dir_i;
+			const { dir, pages } = routes[dir_i];
+			const dir_name = dir === '/' ? '' : dir_i;
 			const dir_abs = join(build, dir_name);
-
-			console.log('Create', dir_name);
 
 			try {
 				await mkdir(dir_abs);
+				console.log('Create', dir_name);
 			} catch (error) {
 				if (error.code !== 'EEXIST') {
 					throw error;
@@ -62,8 +60,8 @@ const routers = {
 				const page_abs = join(dir_abs, page_name);
 
 				try {
-					console.log('Copy', index, `${dir_name}${page_name}`);
 					copyFile(index, page_abs);
+					console.log('Copy', index, `${dir_name}/${page_name}`);
 				} catch (error) {
 					if (error.code !== 'EEXIST') {
 						throw error;
@@ -96,6 +94,15 @@ async function main({ router, development, skipNpm }) {
 	}
 
 	await routers[router]();
+
+	try {
+		await copyFile(index, join(build, '404.html'));
+		console.log('Copy', index, '/404.html');
+	} catch (error) {
+		if (error.code !== 'EEXIST') {
+			throw error;
+		}
+	}
 }
 
 const program = new Command();

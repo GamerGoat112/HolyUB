@@ -17,7 +17,7 @@ module.exports = {
 				test: /\.js$/,
 				loader: 'string-replace-loader',
 				options: {
-					search: /process.env.(NODE_ENV|REACT_APP_ROUTER)/g,
+					search: /process\.env\.(NODE_ENV|REACT_APP_ROUTER)/g,
 					replace: (match, env) => JSON.stringify(process.env[env]),
 				},
 			});
