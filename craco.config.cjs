@@ -2,6 +2,10 @@ const { resolve } = require('path');
 const WebpackObfuscator = require('webpack-obfuscator');
 const { EnvironmentPlugin } = require('webpack');
 
+if (!('REACT_APP_ROUTER' in process.env)) {
+	process.env.REACT_APP_ROUTER = 'file';
+}
+
 module.exports = {
 	webpack: {
 		/**
