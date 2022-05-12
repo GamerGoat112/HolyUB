@@ -1,7 +1,42 @@
 import { ExpandMore } from '@mui/icons-material';
 import { Component, createRef } from 'react';
+import clsx from 'clsx';
 
-export default class PlainSelect extends Component {
+export function ThemeButton(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<button
+			type="button"
+			className={clsx('theme-button', className)}
+			{...attributes}
+		>
+			{children}
+		</button>
+	);
+}
+
+export function ThemeInputBar(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<div className={clsx('theme-input-bar', className)} {...attributes}>
+			{children}
+		</div>
+	);
+}
+
+export function ThemeInput(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<input className={clsx('theme-input', className)} {...attributes}>
+			{children}
+		</input>
+	);
+}
+
+export class ThemeSelect extends Component {
 	options = [];
 	container = createRef();
 	constructor(props) {

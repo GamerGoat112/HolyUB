@@ -3,6 +3,7 @@ import { ObfuscatedA } from '../obfuscate.js';
 import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
 import '../styles/PrivateLinks.scss';
+import { ThemeButton } from '../ThemeElements.js';
 
 export default class PrivateLinks extends Component {
 	voucher = createRef();
@@ -82,9 +83,7 @@ export default class PrivateLinks extends Component {
 						<input placeholder="Domain" ref={this.domain}></input>
 						<div className="tld">{this.state.tld || '.com'}</div>
 					</div>
-					<button className="theme-button" type="submit">
-						Redeem
-					</button>
+					<ThemeButton type="submit">Redeem</ThemeButton>
 					<div className="error">
 						{this.state.error !== undefined && this.state.error.toString()}
 					</div>

@@ -1,6 +1,6 @@
 import { Obfuscated } from '../../obfuscate.js';
 import engines from '../../engines.js';
-import PlainSelect from '../../PlainSelect.js';
+import { ThemeSelect } from '../../ThemeElements.js';
 
 export default function Search(props) {
 	return (
@@ -9,7 +9,7 @@ export default function Search(props) {
 				<span>
 					<Obfuscated>Proxy</Obfuscated>:
 				</span>
-				<PlainSelect
+				<ThemeSelect
 					onChange={event =>
 						props.layout.current.settings.set('proxy', event.target.value)
 					}
@@ -19,13 +19,13 @@ export default function Search(props) {
 					<option value="ultraviolet">Ultraviolet</option>
 					<option value="rammerhead">Rammerhead</option>
 					<option value="stomp">Stomp</option>
-				</PlainSelect>
+				</ThemeSelect>
 			</label>
 			<label>
 				<span>
 					<Obfuscated>Search Engine</Obfuscated>:
 				</span>
-				<PlainSelect
+				<ThemeSelect
 					onChange={event =>
 						props.layout.current.settings.set('search', event.target.value)
 					}
@@ -34,7 +34,7 @@ export default function Search(props) {
 					{engines.map(({ name, format }) => (
 						<option value={format}>{name}</option>
 					))}
-				</PlainSelect>
+				</ThemeSelect>
 			</label>
 		</>
 	);

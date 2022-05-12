@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Obfuscated } from '../obfuscate.js';
 import '../styles/Home.scss';
+import { ThemeButton } from '../ThemeElements.js';
 
 export default class Home extends Component {
 	componentDidMount() {
@@ -15,12 +16,11 @@ export default class Home extends Component {
 				<h2>
 					<Obfuscated>Privacy right at your fingertips.</Obfuscated>
 				</h2>
-				<div
-					className="theme-button"
+				<ThemeButton
 					onClick={() => this.props.layout.current.setState({ expanded: true })}
 				>
 					<Obfuscated>Get Started</Obfuscated>
-				</div>
+				</ThemeButton>
 			</main>
 		);
 	}

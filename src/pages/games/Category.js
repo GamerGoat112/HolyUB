@@ -3,7 +3,7 @@ import { DB_API } from '../../root.js';
 import { GamesAPI, Section } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import Settings from '../../Settings.js';
-import PlainSelect from '../../PlainSelect.js';
+import { ThemeSelect } from '../../ThemeElements.js';
 import categories from './categories.json';
 import '../../styles/GamesCategory.scss';
 import resolveRoute from '../../resolveRoute.js';
@@ -179,7 +179,7 @@ export default class Category extends Component {
 
 		return (
 			<main>
-				<PlainSelect
+				<ThemeSelect
 					className="sort"
 					defaultValue={this.settings.get('sort')}
 					onChange={event => {
@@ -191,7 +191,7 @@ export default class Category extends Component {
 					<option value="Least Played">Least Played</option>
 					<option value="Name (A-Z)">Name (A-Z)</option>
 					<option value="Name (Z-A)">Name (Z-A)</option>
-				</PlainSelect>
+				</ThemeSelect>
 				<Section
 					name={categories[this.props.id].name}
 					items={this.state.data}

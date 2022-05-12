@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 import { http_s_protocol, whitespace } from '../../SearchBuilder.js';
+import { ThemeButton, ThemeInput } from '../../ThemeElements.js';
 
 async function extract_data(url) {
 	const bare = new BareClient(BARE_API);
@@ -112,17 +113,15 @@ export default function TabCloak(props) {
 						}
 					}}
 				>
-					<input
+					<ThemeInput
 						ref={input}
 						defaultValue={props.layout.current.cloak.get('url')}
 						placeholder="https://example.org/"
-						className="theme-input"
-					></input>
+					/>
 				</form>
 				<span className="error">{error}</span>
 			</label>
-			<div
-				className="theme-button"
+			<ThemeButton
 				onClick={() => {
 					props.layout.current.cloak.set({
 						title: '',
@@ -132,7 +131,7 @@ export default function TabCloak(props) {
 				}}
 			>
 				<Obfuscated>Reset Cloak</Obfuscated>
-			</div>
+			</ThemeButton>
 		</>
 	);
 }

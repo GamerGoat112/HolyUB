@@ -20,7 +20,7 @@ export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
-		page: undefined,
+		page: '',
 	};
 	scrolls = new Map();
 	icon = document.querySelector('link[rel="icon"]');
@@ -90,13 +90,15 @@ export default class Layout extends Component {
 	}
 	last_page = '';
 	render() {
-		if (this.last_page !== this.state.page) {
+		if (this.state.page && this.last_page !== this.state.page) {
 			this.scrolls.set(this.last_page, new Scroll());
+
 			if (!this.scrolls.has(this.state.page)) {
 				this.scrolls.set(this.state.page, new Scroll());
-
-				this.scrolls.get(this.state.page).scroll();
 			}
+
+			this.scrolls.get(this.state.page).scroll();
+			this.last_page = this.state.page;
 		}
 
 		document.documentElement.dataset.theme = this.settings.get('theme');

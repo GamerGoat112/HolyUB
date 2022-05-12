@@ -8,6 +8,7 @@ import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
 import '../../styles/GamesCategory.scss';
 import resolveRoute from '../../resolveRoute.js';
+import { ThemeInputBar } from '../../ThemeElements.js';
 
 function ExpandSection(props) {
 	return (
@@ -219,7 +220,7 @@ export default class Popular extends Component {
 						}
 					}}
 				>
-					<div className="theme-input-bar">
+					<ThemeInputBar>
 						<Search className="icon" />
 						<input
 							ref={this.input}
@@ -300,7 +301,7 @@ export default class Popular extends Component {
 								});
 							}}
 						></input>
-					</div>
+					</ThemeInputBar>
 					<div
 						className="suggested"
 						onMouseLeave={() => {
