@@ -213,14 +213,16 @@ export default class Proxies extends Component {
 							This is a free service paid for by our Patreons. If you want
 							faster servers, donate to Holy Unblocker on{' '}
 						</Obfuscated>
-						<ObfuscatedA href={PATREON_URL}>
+						<ObfuscatedA className="theme-link" href={PATREON_URL}>
 							<Obfuscated>Patreon</Obfuscated>
 						</ObfuscatedA>
 						.
 					</p>
 					<p>
 						<Obfuscated>Click </Obfuscated>
-						<ObfuscatedA href={TN_DISCORD_URL}>here</ObfuscatedA>
+						<ObfuscatedA className="theme-link" href={TN_DISCORD_URL}>
+							here
+						</ObfuscatedA>
 						<Obfuscated>
 							{' '}
 							to join the TN Discord for access to new Holy Unblocker links.

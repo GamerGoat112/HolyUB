@@ -30,7 +30,10 @@ export default class FAQ extends Component {
 					{sections}
 					<p style={{ marginTop: '30px', opacity: 0.75 }}>
 						Not what you're looking for?{' '}
-						<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
+						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+							Contact Us
+						</Link>
+						.
 					</p>
 				</main>
 			</>

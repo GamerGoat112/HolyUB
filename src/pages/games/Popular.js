@@ -14,7 +14,7 @@ function ExpandSection(props) {
 		<section className="expand">
 			<div className="name">
 				<h1>{props.name}</h1>
-				<Link to={props.href} className="see-all">
+				<Link to={props.href} className="theme-link see-all">
 					See All
 					<ArrowForward />
 				</Link>

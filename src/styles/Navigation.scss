@@ -200,10 +200,6 @@
 				}
 
 				&:hover {
-					* {
-						text-decoration: none;
-					}
-
 					color: var(--text);
 					background: var(--background-accent);
 
@@ -247,10 +243,6 @@
 					white-space: nowrap;
 
 					&:hover {
-						* {
-							text-decoration: none;
-						}
-
 						background-color: var(--background-accent);
 					}
 				}

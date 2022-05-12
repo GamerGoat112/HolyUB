@@ -212,10 +212,18 @@ class MainLayout extends Layout {
 						<WavesSVG />
 						<div className="background">
 							<div className="content">
-								<Link to={resolveRoute('/', 'credits')}>Credits</Link>
-								<Link to={resolveRoute('/', 'contact')}>Contact</Link>
-								<Link to={resolveRoute('/', 'privacy')}>Privacy</Link>
-								<Link to={resolveRoute('/', 'terms')}>Terms of use</Link>
+								<Link className="theme-link" to={resolveRoute('/', 'credits')}>
+									Credits
+								</Link>
+								<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+									Contact
+								</Link>
+								<Link className="theme-link" to={resolveRoute('/', 'privacy')}>
+									Privacy
+								</Link>
+								<Link className="theme-link" to={resolveRoute('/', 'terms')}>
+									Terms of use
+								</Link>
 								<span>
 									&copy; <Obfuscated>Holy Unblocker</Obfuscated>{' '}
 									{new Date().getUTCFullYear()}

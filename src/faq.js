@@ -14,7 +14,7 @@ const faq = [
 			<>
 				Our <Obfuscated>proxy</Obfuscated> servers are paid for by our
 				supporters on{' '}
-				<ObfuscatedA href={PATREON_URL}>
+				<ObfuscatedA className="theme-link" href={PATREON_URL}>
 					<Obfuscated>Patreon</Obfuscated>
 				</ObfuscatedA>
 				. If you subscribe, you can help us purchase faster servers in the
@@ -40,7 +40,7 @@ const faq = [
 		a: (
 			<>
 				Yes. This website is open source. See our{' '}
-				<ObfuscatedA href="https://git.holy.how/holy">
+				<ObfuscatedA className="theme-link" href="https://git.holy.how/holy">
 					Git repository
 				</ObfuscatedA>
 				.

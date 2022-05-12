@@ -45,6 +45,21 @@ input {
 	}
 }
 
+a {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+.theme-link {
+	color: var(--link);
+	text-decoration: none;
+
+	&:hover,
+	&:hover * {
+		text-decoration: underline;
+	}
+}
+
 .theme-input {
 	width: 500px;
 	height: 44px;
@@ -179,13 +194,4 @@ input {
 
 * {
 	outline: none;
-}
-
-a {
-	color: var(--link);
-	text-decoration: none;
-
-	&:hover * {
-		text-decoration: underline;
-	}
 }

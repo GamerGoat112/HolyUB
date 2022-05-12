@@ -57,7 +57,10 @@ export default class Terms extends Component {
 				<h2>Contact Information</h2>
 				<p>
 					If you have any questions about our Privacy Policy, please{' '}
-					<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
+					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+						Contact Us
+					</Link>
+					.
 				</p>
 			</main>
 		);

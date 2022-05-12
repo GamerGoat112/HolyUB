@@ -57,7 +57,10 @@ export default class Privacy extends Component {
 				<p>
 					For any additional information or clarification regarding the privacy
 					policy, please{' '}
-					<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
+					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+						Contact Us
+					</Link>
+					.
 				</p>
 			</main>
 		);

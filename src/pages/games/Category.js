@@ -156,11 +156,19 @@ export default class Category extends Component {
 						.
 						<br />
 						If this problem still occurs, check{' '}
-						<Link to={resolveRoute('/', 'support')} target="_parent">
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'support')}
+							target="_parent"
+						>
 							Support
 						</Link>{' '}
 						or{' '}
-						<Link to={resolveRoute('/', 'contact')} target="_parent">
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'contact')}
+							target="_parent"
+						>
 							Contact Us
 						</Link>
 						.

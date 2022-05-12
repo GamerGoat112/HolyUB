@@ -169,52 +169,55 @@ export function obfuscateText(text, ellipsis, key) {
 /**
  * @description A obfuscated text block. This will strip the input of all non-text elements.d
  */
-export class Obfuscated extends Component {
-	render() {
-		let string = '';
-		const stack = [this];
+export function Obfuscated(props) {
+	let string = '';
+	const stack = [
+		{
+			props,
+		},
+	];
 
-		let toclone;
-		while ((toclone = stack.pop())) {
-			if (typeof toclone === 'string') {
-				string += toclone;
-			} else if (typeof toclone === 'object' && toclone !== undefined) {
-				let children = toclone.props.children;
+	let toclone;
+	while ((toclone = stack.pop())) {
+		if (typeof toclone === 'string') {
+			string += toclone;
+		} else if (typeof toclone === 'object' && toclone !== undefined) {
+			let children = toclone.props.children;
 
-				if (!(children instanceof Array)) {
-					children = [children];
-				}
+			if (!(children instanceof Array)) {
+				children = [children];
+			}
 
-				let max = children.length;
-				for (let i = 0; i < max; i++) {
-					// append in reverse order
-					const child = children[max - i - 1];
-					stack.push(child);
-				}
+			let max = children.length;
+			for (let i = 0; i < max; i++) {
+				// append in reverse order
+				const child = children[max - i - 1];
+				stack.push(child);
 			}
 		}
-
-		return obfuscateText(string, 'ellipsis' in this.props);
 	}
+
+	return obfuscateText(string, 'ellipsis' in props);
 }
 
-export class ObfuscatedA extends Component {
-	render() {
-		const props = { ...this.props };
-		delete props.href;
+export function ObfuscatedA(props) {
+	const { href, children, onClick, ...attributes } = props;
 
-		return (
-			// eslint-disable-next-line jsx-a11y/anchor-is-valid
-			<a
-				href="i:"
-				{...props}
-				onClick={event => {
-					event.preventDefault();
-					window.open(this.props.href, '_self');
-				}}
-			>
-				{this.props.children}
-			</a>
-		);
-	}
+	return (
+		// eslint-disable-next-line jsx-a11y/anchor-is-valid
+		<a
+			href="i:"
+			{...attributes}
+			onClick={event => {
+				if (typeof onClick === 'function') {
+					onClick(event);
+				}
+
+				event.preventDefault();
+				window.open(href, '_self');
+			}}
+		>
+			{children}
+		</a>
+	);
 }

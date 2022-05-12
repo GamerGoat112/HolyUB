@@ -13,19 +13,22 @@ export default class Contact extends Component {
 				<ul>
 					<li>
 						GitHub:{' '}
-						<ObfuscatedA href="https://git.holy.how/holy">
+						<ObfuscatedA
+							className="theme-link"
+							href="https://git.holy.how/holy"
+						>
 							<Obfuscated>https://git.holy.how/holy</Obfuscated>
 						</ObfuscatedA>
 					</li>
 					<li>
 						Email:{' '}
-						<ObfuscatedA href="mailto:support@holy.how">
+						<ObfuscatedA className="theme-link" href="mailto:support@holy.how">
 							<Obfuscated>support@holy.how</Obfuscated>
 						</ObfuscatedA>
 					</li>
 					<li>
 						<Obfuscated>Discord</Obfuscated>:{' '}
-						<ObfuscatedA href={HU_DISCORD_URL}>
+						<ObfuscatedA className="theme-link" href={HU_DISCORD_URL}>
 							<Obfuscated>{HU_DISCORD_URL}</Obfuscated>
 						</ObfuscatedA>
 					</li>

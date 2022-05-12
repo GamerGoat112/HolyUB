@@ -27,7 +27,9 @@ export default class Credits extends Component {
 				<ul>
 					<li>
 						<Obfuscated>Our</Obfuscated>{' '}
-						<ObfuscatedA href={PATREON_URL}>Patrons</ObfuscatedA>
+						<ObfuscatedA className="theme-link" href={PATREON_URL}>
+							Patrons
+						</ObfuscatedA>
 						<Obfuscated>.</Obfuscated>
 					</li>
 					<li>
@@ -82,7 +84,10 @@ export default class Credits extends Component {
 				<ul>
 					<li>
 						<Obfuscated>Rammerhead:</Obfuscated>{' '}
-						<ObfuscatedA href="https://github.com/binary-person/rammerhead">
+						<ObfuscatedA
+							className="theme-link"
+							href="https://github.com/binary-person/rammerhead"
+						>
 							<Obfuscated>
 								https://github.com/binary-person/rammerhead
 							</Obfuscated>
@@ -90,7 +95,10 @@ export default class Credits extends Component {
 					</li>
 					<li>
 						<Obfuscated>Ultraviolet:</Obfuscated>{' '}
-						<ObfuscatedA href="https://github.com/titaniumnetwork-dev/Ultraviolet">
+						<ObfuscatedA
+							className="theme-link"
+							href="https://github.com/titaniumnetwork-dev/Ultraviolet"
+						>
 							<Obfuscated>
 								https://github.com/titaniumnetwork-dev/Ultraviolet
 							</Obfuscated>
@@ -98,7 +106,10 @@ export default class Credits extends Component {
 					</li>
 					<li>
 						<Obfuscated>Stomp:</Obfuscated>{' '}
-						<ObfuscatedA href="https://github.com/sysce/stomp">
+						<ObfuscatedA
+							className="theme-link"
+							href="https://github.com/sysce/stomp"
+						>
 							<Obfuscated>https://github.com/sysce/stomp</Obfuscated>
 						</ObfuscatedA>
 					</li>

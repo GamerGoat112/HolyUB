@@ -69,9 +69,6 @@ html[data-page='games-category'][data-service='1'] {
 					flex-direction: row;
 
 					&.hover {
-						* {
-							text-decoration: none;
-						}
 						background-color: var(--background);
 					}
 
@@ -266,12 +263,6 @@ html[data-page='games-category'][data-service='1'] {
 								opacity: 0;
 							}
 						}
-					}
-				}
-
-				> a {
-					&:hover {
-						text-decoration: none;
 					}
 				}
 			}

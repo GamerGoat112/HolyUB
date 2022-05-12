@@ -15,7 +15,10 @@ export default class NotFound extends Component {
 					If you typed in the URL yourself, please double-check the spelling.
 					<br />
 					If you got here from a link within our site, please{' '}
-					<Link to={resolveRoute('/', 'contact')}>Contact Us</Link>.
+					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+						Contact Us
+					</Link>
+					.
 				</p>
 			</main>
 		);
