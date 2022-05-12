@@ -1,8 +1,6 @@
 import process from 'process';
 import routes from './routes.mjs';
 
-console.log(process.env.REACT_APP_ROUTER);
-
 export default function resolveRoute(dir, page, absolute = true) {
 	let pages;
 	let route_i;
