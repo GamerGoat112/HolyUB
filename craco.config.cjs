@@ -1,5 +1,13 @@
-const { resolve } = require('path');
 const WebpackObfuscator = require('webpack-obfuscator');
+const { resolve, join } = require('path');
+const { config } = require('dotenv');
+const { cwd } = require('node:process');
+
+config({ path: join(cwd(), '.env'), override: true });
+config({ path: join(cwd(), '.env.local'), override: true });
+
+config({ path: join(cwd(), '.env.production'), override: true });
+config({ path: join(cwd(), '.env.production.local'), override: true });
 
 module.exports = {
 	webpack: {
@@ -10,6 +18,15 @@ module.exports = {
 		 */
 		configure(config) {
 			if (config.mode === 'production') {
+				config.module.rules.push({
+					test: /\.js$/,
+					loader: 'string-replace-loader',
+					options: {
+						search: /process\.env\.(NODE_ENV|REACT_APP_ROUTER)/g,
+						replace: (match, env) => JSON.stringify(process.env[env]),
+					},
+				});
+
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',

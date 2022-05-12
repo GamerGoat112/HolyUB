@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 import { config } from 'dotenv';
 import { cwd } from 'node:process';
 
-config({ path: join(cwd(), '.env') });
-config({ path: join(cwd(), '.env.local') });
+config({ path: join(cwd(), '.env'), override: true });
+config({ path: join(cwd(), '.env.local'), override: true });
 
-config({ path: join(cwd(), '.env.production') });
-config({ path: join(cwd(), '.env.production.local') });
+config({ path: join(cwd(), '.env.production'), override: true });
+config({ path: join(cwd(), '.env.production.local'), override: true });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
