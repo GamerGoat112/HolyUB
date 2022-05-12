@@ -6,7 +6,7 @@ import Settings from '../../Settings.js';
 import PlainSelect from '../../PlainSelect.js';
 import categories from './categories.json';
 import '../../styles/GamesCategory.scss';
-import { resolveRoute } from '../../Routes.js';
+import resolveRoute from '../../resolveRoute.js';
 
 export default class Category extends Component {
 	constructor(props) {

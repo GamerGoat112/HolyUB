@@ -1,6 +1,6 @@
-import routes from './routes.json';
+import routes from './routes.mjs';
 
-export function resolveRoute(dir, page, absolute = true) {
+export default function resolveRoute(dir, page, absolute = true) {
 	let pages;
 	let route_i;
 

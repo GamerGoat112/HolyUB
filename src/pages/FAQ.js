@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { resolveRoute } from '../Routes.js';
+import resolveRoute from '../resolveRoute.js';
 import faq from '../faq.js';
 
 export default class FAQ extends Component {

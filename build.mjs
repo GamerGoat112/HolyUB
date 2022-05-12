@@ -1,10 +1,12 @@
-'use strict';
+import routes from './src/routes.mjs';
+import { spawn } from 'node:child_process';
+import { dirname, join } from 'node:path';
+import { mkdir, copyFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { Command } from 'commander';
 
-const routes = require('./src/routes.json');
-const { spawn } = require('child_process');
-const { join } = require('path');
-const { mkdir, copyFile } = require('fs/promises');
-const { Command } = require('commander');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const build = join(__dirname, 'build');
 const index = join(__dirname, 'build', 'index.html');

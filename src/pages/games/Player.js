@@ -19,7 +19,7 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
-import { resolveRoute } from '../../Routes.js';
+import resolveRoute from '../../resolveRoute.js';
 
 async function resolve_game(src, type, setting) {
 	switch (type) {

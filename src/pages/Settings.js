@@ -8,7 +8,7 @@ import {
 import { Component } from 'react';
 import { Outlet } from 'react-router-dom';
 import { MenuTab } from '../MainLayout.js';
-import { resolveRoute } from '../Routes.js';
+import resolveRoute from '../resolveRoute.js';
 import '../styles/Settings.scss';
 
 export default class Settings extends Component {

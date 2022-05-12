@@ -1,7 +1,7 @@
 import { Component, createRef, forwardRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
-import { resolveRoute } from './Routes.js';
+import resolveRoute from './resolveRoute.js';
 import './styles/Compat.scss';
 
 export default class CompatModule extends Component {

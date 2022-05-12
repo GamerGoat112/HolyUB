@@ -21,7 +21,7 @@ import Layout from './Layout.js';
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
 import { PATREON_URL } from './root.js';
-import { resolveRoute } from './Routes.js';
+import resolveRoute from './resolveRoute.js';
 
 export function MenuTab(props) {
 	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;

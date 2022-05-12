@@ -7,7 +7,7 @@ import categories from './categories.json';
 import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
 import '../../styles/GamesCategory.scss';
-import { resolveRoute } from '../../Routes.js';
+import resolveRoute from '../../resolveRoute.js';
 
 function ExpandSection(props) {
 	return (

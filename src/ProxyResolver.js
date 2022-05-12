@@ -1,5 +1,5 @@
 import { DB_API, DEFAULT_PROXY } from './root.js';
-import { resolveRoute } from './Routes.js';
+import resolveRoute from './resolveRoute.js';
 
 export class CompatAPI {
 	constructor(server) {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from './obfuscate.js';
-import { resolveRoute } from './Routes.js';
+import resolveRoute from './resolveRoute.js';
 
 /**
  *

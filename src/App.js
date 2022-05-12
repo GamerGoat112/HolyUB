@@ -2,7 +2,7 @@ import { Component, createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import CompatLayout from './CompatLayout.js';
-import { resolveRoute } from './Routes.js';
+import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
 
 const GamesPopular = lazy(() =>
