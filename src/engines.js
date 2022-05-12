@@ -5,11 +5,11 @@ const engines = [
 	},
 	{
 		name: 'DuckDuckGo',
-		format: 'https://www.google.com/search?q=%s',
+		format: 'https://duckduckgo.com/?q=%s',
 	},
 	{
 		name: 'Bing',
-		format: 'https://duckduckgo.com/?q=%s',
+		format: 'https://www.bing.com/search?q=%s',
 	},
 	{
 		name: 'Wikipedia',

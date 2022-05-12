@@ -101,6 +101,7 @@ export default class Proxies extends Component {
 		for (let _engine of engines) {
 			if (_engine.format === format) {
 				engine = _engine;
+				break;
 			}
 		}
 
