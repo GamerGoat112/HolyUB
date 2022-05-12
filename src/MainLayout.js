@@ -1,6 +1,6 @@
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
-import { ReactComponent as HatSVG } from './assets/hat-small.svg';
-import { ReactComponent as WavesSVG } from './assets/waves.svg';
+import { ReactComponent as Hat } from './assets/hat.svg';
+import { ReactComponent as Waves } from './assets/waves.svg';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
 import { createRef, forwardRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
@@ -117,7 +117,7 @@ class MainLayout extends Layout {
 						<Menu />
 					</div>
 					<Link to="/" className="entry logo">
-						<HatSVG />
+						<Hat />
 					</Link>
 					<div className="shift-right"></div>
 					<Link
@@ -142,7 +142,7 @@ class MainLayout extends Layout {
 								<Menu />
 							</div>
 							<Link to="/" className="entry logo">
-								<HatSVG />
+								<Hat />
 							</Link>
 						</div>
 						<div className="menu-list">
@@ -209,7 +209,7 @@ class MainLayout extends Layout {
 					</div>
 					<Outlet />
 					<footer>
-						<WavesSVG />
+						<Waves />
 						<div className="background">
 							<div className="content">
 								<Link className="theme-link" to={resolveRoute('/', 'credits')}>
