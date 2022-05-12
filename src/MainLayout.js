@@ -121,26 +121,20 @@ class MainLayout extends Layout {
 			);
 		}
 
-		const top = (
-			<>
-				<div
-					className="button"
-					onClick={() => this.setState({ expanded: false })}
-				>
-					<Menu />
-				</div>
-				<Link to="/" className="entry logo">
-					<Hat />
-				</Link>
-			</>
-		);
-
 		return (
 			<>
 				{super.render()}
 				<ObfuscateLayout />
 				<nav ref={this.nav}>
-					{top}
+					<div
+						className="button"
+						onClick={() => this.setState({ expanded: true })}
+					>
+						<Menu />
+					</div>
+					<Link to="/" className="entry logo">
+						<Hat />
+					</Link>
 					<div className="shift-right"></div>
 					<Link
 						className="button"
@@ -156,7 +150,21 @@ class MainLayout extends Layout {
 						onClick={() => this.setState({ expanded: false })}
 					></div>
 					<div tabIndex="0" className="menu" ref={this.menu}>
-						<div className="top">{top}</div>
+						<div className="top">
+							<div
+								className="button"
+								onClick={() => this.setState({ expanded: false })}
+							>
+								<Menu />
+							</div>
+							<Link
+								to="/"
+								className="entry logo"
+								onClick={() => this.setState({ expanded: false })}
+							>
+								<Hat />
+							</Link>
+						</div>
 						<div className="menu-list">
 							<MainMenuTab
 								route={resolveRoute('/', '')}

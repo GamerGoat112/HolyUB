@@ -19,9 +19,11 @@ html[data-page='games-category'][data-service='1'] {
 			flex-direction: row;
 			max-height: 100%;
 			margin: 10px auto;
+
 			@media only screen and (max-width: 700px) {
 				width: 100%;
 			}
+
 			@include screen_mobile {
 				&[data-focused='1'] {
 					position: fixed;
@@ -46,6 +48,7 @@ html[data-page='games-category'][data-service='1'] {
 				width: 100%;
 				box-sizing: border-box;
 				z-index: 1;
+				user-select: none;
 
 				@include screen_mobile {
 					width: calc(100% - 20px); // - padding - border
@@ -75,7 +78,6 @@ html[data-page='games-category'][data-service='1'] {
 					> .name {
 						text-align: left;
 						width: 100%;
-						user-select: none;
 						text-overflow: ellipsis;
 						overflow: hidden;
 						white-space: nowrap;
@@ -167,7 +169,6 @@ html[data-page='games-category'][data-service='1'] {
 
 				.item {
 					cursor: pointer;
-					user-select: none;
 					color: var(--text);
 					width: 200px;
 					height: 240px;

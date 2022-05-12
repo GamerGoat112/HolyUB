@@ -1,42 +1,38 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
 import faq from '../faq.js';
 
-export default class FAQ extends Component {
-	state = {
-		search: '',
-	};
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'faq' });
-	}
-	render() {
-		const sections = [];
+export default function FAQ(props) {
+	useEffect(() => {
+		props.layout.current.setState({ page: 'faq' });
+	});
 
-		for (let i = 0; i < faq.length; i++) {
-			const { q, a } = faq[i];
+	const sections = [];
 
-			sections.push(
-				<section key={i}>
-					<h1>{q}</h1>
-					<p>{a}</p>
-				</section>
-			);
-		}
+	for (let i = 0; i < faq.length; i++) {
+		const { q, a } = faq[i];
 
-		return (
-			<>
-				<main>
-					{sections}
-					<p style={{ marginTop: '30px', opacity: 0.75 }}>
-						Not what you're looking for?{' '}
-						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-							Contact Us
-						</Link>
-						.
-					</p>
-				</main>
-			</>
+		sections.push(
+			<section key={i}>
+				<h1>{q}</h1>
+				<p>{a}</p>
+			</section>
 		);
 	}
+
+	return (
+		<>
+			<main>
+				{sections}
+				<p style={{ marginTop: '30px', opacity: 0.75 }}>
+					Not what you're looking for?{' '}
+					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+						Contact Us
+					</Link>
+					.
+				</p>
+			</main>
+		</>
+	);
 }

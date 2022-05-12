@@ -8,23 +8,8 @@
 				margin-bottom: 10px;
 			}
 
-			> button {
-				cursor: pointer;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				height: 44px;
-				user-select: none;
-				font-family: inherit;
-				background-color: var(--background-accent);
-				color: var(--text-accent);
-				border: 1px solid var(--border);
-				border-radius: 5px;
-				padding: 10px 20px;
-
-				&:hover {
-					background-color: var(--background-accent-deep-2);
-				}
+			> .theme-button {
+				padding: 20px 20px;
 			}
 
 			> .theme-input-bar {
@@ -55,12 +40,6 @@
 					pointer-events: none;
 					justify-content: center;
 				}
-			}
-
-			> .error {
-				margin-top: 15px;
-				font-weight: bold;
-				color: #f00;
 			}
 		}
 	}

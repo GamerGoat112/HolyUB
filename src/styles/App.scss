@@ -53,6 +53,7 @@ a {
 .theme-link {
 	color: var(--link);
 	text-decoration: none;
+	outline: none;
 
 	&:hover,
 	&:hover * {
@@ -71,6 +72,7 @@ a {
 	flex-direction: row;
 	box-sizing: border-box;
 	padding: 0px 15px;
+	outline: none;
 }
 
 .theme-input-bar {
@@ -83,6 +85,7 @@ a {
 	display: flex;
 	flex-direction: row;
 	box-sizing: border-box;
+	outline: none;
 
 	> .icon {
 		width: 20px;
@@ -133,6 +136,7 @@ a {
 	position: relative;
 	user-select: none;
 	text-align: left;
+	box-sizing: content-box;
 
 	> .toggle {
 		display: flex;
@@ -190,8 +194,4 @@ a {
 			display: flex;
 		}
 	}
-}
-
-* {
-	outline: none;
 }

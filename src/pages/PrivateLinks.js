@@ -82,7 +82,9 @@ export default class PrivateLinks extends Component {
 						<input placeholder="Domain" ref={this.domain}></input>
 						<div className="tld">{this.state.tld || '.com'}</div>
 					</div>
-					<button type="submit">Redeem</button>
+					<button className="theme-button" type="submit">
+						Redeem
+					</button>
 					<div className="error">
 						{this.state.error !== undefined && this.state.error.toString()}
 					</div>
