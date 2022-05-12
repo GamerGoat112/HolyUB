@@ -1,5 +1,4 @@
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
-import Hat from './assets/hat.js';
 import { ReactComponent as Waves } from './assets/waves.svg';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
 import { createRef, forwardRef } from 'react';
@@ -22,6 +21,23 @@ import './styles/Navigation.scss';
 import './styles/Footer.scss';
 import { PATREON_URL } from './root.js';
 import resolveRoute from './resolveRoute.js';
+import process from 'process';
+import { ReactComponent as HatDev } from './assets/hat-dev.svg';
+import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
+import { ReactComponent as HatPlain } from './assets/hat.svg';
+
+function Hat(props) {
+	const { children, ...attributes } = props;
+
+	switch (process.env.REACT_APP_HAT_BADGE) {
+		case 'DEV':
+			return <HatDev {...attributes}>{children}</HatDev>;
+		case 'BETA':
+			return <HatBeta {...attributes}>{children}</HatBeta>;
+		default:
+			return <HatPlain {...attributes}>{children}</HatPlain>;
+	}
+}
 
 export function MenuTab(props) {
 	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;
