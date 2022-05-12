@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { config } from 'dotenv';
 import { cwd } from 'node:process';
 
-config({ path: join(cwd(), '.env.local') });
 config({ path: join(cwd(), '.env') });
+config({ path: join(cwd(), '.env.local') });
 
 config({ path: join(cwd(), '.env.production') });
 config({ path: join(cwd(), '.env.production.local') });

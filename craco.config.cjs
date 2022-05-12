@@ -1,8 +1,5 @@
-const { config } = require('dotenv');
 const { resolve } = require('path');
 const WebpackObfuscator = require('webpack-obfuscator');
-
-config();
 
 module.exports = {
 	webpack: {
