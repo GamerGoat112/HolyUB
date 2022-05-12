@@ -4,8 +4,13 @@ import { dirname, join } from 'node:path';
 import { mkdir, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { config } from 'dotenv';
+import { cwd } from 'node:process';
 
-config();
+config({ path: join(cwd(), '.env.local') });
+config({ path: join(cwd(), '.env') });
+
+config({ path: join(cwd(), '.env.production') });
+config({ path: join(cwd(), '.env.production.local') });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
