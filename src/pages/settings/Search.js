@@ -1,5 +1,6 @@
-import PlainSelect from '../../PlainSelect.js';
 import { Obfuscated } from '../../obfuscate.js';
+import engines from '../../engines.js';
+import PlainSelect from '../../PlainSelect.js';
 
 export default function Search(props) {
 	return (
@@ -30,12 +31,9 @@ export default function Search(props) {
 					}
 					defaultValue={props.layout.current.settings.get('search')}
 				>
-					<option value="https://www.google.com/search?q=%s">Google</option>
-					<option value="https://duckduckgo.com/?q=%s">DuckDuckGo</option>
-					<option value="https://www.bing.com/search?q=%s">Bing</option>
-					<option value="https://en.wikipedia.org/wiki/Special:Search?search=%s">
-						Wikipedia
-					</option>
+					{engines.map(({ name, format }) => (
+						<option value={format}>{name}</option>
+					))}
 				</PlainSelect>
 			</label>
 		</>

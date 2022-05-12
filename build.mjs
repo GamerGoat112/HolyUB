@@ -3,9 +3,6 @@ import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { mkdir, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { config } from 'dotenv';
-
-config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

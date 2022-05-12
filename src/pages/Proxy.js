@@ -1,9 +1,10 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
 import { Component, createRef } from 'react';
+import { NorthWest, Search } from '@mui/icons-material';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
-import { NorthWest, Search } from '@mui/icons-material';
+import engines from '../engines.js';
 import '../styles/Proxy.scss';
 
 export default class Proxies extends Component {
@@ -94,6 +95,19 @@ export default class Proxies extends Component {
 			}
 		}
 
+		let engine;
+		const format = this.props.layout.current.settings.get('search');
+
+		for (let _engine of engines) {
+			if (_engine.format === format) {
+				engine = _engine;
+			}
+		}
+
+		if (engine === undefined) {
+			engine = engines[0];
+		}
+
 		return (
 			<>
 				<ServiceFrame layout={this.layout} ref={this.service_frame} />
@@ -117,7 +131,7 @@ export default class Proxies extends Component {
 							<Search className="icon" />
 							<input
 								type="text"
-								placeholder="Search Google or type a URL"
+								placeholder={`Search ${engine.name} or type a URL`}
 								required={this.state.last_select === -1}
 								autoComplete="off"
 								list="proxy-omnibox"
