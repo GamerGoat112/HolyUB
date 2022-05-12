@@ -1,3 +1,4 @@
+import process from 'process';
 import routes from './routes.mjs';
 
 export default function resolveRoute(dir, page, absolute = true) {

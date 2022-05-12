@@ -1,10 +1,8 @@
+const { config } = require('dotenv');
 const { resolve } = require('path');
 const WebpackObfuscator = require('webpack-obfuscator');
-const { EnvironmentPlugin } = require('webpack');
 
-if (!('REACT_APP_ROUTER' in process.env)) {
-	process.env.REACT_APP_ROUTER = 'file';
-}
+config();
 
 module.exports = {
 	webpack: {
@@ -14,18 +12,6 @@ module.exports = {
 		 * @returns {import('webpack').Configuration}
 		 */
 		configure(config) {
-			config.plugins.push(
-				new EnvironmentPlugin(['NODE_ENV', 'REACT_APP_ROUTER'])
-			);
-			config.module.rules.push({
-				test: /\.js$/,
-				loader: 'string-replace-loader',
-				options: {
-					search: /process\.env\.(NODE_ENV|REACT_APP_ROUTER)/g,
-					replace: (match, env) => JSON.stringify(process.env[env]),
-				},
-			});
-
 			if (config.mode === 'production') {
 				config.module.rules.push({
 					test: /\.js$/,

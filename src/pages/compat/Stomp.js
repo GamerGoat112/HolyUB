@@ -1,3 +1,4 @@
+import process from 'process';
 import CompatModule, { wrapCompat } from '../../CompatModule.js';
 import { BARE_API } from '../../root.js';
 

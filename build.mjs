@@ -3,7 +3,9 @@ import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { mkdir, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { Command } from 'commander';
+import { config } from 'dotenv';
+
+config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -82,20 +84,13 @@ function spawnAsync(...args) {
 	});
 }
 
-async function main({ router, development, skipNpm }) {
-	if (!skipNpm) {
-		await spawnAsync('npm', ['run', 'build'], {
-			stdio: 'inherit',
-			cwd: __dirname,
-			env: {
-				...process.env,
-				NODE_ENV: development ? 'development' : 'production',
-				REACT_APP_ROUTER: router,
-			},
-		});
-	}
+async function main() {
+	await spawnAsync('npm', ['run', 'build'], {
+		stdio: 'inherit',
+		cwd: __dirname,
+	});
 
-	await routers[router]();
+	await routers[process.env.REACT_APP_ROUTER]();
 
 	try {
 		await copyFile(index, join(build, '404.html'));
@@ -107,24 +102,4 @@ async function main({ router, development, skipNpm }) {
 	}
 }
 
-const program = new Command();
-
-program
-	.description('Build script')
-	.option('-d, --development')
-	.option('-s, --skip-npm', 'Skips NPM in the build process')
-	.requiredOption(
-		`-r, --router <${Object.keys(routers)}>`,
-		'Router',
-		value => {
-			if (!(value in routers)) {
-				throw new RangeError(`${value} was not a valid route.`);
-			}
-
-			return value;
-		},
-		'id'
-	)
-	.action(main);
-
-program.parse(process.argv);
+main();

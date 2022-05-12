@@ -1,5 +1,5 @@
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
-import { ReactComponent as Hat } from './assets/hat.svg';
+import Hat from './assets/hat.js';
 import { ReactComponent as Waves } from './assets/waves.svg';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
 import { createRef, forwardRef } from 'react';
