@@ -1,5 +1,5 @@
 import { ExpandMore } from '@mui/icons-material';
-import { Component, createRef } from 'react';
+import { Component, createRef, forwardRef } from 'react';
 import clsx from 'clsx';
 
 export function ThemeButton(props) {
@@ -26,15 +26,15 @@ export function ThemeInputBar(props) {
 	);
 }
 
-export function ThemeInput(props) {
+export const ThemeInput = forwardRef((props, ref) => {
 	const { children, className, ...attributes } = props;
 
 	return (
-		<input className={clsx('theme-input', className)} {...attributes}>
+		<input ref={ref} className={clsx('theme-input', className)} {...attributes}>
 			{children}
 		</input>
 	);
-}
+});
 
 export class ThemeSelect extends Component {
 	options = [];
