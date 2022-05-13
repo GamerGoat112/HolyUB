@@ -14,6 +14,8 @@ if (process.env.NODE_ENV === 'production') {
 	config({ path: join(cwd(), '.env.development.local'), override: true });
 }
 
+const env = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
+
 module.exports = {
 	webpack: {
 		/**
@@ -27,9 +29,14 @@ module.exports = {
 					test: /\.js$/,
 					loader: 'string-replace-loader',
 					options: {
-						search:
-							/process\.env\.(NODE_ENV|REACT_APP_ROUTER|REACT_APP_HAT_BADGE)/g,
-						replace: (match, env) => JSON.stringify(process.env[env]),
+						search: /process\.env\.(\w+)/g,
+						replace: (match, menv) => {
+							if (env.includes(menv)) {
+								return JSON.stringify(process.env[menv]);
+							} else {
+								return match;
+							}
+						},
 					},
 				});
 
