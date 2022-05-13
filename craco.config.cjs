@@ -6,8 +6,13 @@ const { cwd } = require('node:process');
 config({ path: join(cwd(), '.env'), override: true });
 config({ path: join(cwd(), '.env.local'), override: true });
 
-config({ path: join(cwd(), '.env.production'), override: true });
-config({ path: join(cwd(), '.env.production.local'), override: true });
+if (process.env.NODE_ENV === 'production') {
+	config({ path: join(cwd(), '.env.production'), override: true });
+	config({ path: join(cwd(), '.env.production.local'), override: true });
+} else {
+	config({ path: join(cwd(), '.env.development'), override: true });
+	config({ path: join(cwd(), '.env.development.local'), override: true });
+}
 
 module.exports = {
 	webpack: {
