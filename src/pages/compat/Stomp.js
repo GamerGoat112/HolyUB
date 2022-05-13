@@ -1,46 +1,58 @@
 import process from 'process';
-import CompatModule, { wrapCompat } from '../../CompatModule.js';
+import { useEffect } from 'react';
+import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 
-class Stomp extends CompatModule {
-	name = 'Stomp';
-	async componentDidMount() {
-		await this.possible_error('Failure loading the Stomp bootstrapper.');
-		await this.load_script('/stomp/bootstrapper.js');
-		await this.possible_error();
+export default function Rammerhead(props) {
+	useEffect(() => {
+		void (async function () {
+			let error_cause;
 
-		const { StompBoot } = global;
+			try {
+				error_cause = 'Failure loading the Stomp bootstrapper.';
+				await props.layout.current.load_script('/stomp/bootstrapper.js');
+				error_cause = undefined;
 
-		const config = {
-			bare: BARE_API,
-			directory: '/stomp/',
-		};
+				const { StompBoot } = global;
 
-		if (process.env.NODE_ENV === 'development') {
-			config.loglevel = StompBoot.LOG_TRACE;
-			config.codec = StompBoot.CODEC_PLAIN;
-		} else {
-			config.loglevel = StompBoot.LOG_ERROR;
-			config.codec = StompBoot.CODEC_XOR;
-		}
+				const config = {
+					bare: BARE_API,
+					directory: '/stomp/',
+				};
 
-		this.boot = new StompBoot(config);
+				if (process.env.NODE_ENV === 'development') {
+					config.loglevel = StompBoot.LOG_TRACE;
+					config.codec = StompBoot.CODEC_PLAIN;
+				} else {
+					config.loglevel = StompBoot.LOG_ERROR;
+					config.codec = StompBoot.CODEC_XOR;
+				}
 
-		this.possible_error('Failure registering the Stomp Service Worker.');
-		await this.boot.ready;
-		this.possible_error();
+				const boot = new StompBoot(config);
 
-		await this.possible_error('Bare server is unreachable.');
-		{
-			const bare = await fetch(BARE_API);
-			if (!bare.ok) {
-				throw await bare.json();
+				error_cause = 'Failure registering the Stomp Service Worker.';
+				await boot.ready;
+				error_cause = undefined;
+
+				error_cause = 'Bare server is unreachable.';
+				{
+					const bare = await fetch(BARE_API);
+					if (!bare.ok) {
+						throw await bare.json();
+					}
+				}
+				error_cause = undefined;
+
+				global.location.assign(boot.html(props.layout.current.destination));
+			} catch (error) {
+				props.layout.current.report(error, error_cause, 'Stomp');
 			}
-		}
-		await this.possible_error();
+		})();
+	});
 
-		this.redirect(this.boot.html(this.destination));
-	}
+	return (
+		<main className="compat">
+			Loading <Obfuscated>Stomp</Obfuscated>...
+		</main>
+	);
 }
-
-export default wrapCompat(Stomp);

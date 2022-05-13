@@ -1,50 +1,64 @@
-import CompatModule, { wrapCompat } from '../../CompatModule.js';
+import { useEffect } from 'react';
+import { Obfuscated } from '../../obfuscate.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
 import { RH_APP } from '../../root.js';
 
-class Rammerhead extends CompatModule {
-	name = 'Rammerhead';
-	api = new RammerheadAPI(RH_APP);
-	/**
-	 * @returns {string|undefined} value
-	 */
-	get session() {
-		return localStorage.rammerhead_session;
-	}
-	/**
-	 * @param {string} value
-	 */
-	set session(value) {
-		localStorage.rammerhead_session = value;
-	}
-	async componentDidMount() {
-		await this.possible_error('Rammerhead server is unreachable.');
-		await fetch(RH_APP);
-		await this.possible_error();
+export default function Rammerhead(props) {
+	useEffect(() => {
+		void (async function () {
+			let error_cause;
 
-		await this.possible_error('Unable to check if the saved session exists.');
-		if (!this.session || !(await this.api.sessionexists(this.session))) {
-			await this.possible_error('Unable to create a new Rammerhead session.');
-			const session = await this.api.newsession();
-			await this.possible_error();
-			this.session = session;
-		}
-		await this.possible_error();
+			try {
+				const api = new RammerheadAPI(RH_APP);
 
-		await this.possible_error('Unable to edit a Rammerhead session.');
-		await this.api.editsession(this.session, false, true);
-		await this.possible_error();
+				error_cause = 'Error loading Ruffle player.';
+				await props.layout.current.load_script('/ruffle/ruffle.js');
+				error_cause = undefined;
 
-		await this.possible_error('Unable to retrieve shuffled dictionary.');
-		const dict = await this.api.shuffleDict(this.session);
-		await this.possible_error();
+				error_cause = 'Rammerhead server is unreachable.';
+				await fetch(RH_APP);
+				error_cause = undefined;
 
-		const shuffler = new StrShuffler(dict);
+				error_cause = 'Unable to check if the saved session exists.';
+				if (
+					!localStorage.rammerhead_session ||
+					!(await api.sessionexists(localStorage.rammerhead_session))
+				) {
+					error_cause = 'Unable to create a new Rammerhead session.';
+					const session = await api.newsession();
+					error_cause = undefined;
+					localStorage.rammerhead_session = session;
+				}
 
-		this.redirect(
-			new URL(`${this.session}/${shuffler.shuffle(this.destination)}`, RH_APP)
-		);
-	}
+				const session = localStorage.rammerhead_session;
+
+				error_cause = undefined;
+
+				error_cause = 'Unable to edit a Rammerhead session.';
+				await api.editsession(session, false, true);
+				error_cause = undefined;
+
+				error_cause = 'Unable to retrieve shuffled dictionary.';
+				const dict = await api.shuffleDict(session);
+				error_cause = undefined;
+
+				const shuffler = new StrShuffler(dict);
+
+				global.location.assign(
+					new URL(
+						`${session}/${shuffler.shuffle(props.layout.current.destination)}`,
+						RH_APP
+					)
+				);
+			} catch (error) {
+				props.layout.current.report(error, error_cause, 'Rammerhead');
+			}
+		})();
+	});
+
+	return (
+		<main className="compat">
+			Loading <Obfuscated>Rammerhead</Obfuscated>...
+		</main>
+	);
 }
-
-export default wrapCompat(Rammerhead);

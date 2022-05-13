@@ -1,6 +1,6 @@
 export class RammerheadAPI {
-	constructor(app) {
-		this.app = app;
+	constructor(server) {
+		this.server = server;
 	}
 	async get(url) {
 		if (this.password) {
@@ -12,32 +12,22 @@ export class RammerheadAPI {
 			}
 		}
 
-		var request = new XMLHttpRequest();
-		request.open('GET', new URL(url, this.app), true);
+		try {
+			const request = await fetch(new URL(url, this.server));
 
-		const promise = new Promise((resolve, reject) => {
-			request.addEventListener('error', () => {
-				reject(new Error('Cannot communicate with the server'));
-			});
-
-			request.addEventListener('load', () => {
-				if (request.status === 200) {
-					resolve(request.responseText);
-				} else {
-					reject(
-						new Error(
-							`unexpected server response to not match "200". Server says "${request.responseText}"`
-						)
-					);
-				}
-			});
-		});
-
-		request.send();
-
-		return await promise;
+			if (request.status === 200) {
+				return await request.text();
+			} else {
+				throw new Error(
+					`unexpected server response to not match "200". Server says "${await request.text()}"`
+				);
+			}
+		} catch (error) {
+			console.error(error);
+			throw new Error('Cannot communicate with the server');
+		}
 	}
-	async needpassword(callback) {
+	async needpassword() {
 		const value = await this.get('needpassword');
 
 		return value === 'true';

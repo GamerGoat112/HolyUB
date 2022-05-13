@@ -1,4 +1,5 @@
-import CompatModule, { wrapCompat } from '../../CompatModule.js';
+import { useEffect } from 'react';
+import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 
 /**
@@ -24,46 +25,57 @@ import { BARE_API } from '../../root.js';
  * @property {UVDecode} decodeUrl
  */
 
-class Ultraviolet extends CompatModule {
-	name = 'Ultraviolet';
-	async componentDidMount() {
-		await this.possible_error('Failure loading the Ultraviolet bundle.');
-		await this.load_script('/uv/uv.bundle.js');
-		await this.possible_error('Failure loading the Ultraviolet config.');
-		await this.load_script('/uv/uv.config.js');
-		await this.possible_error();
+export default function Ultraviolet(props) {
+	useEffect(() => {
+		void (async function () {
+			let error_cause;
 
-		/**
-		 * @type {UVConfig}
-		 */
-		const config = global.__uv$config;
+			try {
+				error_cause = 'Failure loading the Ultraviolet bundle.';
+				await props.layout.current.load_script('/uv/uv.bundle.js');
+				error_cause = 'Failure loading the Ultraviolet config.';
+				await props.layout.current.load_script('/uv/uv.config.js');
+				error_cause = undefined;
 
-		// register sw
-		this.possible_error('Failure registering the UltraViolet Service Worker.');
-		await navigator.serviceWorker.register('/uv/sw.js', {
-			scope: config.prefix,
-			// cache sucks
-			// we have plenty of bandwidth to spare
-			updateViaCache: 'none',
-		});
-		await this.possible_error();
+				/**
+				 * @type {UVConfig}
+				 */
+				const config = global.__uv$config;
 
-		await this.possible_error('Bare server is unreachable.');
-		{
-			const bare = await fetch(BARE_API);
-			if (!bare.ok) {
-				throw await bare.json();
+				// register sw
+				error_cause = 'Failure registering the Ultraviolet Service Worker.';
+				await navigator.serviceWorker.register('/uv/sw.js', {
+					scope: config.prefix,
+					// cache sucks
+					// we have plenty of bandwidth to spare
+					updateViaCache: 'none',
+				});
+				error_cause = undefined;
+
+				error_cause = 'Bare server is unreachable.';
+				{
+					const bare = await fetch(BARE_API);
+					if (!bare.ok) {
+						throw await bare.json();
+					}
+				}
+				error_cause = undefined;
+
+				global.location.assign(
+					new URL(
+						config.encodeUrl(props.layout.current.destination),
+						new URL(config.prefix, global.location)
+					)
+				);
+			} catch (error) {
+				props.layout.current.report(error, error_cause, 'Stomp');
 			}
-		}
-		await this.possible_error();
+		})();
+	});
 
-		this.redirect(
-			new URL(
-				config.encodeUrl(this.destination),
-				new URL(config.prefix, global.location)
-			)
-		);
-	}
+	return (
+		<main className="compat">
+			Loading <Obfuscated>Ultraviolet</Obfuscated>...
+		</main>
+	);
 }
-
-export default wrapCompat(Ultraviolet);
