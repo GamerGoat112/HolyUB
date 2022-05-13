@@ -16,6 +16,7 @@
 		padding: 0px 15px;
 		color: inherit;
 		white-space: nowrap;
+		user-select: none;
 
 		> svg {
 			width: inherit;
@@ -136,24 +137,6 @@
 				width: inherit;
 				display: flex;
 				flex-direction: row;
-
-				> .logo {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					height: var(--nav-height);
-					padding: 0px 15px;
-					color: inherit;
-					white-space: nowrap;
-					user-select: none;
-
-					> svg {
-						width: inherit;
-						height: inherit;
-					}
-
-					width: 35px;
-				}
 			}
 		}
 
