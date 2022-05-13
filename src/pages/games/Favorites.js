@@ -62,7 +62,6 @@ export default class FavoritesCategory extends Component {
 		});
 	}
 	componentDidMount() {
-		this.props.layout.current.setState({ page: 'games-category' });
 		this.fetch();
 	}
 	componentWillUnmount() {
@@ -71,7 +70,7 @@ export default class FavoritesCategory extends Component {
 	render() {
 		if (this.set_favorites.length === 0) {
 			return (
-				<main>
+				<main className="games-category">
 					<span className="no-games">
 						You haven't added any favorite games.
 					</span>
@@ -79,7 +78,7 @@ export default class FavoritesCategory extends Component {
 			);
 		} else {
 			return (
-				<main>
+				<main className="games-category">
 					<Section
 						name="Favorites"
 						items={this.state.data}

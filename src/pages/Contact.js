@@ -1,14 +1,11 @@
-import { Component } from 'react';
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { HU_DISCORD_URL } from '../root.js';
+import Footer from '../Footer.js';
 
-export default class Contact extends Component {
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'contact' });
-	}
-	render() {
-		return (
-			<main>
+export default function Contact(props) {
+	return (
+		<>
+			<main className="legal contact">
 				<h1>Contact:</h1>
 				<ul>
 					<li>
@@ -34,6 +31,7 @@ export default class Contact extends Component {
 					</li>
 				</ul>
 			</main>
-		);
-	}
+			<Footer />
+		</>
+	);
 }

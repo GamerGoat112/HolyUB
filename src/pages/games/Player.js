@@ -106,7 +106,6 @@ export default class GamesPlayer extends Component {
 		this.focus_listener = this.focus_listener.bind(this);
 	}
 	async componentDidMount() {
-		this.props.layout.current.setState({ page: 'games-player' });
 		window.addEventListener('focus', this.focus_listener);
 
 		try {
@@ -196,6 +195,7 @@ export default class GamesPlayer extends Component {
 
 		return (
 			<main
+				className="games-player"
 				data-panorama={Number(this.state.panorama)}
 				data-controls={Number(this.state.controls_expanded)}
 			>

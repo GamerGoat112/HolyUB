@@ -77,15 +77,12 @@ export class ThemeSelect extends Component {
 		const list = [];
 
 		for (let { name, value } of this.state.options) {
-			const classes = ['plain-option'];
-
-			if (value === this.state.last_select) {
-				classes.push('hover');
-			}
-
 			list.push(
 				<div
-					className={classes.join(' ')}
+					className={clsx(
+						'plain-option',
+						value === this.state.last_select && 'hover'
+					)}
 					key={value}
 					onClick={() => {
 						this.set_value(value);
@@ -118,7 +115,7 @@ export class ThemeSelect extends Component {
 			<div
 				{...attributes}
 				tabIndex="0"
-				className={'theme-select' + (className ? ' ' + className : '')}
+				className={clsx('theme-select', className)}
 				data-open={Number(this.state.open)}
 				ref={this.container}
 				onKeyDown={event => {

@@ -1,14 +1,16 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Footer from '../Footer.js';
 import { Obfuscated } from '../obfuscate.js';
 import resolveRoute from '../resolveRoute.js';
 
-export default class Privacy extends Component {
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'privacy' });
-	}
-	render() {
-		return (
+export default function Privacy(props) {
+	useEffect(() => {
+		props.layout.current.setState({ page: 'privacy' });
+	});
+
+	return (
+		<>
 			<main>
 				<p>
 					If you choose to use our Service, then you agree to the collection and
@@ -63,6 +65,7 @@ export default class Privacy extends Component {
 					.
 				</p>
 			</main>
-		);
-	}
+			<Footer />
+		</>
+	);
 }

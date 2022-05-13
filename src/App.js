@@ -1,4 +1,4 @@
-import { Component, createRef, lazy, Suspense } from 'react';
+import { createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import CompatLayout from './CompatLayout.js';
@@ -88,185 +88,181 @@ function CategoryProxy(props) {
 }
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
-export default class App extends Component {
-	layout = createRef();
-	render() {
-		return (
-			<Routes>
+export default function App() {
+	const layout = createRef();
+
+	return (
+		<Routes>
+			<Route path={resolveRoute('/', '')} element={<MainLayout ref={layout} />}>
 				<Route
-					path={resolveRoute('/', '')}
-					element={<MainLayout ref={this.layout} />}
+					index
+					element={
+						<Suspense fallback={<></>}>
+							<Home layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'proxy')}
+					element={
+						<Suspense fallback={<></>}>
+							<Proxy layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'faq')}
+					element={
+						<Suspense fallback={<></>}>
+							<FAQ layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'contact')}
+					element={
+						<Suspense fallback={<></>}>
+							<Contact layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'privacy')}
+					element={
+						<Suspense fallback={<></>}>
+							<Privacy layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'privatelinks')}
+					element={
+						<Suspense fallback={<></>}>
+							<PrivateLinks layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'terms')}
+					element={
+						<Suspense fallback={<></>}>
+							<Terms layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/', 'credits')}
+					element={
+						<Suspense fallback={<></>}>
+							<Credits layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route path={resolveRoute('/games/', '')}>
+					<Route
+						path={resolveRoute('/games/', 'popular', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<GamesPopular layout={layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/games/', 'favorites', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<GamesFavorites layout={layout} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/games/', 'player', false)}
+						element={<PlayerProxy layout={layout} />}
+					/>
+					<Route
+						path={resolveRoute('/games/', 'category', false)}
+						element={<CategoryProxy layout={layout} />}
+					/>
+				</Route>
+				<Route
+					path={resolveRoute('/settings/', '')}
+					element={
+						<Suspense fallback={<></>}>
+							<Settings layout={layout} />
+						</Suspense>
+					}
 				>
 					<Route
-						index
+						path={resolveRoute('/settings/', 'search', false)}
 						element={
 							<Suspense fallback={<></>}>
-								<Home layout={this.layout} />
+								<SearchSettings layout={layout} />
 							</Suspense>
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'proxy')}
+						path={resolveRoute('/settings/', 'appearance', false)}
 						element={
 							<Suspense fallback={<></>}>
-								<Proxy layout={this.layout} />
+								<AppearanceSettings layout={layout} />
 							</Suspense>
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'faq')}
+						path={resolveRoute('/settings/', 'tabcloak', false)}
 						element={
 							<Suspense fallback={<></>}>
-								<FAQ layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'contact')}
-						element={
-							<Suspense fallback={<></>}>
-								<Contact layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'privacy')}
-						element={
-							<Suspense fallback={<></>}>
-								<Privacy layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'privatelinks')}
-						element={
-							<Suspense fallback={<></>}>
-								<PrivateLinks layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'terms')}
-						element={
-							<Suspense fallback={<></>}>
-								<Terms layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'credits')}
-						element={
-							<Suspense fallback={<></>}>
-								<Credits layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route path={resolveRoute('/games/', '')}>
-						<Route
-							path={resolveRoute('/games/', 'popular', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesPopular layout={this.layout} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'favorites', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesFavorites layout={this.layout} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'player', false)}
-							element={<PlayerProxy layout={this.layout} />}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'category', false)}
-							element={<CategoryProxy layout={this.layout} />}
-						/>
-					</Route>
-					<Route
-						path={resolveRoute('/settings/', '')}
-						element={
-							<Suspense fallback={<></>}>
-								<Settings layout={this.layout} />
-							</Suspense>
-						}
-					>
-						<Route
-							path={resolveRoute('/settings/', 'search', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<SearchSettings layout={this.layout} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/settings/', 'appearance', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<AppearanceSettings layout={this.layout} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/settings/', 'tabcloak', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<TabCloakSettings layout={this.layout} />
-								</Suspense>
-							}
-						/>
-					</Route>
-					<Route
-						path="*"
-						element={
-							<Suspense fallback={<></>}>
-								<NotFound layout={this.layout} />
+								<TabCloakSettings layout={layout} />
 							</Suspense>
 						}
 					/>
 				</Route>
 				<Route
-					path={resolveRoute('/compat/', '')}
-					element={<CompatLayout ref={this.layout} />}
-				>
-					<Route
-						path={resolveRoute('/compat/', 'rammerhead', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<Rammerhead layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/compat/', 'stomp', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<Stomp layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/compat/', 'ultraviolet', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<Ultraviolet layout={this.layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/compat/', 'flash', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<Flash layout={this.layout} />
-							</Suspense>
-						}
-					/>
-				</Route>
-			</Routes>
-		);
-	}
+					path="*"
+					element={
+						<Suspense fallback={<></>}>
+							<NotFound layout={layout} />
+						</Suspense>
+					}
+				/>
+			</Route>
+			<Route
+				path={resolveRoute('/compat/', '')}
+				element={<CompatLayout ref={layout} />}
+			>
+				<Route
+					path={resolveRoute('/compat/', 'rammerhead', false)}
+					element={
+						<Suspense fallback={<></>}>
+							<Rammerhead layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/compat/', 'stomp', false)}
+					element={
+						<Suspense fallback={<></>}>
+							<Stomp layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/compat/', 'ultraviolet', false)}
+					element={
+						<Suspense fallback={<></>}>
+							<Ultraviolet layout={layout} />
+						</Suspense>
+					}
+				/>
+				<Route
+					path={resolveRoute('/compat/', 'flash', false)}
+					element={
+						<Suspense fallback={<></>}>
+							<Flash layout={layout} />
+						</Suspense>
+					}
+				/>
+			</Route>
+		</Routes>
+	);
 }

@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { Component, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Settings from './Settings.js';
 
 export const THEMES = ['night', 'day'];
@@ -16,13 +17,34 @@ class Scroll {
 	}
 }
 
+function ScrollManager() {
+	const location = useLocation();
+	const _scrolls = useRef(new Map());
+	const { current: scrolls } = _scrolls;
+
+	// last_page === undefined on refresh
+	const last_page = useRef();
+
+	if (last_page.current !== location.pathname) {
+		if (last_page.current) {
+			scrolls.set(last_page.current, new Scroll());
+		}
+
+		if (scrolls.has(location.pathname)) {
+			scrolls.get(location.pathname).scroll();
+		}
+
+		last_page.current = location.pathname;
+	}
+
+	return <></>;
+}
+
 export default class Layout extends Component {
 	state = {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
-		page: '',
 	};
-	scrolls = new Map();
 	icon = document.querySelector('link[rel="icon"]');
 	get mobile() {
 		const mobile = matchMedia('only screen and (max-width: 650px)');
@@ -90,19 +112,7 @@ export default class Layout extends Component {
 	}
 	last_page = '';
 	render() {
-		if (this.state.page && this.last_page !== this.state.page) {
-			this.scrolls.set(this.last_page, new Scroll());
-
-			if (!this.scrolls.has(this.state.page)) {
-				this.scrolls.set(this.state.page, new Scroll());
-			}
-
-			this.scrolls.get(this.state.page).scroll();
-			this.last_page = this.state.page;
-		}
-
 		document.documentElement.dataset.theme = this.settings.get('theme');
-		document.documentElement.dataset.page = this.state.page;
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
 		document.documentElement.dataset.expanded = Number(this.state.expanded);
 
@@ -128,6 +138,10 @@ export default class Layout extends Component {
 
 		this.icon.href = href;
 
-		return <></>;
+		return (
+			<>
+				<ScrollManager />
+			</>
+		);
 	}
 }

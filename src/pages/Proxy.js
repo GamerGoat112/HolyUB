@@ -2,9 +2,11 @@ import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
 import { Component, createRef } from 'react';
 import { NorthWest, Search } from '@mui/icons-material';
+import Footer from '../Footer.js';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
 import engines from '../engines.js';
+import clsx from 'clsx';
 import '../styles/Proxy.scss';
 
 export default class Proxies extends Component {
@@ -23,7 +25,6 @@ export default class Proxies extends Component {
 		return this.props.layout;
 	}
 	componentDidMount() {
-		this.props.layout.current.setState({ page: 'proxy' });
 		this.on_input();
 	}
 	async on_input() {
@@ -59,17 +60,12 @@ export default class Proxies extends Component {
 		if (render_suggested) {
 			for (let i = 0; i < this.state.omnibox_entries.length; i++) {
 				const text = createRef();
-				const classes = ['option'];
-
-				if (i === this.state.last_select) {
-					classes.push('hover');
-				}
 
 				suggested.push(
 					<div
 						key={i}
 						tabIndex="0"
-						className={classes.join(' ')}
+						className={clsx('option', i === this.state.last_select && 'hover')}
 						onClick={() => {
 							this.last_input = 'select';
 							this.input.current.value = text.current.textContent;
@@ -111,8 +107,8 @@ export default class Proxies extends Component {
 
 		return (
 			<>
-				<ServiceFrame layout={this.layout} ref={this.service_frame} />
-				<main>
+				<main className="proxy">
+					<ServiceFrame layout={this.layout} ref={this.service_frame} />
 					<form
 						className="omnibox"
 						data-suggested={Number(render_suggested)}
@@ -244,6 +240,7 @@ export default class Proxies extends Component {
 						</Obfuscated>
 					</p>
 				</main>
+				<Footer />
 			</>
 		);
 	}

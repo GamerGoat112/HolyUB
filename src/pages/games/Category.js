@@ -7,6 +7,7 @@ import { ThemeSelect } from '../../ThemeElements.js';
 import categories from './categories.json';
 import '../../styles/GamesCategory.scss';
 import resolveRoute from '../../resolveRoute.js';
+import Footer from '../../Footer.js';
 
 export default class Category extends Component {
 	constructor(props) {
@@ -119,7 +120,6 @@ export default class Category extends Component {
 		}
 	}
 	componentDidMount() {
-		this.props.layout.current.setState({ page: 'games-category' });
 		this.fetch();
 	}
 	componentWillUnmount() {
@@ -136,68 +136,74 @@ export default class Category extends Component {
 			}
 
 			return (
-				<main ref={this.container}>
-					<span>
-						An error occured when loading the category:
-						<br />
-						{description}
-					</span>
-					<p>
-						Try again by clicking{' '}
-						<a
-							href="i:"
-							onClick={event => {
-								event.preventDefault();
-								global.location.reload();
-							}}
-						>
-							here
-						</a>
-						.
-						<br />
-						If this problem still occurs, check{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'support')}
-							target="_parent"
-						>
-							Support
-						</Link>{' '}
-						or{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'contact')}
-							target="_parent"
-						>
-							Contact Us
-						</Link>
-						.
-					</p>
-				</main>
+				<>
+					<main className="games-category" ref={this.container}>
+						<span>
+							An error occured when loading the category:
+							<br />
+							{description}
+						</span>
+						<p>
+							Try again by clicking{' '}
+							<a
+								href="i:"
+								onClick={event => {
+									event.preventDefault();
+									global.location.reload();
+								}}
+							>
+								here
+							</a>
+							.
+							<br />
+							If this problem still occurs, check{' '}
+							<Link
+								className="theme-link"
+								to={resolveRoute('/', 'support')}
+								target="_parent"
+							>
+								Support
+							</Link>{' '}
+							or{' '}
+							<Link
+								className="theme-link"
+								to={resolveRoute('/', 'contact')}
+								target="_parent"
+							>
+								Contact Us
+							</Link>
+							.
+						</p>
+					</main>
+					<Footer />
+				</>
 			);
 		}
 
 		return (
-			<main>
-				<ThemeSelect
-					className="sort"
-					defaultValue={this.settings.get('sort')}
-					onChange={event => {
-						this.settings.set('sort', event.target.value);
-						this.fetch();
-					}}
-				>
-					<option value="Most Played">Most Played</option>
-					<option value="Least Played">Least Played</option>
-					<option value="Name (A-Z)">Name (A-Z)</option>
-					<option value="Name (Z-A)">Name (Z-A)</option>
-				</ThemeSelect>
-				<Section
-					name={categories[this.props.id].name}
-					items={this.state.data}
-					layout={this.layout}
-				/>
-			</main>
+			<>
+				<main className="games-category">
+					<ThemeSelect
+						className="sort"
+						defaultValue={this.settings.get('sort')}
+						onChange={event => {
+							this.settings.set('sort', event.target.value);
+							this.fetch();
+						}}
+					>
+						<option value="Most Played">Most Played</option>
+						<option value="Least Played">Least Played</option>
+						<option value="Name (A-Z)">Name (A-Z)</option>
+						<option value="Name (Z-A)">Name (Z-A)</option>
+					</ThemeSelect>
+					<Section
+						name={categories[this.props.id].name}
+						items={this.state.data}
+						layout={this.layout}
+					/>
+				</main>
+				<Footer />
+			</>
 		);
 	}
 }

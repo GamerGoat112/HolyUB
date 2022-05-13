@@ -1,13 +1,9 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
 import faq from '../faq.js';
+import Footer from '../Footer.js';
 
-export default function FAQ(props) {
-	useEffect(() => {
-		props.layout.current.setState({ page: 'faq' });
-	});
-
+export default function FAQ() {
 	const sections = [];
 
 	for (let i = 0; i < faq.length; i++) {
@@ -23,7 +19,7 @@ export default function FAQ(props) {
 
 	return (
 		<>
-			<main>
+			<main className="faq">
 				{sections}
 				<p style={{ marginTop: '30px', opacity: 0.75 }}>
 					Not what you're looking for?{' '}
@@ -33,6 +29,7 @@ export default function FAQ(props) {
 					.
 				</p>
 			</main>
+			<Footer />
 		</>
 	);
 }

@@ -84,7 +84,7 @@ export default function TabCloak(props) {
 	const [error, set_error] = useState();
 
 	return (
-		<>
+		<main>
 			<p>
 				<Obfuscated>
 					Tab Cloaking allows you to disguise Holy Unblocker as any website such
@@ -132,6 +132,6 @@ export default function TabCloak(props) {
 			>
 				<Obfuscated>Reset Cloak</Obfuscated>
 			</ThemeButton>
-		</>
+		</main>
 	);
 }

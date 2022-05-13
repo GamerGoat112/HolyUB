@@ -5,20 +5,16 @@ import {
 	DriveFileRenameOutlineOutlined,
 	Public,
 } from '@mui/icons-material';
-import { Component } from 'react';
 import { Outlet } from 'react-router-dom';
 import { MenuTab } from '../MainLayout.js';
 import resolveRoute from '../resolveRoute.js';
 import '../styles/Settings.scss';
 
-export default class Settings extends Component {
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'settings' });
-	}
-	render() {
-		return (
-			<>
-				<div className="page-menu">
+export default function Settings() {
+	return (
+		<>
+			<main className="settings">
+				<div className="menu">
 					<div className="menu-list">
 						<MenuTab
 							route={resolveRoute('/settings/', 'search')}
@@ -39,10 +35,8 @@ export default class Settings extends Component {
 						/>
 					</div>
 				</div>
-				<main>
-					<Outlet />
-				</main>
-			</>
-		);
-	}
+				<Outlet />
+			</main>
+		</>
+	);
 }

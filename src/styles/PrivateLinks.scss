@@ -1,41 +1,44 @@
 @import './Common.scss';
 
-@include root_page('private-links') {
-	main {
-		> .redeem {
-			> .theme-input,
-			> .theme-input-bar {
-				margin-bottom: 10px;
+main.private-links {
+	flex-direction: column;
+	min-height: calc(100vh - var(--nav-height-border));
+	overflow: hidden;
+	display: flex;
+
+	> .redeem {
+		> .theme-input,
+		> .theme-input-bar {
+			margin-bottom: 10px;
+		}
+
+		> .theme-input-bar {
+			width: 500px;
+
+			> input {
+				width: 100%;
+				height: 100%;
+				padding: 0px 0px 0px 15px;
+				font-family: inherit;
+				background-color: transparent;
+				color: inherit;
+				border: none;
 			}
 
-			> .theme-input-bar {
-				width: 500px;
-
-				> input {
-					width: 100%;
-					height: 100%;
-					padding: 0px 0px 0px 15px;
-					font-family: inherit;
-					background-color: transparent;
-					color: inherit;
-					border: none;
-				}
-
-				> .tld {
-					user-select: none;
-					width: 50px;
-					height: auto;
-					padding: 12px;
-					background-color: var(--background-accent-deep-2);
-					border-top-right-radius: 5px;
-					border-bottom-right-radius: 5px;
-					color: var(--text-placeholder);
-					border-left: 1px solid var(--border);
-					display: flex;
-					text-align: center;
-					pointer-events: none;
-					justify-content: center;
-				}
+			> .tld {
+				user-select: none;
+				width: 50px;
+				height: auto;
+				padding: 12px;
+				background-color: var(--background-accent-deep-2);
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+				color: var(--text-placeholder);
+				border-left: 1px solid var(--border);
+				display: flex;
+				text-align: center;
+				pointer-events: none;
+				justify-content: center;
 			}
 		}
 	}

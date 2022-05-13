@@ -1,10 +1,10 @@
 import { Obfuscated } from '../../obfuscate.js';
-import engines from '../../engines.js';
 import { ThemeSelect } from '../../ThemeElements.js';
+import engines from '../../engines.js';
 
 export default function Search(props) {
 	return (
-		<>
+		<main>
 			<label>
 				<span>
 					<Obfuscated>Proxy</Obfuscated>:
@@ -32,10 +32,12 @@ export default function Search(props) {
 					defaultValue={props.layout.current.settings.get('search')}
 				>
 					{engines.map(({ name, format }) => (
-						<option value={format}>{name}</option>
+						<option key={format} value={format}>
+							{name}
+						</option>
 					))}
 				</ThemeSelect>
 			</label>
-		</>
+		</main>
 	);
 }

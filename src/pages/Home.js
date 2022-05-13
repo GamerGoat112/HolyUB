@@ -1,15 +1,12 @@
-import { Component } from 'react';
+import Footer from '../Footer.js';
 import { Obfuscated } from '../obfuscate.js';
-import '../styles/Home.scss';
 import { ThemeButton } from '../ThemeElements.js';
+import '../styles/Home.scss';
 
-export default class Home extends Component {
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'home' });
-	}
-	render() {
-		return (
-			<main>
+export default function Home(props) {
+	return (
+		<>
+			<main className="home">
 				<h1>
 					<Obfuscated>End Internet Censorship.</Obfuscated>
 				</h1>
@@ -22,6 +19,7 @@ export default class Home extends Component {
 					<Obfuscated>Get Started</Obfuscated>
 				</ThemeButton>
 			</main>
-		);
-	}
+			<Footer />
+		</>
+	);
 }

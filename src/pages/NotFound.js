@@ -1,13 +1,15 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Footer from '../Footer.js';
 import resolveRoute from '../resolveRoute.js';
 
-export default class NotFound extends Component {
-	componentDidMount() {
-		this.props.layout.current.setState({ page: 'notfound' });
-	}
-	render() {
-		return (
+export default function NotFound(props) {
+	useEffect(() => {
+		props.layout.current.setState({ page: 'notfound' });
+	});
+
+	return (
+		<>
 			<main>
 				<h1>The page you are looking for is not available.</h1>
 				<hr />
@@ -21,6 +23,7 @@ export default class NotFound extends Component {
 					.
 				</p>
 			</main>
-		);
-	}
+			<Footer />
+		</>
+	);
 }

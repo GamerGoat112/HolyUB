@@ -6,9 +6,11 @@ import { ArrowForward, Search } from '@mui/icons-material';
 import categories from './categories.json';
 import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
-import '../../styles/GamesCategory.scss';
 import resolveRoute from '../../resolveRoute.js';
 import { ThemeInputBar } from '../../ThemeElements.js';
+import Footer from '../../Footer.js';
+import clsx from 'clsx';
+import '../../styles/GamesCategory.scss';
 
 function ExpandSection(props) {
 	return (
@@ -124,7 +126,6 @@ export default class Popular extends Component {
 		}
 	}
 	componentDidMount() {
-		this.props.layout.current.setState({ page: 'games-category' });
 		this.fetch();
 	}
 	componentWillUnmount() {
@@ -164,7 +165,7 @@ export default class Popular extends Component {
 							});
 						}}
 						to={`${resolveRoute('/games/', 'player')}?id=${game.id}`}
-						className={classes.join(' ')}
+						className={clsx('option', i === this.state.last_select && 'hover')}
 					>
 						<div className="name">
 							<Obfuscated ellipsis>{game.name}</Obfuscated>
@@ -208,113 +209,117 @@ export default class Popular extends Component {
 		}
 
 		return (
-			<main>
-				<div
-					className="search-bar"
-					data-focused={Number(this.state.input_focused)}
-					data-suggested={Number(render_suggested)}
-					ref={this.searchbar}
-					onBlur={event => {
-						if (!this.searchbar.current.contains(event.relatedTarget)) {
-							this.setState({ input_focused: false });
-						}
-					}}
-				>
-					<ThemeInputBar>
-						<Search className="icon" />
-						<input
-							ref={this.input}
-							type="text"
-							placeholder="Search by game name"
-							onFocus={event => {
-								this.setState({ input_focused: true, last_select: -1 });
-								this.search(event.target.value);
-							}}
-							onClick={event => {
-								this.setState({ input_focused: true, last_select: -1 });
-								this.search(event.target.value);
-							}}
-							onKeyDown={event => {
-								let prevent_default = true;
+			<>
+				<main className="games-category">
+					<div
+						className="search-bar"
+						data-focused={Number(this.state.input_focused)}
+						data-suggested={Number(render_suggested)}
+						ref={this.searchbar}
+						onBlur={event => {
+							if (!this.searchbar.current.contains(event.relatedTarget)) {
+								this.setState({ input_focused: false });
+							}
+						}}
+					>
+						<ThemeInputBar>
+							<Search className="icon" />
+							<input
+								ref={this.input}
+								type="text"
+								placeholder="Search by game name"
+								onFocus={event => {
+									this.setState({ input_focused: true, last_select: -1 });
+									this.search(event.target.value);
+								}}
+								onClick={event => {
+									this.setState({ input_focused: true, last_select: -1 });
+									this.search(event.target.value);
+								}}
+								onKeyDown={event => {
+									let prevent_default = true;
 
-								switch (event.code) {
-									case 'Escape':
-										this.setState({ input_focused: false });
-										break;
-									case 'ArrowDown':
-									case 'ArrowUp':
-										{
-											let last_i = this.state.last_select;
+									switch (event.code) {
+										case 'Escape':
+											this.setState({ input_focused: false });
+											break;
+										case 'ArrowDown':
+										case 'ArrowUp':
+											{
+												let last_i = this.state.last_select;
 
-											let next;
+												let next;
 
-											switch (event.code) {
-												case 'ArrowDown':
-													if (last_i >= this.state.category.length - 1) {
-														next = 0;
-													} else {
-														next = last_i + 1;
-													}
-													break;
-												case 'ArrowUp':
-													if (last_i <= 0) {
-														next = this.state.category.length - 1;
-													} else {
-														next = last_i - 1;
-													}
-													break;
-												// no default
+												switch (event.code) {
+													case 'ArrowDown':
+														if (last_i >= this.state.category.length - 1) {
+															next = 0;
+														} else {
+															next = last_i + 1;
+														}
+														break;
+													case 'ArrowUp':
+														if (last_i <= 0) {
+															next = this.state.category.length - 1;
+														} else {
+															next = last_i - 1;
+														}
+														break;
+													// no default
+												}
+
+												this.setState({
+													last_select: next,
+												});
 											}
+											break;
+										case 'Enter':
+											{
+												const game =
+													this.state.category[this.state.last_select];
 
-											this.setState({
-												last_select: next,
-											});
-										}
-										break;
-									case 'Enter':
-										{
-											const game = this.state.category[this.state.last_select];
+												this.input.current.blur();
+												this.setState({
+													input_focused: false,
+												});
+												this.props.navigate(
+													`${resolveRoute('/games/', 'player')}?id=${game.id}`
+												);
+											}
+											break;
+										default:
+											prevent_default = false;
+											break;
+										// no default
+									}
 
-											this.input.current.blur();
-											this.setState({
-												input_focused: false,
-											});
-											this.props.navigate(
-												`${resolveRoute('/games/', 'player')}?id=${game.id}`
-											);
-										}
-										break;
-									default:
-										prevent_default = false;
-										break;
-									// no default
-								}
-
-								if (prevent_default) {
-									event.preventDefault();
-								}
-							}}
-							onChange={event => {
-								this.search(event.target.value);
+									if (prevent_default) {
+										event.preventDefault();
+									}
+								}}
+								onChange={event => {
+									this.search(event.target.value);
+									this.setState({
+										last_select: -1,
+									});
+								}}
+							></input>
+						</ThemeInputBar>
+						<div
+							className="suggested"
+							onMouseLeave={() => {
 								this.setState({
 									last_select: -1,
 								});
 							}}
-						></input>
-					</ThemeInputBar>
-					<div
-						className="suggested"
-						onMouseLeave={() => {
-							this.setState({
-								last_select: -1,
-							});
-						}}
-					>
-						{suggested}
+						>
+							{suggested}
+						</div>
 					</div>
-				</div>
-				{jsx_categories}
-			</main>
+					{jsx_categories}
+				</main>
+				<Footer />
+			</>
 		);
 	}
 }
