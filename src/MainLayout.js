@@ -148,7 +148,7 @@ class MainLayout extends Layout {
 						className="cover"
 						onClick={() => this.setState({ expanded: false })}
 					></div>
-					<div tabIndex="0" className="menu" ref={this.menu}>
+					<div tabIndex={0} className="menu" ref={this.menu}>
 						<div className="top">
 							<div
 								className="button"

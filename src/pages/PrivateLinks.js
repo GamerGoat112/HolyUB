@@ -83,9 +83,9 @@ export default class PrivateLinks extends Component {
 							<div className="tld">{this.state.tld || '.com'}</div>
 						</div>
 						<ThemeButton type="submit">Redeem</ThemeButton>
-						<div className="error">
+						<p style={{ color: 'var(--error)' }}>
 							{this.state.error !== undefined && this.state.error.toString()}
-						</div>
+						</p>
 					</form>
 				</main>
 				<Footer />

@@ -64,7 +64,7 @@ export default class Proxies extends Component {
 				suggested.push(
 					<div
 						key={i}
-						tabIndex="0"
+						tabIndex={0}
 						className={clsx('option', i === this.state.last_select && 'hover')}
 						onClick={() => {
 							this.last_input = 'select';

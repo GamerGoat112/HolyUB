@@ -225,7 +225,7 @@ export default class GamesPlayer extends Component {
 						src={this.state.resolved_src}
 					/>
 					<div
-						tabIndex="0"
+						tabIndex={0}
 						className="controls"
 						ref={this.controls_popup}
 						onBlur={event => {
@@ -261,6 +261,7 @@ export default class GamesPlayer extends Component {
 					{controls.length !== 0 && (
 						<div
 							className="button"
+							tabIndex={0}
 							ref={this.controls_open}
 							onClick={async () => {
 								await this.setState({

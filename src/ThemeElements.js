@@ -114,7 +114,7 @@ export class ThemeSelect extends Component {
 		return (
 			<div
 				{...attributes}
-				tabIndex="0"
+				tabIndex={0}
 				className={clsx('theme-select', className)}
 				data-open={Number(this.state.open)}
 				ref={this.container}

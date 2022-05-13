@@ -1,11 +1,6 @@
 @import './Common.scss';
 
 main.private-links {
-	flex-direction: column;
-	min-height: calc(100vh - var(--nav-height-border));
-	overflow: hidden;
-	display: flex;
-
 	> .redeem {
 		> .theme-input,
 		> .theme-input-bar {

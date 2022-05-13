@@ -81,7 +81,7 @@ async function cloak_url(url) {
 
 export default function TabCloak(props) {
 	const input = useRef();
-	const [error, set_error] = useState();
+	const [error, set_error] = useState(undefined);
 
 	return (
 		<main>
@@ -119,7 +119,6 @@ export default function TabCloak(props) {
 						placeholder="https://example.org/"
 					/>
 				</form>
-				<span className="error">{error}</span>
 			</label>
 			<ThemeButton
 				onClick={() => {
@@ -132,6 +131,7 @@ export default function TabCloak(props) {
 			>
 				<Obfuscated>Reset Cloak</Obfuscated>
 			</ThemeButton>
+			<p style={{ color: 'var(--error)' }}>{error}</p>
 		</main>
 	);
 }
