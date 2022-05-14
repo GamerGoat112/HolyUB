@@ -120,7 +120,7 @@ export function obfuscateText(text, ellipsis, key) {
 
 			let content = [];
 
-			const add_chars = context.rand.intBetween(1, 4);
+			const add_chars = context.rand.intBetween(1, 2);
 			const real_at_i = context.rand(add_chars);
 
 			for (let i = 0; i < add_chars; i++) {

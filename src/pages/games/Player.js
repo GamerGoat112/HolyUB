@@ -131,7 +131,7 @@ export default class GamesPlayer extends Component {
 			return (
 				<main className="error">
 					<p>
-						Encountered an error when loading the <Obfuscated>game</Obfuscated>:
+						An error occured when loading the <Obfuscated>game</Obfuscated>:
 					</p>
 					<pre>{this.state.error.message}</pre>
 				</main>

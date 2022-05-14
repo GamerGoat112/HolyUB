@@ -23,7 +23,7 @@ function ExpandSection(props) {
 				</Link>
 			</div>
 			<div className="items">
-				<ItemList items={props.items} layout={props.layout} />
+				<ItemList items={props.items} />
 			</div>
 		</section>
 	);
@@ -203,7 +203,6 @@ export default class Popular extends Component {
 					items={_categories[id]}
 					name={name}
 					key={id}
-					layout={this.layout}
 				/>
 			);
 		}

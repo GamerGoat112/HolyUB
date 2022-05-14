@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { DB_API } from '../../root.js';
-import { GamesAPI, Section } from '../../GamesCommon.js';
+import { GamesAPI, ItemList } from '../../GamesCommon.js';
+import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
 import '../../styles/GamesCategory.scss';
 
@@ -79,11 +80,16 @@ export default class FavoritesCategory extends Component {
 		} else {
 			return (
 				<main className="games-category">
-					<Section
-						name="Favorites"
-						items={this.state.data}
-						layout={this.layout}
-					/>
+					<section>
+						<div className="name">
+							<h1>
+								<Obfuscated>Favorites</Obfuscated>
+							</h1>
+						</div>
+						<div className="items">
+							<ItemList items={this.state.data} />
+						</div>
+					</section>
 				</main>
 			);
 		}

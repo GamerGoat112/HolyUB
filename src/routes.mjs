@@ -17,7 +17,7 @@ export default routes = [
 	},
 	{
 		dir: '/games/',
-		pages: ['popular', 'favorites', 'category', 'player'],
+		pages: ['popular', 'favorites', 'category', 'player', 'all'],
 	},
 	{
 		dir: '/compat/',

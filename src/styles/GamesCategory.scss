@@ -136,9 +136,10 @@ main.games-category {
 			height: 65px;
 			align-items: center;
 
-			> h1 {
+			h1 {
 				font-size: 22px;
 				margin: 0;
+				margin-right: auto;
 			}
 
 			.see-all {
@@ -146,7 +147,6 @@ main.games-category {
 				align-items: center;
 				font-size: 16px;
 				color: inherit;
-				margin-left: auto;
 
 				> svg {
 					margin-left: 5px;

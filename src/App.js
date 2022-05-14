@@ -5,6 +5,9 @@ import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
 
+const GamesAll = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/games/All.js')
+);
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
 );
@@ -159,6 +162,14 @@ export default function App() {
 					}
 				/>
 				<Route path={resolveRoute('/games/', '')}>
+					<Route
+						path={resolveRoute('/games/', 'All', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<GamesAll layout={layout} />
+							</Suspense>
+						}
+					/>
 					<Route
 						path={resolveRoute('/games/', 'popular', false)}
 						element={

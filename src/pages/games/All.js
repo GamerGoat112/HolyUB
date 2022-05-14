@@ -4,7 +4,6 @@ import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
 import Settings from '../../Settings.js';
-import categories from './categories.json';
 import resolveRoute from '../../resolveRoute.js';
 import Footer from '../../Footer.js';
 import '../../styles/GamesCategory.scss';
@@ -138,7 +137,7 @@ export default class Category extends Component {
 
 			return (
 				<>
-					<main className="games-category" ref={this.container}>
+					<main className="error" ref={this.container}>
 						<span>
 							An error occured when loading the category:
 							<br />
@@ -187,8 +186,9 @@ export default class Category extends Component {
 					<section>
 						<div className="name">
 							<h1>
-								<Obfuscated>{categories[this.props.id].name}</Obfuscated>
+								<Obfuscated>All Games</Obfuscated>
 							</h1>
+
 							<ThemeSelect
 								className="sort"
 								defaultValue={this.settings.get('sort')}

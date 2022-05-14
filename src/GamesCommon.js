@@ -122,7 +122,7 @@ export function Item(props) {
 	);
 }
 
-export function LoadingItem(props) {
+export function LoadingItem() {
 	return (
 		<div className="item loading">
 			<div className="thumbnail" />
@@ -136,9 +136,7 @@ export function ItemList(props) {
 
 	for (let item of props.items) {
 		if (item.loading) {
-			items.push(
-				<LoadingItem key={item.id} id={item.id} layout={props.layout} />
-			);
+			items.push(<LoadingItem key={item.id} id={item.id} />);
 		} else {
 			items.push(
 				<Item
@@ -152,17 +150,4 @@ export function ItemList(props) {
 	}
 
 	return items;
-}
-
-export function Section(props) {
-	return (
-		<section>
-			<div className="name">
-				<h1>{props.name}</h1>
-			</div>
-			<div className="items">
-				<ItemList items={props.items} layout={props.layout} />
-			</div>
-		</section>
-	);
 }

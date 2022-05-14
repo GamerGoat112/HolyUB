@@ -14,6 +14,7 @@ import {
 	Menu,
 	Settings,
 	ShoppingCart,
+	Apps,
 } from '@mui/icons-material';
 import Layout from './Layout.js';
 import './styles/Navigation.scss';
@@ -184,9 +185,7 @@ class MainLayout extends Layout {
 								iconFilled={<QuestionMark />}
 								layout={this}
 							/>
-
 							<div className="bar" />
-
 							<MainMenuTab
 								route={resolveRoute('/', 'privatelinks')}
 								name="Private Links"
@@ -201,13 +200,16 @@ class MainLayout extends Layout {
 								}
 								layout={this}
 							/>
-
 							<div className="bar" />
-
 							<div className="title">
 								<Obfuscated>Games</Obfuscated>
 							</div>
-
+							<MainMenuTab
+								route={resolveRoute('/games/', 'all')}
+								name="All Games"
+								iconFilled={<Apps />}
+								layout={this}
+							/>{' '}
 							<MainMenuTab
 								route={resolveRoute('/games/', 'popular')}
 								name="Popular"
@@ -222,7 +224,6 @@ class MainLayout extends Layout {
 								layout={this}
 							/>
 							<div className="title">Genre</div>
-
 							<div className="genres">{ui_categories}</div>
 						</div>
 					</div>

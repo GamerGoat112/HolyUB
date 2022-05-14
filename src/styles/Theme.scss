@@ -11,6 +11,7 @@ $night: (
 	background: $nord0,
 	background-accent: $nord1,
 	text: #fff,
+	text-secondary: #aaa,
 	text-accent: #bbb,
 	text-placeholder: #9aa0a6,
 	border: #555,
@@ -21,6 +22,7 @@ $day: (
 	background: $nord4,
 	background-accent: $nord5,
 	text: #000,
+	text-secondary: #f0f8ff,
 	text-accent: #222,
 	text-placeholder: #9aa0a6,
 	border: #ccc,
@@ -36,6 +38,7 @@ $day: (
 	--background: #{map.get($theme, 'background')};
 	--contrast-background: #{map.get($contrast, 'background')};
 	--text: #{map.get($theme, 'text')};
+	--text-secondary: #{map.get($theme, 'text-secondary')};
 	--contrast-text: #{map.get($contrast, 'text')};
 	--text-placeholder: #{map.get($theme, 'text-placeholder')};
 	--text-accent: #{map.get($theme, 'text-accent')};
