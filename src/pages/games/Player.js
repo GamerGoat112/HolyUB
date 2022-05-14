@@ -1,7 +1,6 @@
-import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Component, createRef } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { DB_API, GAMES_CDN, HCAPTCHA_KEY } from '../../root.js';
+import { DB_API, GAMES_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { GamesAPI } from '../../GamesCommon.js';
 import Settings from '../../Settings.js';
@@ -131,7 +130,7 @@ export default class GamesPlayer extends Component {
 			return (
 				<main className="error">
 					<p>
-						An error occured when loading the <Obfuscated>game</Obfuscated>:
+						An error occuredr when loading the <Obfuscated>game</Obfuscated>:
 					</p>
 					<pre>{this.state.error.message}</pre>
 				</main>
@@ -307,25 +306,6 @@ export default class GamesPlayer extends Component {
 						{this.state.panorama ? <ChevronLeft /> : <Panorama />}
 					</div>
 				</div>
-				<HCaptcha
-					onLoad={async () => {
-						if (!this.seen) {
-							await this.captcha.current.ready;
-							this.captcha_seen = true;
-							await this.captcha.current.execute();
-						}
-					}}
-					onVerify={async token => {
-						if (this.captcha_seen === true) {
-							this.captcha_seen = false;
-							await this.api.game_plays(this.props.id, token);
-							this.seen = true;
-						}
-					}}
-					sitekey={HCAPTCHA_KEY}
-					size="invisible"
-					ref={this.captcha}
-				/>
 			</main>
 		);
 	}
