@@ -159,7 +159,7 @@ export default class Category extends Component {
 							If this problem still occurs, check{' '}
 							<Link
 								className="theme-link"
-								to={resolveRoute('/', 'support')}
+								to={resolveRoute('/', 'faq')}
 								target="_parent"
 							>
 								Support
