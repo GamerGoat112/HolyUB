@@ -89,22 +89,20 @@ function spawnAsync(...args) {
 	});
 }
 
-async function main() {
+if (!process.argv.includes('--skip-npm')) {
 	await spawnAsync('npm', ['run', 'build'], {
 		stdio: 'inherit',
 		cwd: __dirname,
 	});
-
-	await routers[process.env.REACT_APP_ROUTER]();
-
-	try {
-		await copyFile(index, join(build, '404.html'));
-		console.log('Copy', index, '/404.html');
-	} catch (error) {
-		if (error.code !== 'EEXIST') {
-			throw error;
-		}
-	}
 }
 
-main();
+await routers[process.env.REACT_APP_ROUTER]();
+
+try {
+	await copyFile(index, join(build, '404.html'));
+	console.log('Copy', index, '/404.html');
+} catch (error) {
+	if (error.code !== 'EEXIST') {
+		throw error;
+	}
+}
