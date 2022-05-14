@@ -42,6 +42,7 @@ h3 {
 	display: block;
 	z-index: 5;
 	padding: 15px;
+	pointer-events: none;
 
 	@keyframes slide-in {
 		0% {
@@ -79,6 +80,7 @@ h3 {
 	}
 
 	.notification {
+		pointer-events: all;
 		padding: 8px;
 		border-radius: 5px;
 		margin-bottom: 5px;

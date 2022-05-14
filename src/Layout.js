@@ -2,6 +2,7 @@ import { CheckCircle, Error, Info, Warning } from '@mui/icons-material';
 import clsx from 'clsx';
 import { Component, createRef, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Obfuscated } from './obfuscate.js';
 import Settings from './Settings.js';
 
 export const THEMES = ['night', 'day'];
@@ -41,7 +42,7 @@ function ScrollManager() {
 
 	return <></>;
 }
-const ANIMATION = 1.5e3;
+const ANIMATION = 0.3e3;
 
 /**
  *
@@ -83,9 +84,15 @@ export function Notification(props) {
 		>
 			<Icon className={`icon ${props.type}`} />
 			<div className="content">
-				{props.title && <div className="title">{props.title}</div>}
+				{props.title && (
+					<div className="title">
+						<Obfuscated>{props.title}</Obfuscated>
+					</div>
+				)}
 				{props.description && (
-					<div className="description">{props.description}</div>
+					<div className="description">
+						<Obfuscated>{props.description}</Obfuscated>
+					</div>
 				)}
 			</div>
 			<div
@@ -179,7 +186,7 @@ export default class Layout extends Component {
 		this.cloak = new Settings(
 			'cloak settings',
 			{
-				url: '',
+				value: '',
 				title: '',
 				icon: '',
 			},

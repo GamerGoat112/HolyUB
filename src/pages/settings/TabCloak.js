@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { Notification } from '../../Layout.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
-import { http_s_protocol, whitespace } from '../../SearchBuilder.js';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
 const bare = new BareClient(BARE_API);
@@ -40,6 +39,10 @@ async function extract_data(url) {
 		}
 	}
 
+	icon = await blobToDataURL(
+		await (await bare.fetch(icon, { redirect: 'follow' })).blob()
+	);
+
 	{
 		const selector = dom.querySelector('title');
 
@@ -54,8 +57,11 @@ async function extract_data(url) {
 	return { icon, title };
 }
 
+const whitespace = /\s+/;
+const protocol = /^\w+:/;
+
 function resolve_url(input) {
-	if (input.match(http_s_protocol)) {
+	if (input.match(protocol)) {
 		return input;
 	} else if (input.includes('.') && !input.match(whitespace)) {
 		return `http://${input}`;
@@ -77,7 +83,7 @@ async function cloak_url(url) {
 				icon: 'none',
 			};
 		default:
-			return await extract_data(resolve_url(url));
+			return await extract_data(url);
 	}
 }
 
@@ -97,26 +103,27 @@ export default function TabCloak(props) {
 	async function onSubmit() {
 		try {
 			const { value } = input.current;
-			const { title, icon } = await cloak_url(value);
+
+			const url = resolve_url(value);
+
+			props.layout.current.notifications.current.add(
+				<Notification description={`Fetching ${url}`} type="info" />
+			);
+
+			const { title, icon } = await cloak_url(url);
 
 			props.layout.current.cloak.set({
 				title,
-				icon: await blobToDataURL(
-					await (await bare.fetch(icon, { redirect: 'follow' })).blob()
-				),
+				icon,
 				value,
 			});
 
 			props.layout.current.notifications.current.add(
-				<Notification description="Cloak set" type="info" />
+				<Notification description="Cloak set" type="success" />
 			);
 		} catch (error) {
 			props.layout.current.notifications.current.add(
-				<Notification
-					title={error.name}
-					description={error.message}
-					type="error"
-				/>
+				<Notification description={error.message} type="error" />
 			);
 		}
 	}
@@ -156,7 +163,7 @@ export default function TabCloak(props) {
 						props.layout.current.cloak.set({
 							title: '',
 							icon: '',
-							url: '',
+							value: '',
 						});
 
 						props.layout.current.notifications.current.add(
