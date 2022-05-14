@@ -100,10 +100,7 @@ export function Item(props) {
 	const [loaded, set_loaded] = useState(false);
 
 	return (
-		<Link
-			to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}
-			onClick={() => props.layout.current.setState({ expanded: false })}
-		>
+		<Link to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}>
 			<div className="item">
 				<div className="thumbnail">
 					<img
