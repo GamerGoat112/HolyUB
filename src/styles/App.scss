@@ -31,6 +31,77 @@ h3 {
 	overflow: hidden;
 }
 
+.notifications {
+	position: fixed;
+	top: 0;
+	right: 0;
+	box-sizing: border-box;
+	width: 300px;
+	height: 100vh;
+	overflow: hidden;
+	display: block;
+	z-index: 5;
+	padding: 15px;
+
+	@keyframes slide-in {
+		0% {
+			transform: translateX(100vw);
+		}
+
+		50% {
+			transform: translateX(50vw);
+		}
+
+		100% {
+			transform: translateX(0vw);
+		}
+	}
+
+	@keyframes slide-out {
+		0% {
+			visibility: visible;
+			transform: translateX(0vw);
+		}
+
+		50% {
+			transform: translateX(50vw);
+		}
+
+		100% {
+			visibility: hidden;
+			transform: translateX(100vw);
+		}
+	}
+
+	.notification {
+		box-sizing: border-box;
+		color: #fff;
+		padding: 5px;
+		border-radius: 5px;
+		margin-bottom: 5px;
+		transition-timing-function: cubic-bezier(0.16, 0.63, 0, 0.79);
+		transition: transform top;
+		animation: slide-in 1.5s;
+
+		&.hiding {
+			visibility: hidden;
+			animation: slide-out 1.5s;
+		}
+
+		&.error {
+			background: var(--error);
+		}
+
+		&.info {
+			background: var(--info);
+		}
+
+		&.success {
+			background: var(--success);
+		}
+	}
+}
+
 main {
 	padding: 0px 5%;
 	margin: 20px 0px;

@@ -1,4 +1,5 @@
-import { Component, useRef } from 'react';
+import clsx from 'clsx';
+import { Component, createRef, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Settings from './Settings.js';
 
@@ -40,7 +41,81 @@ function ScrollManager() {
 	return <></>;
 }
 
+const ANIMATION = 1.5e3;
+
+/**
+ *
+ * @param {{manager: NotificationsManager, id: string, type: 'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
+ */
+export function Notification(props) {
+	const [hiding, set_hiding] = useState(false);
+
+	useEffect(() => {
+		const duration = props.duration || 5e3;
+
+		setTimeout(() => {
+			set_hiding(true);
+			setTimeout(() => props.manager.delete(props.id), ANIMATION);
+		}, duration);
+	});
+
+	return (
+		<div className={clsx('notification', hiding && 'hiding', props.type)}>
+			{props.title && <div className="title">{props.title}</div>}
+			{props.description && (
+				<div className="description">{props.description}</div>
+			)}
+		</div>
+	);
+}
+
+class NotificationsManager extends Component {
+	/**
+	 * @type {Notification[]}
+	 */
+	notifications = [];
+	animations = [];
+	/**
+	 *
+	 * @param {Notification} notification
+	 */
+	add(notification) {
+		const id = Math.random();
+
+		this.notifications.push(
+			<Notification {...notification.props} key={id} id={id} manager={this} />
+		);
+
+		this.forceUpdate();
+	}
+	/**
+	 *
+	 * @param {string} id
+	 */
+	delete(id) {
+		for (let i = 0; i < this.notifications.length; i++) {
+			const notification = this.notifications[i];
+
+			console.log(notification.props.id, id);
+			if (notification.props.id !== id) {
+				continue;
+			}
+
+			this.notifications.splice(i, 1);
+			this.forceUpdate();
+
+			return true;
+		}
+
+		return false;
+	}
+	render() {
+		return <div className="notifications">{this.notifications}</div>;
+	}
+}
+
 export default class Layout extends Component {
+	notifications = createRef();
 	state = {
 		fullscreen: this.get_fullscreen(),
 		expanded: false,
@@ -110,7 +185,6 @@ export default class Layout extends Component {
 		document.removeEventListener('keydown', this.listen_keydown);
 		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
 	}
-	last_page = '';
 	render() {
 		document.documentElement.dataset.theme = this.settings.get('theme');
 		document.documentElement.dataset.fullscreen = Number(this.state.fullscreen);
@@ -140,6 +214,7 @@ export default class Layout extends Component {
 
 		return (
 			<>
+				<NotificationsManager ref={this.notifications} />
 				<ScrollManager />
 			</>
 		);
