@@ -1,3 +1,4 @@
+import { CheckCircle, Error, Info, Warning } from '@mui/icons-material';
 import clsx from 'clsx';
 import { Component, createRef, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -40,39 +41,57 @@ function ScrollManager() {
 
 	return <></>;
 }
-
 const ANIMATION = 1.5e3;
 
 /**
  *
- * @param {{manager: NotificationsManager, id: string, type: 'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
+ * @param {{manager: NotificationsManager, id: string, type: 'warning'|'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
  */
 export function Notification(props) {
-	const [show, set_show] = useState(false);
+	const [hide, set_hide] = useState(false);
+
+	const duration = props.duration || 5e3;
 
 	useEffect(() => {
-		const duration = props.duration || 2e3;
-
 		setTimeout(() => {
-			props.manager.animation = props.manager.animation.then(
-				() =>
-					new Promise(resolve => {
-						set_show('hide');
-						setTimeout(() => {
-							props.manager.delete(props.id);
-							resolve();
-						}, ANIMATION);
-					})
-			);
+			set_hide(true);
+			setTimeout(() => props.manager.delete(props.id), ANIMATION);
 		}, duration);
 	});
 
+	let Icon;
+
+	switch (props.type) {
+		case 'warning':
+			Icon = Warning;
+			break;
+		case 'error':
+			Icon = Error;
+			break;
+		case 'success':
+			Icon = CheckCircle;
+			break;
+		default:
+		case 'info':
+			Icon = Info;
+			break;
+	}
+
 	return (
-		<div className={clsx('notification', show, props.type)}>
-			{props.title && <div className="title">{props.title}</div>}
-			{props.description && (
-				<div className="description">{props.description}</div>
-			)}
+		<div
+			className={clsx('notification', hide && 'hide', props.title && 'title')}
+		>
+			<Icon className={`icon ${props.type}`} />
+			<div className="content">
+				{props.title && <div className="title">{props.title}</div>}
+				{props.description && (
+					<div className="description">{props.description}</div>
+				)}
+			</div>
+			<div
+				className="timer"
+				style={{ animationDuration: `${duration / 1000}s` }}
+			/>
 		</div>
 	);
 }
@@ -82,7 +101,7 @@ class NotificationsManager extends Component {
 	 * @type {Notification[]}
 	 */
 	notifications = [];
-	animation = Promise.resolve();
+	animations = [];
 	/**
 	 *
 	 * @param {Notification} notification

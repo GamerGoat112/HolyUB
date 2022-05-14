@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 export default function FAQ(props) {
 	useEffect(() => {
 		props.layout.current.notifications.current.add(
-			<Notification description="Info" type="info" />
+			<Notification title="dest" description="Info" type="info" />
 		);
 
 		setTimeout(() => {
@@ -20,33 +20,6 @@ export default function FAQ(props) {
 		setTimeout(() => {
 			props.layout.current.notifications.current.add(
 				<Notification description="Error" type="error" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
 			);
 		}, 400);
 	});

@@ -79,31 +79,73 @@ h3 {
 	}
 
 	.notification {
-		box-sizing: border-box;
-		color: #fff;
-		padding: 5px;
+		padding: 8px;
 		border-radius: 5px;
 		margin-bottom: 5px;
-		transition-timing-function: cubic-bezier(0.16, 0.63, 0, 0.79);
+		transition-timing-function: ease;
 		transition: transform, height;
-		animation: slide-in 1.5s;
-		height: 30px;
+		animation: slide-in 0.3s;
+		height: 25px;
+		background: var(--background-accent);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-size: 14px;
+		position: relative;
+		overflow: hidden;
+
+		&.title {
+			height: 50px;
+		}
+
+		.content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			.title {
+				font-weight: bold;
+			}
+		}
+
+		.icon {
+			box-sizing: border-box;
+			margin-right: 5px;
+
+			&.error {
+				color: var(--error);
+			}
+
+			&.info {
+				color: var(--info);
+			}
+
+			&.success {
+				color: var(--success);
+			}
+		}
+
+		@keyframes timer {
+			from {
+				width: 100%;
+			}
+			to {
+				width: 0%;
+			}
+		}
+
+		.timer {
+			position: absolute;
+			height: 2px;
+			left: 0;
+			bottom: 0;
+			animation: timer linear;
+			background: var(--contrast-background);
+		}
 
 		&.hide {
 			visibility: hidden;
-			animation: slide-out 1.5s;
-		}
-
-		&.error {
-			background: var(--error);
-		}
-
-		&.info {
-			background: var(--info);
-		}
-
-		&.success {
-			background: var(--success);
+			animation: slide-out 0.3s;
 		}
 	}
 }
