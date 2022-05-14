@@ -3,7 +3,7 @@ import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward, Search } from '@mui/icons-material';
-import categories from './categories.json';
+import categories from './categories.js';
 import { Obfuscated } from '../../obfuscate.js';
 import Settings from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';

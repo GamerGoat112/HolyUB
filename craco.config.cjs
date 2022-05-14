@@ -1,20 +1,12 @@
 const WebpackObfuscator = require('webpack-obfuscator');
-const { resolve, join } = require('path');
-const { config } = require('dotenv');
-const { cwd } = require('node:process');
-
-config({ path: join(cwd(), '.env'), override: true });
-config({ path: join(cwd(), '.env.local'), override: true });
-
-if (process.env.NODE_ENV === 'production') {
-	config({ path: join(cwd(), '.env.production'), override: true });
-	config({ path: join(cwd(), '.env.production.local'), override: true });
-} else {
-	config({ path: join(cwd(), '.env.development'), override: true });
-	config({ path: join(cwd(), '.env.development.local'), override: true });
-}
+const { resolve } = require('path');
+require('react-scripts/config/env.js');
 
 const env = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
+
+console.log(
+	Object.fromEntries(env.concat('BROWSER').map(env => [env, process.env[env]]))
+);
 
 module.exports = {
 	webpack: {
@@ -24,29 +16,26 @@ module.exports = {
 		 * @returns {import('webpack').Configuration}
 		 */
 		configure(config) {
+			config.module.rules.push({
+				test: /\.js$/,
+				loader: 'string-replace-loader',
+				options: {
+					search: /process\.env\.(\w+)/g,
+					replace: (match, menv) => {
+						if (env.includes(menv)) {
+							return JSON.stringify(process.env[menv]);
+						} else {
+							return match;
+						}
+					},
+				},
+			});
+
 			if (config.mode === 'production') {
 				config.module.rules.push({
 					test: /\.js$/,
-					loader: 'string-replace-loader',
-					options: {
-						search: /process\.env\.(\w+)/g,
-						replace: (match, menv) => {
-							if (env.includes(menv)) {
-								return JSON.stringify(process.env[menv]);
-							} else {
-								return match;
-							}
-						},
-					},
-				});
-
-				config.module.rules.push({
-					test: /\.js$/,
 					enforce: 'post',
-					exclude: [
-						resolve(__dirname, 'node_modules'),
-						resolve(__dirname, 'src', 'App.js'),
-					],
+					exclude: [resolve(__dirname, 'node_modules')],
 					use: {
 						loader: WebpackObfuscator.loader,
 						options: {

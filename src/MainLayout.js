@@ -2,7 +2,7 @@ import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
 import { createRef, forwardRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import categories from './pages/games/categories.json';
+import categories from './pages/games/categories.js';
 import {
 	Home,
 	HomeOutlined,

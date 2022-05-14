@@ -3,14 +3,8 @@ import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { mkdir, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { config } from 'dotenv';
-import { cwd } from 'node:process';
-
-config({ path: join(cwd(), '.env'), override: true });
-config({ path: join(cwd(), '.env.local'), override: true });
-
-config({ path: join(cwd(), '.env.production'), override: true });
-config({ path: join(cwd(), '.env.production.local'), override: true });
+process.env.NODE_ENV = 'production';
+await import('react-scripts/config/env.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -90,7 +84,7 @@ function spawnAsync(...args) {
 }
 
 if (!process.argv.includes('--skip-npm')) {
-	await spawnAsync('npm', ['run', 'build'], {
+	await spawnAsync('npx', ['craco', 'build'], {
 		stdio: 'inherit',
 		cwd: __dirname,
 	});

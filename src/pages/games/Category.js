@@ -4,11 +4,10 @@ import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
 import Settings from '../../Settings.js';
-import categories from './categories.json';
 import resolveRoute from '../../resolveRoute.js';
 import Footer from '../../Footer.js';
-import '../../styles/GamesCategory.scss';
 import { Obfuscated } from '../../obfuscate.js';
+import '../../styles/GamesCategory.scss';
 
 export default class Category extends Component {
 	constructor(props) {
@@ -187,11 +186,12 @@ export default class Category extends Component {
 					<section>
 						<div className="name">
 							<h1>
-								<Obfuscated>{categories[this.props.id].name}</Obfuscated>
+								<Obfuscated>{this.props.name}</Obfuscated>
 							</h1>
 							<ThemeSelect
 								className="sort"
 								defaultValue={this.settings.get('sort')}
+								style={{ width: 200 }}
 								onChange={event => {
 									this.settings.set('sort', event.target.value);
 									this.fetch();

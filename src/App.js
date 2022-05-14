@@ -5,9 +5,7 @@ import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
 
-const GamesAll = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/All.js')
-);
+/* javascript-obfuscator:disable */
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
 );
@@ -67,6 +65,7 @@ const Stomp = lazy(() =>
 const Flash = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/compat/Flash.js')
 );
+/* javascript-obfuscator:enable */
 
 function PlayerProxy(props) {
 	const [searchParams] = useSearchParams();
@@ -166,7 +165,7 @@ export default function App() {
 						path={resolveRoute('/games/', 'all', false)}
 						element={
 							<Suspense fallback={<></>}>
-								<GamesAll layout={layout} />
+								<GamesCategory name="All Games" key="all" layout={layout} />
 							</Suspense>
 						}
 					/>
