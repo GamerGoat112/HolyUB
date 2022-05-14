@@ -1,14 +1,15 @@
 import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { Notification } from '../../Layout.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 import { http_s_protocol, whitespace } from '../../SearchBuilder.js';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
-async function extract_data(url) {
-	const bare = new BareClient(BARE_API);
+const bare = new BareClient(BARE_API);
 
+async function extract_data(url) {
 	const response = await bare.fetch(url, {
 		redirect: 'follow',
 	});
@@ -80,9 +81,45 @@ async function cloak_url(url) {
 	}
 }
 
+async function blobToDataURL(blob) {
+	const reader = new FileReader();
+
+	return new Promise((resolve, reject) => {
+		reader.addEventListener('load', () => resolve(reader.result));
+		reader.addEventListener('error', reject);
+		reader.readAsDataURL(blob);
+	});
+}
+
 export default function TabCloak(props) {
 	const input = useRef();
-	const [error, set_error] = useState(undefined);
+
+	async function onSubmit() {
+		try {
+			const { value } = input.current;
+			const { title, icon } = await cloak_url(value);
+
+			props.layout.current.cloak.set({
+				title,
+				icon: await blobToDataURL(
+					await (await bare.fetch(icon, { redirect: 'follow' })).blob()
+				),
+				value,
+			});
+
+			props.layout.current.notifications.current.add(
+				<Notification description="Cloak set" type="info" />
+			);
+		} catch (error) {
+			props.layout.current.notifications.current.add(
+				<Notification
+					title={error.name}
+					description={error.message}
+					type="error"
+				/>
+			);
+		}
+	}
 
 	return (
 		<section>
@@ -97,22 +134,9 @@ export default function TabCloak(props) {
 					<Obfuscated>URL</Obfuscated>:
 				</span>
 				<form
-					onSubmit={async event => {
+					onSubmit={event => {
 						event.preventDefault();
-
-						try {
-							const { value } = input.current;
-							const { title, icon } = await cloak_url(value);
-
-							props.layout.current.cloak.set({
-								title,
-								icon,
-								value,
-							});
-						} catch (error) {
-							console.error(error);
-							set_error(error.toString());
-						}
+						onSubmit();
 					}}
 				>
 					<ThemeInputBar>
@@ -122,7 +146,7 @@ export default function TabCloak(props) {
 							placeholder="https://example.org/"
 							ref={input}
 						/>
-						<Check className="button right" />
+						<Check onClick={onSubmit} className="button right" />
 					</ThemeInputBar>
 				</form>
 			</div>
@@ -134,12 +158,15 @@ export default function TabCloak(props) {
 							icon: '',
 							url: '',
 						});
+
+						props.layout.current.notifications.current.add(
+							<Notification description="Cloak reset" type="info" />
+						);
 					}}
 				>
 					<Obfuscated>Reset Cloak</Obfuscated>
 				</ThemeButton>
 			</div>
-			<p style={{ color: 'var(--error)' }}>{error}</p>
 		</section>
 	);
 }

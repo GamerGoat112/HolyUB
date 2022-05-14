@@ -4,14 +4,14 @@ import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
 import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
 import Footer from '../Footer.js';
+import { Notification } from '../Layout.js';
 import '../styles/PrivateLinks.scss';
 
-export default function PrivateLinks() {
+export default function PrivateLinks(props) {
 	const voucher = createRef();
 	const domain = createRef();
 	const abort = useRef();
 	const [tld, set_tld] = useState();
-	const [error, set_error] = useState();
 
 	return (
 		<>
@@ -48,8 +48,13 @@ export default function PrivateLinks() {
 								error.message !== 'The operation was aborted' &&
 								error.message !== 'The user aborted a request.'
 							) {
-								console.error(error);
-								set_error(error);
+								props.layout.current.notifications.current.add(
+									<Notification
+										title={error.name}
+										description={error.message}
+										type="error"
+									/>
+								);
 							}
 						}
 					}}
@@ -57,7 +62,11 @@ export default function PrivateLinks() {
 				>
 					<ThemeInput
 						onChange={async () => {
-							abort.abort();
+							if (abort.current) {
+								abort.current.abort();
+							}
+
+							abort.current = new AbortController();
 
 							const api = new VoucherAPI(VO_API, abort.current.signal);
 
@@ -68,26 +77,33 @@ export default function PrivateLinks() {
 							} catch (error) {
 								if (error.message !== 'The user aborted a request.') {
 									console.error(error);
-									set_error(error);
+									props.layout.current.notifications.current.add(
+										<Notification
+											title={error.name}
+											description={error.message}
+											type="error"
+										/>
+									);
 								}
 							}
 						}}
 						style={{ width: '100%' }}
 						ref={voucher}
 						placeholder="Voucher"
+						required
 					/>
 					<ThemeInputBar className="domain" style={{ width: '100%' }}>
 						<input
 							className="thin-pad-right"
 							placeholder="Domain"
 							ref={domain}
-						></input>
+							required
+						/>
 						<div className="block right" style={{ width: 64 }}>
 							{tld || '.com'}
 						</div>
 					</ThemeInputBar>
 					<ThemeButton type="submit">Redeem</ThemeButton>
-					<p style={{ color: 'var(--error)' }}>{error && error.toString()}</p>
 				</form>
 			</main>
 			<Footer />

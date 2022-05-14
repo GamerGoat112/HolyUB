@@ -2,28 +2,8 @@ import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
 import faq from '../faq.js';
 import Footer from '../Footer.js';
-import { Notification } from '../Layout.js';
-import { useEffect } from 'react';
 
 export default function FAQ(props) {
-	useEffect(() => {
-		props.layout.current.notifications.current.add(
-			<Notification title="dest" description="Info" type="info" />
-		);
-
-		setTimeout(() => {
-			props.layout.current.notifications.current.add(
-				<Notification description="Success" type="success" />
-			);
-		}, 200);
-
-		setTimeout(() => {
-			props.layout.current.notifications.current.add(
-				<Notification description="Error" type="error" />
-			);
-		}, 400);
-	});
-
 	const sections = [];
 
 	for (let i = 0; i < faq.length; i++) {
