@@ -2,23 +2,26 @@
 
 main.settings {
 	display: flex;
+	margin: 0;
+	padding: 0;
 	padding-left: 300px;
 	flex-direction: column;
 	display: flex;
 
-	> main {
+	> section {
 		margin: 0;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		height: auto;
-		padding: 30px;
+		padding: 15px 30px;
 		box-sizing: border-box;
 
-		.theme-input {
-			width: 500px;
+		.theme-input,
+		.theme-input-bar {
+			width: 501px;
 
-			@media only screen and (max-width: 795px) {
+			@media only screen and (max-width: 861px) {
 				width: auto;
 			}
 		}
@@ -27,7 +30,7 @@ main.settings {
 			width: 200px;
 		}
 
-		label {
+		> div {
 			display: flex;
 			flex-direction: column;
 			margin-bottom: 10px;

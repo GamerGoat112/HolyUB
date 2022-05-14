@@ -8,6 +8,7 @@ import textContent from '../textContent.js';
 import engines from '../engines.js';
 import clsx from 'clsx';
 import '../styles/Proxy.scss';
+import { ThemeInputBar } from '../ThemeElements.js';
 
 export default class Proxies extends Component {
 	service_frame = createRef();
@@ -124,13 +125,14 @@ export default class Proxies extends Component {
 						}}
 						ref={this.form}
 					>
-						<div className="theme-input-bar">
+						<ThemeInputBar>
 							<Search className="icon" />
 							<input
 								type="text"
 								placeholder={`Search ${engine.name} or type a URL`}
 								required={this.state.last_select === -1}
 								autoComplete="off"
+								className="thin-pad-left"
 								list="proxy-omnibox"
 								ref={this.input}
 								onInput={this.on_input.bind(this)}
@@ -206,7 +208,7 @@ export default class Proxies extends Component {
 									}
 								}}
 							/>
-						</div>
+						</ThemeInputBar>
 						<div
 							ref={this.suggested}
 							className="suggested"

@@ -1,95 +1,96 @@
-import { Component, createRef } from 'react';
+import { createRef, useRef, useState } from 'react';
 import { ObfuscatedA } from '../obfuscate.js';
 import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
-import { ThemeButton } from '../ThemeElements.js';
+import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
 import Footer from '../Footer.js';
 import '../styles/PrivateLinks.scss';
 
-export default class PrivateLinks extends Component {
-	voucher = createRef();
-	domain = createRef();
-	api = new VoucherAPI(VO_API);
-	abort = new AbortController();
-	state = {};
-	render() {
-		return (
-			<>
-				<main className="private-links">
-					<p>
-						To use this service, you will need a voucher. Purchase a voucher{' '}
-						<ObfuscatedA href={VOUCHER_URL}>here</ObfuscatedA>.
-					</p>
-					<form
-						onSubmit={async event => {
-							event.preventDefault();
-							this.abort.abort();
-							this.abort = new AbortController();
+export default function PrivateLinks() {
+	const voucher = createRef();
+	const domain = createRef();
+	const abort = useRef();
+	const [tld, set_tld] = useState();
+	const [error, set_error] = useState();
+
+	return (
+		<>
+			<main className="private-links">
+				<p>
+					To use this service, you will need a voucher. Purchase a voucher{' '}
+					<ObfuscatedA className="theme-link" href={VOUCHER_URL}>
+						here
+					</ObfuscatedA>
+					.
+				</p>
+				<form
+					onSubmit={async event => {
+						if (abort.current) {
+							abort.current.abort();
+						}
+
+						abort.current = new AbortController();
+
+						const api = new VoucherAPI(VO_API, abort.current.signal);
+
+						event.preventDefault();
+
+						try {
+							// PLACEHOLDER
+							// no idea what to do with this data...
+							// see https://discord.com/channels/956789074121863178/957489824909111317/972748339223334962
+							await api.redeem_voucher(
+								voucher.current.value,
+								domain.current.value
+							);
+						} catch (error) {
+							if (
+								error.message !== 'The operation was aborted' &&
+								error.message !== 'The user aborted a request.'
+							) {
+								console.error(error);
+								set_error(error);
+							}
+						}
+					}}
+					className="redeem"
+				>
+					<ThemeInput
+						onChange={async () => {
+							abort.abort();
+
+							const api = new VoucherAPI(VO_API, abort.current.signal);
 
 							try {
-								// PLACEHOLDER
-								// no idea what to do with this data...
-								// see https://discord.com/channels/956789074121863178/957489824909111317/972748339223334962
-								await this.api.redeem_voucher(
-									this.voucher.current.value,
-									this.domain.current.value,
-									this.abort.signal
-								);
-							} catch (error) {
-								if (
-									error.message !== 'The operation was aborted' &&
-									error.message !== 'The user aborted a request.'
-								) {
-									console.error(error);
+								const data = await api.show_voucher(voucher.current.value);
 
-									this.setState({
-										error,
-									});
+								set_tld(data.tld);
+							} catch (error) {
+								if (error.message !== 'The user aborted a request.') {
+									console.error(error);
+									set_error(error);
 								}
 							}
 						}}
-						className="redeem"
-					>
+						style={{ width: '100%' }}
+						ref={voucher}
+						placeholder="Voucher"
+					/>
+					<ThemeInputBar className="domain" style={{ width: '100%' }}>
 						<input
-							onChange={async () => {
-								this.abort.abort();
-								this.abort = new AbortController();
-
-								try {
-									const { tld } = await this.api.show_voucher(
-										this.voucher.current.value,
-										this.abort.signal
-									);
-
-									this.setState({
-										tld,
-									});
-								} catch (error) {
-									if (error.message !== 'The user aborted a request.') {
-										console.error(error);
-
-										this.setState({
-											error,
-										});
-									}
-								}
-							}}
-							ref={this.voucher}
-							placeholder="Voucher"
-							className="theme-input"
+							className="thin-pad-right"
+							placeholder="Domain"
+							ref={domain}
 						></input>
-						<div className="theme-input-bar">
-							<input placeholder="Domain" ref={this.domain}></input>
-							<div className="tld">{this.state.tld || '.com'}</div>
+						<div className="block right" style={{ width: 64 }}>
+							{tld || '.com'}
 						</div>
-						<ThemeButton type="submit">Redeem</ThemeButton>
-						<p style={{ color: 'var(--error)' }}>
-							{this.state.error !== undefined && this.state.error.toString()}
-						</p>
-					</form>
-				</main>
-				<Footer />
-			</>
-		);
-	}
+					</ThemeInputBar>
+					<ThemeButton type="submit">Redeem</ThemeButton>
+					<p style={{ color: 'var(--error)' }}>{error && error.toString()}</p>
+				</form>
+			</main>
+			<Footer />
+		</>
+	);
 }

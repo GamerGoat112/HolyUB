@@ -21,7 +21,7 @@ export default function FAQ() {
 		<>
 			<main className="faq">
 				{sections}
-				<p style={{ marginTop: '30px', opacity: 0.75 }}>
+				<p style={{ marginTop: 30, opacity: 0.75 }}>
 					Not what you're looking for?{' '}
 					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
 						Contact Us

@@ -9,8 +9,26 @@
  */
 
 export default class VoucherAPI {
-	constructor(server) {
+	/**
+	 *
+	 * @param {string} server
+	 * @param {AbortSignal} [signal]
+	 */
+	constructor(server, signal) {
 		this.server = server;
+		this.signal = signal;
+	}
+	/**
+	 *
+	 * @param {string} url
+	 * @param {object} init
+	 * @returns
+	 */
+	async fetch(url, init = {}) {
+		return await fetch(new URL(url, this.server), {
+			...init,
+			signal: this.signal,
+		});
 	}
 	/**
 	 *
@@ -18,11 +36,8 @@ export default class VoucherAPI {
 	 * @param {AbortSignal} [signal]
 	 * @returns {Voucher}
 	 */
-	async show_voucher(voucher, signal) {
-		const outgoing = await fetch(
-			new URL(`./vouchers/${voucher}/`, this.server),
-			{ signal }
-		);
+	async show_voucher(voucher) {
+		const outgoing = await this.fetch(`./vouchers/${voucher}/`);
 
 		if (!outgoing.ok) {
 			throw await outgoing.json();
@@ -33,14 +48,13 @@ export default class VoucherAPI {
 	/**
 	 *
 	 * @param {string} voucher
-	 * @param {AbortSignal} [signal]
 	 * @returns {RedeemedVoucher}
 	 */
-	async redeem_voucher(voucher, domain, signal) {
-		const outgoing = await fetch(
-			new URL(`./vouchers/${voucher}/`, this.server),
-			{ signal, method: 'POST', body: JSON.stringify({ domain }) }
-		);
+	async redeem_voucher(voucher, domain) {
+		const outgoing = await this.fetch(`./vouchers/${voucher}/`, {
+			method: 'POST',
+			body: JSON.stringify({ domain }),
+		});
 
 		if (!outgoing.ok) {
 			throw await outgoing.json();

@@ -4,8 +4,8 @@ import engines from '../../engines.js';
 
 export default function Search(props) {
 	return (
-		<main>
-			<label>
+		<section>
+			<div>
 				<span>
 					<Obfuscated>Proxy</Obfuscated>:
 				</span>
@@ -20,8 +20,8 @@ export default function Search(props) {
 					<option value="rammerhead">Rammerhead</option>
 					<option value="stomp">Stomp</option>
 				</ThemeSelect>
-			</label>
-			<label>
+			</div>
+			<div>
 				<span>
 					<Obfuscated>Search Engine</Obfuscated>:
 				</span>
@@ -37,7 +37,7 @@ export default function Search(props) {
 						</option>
 					))}
 				</ThemeSelect>
-			</label>
-		</main>
+			</div>
+		</section>
 	);
 }

@@ -2,8 +2,8 @@ import { ThemeSelect } from '../../ThemeElements.js';
 
 export default function Appearance(props) {
 	return (
-		<main>
-			<label>
+		<section>
+			<div>
 				<span>Theme:</span>
 				<ThemeSelect
 					defaultValue={props.layout.current.settings.get('theme')}
@@ -14,7 +14,7 @@ export default function Appearance(props) {
 					<option value="day">Day</option>
 					<option value="night">Night</option>
 				</ThemeSelect>
-			</label>
-		</main>
+			</div>
+		</section>
 	);
 }

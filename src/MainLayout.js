@@ -195,9 +195,7 @@ class MainLayout extends Layout {
 							<MainMenuTab
 								href={PATREON_URL}
 								name="Patreon"
-								iconFilled={
-									<Patreon style={{ width: '18px', height: '18px' }} />
-								}
+								iconFilled={<Patreon style={{ width: 18, height: 18 }} />}
 								layout={this}
 							/>
 							<div className="bar" />

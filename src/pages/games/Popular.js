@@ -226,6 +226,7 @@ export default class Popular extends Component {
 							<input
 								ref={this.input}
 								type="text"
+								className="thin-pad-left"
 								placeholder="Search by game name"
 								onFocus={event => {
 									this.setState({ input_focused: true, last_select: -1 });

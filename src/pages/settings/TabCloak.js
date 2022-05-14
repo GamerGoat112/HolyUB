@@ -1,9 +1,10 @@
+import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
 import { useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 import { http_s_protocol, whitespace } from '../../SearchBuilder.js';
-import { ThemeButton, ThemeInput } from '../../ThemeElements.js';
+import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
 async function extract_data(url) {
 	const bare = new BareClient(BARE_API);
@@ -44,11 +45,12 @@ async function extract_data(url) {
 		if (selector !== null && selector.textContent !== '') {
 			title = selector.textContent;
 		} else {
-			title = url;
+			const url = response.finalURL;
+			title = `${url.host}${url.pathname}${url.search}${url.query}`;
 		}
 	}
 
-	return { icon, title, url: response.finalURL };
+	return { icon, title };
 }
 
 function resolve_url(input) {
@@ -72,7 +74,6 @@ async function cloak_url(url) {
 			return {
 				title: 'about:blank',
 				icon: 'none',
-				url: 'about:blank',
 			};
 		default:
 			return await extract_data(resolve_url(url));
@@ -84,14 +85,14 @@ export default function TabCloak(props) {
 	const [error, set_error] = useState(undefined);
 
 	return (
-		<main>
-			<p>
+		<section>
+			<div>
 				<Obfuscated>
 					Tab Cloaking allows you to disguise Holy Unblocker as any website such
 					as your school's home page, new tab, etc.
 				</Obfuscated>
-			</p>
-			<label>
+			</div>
+			<div>
 				<span>
 					<Obfuscated>URL</Obfuscated>:
 				</span>
@@ -100,12 +101,13 @@ export default function TabCloak(props) {
 						event.preventDefault();
 
 						try {
-							const { title, icon, url } = await cloak_url(input.current.value);
+							const { value } = input.current;
+							const { title, icon } = await cloak_url(value);
 
 							props.layout.current.cloak.set({
 								title,
 								icon,
-								url,
+								value,
 							});
 						} catch (error) {
 							console.error(error);
@@ -113,25 +115,31 @@ export default function TabCloak(props) {
 						}
 					}}
 				>
-					<ThemeInput
-						ref={input}
-						defaultValue={props.layout.current.cloak.get('url')}
-						placeholder="https://example.org/"
-					/>
+					<ThemeInputBar>
+						<input
+							className="thin-pad-right"
+							defaultValue={props.layout.current.cloak.get('url')}
+							placeholder="https://example.org/"
+							ref={input}
+						/>
+						<Check className="button right" />
+					</ThemeInputBar>
 				</form>
-			</label>
-			<ThemeButton
-				onClick={() => {
-					props.layout.current.cloak.set({
-						title: '',
-						icon: '',
-						url: '',
-					});
-				}}
-			>
-				<Obfuscated>Reset Cloak</Obfuscated>
-			</ThemeButton>
+			</div>
+			<div>
+				<ThemeButton
+					onClick={() => {
+						props.layout.current.cloak.set({
+							title: '',
+							icon: '',
+							url: '',
+						});
+					}}
+				>
+					<Obfuscated>Reset Cloak</Obfuscated>
+				</ThemeButton>
+			</div>
 			<p style={{ color: 'var(--error)' }}>{error}</p>
-		</main>
+		</section>
 	);
 }

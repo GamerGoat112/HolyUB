@@ -35,6 +35,10 @@ main.proxy {
 			display: none;
 		}
 
+		> .theme-input-bar {
+			width: 100%;
+		}
+
 		@include screen_mobile {
 			width: 100%;
 
