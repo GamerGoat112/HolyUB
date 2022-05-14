@@ -204,7 +204,7 @@ class MainLayout extends Layout {
 							</div>
 							<MainMenuTab
 								route={resolveRoute('/games/', 'all')}
-								name="All Games"
+								name="All"
 								iconFilled={<Apps />}
 								layout={this}
 							/>{' '}
