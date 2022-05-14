@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { ArrowForward, Search } from '@mui/icons-material';
 import categories from './categories.js';
 import { Obfuscated } from '../../obfuscate.js';
-import Settings from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { ThemeInputBar } from '../../ThemeElements.js';
 import Footer from '../../Footer.js';
@@ -54,10 +53,6 @@ export default class Popular extends Component {
 	}
 	searchbar = createRef();
 	input = createRef();
-	settings = new Settings('common games', {
-		favorites: [],
-		seen: [],
-	});
 	api = new GamesAPI(DB_API);
 	abort = new AbortController();
 	/**

@@ -179,6 +179,7 @@ export default class Layout extends Component {
 				theme,
 				proxy: 'automatic',
 				search: 'https://www.google.com/search?q=%s',
+				favorite_games: [],
 			},
 			this
 		);

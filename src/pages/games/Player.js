@@ -3,7 +3,6 @@ import { Obfuscated } from '../../obfuscate.js';
 import { DB_API, GAMES_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { GamesAPI } from '../../GamesCommon.js';
-import Settings from '../../Settings.js';
 import '../../styles/GamesPlayer.scss';
 import {
 	ArrowDropDown,
@@ -51,18 +50,16 @@ export default class GamesPlayer extends Component {
 		panorama: false,
 	};
 	api = new GamesAPI(DB_API);
-	settings = new Settings('common games', {
-		favorites: [],
-		seen: [],
-	});
 	get favorited() {
-		return this.settings.get('favorites').includes(this.props.id);
+		return this.layout.current.settings
+			.get('favorite_games')
+			.includes(this.props.id);
 	}
 	get seen() {
-		return this.settings.get('seen').includes(this.props.id);
+		return this.layout.current.settings.get('seen').includes(this.props.id);
 	}
 	set seen(value) {
-		const seen = this.settings.get('seen');
+		const seen = this.layout.current.settings.get('seen');
 
 		if (value) {
 			seen.push(this.props.id);
@@ -71,7 +68,7 @@ export default class GamesPlayer extends Component {
 			seen.splice(i, 1);
 		}
 
-		this.settings.set('seen', seen);
+		this.layout.current.settings.set('seen', seen);
 	}
 	captcha = createRef();
 	iframe = createRef();
@@ -276,7 +273,8 @@ export default class GamesPlayer extends Component {
 					<div
 						className="button"
 						onClick={() => {
-							const favorites = this.settings.get('favorites');
+							const favorites =
+								this.layout.current.settings.get('favorite_games');
 							const i = favorites.indexOf(this.props.id);
 
 							if (i === -1) {
@@ -285,7 +283,7 @@ export default class GamesPlayer extends Component {
 								favorites.splice(i, 1);
 							}
 
-							this.settings.set('favorites', favorites);
+							this.layout.current.settings.set('favorite_games', favorites);
 							this.forceUpdate();
 						}}
 					>
