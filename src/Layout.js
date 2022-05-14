@@ -48,19 +48,27 @@ const ANIMATION = 1.5e3;
  * @param {{manager: NotificationsManager, id: string, type: 'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
  */
 export function Notification(props) {
-	const [hiding, set_hiding] = useState(false);
+	const [show, set_show] = useState(false);
 
 	useEffect(() => {
-		const duration = props.duration || 5e3;
+		const duration = props.duration || 2e3;
 
 		setTimeout(() => {
-			set_hiding(true);
-			setTimeout(() => props.manager.delete(props.id), ANIMATION);
+			props.manager.animation = props.manager.animation.then(
+				() =>
+					new Promise(resolve => {
+						set_show('hide');
+						setTimeout(() => {
+							props.manager.delete(props.id);
+							resolve();
+						}, ANIMATION);
+					})
+			);
 		}, duration);
 	});
 
 	return (
-		<div className={clsx('notification', hiding && 'hiding', props.type)}>
+		<div className={clsx('notification', show, props.type)}>
 			{props.title && <div className="title">{props.title}</div>}
 			{props.description && (
 				<div className="description">{props.description}</div>
@@ -74,7 +82,7 @@ class NotificationsManager extends Component {
 	 * @type {Notification[]}
 	 */
 	notifications = [];
-	animations = [];
+	animation = Promise.resolve();
 	/**
 	 *
 	 * @param {Notification} notification

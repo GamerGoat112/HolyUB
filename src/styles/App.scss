@@ -61,6 +61,8 @@ h3 {
 		0% {
 			visibility: visible;
 			transform: translateX(0vw);
+			height: 30px;
+			margin-bottom: 5px;
 		}
 
 		50% {
@@ -70,6 +72,9 @@ h3 {
 		100% {
 			visibility: hidden;
 			transform: translateX(100vw);
+			height: 0px;
+			padding: 0;
+			margin-bottom: 0px;
 		}
 	}
 
@@ -80,10 +85,11 @@ h3 {
 		border-radius: 5px;
 		margin-bottom: 5px;
 		transition-timing-function: cubic-bezier(0.16, 0.63, 0, 0.79);
-		transition: transform top;
+		transition: transform, height;
 		animation: slide-in 1.5s;
+		height: 30px;
 
-		&.hiding {
+		&.hide {
 			visibility: hidden;
 			animation: slide-out 1.5s;
 		}
