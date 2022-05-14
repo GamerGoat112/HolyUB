@@ -163,7 +163,7 @@ export default function App() {
 				/>
 				<Route path={resolveRoute('/games/', '')}>
 					<Route
-						path={resolveRoute('/games/', 'All', false)}
+						path={resolveRoute('/games/', 'all', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<GamesAll layout={layout} />
