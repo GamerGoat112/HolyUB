@@ -61,15 +61,15 @@
 
 	> .button {
 		cursor: pointer;
-		background-color: var(--background-accent-deep-2);
+		background-color: var(--action);
 		color: var(--action-secondary);
 
 		&:hover {
-			background-color: var(--background-accent-deep-1);
+			background-color: var(--action-hover);
 		}
 
 		&:active {
-			background-color: var(--background);
+			background-color: var(--action-active);
 		}
 	}
 

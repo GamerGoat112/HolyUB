@@ -54,7 +54,7 @@ async function extract_data(url) {
 		}
 	}
 
-	return { icon, title };
+	return { icon, title, url: response.finalURL };
 }
 
 const whitespace = /\s+/;
@@ -102,20 +102,20 @@ export default function TabCloak(props) {
 
 	async function onSubmit() {
 		try {
-			const { value } = input.current;
-
-			const url = resolve_url(value);
-
 			props.layout.current.notifications.current.add(
-				<Notification description={`Fetching ${url}`} type="info" />
+				<Notification description="Fetching..." type="info" />
 			);
 
-			const { title, icon } = await cloak_url(url);
+			const { title, icon, url } = await cloak_url(
+				resolve_url(input.current.value)
+			);
+
+			input.current.value = url;
 
 			props.layout.current.cloak.set({
 				title,
 				icon,
-				value,
+				url,
 			});
 
 			props.layout.current.notifications.current.add(
