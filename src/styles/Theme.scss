@@ -16,6 +16,7 @@ $night: (
 	text-placeholder: #9aa0a6,
 	border: #555,
 	link: $nord8,
+	shadow: #000a,
 );
 
 $day: (
@@ -27,6 +28,7 @@ $day: (
 	text-placeholder: #9aa0a6,
 	border: #ccc,
 	link: $nord10,
+	shadow: #0004,
 );
 
 @function offsetHex($color, $ness) {
@@ -52,6 +54,7 @@ $day: (
 			-8
 		)};
 	--border: #{map.get($theme, 'border')};
+	--shadow: #{map.get($theme, 'shadow')};
 	--link: #{map.get($theme, 'link')};
 	--subtle: #ddd;
 	--blue: #0078d4;
@@ -60,7 +63,6 @@ $day: (
 	--action-active: #1683d8;
 	--action-hover: #006cbe;
 	--action-secondary: #fff;
-	--shadow: #fff4;
 	--info: #88c0d0;
 	--error: #bf616a;
 	--success: #a3be8c;

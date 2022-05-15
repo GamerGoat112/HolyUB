@@ -37,7 +37,7 @@ export default function Flash(props) {
 		return () => {
 			player.current.remove();
 		};
-	});
+	}, [props.layout]);
 
 	return (
 		<main

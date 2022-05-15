@@ -1,13 +1,8 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from '../obfuscate.js';
 import resolveRoute from '../resolveRoute.js';
 
 export default function Privacy(props) {
-	useEffect(() => {
-		props.layout.current.setState({ page: 'privacy' });
-	});
-
 	return (
 		<main>
 			<p>

@@ -71,7 +71,7 @@ export default function Ultraviolet(props) {
 				props.layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	});
+	}, [props.layout]);
 
 	return (
 		<main className="compat">

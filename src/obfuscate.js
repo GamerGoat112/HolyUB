@@ -56,7 +56,7 @@ export function ObfuscateLayout() {
 		for (let ellipsis of ellipsis_classes) {
 			sheet.insertRule(`.${string_class} .${ellipsis}{display:inline}`);
 		}
-	});
+	}, []);
 
 	return <style ref={style}></style>;
 }

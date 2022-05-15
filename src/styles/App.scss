@@ -95,6 +95,7 @@ h3 {
 		font-size: 14px;
 		position: relative;
 		overflow: hidden;
+		box-shadow: 0 0 10px var(--shadow);
 
 		&.title {
 			height: 50px;

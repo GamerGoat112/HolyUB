@@ -49,7 +49,7 @@ export default function FavoritesCategory(props) {
 		})();
 
 		return () => abort.abort();
-	});
+	}, [favorite_games, props.layout]);
 
 	if (favorite_games.current.length === 0) {
 		return (

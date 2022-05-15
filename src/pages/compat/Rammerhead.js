@@ -54,7 +54,7 @@ export default function Rammerhead(props) {
 				props.layout.current.report(error, error_cause, 'Rammerhead');
 			}
 		})();
-	});
+	}, [props.layout]);
 
 	return (
 		<main className="compat">

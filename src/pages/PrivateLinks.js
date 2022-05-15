@@ -1,4 +1,4 @@
-import { createRef, useRef, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { ObfuscatedA } from '../obfuscate.js';
 import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
@@ -11,6 +11,12 @@ export default function PrivateLinks(props) {
 	const domain = createRef();
 	const abort = useRef();
 	const [tld, set_tld] = useState();
+
+	useEffect(() => {
+		if (abort.current) {
+			abort.current.abort();
+		}
+	}, []);
 
 	return (
 		<main className="private-links">
@@ -50,6 +56,7 @@ export default function PrivateLinks(props) {
 								<Notification
 									title={error.name}
 									description={error.message}
+									duration={10e5}
 									type="error"
 								/>
 							);
@@ -73,7 +80,10 @@ export default function PrivateLinks(props) {
 
 							set_tld(data.tld);
 						} catch (error) {
-							if (error.message !== 'The user aborted a request.') {
+							if (
+								error.message !== 'The operation was aborted' &&
+								error.message !== 'The user aborted a request.'
+							) {
 								console.error(error);
 								props.layout.current.notifications.current.add(
 									<Notification

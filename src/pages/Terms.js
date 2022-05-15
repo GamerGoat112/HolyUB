@@ -1,13 +1,8 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Obfuscated } from '../obfuscate.js';
 import resolveRoute from '../resolveRoute.js';
 
 export default function Terms(props) {
-	useEffect(() => {
-		props.layout.current.setState({ page: 'terms' });
-	});
-
 	return (
 		<main>
 			<h2>Security</h2>

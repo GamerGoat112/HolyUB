@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { Component, createRef, useEffect, useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { DB_API, GAMES_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
@@ -44,32 +44,253 @@ async function resolve_game(src, type, setting) {
 	}
 }
 
-export default class GamesPlayer extends Component {
-	state = {
-		controls_expanded: false,
-		panorama: false,
-	};
-	api = new GamesAPI(DB_API);
-	get favorited() {
-		return this.layout.current.settings
-			.get('favorite_games')
-			.includes(this.props.id);
-	}
-	get seen() {
-		return this.layout.current.settings.get('seen').includes(this.props.id);
-	}
-	set seen(value) {
-		const seen = this.layout.current.settings.get('seen');
+export default function GamesPlayer(props) {
+	const [favorited, set_favorited] = useState(() =>
+		props.layout.current.settings.get('favorite_games').includes(props.id)
+	);
+	const [panorama, set_panorama] = useState();
+	const [controls_expanded, set_controls_expanded] = useState(false);
+	const [error, set_error] = useState();
+	const error_cause = useRef();
+	const [data, set_data] = useState();
+	const iframe = useRef();
+	const controls_open = useRef();
+	const [resolved_src, set_resolved_src] = useState();
+	const controls_popup = useRef();
 
-		if (value) {
-			seen.push(this.props.id);
-		} else {
-			const i = seen.indexOf(this.props.id);
-			seen.splice(i, 1);
+	function focus_listener() {
+		if (!iframe.current) {
+			return;
 		}
 
-		this.layout.current.settings.set('seen', seen);
+		iframe.current.contentWindow.focus();
+
+		if (
+			document.activeElement &&
+			!iframe.current.contains(document.activeElement)
+		) {
+			document.activeElement.blur();
+			document.activeElement.dispatchEvent(new Event('blur'));
+		}
 	}
+
+	useEffect(() => {
+		const abort = new AbortController();
+
+		void (async function () {
+			const api = new GamesAPI(DB_API, abort.signal);
+
+			try {
+				error_cause.current = 'Unable to fetch game info';
+				const data = await api.game(props.id);
+				error_cause.current = undefined;
+				error_cause.current = 'Unable to resolve game location';
+				const resolved_src = await resolve_game(
+					new URL(data.src, GAMES_CDN).toString(),
+					data.type,
+					props.layout.current.settings.get('proxy')
+				);
+				error_cause.current = undefined;
+				set_data(data);
+				set_resolved_src(resolved_src);
+			} catch (error) {
+				console.error(error);
+				set_error(error);
+				return;
+			}
+		})();
+
+		window.addEventListener('focus', focus_listener);
+
+		return () => {
+			window.removeEventListener('focus', focus_listener);
+			abort.abort();
+		};
+	}, [props.id, props.layout]);
+
+	if (error) {
+		return (
+			<main className="error">
+				<p>
+					An error occurreds when loading the <Obfuscated>game</Obfuscated>:
+				</p>
+				<pre>
+					<Obfuscated>{error_cause.current || error.toString()}</Obfuscated>
+				</pre>
+			</main>
+		);
+	}
+
+	if (!data) {
+		return (
+			<main>
+				<span>
+					Fetching <Obfuscated>game</Obfuscated> info...
+				</span>
+			</main>
+		);
+	}
+
+	const controls = [];
+
+	for (let control of data.controls) {
+		const visuals = [];
+
+		for (let key of control.keys) {
+			switch (key) {
+				case 'arrows':
+					visuals.push(
+						<div key={key} className="move">
+							<ArrowDropUp className="control-key" />
+							<ArrowLeft className="control-key" />
+							<ArrowDropDown className="control-key" />
+							<ArrowRight className="control-key" />
+						</div>
+					);
+					break;
+				case 'wasd':
+					visuals.push(
+						<div key={key} className="move">
+							<div className="control-key">W</div>
+							<div className="control-key">A</div>
+							<div className="control-key">S</div>
+							<div className="control-key">D</div>
+						</div>
+					);
+					break;
+				default:
+					visuals.push(
+						<div key={key} className={`control-key key-${key}`}>
+							{key}
+						</div>
+					);
+					break;
+			}
+		}
+
+		controls.push(
+			<div key={control.label} className="control">
+				<div className="visuals">{visuals}</div>
+				<span className="label">{control.label}</span>
+			</div>
+		);
+	}
+
+	return (
+		<main
+			className="games-player"
+			data-panorama={Number(panorama)}
+			data-controls={Number(controls_expanded)}
+		>
+			<div className="frame">
+				<iframe
+					ref={iframe}
+					title="Embed"
+					onLoad={() => {
+						this.iframe.current.contentWindow.addEventListener(
+							'keydown',
+							event => {
+								switch (event.code) {
+									case 'Space':
+									case 'ArrowUp':
+									case 'ArrowDown':
+									case 'ArrowLeft':
+									case 'ArrowRight':
+										event.preventDefault();
+										break;
+									// no default
+								}
+							}
+						);
+					}}
+					onClick={() => focus_listener()}
+					onFocus={() => focus_listener()}
+					src={resolved_src}
+				/>
+				<div
+					tabIndex={0}
+					className="controls"
+					ref={controls_popup}
+					onBlur={event => {
+						if (
+							!event.target.contains(event.relatedTarget) &&
+							!controls_open.current.contains(event.relatedTarget)
+						) {
+							set_controls_expanded(false);
+						}
+					}}
+				>
+					<Close
+						className="close"
+						onClick={() => set_controls_expanded(false)}
+					/>
+					<div className="controls">{controls}</div>
+				</div>
+			</div>
+			<div className="title">
+				<h3 className="name">
+					<Obfuscated>{data.name}</Obfuscated>
+				</h3>
+				<div className="shift-right"></div>
+				<div
+					className="button"
+					onClick={() => {
+						focus_listener();
+						iframe.current.requestFullscreen();
+					}}
+				>
+					<Fullscreen />
+				</div>
+				{controls.length !== 0 && (
+					<div
+						className="button"
+						tabIndex={0}
+						ref={controls_open}
+						onClick={async () => {
+							set_controls_expanded(!controls_expanded);
+							controls_popup.current.focus();
+						}}
+					>
+						<VideogameAsset />
+					</div>
+				)}
+				<div
+					className="button"
+					onClick={() => {
+						const favorites =
+							props.layout.current.settings.get('favorite_games');
+						const i = favorites.indexOf(props.id);
+
+						if (i === -1) {
+							favorites.push(props.id);
+						} else {
+							favorites.splice(i, 1);
+						}
+
+						props.layout.current.settings.set('favorite_games', favorites);
+						set_favorited(true);
+					}}
+				>
+					{favorited ? <Star /> : <StarBorder />}
+				</div>
+				<div
+					className="button"
+					onClick={async () => {
+						set_panorama(!panorama);
+
+						if (!panorama) {
+							focus_listener();
+						}
+					}}
+				>
+					{panorama ? <ChevronLeft /> : <Panorama />}
+				</div>
+			</div>
+		</main>
+	);
+}
+
+export class j extends Component {
 	captcha = createRef();
 	iframe = createRef();
 	controls_open = createRef();
@@ -80,231 +301,6 @@ export default class GamesPlayer extends Component {
 	get layout() {
 		return this.props.layout;
 	}
-	abort = new AbortController();
-	focus_listener() {
-		if (!this.iframe.current) {
-			return;
-		}
 
-		this.iframe.current.contentWindow.focus();
-
-		if (
-			document.activeElement &&
-			!this.iframe.current.contains(document.activeElement)
-		) {
-			document.activeElement.blur();
-			document.activeElement.dispatchEvent(new Event('blur'));
-		}
-	}
 	id = Math.random();
-	constructor(props) {
-		super(props);
-		this.focus_listener = this.focus_listener.bind(this);
-	}
-	async componentDidMount() {
-		window.addEventListener('focus', this.focus_listener);
-
-		try {
-			const data = await this.api.game(this.props.id);
-			const resolved_src = await resolve_game(
-				new URL(data.src, GAMES_CDN).toString(),
-				data.type,
-				this.layout.current.settings.get('proxy')
-			);
-			await this.setState({ data, resolved_src });
-		} catch (error) {
-			console.error(error);
-			this.setState({ error });
-			return;
-		}
-	}
-	componentWillUnmount() {
-		window.removeEventListener('focus', this.focus_listener);
-		this.abort.abort();
-	}
-	render() {
-		if (this.state.error !== undefined) {
-			return (
-				<main className="error">
-					<p>
-						An error occuredr when loading the <Obfuscated>game</Obfuscated>:
-					</p>
-					<pre>{this.state.error.message}</pre>
-				</main>
-			);
-		}
-
-		if (this.state.data === undefined) {
-			return (
-				<main>
-					<span>
-						Fetching <Obfuscated>game</Obfuscated> info...
-					</span>
-				</main>
-			);
-		}
-
-		const controls = [];
-
-		for (let control of this.state.data.controls) {
-			const visuals = [];
-
-			for (let key of control.keys) {
-				switch (key) {
-					case 'arrows':
-						visuals.push(
-							<div key={key} className="move">
-								<ArrowDropUp className="control-key" />
-								<ArrowLeft className="control-key" />
-								<ArrowDropDown className="control-key" />
-								<ArrowRight className="control-key" />
-							</div>
-						);
-						break;
-					case 'wasd':
-						visuals.push(
-							<div key={key} className="move">
-								<div className="control-key">W</div>
-								<div className="control-key">A</div>
-								<div className="control-key">S</div>
-								<div className="control-key">D</div>
-							</div>
-						);
-						break;
-					default:
-						visuals.push(
-							<div key={key} className={`control-key key-${key}`}>
-								{key}
-							</div>
-						);
-						break;
-				}
-			}
-
-			controls.push(
-				<div key={control.label} className="control">
-					<div className="visuals">{visuals}</div>
-					<span className="label">{control.label}</span>
-				</div>
-			);
-		}
-
-		return (
-			<main
-				className="games-player"
-				data-panorama={Number(this.state.panorama)}
-				data-controls={Number(this.state.controls_expanded)}
-			>
-				<div className="frame">
-					<iframe
-						ref={this.iframe}
-						title="Embed"
-						onLoad={() => {
-							this.iframe.current.contentWindow.addEventListener(
-								'keydown',
-								event => {
-									switch (event.code) {
-										case 'Space':
-										case 'ArrowUp':
-										case 'ArrowDown':
-										case 'ArrowLeft':
-										case 'ArrowRight':
-											event.preventDefault();
-											break;
-										// no default
-									}
-								}
-							);
-						}}
-						onClick={() => this.focus_listener()}
-						onFocus={() => this.focus_listener()}
-						src={this.state.resolved_src}
-					/>
-					<div
-						tabIndex={0}
-						className="controls"
-						ref={this.controls_popup}
-						onBlur={event => {
-							if (
-								!event.target.contains(event.relatedTarget) &&
-								!this.controls_open.current.contains(event.relatedTarget)
-							) {
-								this.setState({ controls_expanded: false });
-							}
-						}}
-					>
-						<Close
-							className="close"
-							onClick={() => this.setState({ controls_expanded: false })}
-						/>
-						<div className="controls">{controls}</div>
-					</div>
-				</div>
-				<div className="title">
-					<h3 className="name">
-						<Obfuscated>{this.state.data.name}</Obfuscated>
-					</h3>
-					<div className="shift-right"></div>
-					<div
-						className="button"
-						onClick={() => {
-							this.focus_listener();
-							this.iframe.current.requestFullscreen();
-						}}
-					>
-						<Fullscreen />
-					</div>
-					{controls.length !== 0 && (
-						<div
-							className="button"
-							tabIndex={0}
-							ref={this.controls_open}
-							onClick={async () => {
-								await this.setState({
-									controls_expanded: !this.state.controls_expanded,
-								});
-
-								this.controls_popup.current.focus();
-							}}
-						>
-							<VideogameAsset />
-						</div>
-					)}
-					<div
-						className="button"
-						onClick={() => {
-							const favorites =
-								this.layout.current.settings.get('favorite_games');
-							const i = favorites.indexOf(this.props.id);
-
-							if (i === -1) {
-								favorites.push(this.props.id);
-							} else {
-								favorites.splice(i, 1);
-							}
-
-							this.layout.current.settings.set('favorite_games', favorites);
-							this.forceUpdate();
-						}}
-					>
-						{this.favorited ? <Star /> : <StarBorder />}
-					</div>
-					<div
-						className="button"
-						onClick={async () => {
-							await this.setState({
-								panorama: !this.state.panorama,
-							});
-
-							if (this.state.panorama) {
-								this.focus_listener();
-							}
-						}}
-					>
-						{this.state.panorama ? <ChevronLeft /> : <Panorama />}
-					</div>
-				</div>
-			</main>
-		);
-	}
 }

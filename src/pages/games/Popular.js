@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link, useNavigate } from 'react-router-dom';
@@ -51,15 +51,15 @@ export default function Popular(props) {
 	const [input_focused, set_input_focused] = useState(false);
 	const [error, set_error] = useState();
 	const search_abort = useRef();
-
-	const input = createRef();
+	const main = useRef();
+	const input = useRef();
 
 	async function search(query) {
-		if (search_abort.current === undefined) {
-			search_abort.current = new AbortController();
-		} else {
+		if (search_abort.current !== undefined) {
 			search_abort.current.abort();
 		}
+
+		search_abort.current = new AbortController();
 
 		const api = new GamesAPI(DB_API, search_abort.current.signal);
 
@@ -115,7 +115,7 @@ export default function Popular(props) {
 		})();
 
 		return () => abort.abort();
-	});
+	}, []);
 
 	if (error) {
 		return (
@@ -185,6 +185,7 @@ export default function Popular(props) {
 
 			suggested_list.push(
 				<Link
+					tabIndex={0}
 					key={game.id}
 					onClick={() => set_input_focused(false)}
 					onMouseOver={() => set_last_select(i)}
@@ -232,13 +233,13 @@ export default function Popular(props) {
 	}
 
 	return (
-		<main className="games-category">
+		<main ref={main} className="games-category">
 			<div
 				className="search-bar"
 				data-focused={Number(input_focused)}
 				data-suggested={Number(render_suggested)}
 				onBlur={event => {
-					if (!event.target.contains(event.relatedTarget)) {
+					if (!main.contains(event.relatedTarget)) {
 						set_input_focused(false);
 					}
 				}}

@@ -1,12 +1,7 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
 
 export default function NotFound(props) {
-	useEffect(() => {
-		props.layout.current.setState({ page: 'notfound' });
-	});
-
 	return (
 		<main>
 			<h1>The page you are looking for is not available.</h1>

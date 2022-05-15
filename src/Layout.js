@@ -58,7 +58,7 @@ export function Notification(props) {
 			set_hide(true);
 			setTimeout(() => props.manager.delete(props.id), ANIMATION);
 		}, duration);
-	});
+	}, [duration, props.id, props.manager]);
 
 	let Icon;
 

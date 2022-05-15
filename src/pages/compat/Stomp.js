@@ -48,7 +48,7 @@ export default function Rammerhead(props) {
 				props.layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	});
+	}, [props.layout]);
 
 	return (
 		<main className="compat">
