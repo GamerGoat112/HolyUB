@@ -17,14 +17,15 @@ import {
 	Apps,
 } from '@mui/icons-material';
 import Layout from './Layout.js';
-import './styles/Navigation.scss';
-import './styles/Footer.scss';
 import { PATREON_URL } from './root.js';
 import resolveRoute from './resolveRoute.js';
 import process from 'process';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
+import Footer from './Footer.js';
+import './styles/Navigation.scss';
+import './styles/Footer.scss';
 
 function Hat(props) {
 	const { children, ...attributes } = props;
@@ -226,6 +227,7 @@ class MainLayout extends Layout {
 						</div>
 					</div>
 					<Outlet />
+					<Footer />
 				</div>
 			</>
 		);

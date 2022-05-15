@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Obfuscated } from '../../obfuscate.js';
-import Footer from '../../Footer.js';
 import '../../styles/GamesCategory.scss';
 import useRefDefault from '../../useRefDefault.js';
 
@@ -54,30 +53,24 @@ export default function FavoritesCategory(props) {
 
 	if (favorite_games.current.length === 0) {
 		return (
-			<>
-				<main className="error">
-					<p>You haven't added any favorite games.</p>
-				</main>
-				<Footer />
-			</>
+			<main className="error">
+				<p>You haven't added any favorite games.</p>
+			</main>
 		);
 	} else {
 		return (
-			<>
-				<main className="games-category">
-					<section>
-						<div className="name">
-							<h1>
-								<Obfuscated>Favorites</Obfuscated>
-							</h1>
-						</div>
-						<div className="items">
-							<ItemList items={data} />
-						</div>
-					</section>
-				</main>
-				<Footer />
-			</>
+			<main className="games-category">
+				<section>
+					<div className="name">
+						<h1>
+							<Obfuscated>Favorites</Obfuscated>
+						</h1>
+					</div>
+					<div className="items">
+						<ItemList items={data} />
+					</div>
+				</section>
+			</main>
 		);
 	}
 }

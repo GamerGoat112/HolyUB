@@ -7,7 +7,6 @@ import categories from './categories.js';
 import { Obfuscated } from '../../obfuscate.js';
 import resolveRoute from '../../resolveRoute.js';
 import { ThemeInputBar } from '../../ThemeElements.js';
-import Footer from '../../Footer.js';
 import clsx from 'clsx';
 import '../../styles/GamesCategory.scss';
 
@@ -120,48 +119,45 @@ export default function Popular(props) {
 
 	if (error) {
 		return (
-			<>
-				<main className="error">
-					<span>
-						An error occured when loading popular <Obfuscated>games</Obfuscated>
-						:
-						<br />
-						<pre>{error.toString()}</pre>
-					</span>
-					<p>
-						Try again by clicking{' '}
-						<a
-							href="i:"
-							onClick={event => {
-								event.preventDefault();
-								global.location.reload();
-							}}
-						>
-							here
-						</a>
-						.
-						<br />
-						If this problem still occurs, check{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'faq')}
-							target="_parent"
-						>
-							Support
-						</Link>{' '}
-						or{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'contact')}
-							target="_parent"
-						>
-							Contact Us
-						</Link>
-						.
-					</p>
-				</main>
-				<Footer />
-			</>
+			<main className="error">
+				<span>
+					An error occured when loading popular <Obfuscated>games</Obfuscated>
+					:
+					<br />
+					<pre>{error.toString()}</pre>
+				</span>
+				<p>
+					Try again by clicking{' '}
+					<a
+						href="i:"
+						onClick={event => {
+							event.preventDefault();
+							global.location.reload();
+						}}
+					>
+						here
+					</a>
+					.
+					<br />
+					If this problem still occurs, check{' '}
+					<Link
+						className="theme-link"
+						to={resolveRoute('/', 'faq')}
+						target="_parent"
+					>
+						Support
+					</Link>{' '}
+					or{' '}
+					<Link
+						className="theme-link"
+						to={resolveRoute('/', 'contact')}
+						target="_parent"
+					>
+						Contact Us
+					</Link>
+					.
+				</p>
+			</main>
 		);
 	}
 
@@ -236,109 +232,106 @@ export default function Popular(props) {
 	}
 
 	return (
-		<>
-			<main className="games-category">
-				<div
-					className="search-bar"
-					data-focused={Number(input_focused)}
-					data-suggested={Number(render_suggested)}
-					onBlur={event => {
-						if (!event.target.contains(event.relatedTarget)) {
-							set_input_focused(false);
-						}
-					}}
-				>
-					<ThemeInputBar>
-						<Search className="icon" />
-						<input
-							ref={input}
-							type="text"
-							className="thin-pad-left"
-							placeholder="Search by game name"
-							onFocus={event => {
-								set_input_focused(true);
-								set_last_select(-1);
-								search(event.target.value);
-							}}
-							onClick={event => {
-								set_input_focused(true);
-								set_last_select(-1);
-								search(event.target.value);
-							}}
-							onKeyDown={event => {
-								let prevent_default = true;
+		<main className="games-category">
+			<div
+				className="search-bar"
+				data-focused={Number(input_focused)}
+				data-suggested={Number(render_suggested)}
+				onBlur={event => {
+					if (!event.target.contains(event.relatedTarget)) {
+						set_input_focused(false);
+					}
+				}}
+			>
+				<ThemeInputBar>
+					<Search className="icon" />
+					<input
+						ref={input}
+						type="text"
+						className="thin-pad-left"
+						placeholder="Search by game name"
+						onFocus={event => {
+							set_input_focused(true);
+							set_last_select(-1);
+							search(event.target.value);
+						}}
+						onClick={event => {
+							set_input_focused(true);
+							set_last_select(-1);
+							search(event.target.value);
+						}}
+						onKeyDown={event => {
+							let prevent_default = true;
 
-								switch (event.code) {
-									case 'Escape':
+							switch (event.code) {
+								case 'Escape':
+									set_input_focused(false);
+									break;
+								case 'ArrowDown':
+								case 'ArrowUp':
+									{
+										let last_i = last_select;
+
+										let next;
+
+										switch (event.code) {
+											case 'ArrowDown':
+												if (last_i >= category.length - 1) {
+													next = 0;
+												} else {
+													next = last_i + 1;
+												}
+												break;
+											case 'ArrowUp':
+												if (last_i <= 0) {
+													next = category.length - 1;
+												} else {
+													next = last_i - 1;
+												}
+												break;
+											// no default
+										}
+
+										set_last_select(next);
+									}
+									break;
+								case 'Enter':
+									{
+										const game = category[last_select];
+
+										input.current.blur();
 										set_input_focused(false);
-										break;
-									case 'ArrowDown':
-									case 'ArrowUp':
-										{
-											let last_i = last_select;
+										navigate(
+											`${resolveRoute('/games/', 'player')}?id=${game.id}`
+										);
+									}
+									break;
+								default:
+									prevent_default = false;
+									break;
+								// no default
+							}
 
-											let next;
-
-											switch (event.code) {
-												case 'ArrowDown':
-													if (last_i >= category.length - 1) {
-														next = 0;
-													} else {
-														next = last_i + 1;
-													}
-													break;
-												case 'ArrowUp':
-													if (last_i <= 0) {
-														next = category.length - 1;
-													} else {
-														next = last_i - 1;
-													}
-													break;
-												// no default
-											}
-
-											set_last_select(next);
-										}
-										break;
-									case 'Enter':
-										{
-											const game = category[last_select];
-
-											input.current.blur();
-											set_input_focused(false);
-											navigate(
-												`${resolveRoute('/games/', 'player')}?id=${game.id}`
-											);
-										}
-										break;
-									default:
-										prevent_default = false;
-										break;
-									// no default
-								}
-
-								if (prevent_default) {
-									event.preventDefault();
-								}
-							}}
-							onChange={event => {
-								search(event.target.value);
-								set_last_select(-1);
-							}}
-						></input>
-					</ThemeInputBar>
-					<div
-						className="suggested"
-						onMouseLeave={() => {
+							if (prevent_default) {
+								event.preventDefault();
+							}
+						}}
+						onChange={event => {
+							search(event.target.value);
 							set_last_select(-1);
 						}}
-					>
-						{suggested_list}
-					</div>
+					></input>
+				</ThemeInputBar>
+				<div
+					className="suggested"
+					onMouseLeave={() => {
+						set_last_select(-1);
+					}}
+				>
+					{suggested_list}
 				</div>
-				{jsx_categories}
-			</main>
-			<Footer />
-		</>
+			</div>
+			{jsx_categories}
+		</main>
 	);
 }

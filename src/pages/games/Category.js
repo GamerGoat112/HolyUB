@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
 import Settings from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
-import Footer from '../../Footer.js';
 import { Obfuscated } from '../../obfuscate.js';
 import useRefDefault from '../../useRefDefault.js';
 import '../../styles/GamesCategory.scss';
@@ -92,79 +91,73 @@ export default function Category(props) {
 
 	if (error) {
 		return (
-			<>
-				<main className="error">
-					<span>
-						An error occured when loading the category:
-						<br />
-						<pre>{error_cause.current || error.toString()}</pre>
-					</span>
-					<p>
-						Try again by clicking{' '}
-						<a
-							href="i:"
-							onClick={event => {
-								event.preventDefault();
-								global.location.reload();
-							}}
-						>
-							here
-						</a>
-						.
-						<br />
-						If this problem still occurs, check{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'faq')}
-							target="_parent"
-						>
-							Support
-						</Link>{' '}
-						or{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'contact')}
-							target="_parent"
-						>
-							Contact Us
-						</Link>
-						.
-					</p>
-				</main>
-				<Footer />
-			</>
+			<main className="error">
+				<span>
+					An error occured when loading the category:
+					<br />
+					<pre>{error_cause.current || error.toString()}</pre>
+				</span>
+				<p>
+					Try again by clicking{' '}
+					<a
+						href="i:"
+						onClick={event => {
+							event.preventDefault();
+							global.location.reload();
+						}}
+					>
+						here
+					</a>
+					.
+					<br />
+					If this problem still occurs, check{' '}
+					<Link
+						className="theme-link"
+						to={resolveRoute('/', 'faq')}
+						target="_parent"
+					>
+						Support
+					</Link>{' '}
+					or{' '}
+					<Link
+						className="theme-link"
+						to={resolveRoute('/', 'contact')}
+						target="_parent"
+					>
+						Contact Us
+					</Link>
+					.
+				</p>
+			</main>
 		);
 	}
 
 	return (
-		<>
-			<main className="games-category">
-				<section>
-					<div className="name">
-						<h1>
-							<Obfuscated>{props.name}</Obfuscated>
-						</h1>
-						<ThemeSelect
-							className="sort"
-							defaultValue={sort}
-							style={{ width: 200 }}
-							onChange={event => {
-								settings.current.set('sort', event.target.value);
-								set_sort(event.target.value);
-							}}
-						>
-							<option value="Most Played">Most Played</option>
-							<option value="Least Played">Least Played</option>
-							<option value="Name (A-Z)">Name (A-Z)</option>
-							<option value="Name (Z-A)">Name (Z-A)</option>
-						</ThemeSelect>
-					</div>
-					<div className="items">
-						<ItemList items={data} />
-					</div>
-				</section>
-			</main>
-			<Footer />
-		</>
+		<main className="games-category">
+			<section>
+				<div className="name">
+					<h1>
+						<Obfuscated>{props.name}</Obfuscated>
+					</h1>
+					<ThemeSelect
+						className="sort"
+						defaultValue={sort}
+						style={{ width: 200 }}
+						onChange={event => {
+							settings.current.set('sort', event.target.value);
+							set_sort(event.target.value);
+						}}
+					>
+						<option value="Most Played">Most Played</option>
+						<option value="Least Played">Least Played</option>
+						<option value="Name (A-Z)">Name (A-Z)</option>
+						<option value="Name (Z-A)">Name (Z-A)</option>
+					</ThemeSelect>
+				</div>
+				<div className="items">
+					<ItemList items={data} />
+				</div>
+			</section>
+		</main>
 	);
 }
