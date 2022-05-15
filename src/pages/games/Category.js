@@ -93,7 +93,7 @@ export default function Category(props) {
 	if (error) {
 		return (
 			<>
-				<main className="games-category">
+				<main className="error">
 					<span>
 						An error occured when loading the category:
 						<br />

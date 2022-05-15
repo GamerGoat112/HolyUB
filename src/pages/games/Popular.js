@@ -1,7 +1,7 @@
-import { Component, createRef } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowForward, Search } from '@mui/icons-material';
 import categories from './categories.js';
 import { Obfuscated } from '../../obfuscate.js';
@@ -28,15 +28,15 @@ function ExpandSection(props) {
 	);
 }
 
-export default class Popular extends Component {
-	limit = 8;
-	constructor(props) {
-		super(props);
+const LIMIT = 8;
 
+export default function Popular(props) {
+	const navigate = useNavigate();
+	const [data, set_data] = useState(() => {
 		const data = [];
 
 		for (let category in categories) {
-			for (let i = 0; i < this.limit; i++) {
+			for (let i = 0; i < LIMIT; i++) {
 				data.push({
 					id: i,
 					loading: true,
@@ -45,276 +45,300 @@ export default class Popular extends Component {
 			}
 		}
 
-		this.state = {
-			data,
-			category: [],
-			input_focused: false,
-		};
-	}
-	searchbar = createRef();
-	input = createRef();
-	api = new GamesAPI(DB_API);
-	abort = new AbortController();
-	/**
-	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
-	}
-	async search(query) {
-		if (this.abort !== undefined) {
-			this.abort.abort();
+		return data;
+	});
+	const [category, set_category] = useState([]);
+	const [last_select, set_last_select] = useState(-1);
+	const [input_focused, set_input_focused] = useState(false);
+	const [error, set_error] = useState();
+	const search_abort = useRef();
+
+	const input = createRef();
+
+	async function search(query) {
+		if (search_abort.current === undefined) {
+			search_abort.current = new AbortController();
+		} else {
+			search_abort.current.abort();
 		}
 
-		this.abort = new AbortController();
+		const api = new GamesAPI(DB_API, search_abort.current.signal);
 
 		try {
-			const category = await this.api.category(
-				{
-					sort: 'search',
-					search: query,
-					limit: this.limit,
-				},
-				this.abort.signal
-			);
-
-			this.setState({
-				category,
+			const category = await api.category({
+				sort: 'search',
+				search: query,
+				limit: LIMIT,
 			});
+
+			set_category(category);
 		} catch (error) {
 			if (
 				error.message !== 'The operation was aborted' &&
 				error.message !== 'The user aborted a request.'
 			) {
 				console.error(error);
+				set_error(error);
+			}
+		}
+	}
 
-				return this.setState({
-					error,
+	useEffect(() => {
+		const abort = new AbortController();
+
+		void (async function () {
+			const api = new GamesAPI(DB_API, abort.signal);
+
+			try {
+				const data = await api.category({
+					sort: 'plays',
+					limitPerCategory: LIMIT,
 				});
-			}
-		}
-	}
-	async fetch() {
-		try {
-			const data = await this.api.category({
-				sort: 'plays',
-				limitPerCategory: this.limit,
-			});
 
-			const categories_keys = Object.keys(categories);
+				const categories_keys = Object.keys(categories);
 
-			data.sort(
-				(a, b) =>
-					categories_keys.indexOf(a.category) -
-					categories_keys.indexOf(b.category)
-			);
-
-			return this.setState({
-				data,
-			});
-		} catch (error) {
-			console.error(error);
-
-			return this.setState({
-				error,
-			});
-		}
-	}
-	componentDidMount() {
-		this.fetch();
-	}
-	componentWillUnmount() {
-		this.abort.abort();
-	}
-	render() {
-		const render_suggested =
-			this.state.input_focused && this.state.category.length !== 0;
-		const suggested = [];
-
-		if (render_suggested) {
-			for (let i = 0; i < this.state.category.length; i++) {
-				const game = this.state.category[i];
-				let category_name;
-
-				if (game.category in categories) {
-					const category = categories[game.category];
-					category_name = category.short || category.name;
-				} else {
-					console.warn(`Unknown category ${game.category}`);
-					category_name = '';
-				}
-
-				const classes = ['option'];
-
-				if (i === this.state.last_select) {
-					classes.push('hover');
-				}
-
-				suggested.push(
-					<Link
-						key={game.id}
-						onClick={() => this.setState({ input_focused: false })}
-						onMouseOver={() => {
-							this.setState({
-								last_select: i,
-							});
-						}}
-						to={`${resolveRoute('/games/', 'player')}?id=${game.id}`}
-						className={clsx('option', i === this.state.last_select && 'hover')}
-					>
-						<div className="name">
-							<Obfuscated ellipsis>{game.name}</Obfuscated>
-						</div>
-						<div className="category">{category_name}</div>
-					</Link>
+				data.sort(
+					(a, b) =>
+						categories_keys.indexOf(a.category) -
+						categories_keys.indexOf(b.category)
 				);
-			}
-		}
 
-		const _categories = {};
-
-		for (let item of this.state.data) {
-			if (!(item.category in _categories)) {
-				_categories[item.category] = [];
-			}
-
-			_categories[item.category].push(item);
-		}
-
-		const jsx_categories = [];
-
-		for (let id in _categories) {
-			let name;
-
-			for (let i in categories) {
-				if (id === i) {
-					name = categories[i].name;
+				set_data(data);
+			} catch (error) {
+				if (
+					error.message !== 'The operation was aborted' &&
+					error.message !== 'The user aborted a request.'
+				) {
+					console.error(error);
+					set_error(error);
 				}
 			}
+		})();
 
-			jsx_categories.push(
-				<ExpandSection
-					href={`${resolveRoute('/games/', 'category')}?id=${id}`}
-					items={_categories[id]}
-					name={name}
-					key={id}
-				/>
-			);
-		}
+		return () => abort.abort();
+	});
 
+	if (error) {
 		return (
 			<>
-				<main className="games-category">
-					<div
-						className="search-bar"
-						data-focused={Number(this.state.input_focused)}
-						data-suggested={Number(render_suggested)}
-						ref={this.searchbar}
-						onBlur={event => {
-							if (!this.searchbar.current.contains(event.relatedTarget)) {
-								this.setState({ input_focused: false });
-							}
-						}}
-					>
-						<ThemeInputBar>
-							<Search className="icon" />
-							<input
-								ref={this.input}
-								type="text"
-								className="thin-pad-left"
-								placeholder="Search by game name"
-								onFocus={event => {
-									this.setState({ input_focused: true, last_select: -1 });
-									this.search(event.target.value);
-								}}
-								onClick={event => {
-									this.setState({ input_focused: true, last_select: -1 });
-									this.search(event.target.value);
-								}}
-								onKeyDown={event => {
-									let prevent_default = true;
-
-									switch (event.code) {
-										case 'Escape':
-											this.setState({ input_focused: false });
-											break;
-										case 'ArrowDown':
-										case 'ArrowUp':
-											{
-												let last_i = this.state.last_select;
-
-												let next;
-
-												switch (event.code) {
-													case 'ArrowDown':
-														if (last_i >= this.state.category.length - 1) {
-															next = 0;
-														} else {
-															next = last_i + 1;
-														}
-														break;
-													case 'ArrowUp':
-														if (last_i <= 0) {
-															next = this.state.category.length - 1;
-														} else {
-															next = last_i - 1;
-														}
-														break;
-													// no default
-												}
-
-												this.setState({
-													last_select: next,
-												});
-											}
-											break;
-										case 'Enter':
-											{
-												const game =
-													this.state.category[this.state.last_select];
-
-												this.input.current.blur();
-												this.setState({
-													input_focused: false,
-												});
-												this.props.navigate(
-													`${resolveRoute('/games/', 'player')}?id=${game.id}`
-												);
-											}
-											break;
-										default:
-											prevent_default = false;
-											break;
-										// no default
-									}
-
-									if (prevent_default) {
-										event.preventDefault();
-									}
-								}}
-								onChange={event => {
-									this.search(event.target.value);
-									this.setState({
-										last_select: -1,
-									});
-								}}
-							></input>
-						</ThemeInputBar>
-						<div
-							className="suggested"
-							onMouseLeave={() => {
-								this.setState({
-									last_select: -1,
-								});
+				<main className="error">
+					<span>
+						An error occured when loading popular <Obfuscated>games</Obfuscated>
+						:
+						<br />
+						<pre>{error.toString()}</pre>
+					</span>
+					<p>
+						Try again by clicking{' '}
+						<a
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								global.location.reload();
 							}}
 						>
-							{suggested}
-						</div>
-					</div>
-					{jsx_categories}
+							here
+						</a>
+						.
+						<br />
+						If this problem still occurs, check{' '}
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'faq')}
+							target="_parent"
+						>
+							Support
+						</Link>{' '}
+						or{' '}
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'contact')}
+							target="_parent"
+						>
+							Contact Us
+						</Link>
+						.
+					</p>
 				</main>
 				<Footer />
 			</>
 		);
 	}
+
+	const render_suggested = input_focused && category.length !== 0;
+	const suggested_list = [];
+
+	if (render_suggested) {
+		for (let i = 0; i < category.length; i++) {
+			const game = category[i];
+			let category_name;
+
+			if (game.category in categories) {
+				const category = categories[game.category];
+				category_name = category.short || category.name;
+			} else {
+				console.warn(`Unknown category ${game.category}`);
+				category_name = '';
+			}
+
+			const classes = ['option'];
+
+			if (i === last_select) {
+				classes.push('hover');
+			}
+
+			suggested_list.push(
+				<Link
+					key={game.id}
+					onClick={() => set_input_focused(false)}
+					onMouseOver={() => set_last_select(i)}
+					to={`${resolveRoute('/games/', 'player')}?id=${game.id}`}
+					className={clsx('option', i === last_select && 'hover')}
+				>
+					<div className="name">
+						<Obfuscated ellipsis>{game.name}</Obfuscated>
+					</div>
+					<div className="category">{category_name}</div>
+				</Link>
+			);
+		}
+	}
+
+	const _categories = {};
+
+	for (let item of data) {
+		if (!(item.category in _categories)) {
+			_categories[item.category] = [];
+		}
+
+		_categories[item.category].push(item);
+	}
+
+	const jsx_categories = [];
+
+	for (let id in _categories) {
+		let name;
+
+		for (let i in categories) {
+			if (id === i) {
+				name = categories[i].name;
+			}
+		}
+
+		jsx_categories.push(
+			<ExpandSection
+				href={`${resolveRoute('/games/', 'category')}?id=${id}`}
+				items={_categories[id]}
+				name={name}
+				key={id}
+			/>
+		);
+	}
+
+	return (
+		<>
+			<main className="games-category">
+				<div
+					className="search-bar"
+					data-focused={Number(input_focused)}
+					data-suggested={Number(render_suggested)}
+					onBlur={event => {
+						if (!event.target.contains(event.relatedTarget)) {
+							set_input_focused(false);
+						}
+					}}
+				>
+					<ThemeInputBar>
+						<Search className="icon" />
+						<input
+							ref={input}
+							type="text"
+							className="thin-pad-left"
+							placeholder="Search by game name"
+							onFocus={event => {
+								set_input_focused(true);
+								set_last_select(-1);
+								search(event.target.value);
+							}}
+							onClick={event => {
+								set_input_focused(true);
+								set_last_select(-1);
+								search(event.target.value);
+							}}
+							onKeyDown={event => {
+								let prevent_default = true;
+
+								switch (event.code) {
+									case 'Escape':
+										set_input_focused(false);
+										break;
+									case 'ArrowDown':
+									case 'ArrowUp':
+										{
+											let last_i = last_select;
+
+											let next;
+
+											switch (event.code) {
+												case 'ArrowDown':
+													if (last_i >= category.length - 1) {
+														next = 0;
+													} else {
+														next = last_i + 1;
+													}
+													break;
+												case 'ArrowUp':
+													if (last_i <= 0) {
+														next = category.length - 1;
+													} else {
+														next = last_i - 1;
+													}
+													break;
+												// no default
+											}
+
+											set_last_select(next);
+										}
+										break;
+									case 'Enter':
+										{
+											const game = category[last_select];
+
+											input.current.blur();
+											set_input_focused(false);
+											navigate(
+												`${resolveRoute('/games/', 'player')}?id=${game.id}`
+											);
+										}
+										break;
+									default:
+										prevent_default = false;
+										break;
+									// no default
+								}
+
+								if (prevent_default) {
+									event.preventDefault();
+								}
+							}}
+							onChange={event => {
+								search(event.target.value);
+								set_last_select(-1);
+							}}
+						></input>
+					</ThemeInputBar>
+					<div
+						className="suggested"
+						onMouseLeave={() => {
+							set_last_select(-1);
+						}}
+					>
+						{suggested_list}
+					</div>
+				</div>
+				{jsx_categories}
+			</main>
+			<Footer />
+		</>
+	);
 }

@@ -1,6 +1,6 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
-import { createRef, useEffect, useRef, useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 import { NorthWest, Search } from '@mui/icons-material';
 import Footer from '../Footer.js';
 import ServiceFrame from '../ServiceFrame.js';
@@ -46,10 +46,6 @@ export default function Proxies(props) {
 		service_frame.current.proxy(input.current.value);
 		on_input();
 	}
-
-	useEffect(() => {
-		on_input();
-	});
 
 	const render_suggested = input_focused && omnibox_entries.length !== 0;
 	const suggested_list = [];
