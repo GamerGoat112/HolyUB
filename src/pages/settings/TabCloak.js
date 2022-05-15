@@ -163,8 +163,10 @@ export default function TabCloak(props) {
 						props.layout.current.cloak.set({
 							title: '',
 							icon: '',
-							value: '',
+							url: '',
 						});
+
+						input.current.value = '';
 
 						props.layout.current.notifications.current.add(
 							<Notification description="Cloak reset" type="info" />
