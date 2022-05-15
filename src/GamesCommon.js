@@ -96,7 +96,7 @@ export class GamesAPI {
 	}
 }
 
-export function Item(props) {
+function Item(props) {
 	const [loaded, set_loaded] = useState(false);
 
 	return (
@@ -119,7 +119,7 @@ export function Item(props) {
 	);
 }
 
-export function LoadingItem() {
+function LoadingItem() {
 	return (
 		<div className="item loading">
 			<div className="thumbnail" />
