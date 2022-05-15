@@ -4,6 +4,7 @@ import MainLayout from './MainLayout.js';
 import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
+import categories from './pages/games/categories.js';
 
 /* javascript-obfuscator:disable */
 const GamesPopular = lazy(() =>
@@ -84,7 +85,7 @@ function CategoryProxy(props) {
 
 	return (
 		<Suspense fallback={<></>}>
-			<GamesCategory {...props} key={id} id={id} />
+			<GamesCategory {...props} key={id} name={categories[id].name} id={id} />
 		</Suspense>
 	);
 }
