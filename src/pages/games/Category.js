@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
@@ -7,12 +7,11 @@ import Settings from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import Footer from '../../Footer.js';
 import { Obfuscated } from '../../obfuscate.js';
+import useRefDefault from '../../useRefDefault.js';
 import '../../styles/GamesCategory.scss';
 
-export default class Category extends Component {
-	constructor(props) {
-		super(props);
-
+export default function Category(props) {
+	const [data, set_data] = useState(() => {
 		const data = [];
 
 		for (let i = 0; i < 40; i++) {
@@ -22,194 +21,150 @@ export default class Category extends Component {
 			});
 		}
 
-		this.state = {
-			data,
-			error: undefined,
-			possible_error: undefined,
-		};
-	}
-	async possible_error(message) {
-		// errors must be VERY verbose for the user
-		this.setState({
-			possible_error: message,
-		});
-	}
-	/**
-	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
-	}
-	api = new GamesAPI(DB_API);
-	settings = new Settings(`games category ${this.props.id} settings`, {
-		sort: 'Most Played',
+		return data;
 	});
-	abort = new AbortController();
-	async search(query) {
-		if (this.abort !== undefined) {
-			this.abort.abort();
-		}
+	const error_cause = useRef();
+	const [error, set_error] = useState();
+	const settings = useRefDefault(
+		() =>
+			new Settings(`games category ${props.id} settings`, {
+				sort: 'Most Played',
+			})
+	);
+	const [sort, set_sort] = useState(() => settings.current.get('sort'));
 
-		this.abort = new AbortController();
+	useEffect(() => {
+		const abort = new AbortController();
 
-		const category = await this.api.category(
-			{
-				sort: 'search',
-				search: query,
-				limit: 8,
-			},
-			this.abort.signal
-		);
+		void (async function () {
+			const api = new GamesAPI(DB_API, abort.signal);
+			let leastGreatest = false;
+			let sort_id;
 
-		this.setState({
-			category,
-		});
-	}
-
-	async fetch() {
-		let leastGreatest = false;
-		let sort;
-
-		switch (this.settings.get('sort')) {
-			case 'Least Played':
-				leastGreatest = true;
-			// falls through
-			case 'Most Played':
-				sort = 'plays';
-				break;
-			case 'Least Favorites':
-				leastGreatest = true;
-			// falls through
-			case 'Most Favorites':
-				sort = 'favorites';
-				break;
-			case 'Name (Z-A)':
-				leastGreatest = true;
-			// falls through
-			case 'Name (A-Z)':
-				sort = 'name';
-				break;
-			default:
-				console.warn('Unknown sort', this.settings.get('sort'));
-				break;
-		}
-
-		try {
-			await this.possible_error('Unable to fetch the category data.');
-
-			const data = await this.api.category(
-				{
-					category: this.props.id,
-					sort,
-					leastGreatest,
-				},
-				this.abort.signal
-			);
-
-			await this.possible_error();
-
-			return this.setState({
-				data,
-			});
-		} catch (error) {
-			console.error(error);
-
-			return this.setState({
-				error,
-			});
-		}
-	}
-	componentDidMount() {
-		this.fetch();
-	}
-	componentWillUnmount() {
-		this.abort.abort();
-	}
-	render() {
-		if (this.state.error !== undefined) {
-			let description;
-
-			if (this.state.possible_error === undefined) {
-				description = <pre>{this.state.error}</pre>;
-			} else {
-				description = <pre>{this.state.possible_error}</pre>;
+			switch (sort) {
+				case 'Least Played':
+					leastGreatest = true;
+				// falls through
+				case 'Most Played':
+					sort_id = 'plays';
+					break;
+				case 'Least Favorites':
+					leastGreatest = true;
+				// falls through
+				case 'Most Favorites':
+					sort_id = 'favorites';
+					break;
+				case 'Name (Z-A)':
+					leastGreatest = true;
+				// falls through
+				case 'Name (A-Z)':
+					sort_id = 'name';
+					break;
+				default:
+					console.warn('Unknown sort', sort);
+					break;
 			}
 
-			return (
-				<>
-					<main className="games-category" ref={this.container}>
-						<span>
-							An error occured when loading the category:
-							<br />
-							{description}
-						</span>
-						<p>
-							Try again by clicking{' '}
-							<a
-								href="i:"
-								onClick={event => {
-									event.preventDefault();
-									global.location.reload();
-								}}
-							>
-								here
-							</a>
-							.
-							<br />
-							If this problem still occurs, check{' '}
-							<Link
-								className="theme-link"
-								to={resolveRoute('/', 'faq')}
-								target="_parent"
-							>
-								Support
-							</Link>{' '}
-							or{' '}
-							<Link
-								className="theme-link"
-								to={resolveRoute('/', 'contact')}
-								target="_parent"
-							>
-								Contact Us
-							</Link>
-							.
-						</p>
-					</main>
-					<Footer />
-				</>
-			);
-		}
+			try {
+				error_cause.current = 'Unable to fetch the category data.';
 
+				const data = await api.category({
+					category: props.id,
+					sort: sort_id,
+					leastGreatest,
+				});
+
+				error_cause.current = undefined;
+				set_data(data);
+			} catch (error) {
+				if (
+					error.message !== 'The operation was aborted' &&
+					error.message !== 'The user aborted a request.'
+				) {
+					console.error(error);
+					set_error(error);
+				}
+			}
+		})();
+
+		return () => abort.abort();
+	}, [sort, props.id]);
+
+	if (error) {
 		return (
 			<>
 				<main className="games-category">
-					<section>
-						<div className="name">
-							<h1>
-								<Obfuscated>{this.props.name}</Obfuscated>
-							</h1>
-							<ThemeSelect
-								className="sort"
-								defaultValue={this.settings.get('sort')}
-								style={{ width: 200 }}
-								onChange={event => {
-									this.settings.set('sort', event.target.value);
-									this.fetch();
-								}}
-							>
-								<option value="Most Played">Most Played</option>
-								<option value="Least Played">Least Played</option>
-								<option value="Name (A-Z)">Name (A-Z)</option>
-								<option value="Name (Z-A)">Name (Z-A)</option>
-							</ThemeSelect>
-						</div>
-						<div className="items">
-							<ItemList items={this.state.data} />
-						</div>
-					</section>
+					<span>
+						An error occured when loading the category:
+						<br />
+						<pre>{error_cause.current || error.toString()}</pre>
+					</span>
+					<p>
+						Try again by clicking{' '}
+						<a
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								global.location.reload();
+							}}
+						>
+							here
+						</a>
+						.
+						<br />
+						If this problem still occurs, check{' '}
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'faq')}
+							target="_parent"
+						>
+							Support
+						</Link>{' '}
+						or{' '}
+						<Link
+							className="theme-link"
+							to={resolveRoute('/', 'contact')}
+							target="_parent"
+						>
+							Contact Us
+						</Link>
+						.
+					</p>
 				</main>
 				<Footer />
 			</>
 		);
 	}
+
+	return (
+		<>
+			<main className="games-category">
+				<section>
+					<div className="name">
+						<h1>
+							<Obfuscated>{props.name}</Obfuscated>
+						</h1>
+						<ThemeSelect
+							className="sort"
+							defaultValue={sort}
+							style={{ width: 200 }}
+							onChange={event => {
+								settings.current.set('sort', event.target.value);
+								set_sort(event.target.value);
+							}}
+						>
+							<option value="Most Played">Most Played</option>
+							<option value="Least Played">Least Played</option>
+							<option value="Name (A-Z)">Name (A-Z)</option>
+							<option value="Name (Z-A)">Name (Z-A)</option>
+						</ThemeSelect>
+					</div>
+					<div className="items">
+						<ItemList items={data} />
+					</div>
+				</section>
+			</main>
+			<Footer />
+		</>
+	);
 }

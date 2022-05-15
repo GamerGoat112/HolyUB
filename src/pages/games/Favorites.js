@@ -4,50 +4,55 @@ import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Obfuscated } from '../../obfuscate.js';
 import Footer from '../../Footer.js';
 import '../../styles/GamesCategory.scss';
+import useRefDefault from '../../useRefDefault.js';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
 export default function FavoritesCategory(props) {
-	const [data, set_data] = useState([]);
-	const favorite_games = props.layout.current.settings.get('favorite_games');
-
-	let items;
-
-	if (data.length) {
-		items = data;
-	} else {
-		items = favorite_games.map(id => ({
+	const favorite_games = useRefDefault(() =>
+		props.layout.current.settings.get('favorite_games')
+	);
+	const [data, set_data] = useState(() =>
+		favorite_games.current.map(id => ({
 			loading: true,
 			id,
-		}));
-	}
+		}))
+	);
 
 	useEffect(() => {
+		const abort = new AbortController();
+
 		void (async function () {
-			const api = new GamesAPI(DB_API);
+			const api = new GamesAPI(DB_API, abort.signal);
 			const data = [];
 
-			const favorites = favorite_games;
-
-			for (let id of favorites) {
+			for (let id of favorite_games.current) {
 				try {
 					data.push(await api.game(id));
 				} catch (error) {
 					// cancelled? page unload?
 					if (!FETCH_FAILED.test(error)) {
 						console.warn('Unable to fetch game:', id, error);
-						favorites.splice(favorites.indexOf(id), 1);
+						favorite_games.current.splice(
+							favorite_games.current.indexOf(id),
+							1
+						);
 					}
 				}
 			}
 
-			props.layout.current.settings.set('favorite_games', favorite_games);
+			props.layout.current.settings.set(
+				'favorite_games',
+				favorite_games.current
+			);
 
 			set_data(data);
 		})();
+
+		return () => abort.abort();
 	});
 
-	if (favorite_games.length === 0) {
+	if (favorite_games.current.length === 0) {
 		return (
 			<>
 				<main className="error">
@@ -67,7 +72,7 @@ export default function FavoritesCategory(props) {
 							</h1>
 						</div>
 						<div className="items">
-							<ItemList items={items} />
+							<ItemList items={data} />
 						</div>
 					</section>
 				</main>

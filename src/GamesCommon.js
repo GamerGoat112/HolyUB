@@ -28,11 +28,34 @@ import resolveRoute from './resolveRoute.js';
  */
 
 export class GamesAPI {
-	constructor(server) {
+	/**
+	 *
+	 * @param {string} server
+	 * @param {AbortSignal} [signal]
+	 */
+	constructor(server, signal) {
 		this.server = server;
+		this.signal = signal;
 	}
+	/**
+	 *
+	 * @param {string} url
+	 * @param {object} init
+	 * @returns
+	 */
+	async fetch(url, init = {}) {
+		return await fetch(new URL(url, this.server), {
+			...init,
+			signal: this.signal,
+		});
+	}
+	/**
+	 *
+	 * @param {string} id
+	 * @returns {LimitedGame}
+	 */
 	async game(id) {
-		const outgoing = await fetch(new URL(`./games/${id}/`, this.server));
+		const outgoing = await this.fetch(`./games/${id}/`);
 
 		if (!outgoing.ok) {
 			throw await outgoing.json();
@@ -40,15 +63,18 @@ export class GamesAPI {
 
 		return await outgoing.json();
 	}
+	/**
+	 *
+	 * @param {string} id
+	 * @param {string} token
+	 * @returns {LimitedGame}
+	 */
 	async game_plays(id, token) {
-		const outgoing = await fetch(
-			new URL(
-				`./games/${id}/plays?` +
-					new URLSearchParams({
-						token,
-					}),
-				this.server
-			),
+		const outgoing = await this.fetch(
+			`./games/${id}/plays?` +
+				new URLSearchParams({
+					token,
+				}),
 			{
 				method: 'PUT',
 			}
@@ -76,16 +102,11 @@ export class GamesAPI {
 	/**
 	 *
 	 * @param {GamesCategoryParams} params
-	 * @param {AbortSignal} signal
 	 * @returns {GamesCategory}
 	 */
-	async category(params, signal) {
-		const outgoing = await fetch(
-			new URL(
-				'./games/?' + new URLSearchParams(this.sort_params(params)),
-				this.server
-			),
-			{ signal }
+	async category(params) {
+		const outgoing = await this.fetch(
+			'./games/?' + new URLSearchParams(this.sort_params(params))
 		);
 
 		if (!outgoing.ok) {

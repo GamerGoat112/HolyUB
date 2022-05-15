@@ -1,6 +1,7 @@
 export class RammerheadAPI {
-	constructor(server) {
+	constructor(server, signal) {
 		this.server = server;
+		this.signal = signal;
 	}
 	async get(url) {
 		if (this.password) {
@@ -13,7 +14,9 @@ export class RammerheadAPI {
 		}
 
 		try {
-			const request = await fetch(new URL(url, this.server));
+			const request = await fetch(new URL(url, this.server), {
+				signal: this.signal,
+			});
 
 			if (request.status === 200) {
 				return await request.text();
