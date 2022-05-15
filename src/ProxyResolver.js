@@ -14,26 +14,6 @@ export class CompatAPI {
 
 		return await outgoing.json();
 	}
-	async game_plays(id, token) {
-		const outgoing = await fetch(
-			new URL(
-				`./games/${id}/plays?` +
-					new URLSearchParams({
-						token,
-					}),
-				this.server
-			),
-			{
-				method: 'PUT',
-			}
-		);
-
-		if (!outgoing.ok) {
-			throw await outgoing.json();
-		}
-
-		return await outgoing.json();
-	}
 	sort_params(params) {
 		for (let param in params) {
 			switch (typeof params[param]) {

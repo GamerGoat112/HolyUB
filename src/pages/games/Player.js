@@ -1,4 +1,4 @@
-import { Component, createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { DB_API, GAMES_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
@@ -57,6 +57,24 @@ export default function GamesPlayer(props) {
 	const controls_open = useRef();
 	const [resolved_src, set_resolved_src] = useState();
 	const controls_popup = useRef();
+	const [seen, _set_seen] = useState(() =>
+		props.layout.current.settings.get('seen_games').includes(props.id)
+	);
+
+	async function set_seen(value) {
+		const seen = props.layout.current.settings.get('seen_games');
+
+		if (value) {
+			seen.push(props.id);
+		} else {
+			const i = seen.indexOf(props.id);
+			seen.splice(i, 1);
+		}
+
+		props.layout.current.settings.set('seen_games', seen);
+
+		_set_seen(value);
+	}
 
 	function focus_listener() {
 		if (!iframe.current) {
@@ -93,6 +111,13 @@ export default function GamesPlayer(props) {
 				error_cause.current = undefined;
 				set_data(data);
 				set_resolved_src(resolved_src);
+
+				if (!seen) {
+					error_cause.current = 'Unable to update plays';
+					await api.game_plays(props.id);
+					set_seen(true);
+					error_cause.current = undefined;
+				}
 			} catch (error) {
 				console.error(error);
 				set_error(error);
@@ -187,21 +212,18 @@ export default function GamesPlayer(props) {
 					ref={iframe}
 					title="Embed"
 					onLoad={() => {
-						this.iframe.current.contentWindow.addEventListener(
-							'keydown',
-							event => {
-								switch (event.code) {
-									case 'Space':
-									case 'ArrowUp':
-									case 'ArrowDown':
-									case 'ArrowLeft':
-									case 'ArrowRight':
-										event.preventDefault();
-										break;
-									// no default
-								}
+						iframe.current.contentWindow.addEventListener('keydown', event => {
+							switch (event.code) {
+								case 'Space':
+								case 'ArrowUp':
+								case 'ArrowDown':
+								case 'ArrowLeft':
+								case 'ArrowRight':
+									event.preventDefault();
+									break;
+								// no default
 							}
-						);
+						});
 					}}
 					onClick={() => focus_listener()}
 					onFocus={() => focus_listener()}
@@ -288,19 +310,4 @@ export default function GamesPlayer(props) {
 			</div>
 		</main>
 	);
-}
-
-export class j extends Component {
-	captcha = createRef();
-	iframe = createRef();
-	controls_open = createRef();
-	controls_popup = createRef();
-	/**
-	 * @returns {import('react').Ref<import('../../MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
-	}
-
-	id = Math.random();
 }

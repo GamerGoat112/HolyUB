@@ -180,6 +180,7 @@ export default class Layout extends Component {
 				proxy: 'automatic',
 				search: 'https://www.google.com/search?q=%s',
 				favorite_games: [],
+				seen_games: [],
 			},
 			this
 		);
