@@ -4,9 +4,9 @@ require('react-scripts/config/env.js');
 
 const env = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
 
-console.log(
+/*console.log(
 	Object.fromEntries(env.concat('BROWSER').map(env => [env, process.env[env]]))
-);
+);*/
 
 module.exports = {
 	webpack: {
