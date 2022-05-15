@@ -15,7 +15,9 @@ export default function Search(props) {
 					}
 					defaultValue={props.layout.current.settings.get('proxy')}
 				>
-					<option value="automatic">Automatic (Default)</option>
+					<option value="automatic" disabled>
+						Automatic (Default)
+					</option>
 					<option value="ultraviolet">Ultraviolet</option>
 					<option value="rammerhead">Rammerhead</option>
 					<option value="stomp">Stomp</option>

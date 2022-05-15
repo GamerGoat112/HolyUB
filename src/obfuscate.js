@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { create } from 'random-seed';
 
 const rand = create(navigator.userAgent + global.location.origin);
@@ -38,10 +38,11 @@ const ellipsis_classes = classes();
 const char_class = unused_char();
 const string_class = unused_char();
 
-export class ObfuscateLayout extends Component {
-	style = createRef();
-	componentDidMount() {
-		const { sheet } = this.style.current;
+export function ObfuscateLayout() {
+	const style = useRef();
+
+	useEffect(() => {
+		const { sheet } = style.current;
 
 		for (let junk of junk_classes) {
 			sheet.insertRule(
@@ -55,10 +56,9 @@ export class ObfuscateLayout extends Component {
 		for (let ellipsis of ellipsis_classes) {
 			sheet.insertRule(`.${string_class} .${ellipsis}{display:inline}`);
 		}
-	}
-	render() {
-		return <style ref={this.style}></style>;
-	}
+	});
+
+	return <style ref={style}></style>;
 }
 
 class ObfuscateContext {

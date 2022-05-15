@@ -1,6 +1,7 @@
 import { ExpandMore } from '@mui/icons-material';
-import { Component, createRef, forwardRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 import clsx from 'clsx';
+import './styles/ThemeElements.scss';
 
 export function ThemeButton(props) {
 	const { children, className, ...attributes } = props;
@@ -36,189 +37,184 @@ export const ThemeInput = forwardRef((props, ref) => {
 	);
 });
 
-export class ThemeSelect extends Component {
-	options = [];
-	container = createRef();
-	constructor(props) {
-		super(props);
+// <select ref={dummy_ref} forwardRef={ref}>
 
-		const options = [];
+export const ThemeSelect = forwardRef((props, ref) => {
+	// ref target
+	const input = useRef();
+	const container = useRef();
+	const [last_select, set_last_select] = useState(-1);
+	const [open, set_open] = useState(false);
 
-		for (let child of this.props.children) {
-			if (child.type === 'option') {
-				options.push({
-					name: child.props.children,
-					value: child.props.value,
-				});
-			}
-		}
+	async function set_selected(value) {
+		await _set_selected(value);
+		await set_open(false);
 
-		this.state = {
-			value: this.props.value || this.props.defaultValue,
-			open: false,
-			options,
-		};
-	}
-	async set_value(value) {
-		await this.setState({
-			value,
-			open: false,
-		});
-
-		this.container.current.value = this.state.value;
-
-		if (typeof this.props.onChange === 'function') {
-			this.props.onChange({ target: this.container.current });
+		if (typeof props.onChange === 'function') {
+			props.onChange({ target: input.current });
 		}
 	}
-	render() {
-		const { className, onChange, ...attributes } = this.props;
 
-		const list = [];
+	const { className, onChange, children, ...attributes } = props;
 
-		for (let { name, value } of this.state.options) {
-			list.push(
-				<div
-					className={clsx(
-						'plain-option',
-						value === this.state.last_select && 'hover'
-					)}
-					key={value}
-					onClick={() => {
-						this.set_value(value);
-					}}
-					onMouseOver={() => {
-						this.setState({
-							last_select: value,
-						});
-					}}
-				>
-					{name}
-				</div>
-			);
-		}
+	const list = [];
 
-		let active_option;
+	const options = [];
+	const available_options = [];
 
-		for (let option of this.state.options) {
-			if (option.value === this.state.value) {
-				active_option = option;
-				break;
+	let default_selected = 0;
+
+	for (let child of children) {
+		if (child.type === 'option') {
+			const option = {
+				name: child.props.children,
+				value: child.props.value,
+				disabled: 'disabled' in child.props,
+			};
+
+			if (option.value === (props.value || props.defaultValue)) {
+				default_selected = options.length;
 			}
-		}
 
-		if (active_option === undefined) {
-			active_option = this.state.options[0];
-		}
+			if (!option.disabled) {
+				available_options.push(options.length);
+			}
 
-		return (
+			options.push(option);
+		}
+	}
+
+	const [selected, _set_selected] = useState(default_selected);
+
+	for (let i = 0; i < options.length; i++) {
+		const option = options[i];
+
+		list.push(
 			<div
-				{...attributes}
-				tabIndex={0}
-				className={clsx('theme-select', className)}
-				data-open={Number(this.state.open)}
-				ref={this.container}
-				onKeyDown={event => {
-					let prevent_default = true;
-
-					switch (event.code) {
-						case 'ArrowDown':
-						case 'ArrowUp':
-							{
-								let last_i = 0;
-
-								for (let i = 0; i < this.state.options.length; i++) {
-									const { value } = this.state.options[i];
-
-									if (value === this.state.last_select) {
-										last_i = i;
-										break;
-									}
-								}
-
-								let next;
-
-								switch (event.code) {
-									case 'ArrowDown':
-										if (last_i === this.state.options.length - 1) {
-											next = this.state.options[0];
-										} else {
-											next = this.state.options[last_i + 1];
-										}
-										break;
-									case 'ArrowUp':
-										if (last_i === 0) {
-											next = this.state.options[this.state.options.length - 1];
-										} else {
-											next = this.state.options[last_i - 1];
-										}
-										break;
-									// no default
-								}
-
-								this.setState({
-									last_select: next.value,
-								});
-
-								if (!this.state.open) {
-									this.set_value(next.value);
-								}
-							}
-							break;
-						case 'Enter':
-							if (this.state.open) {
-								this.set_value(this.state.last_select);
-							} else {
-								this.setState({
-									open: true,
-								});
-							}
-							break;
-						case 'Space':
-							this.setState({
-								open: true,
-							});
-							break;
-						default:
-							prevent_default = false;
-							break;
-						// no default
-					}
-
-					if (prevent_default) {
-						event.preventDefault();
+				className={clsx(
+					'plain-option',
+					i === last_select && 'hover',
+					option.disabled && 'disabled'
+				)}
+				key={i}
+				onClick={() => {
+					if (!option.disabled) {
+						set_selected(i);
 					}
 				}}
-				onBlur={event => {
-					if (!event.target.contains(event.relatedTarget)) {
-						this.setState({ open: false });
+				onMouseOver={() => {
+					if (!option.disabled) {
+						set_last_select(i);
 					}
 				}}
 			>
-				<div
-					className="toggle"
-					onClick={async () => {
-						this.setState({
-							open: !this.state.open,
-							last_select: this.state.value,
-						});
-						this.container.current.focus();
-					}}
-				>
-					{active_option.name}
-					<ExpandMore />
-				</div>
-				<div
-					className="list"
-					onMouseLeave={() => {
-						this.setState({
-							last_select: undefined,
-						});
-					}}
-				>
-					{list}
-				</div>
+				{option.name}
 			</div>
 		);
 	}
-}
+
+	return (
+		<div
+			{...attributes}
+			tabIndex={0}
+			className={clsx('theme-select', className)}
+			data-open={Number(open)}
+			ref={container}
+			onKeyDown={event => {
+				let prevent_default = true;
+
+				switch (event.code) {
+					case 'ArrowDown':
+					case 'ArrowUp':
+						{
+							let last_i = last_select;
+							let last_i_available = available_options.indexOf(
+								[...available_options].sort(
+									(a, b) => Math.abs(a - last_i) - Math.abs(b - last_i)
+								)[0]
+							);
+
+							let next;
+
+							switch (event.code) {
+								case 'ArrowDown':
+									if (last_i_available === available_options.length - 1) {
+										next = 0;
+									} else {
+										next = last_i_available + 1;
+										if (options[last_i].disabled) {
+											next--;
+										}
+									}
+									break;
+								case 'ArrowUp':
+									if (last_i_available === 0) {
+										next = available_options.length - 1;
+									} else {
+										next = last_i_available - 1;
+										if (options[last_i].disabled) {
+											next--;
+										}
+									}
+									break;
+								// no default
+							}
+
+							const next_i = available_options[next];
+
+							set_last_select(next_i);
+
+							if (!open) {
+								set_selected(next_i);
+							}
+						}
+						break;
+					case 'Enter':
+						if (open) {
+							set_selected(last_select);
+						} else {
+							set_open(true);
+						}
+						break;
+					case 'Space':
+						set_open(true);
+						break;
+					default:
+						prevent_default = false;
+						break;
+					// no default
+				}
+
+				if (prevent_default) {
+					event.preventDefault();
+				}
+			}}
+			onBlur={event => {
+				if (!event.target.contains(event.relatedTarget)) {
+					set_open(false);
+				}
+			}}
+		>
+			<input ref={input} value={options[selected]?.value} readOnly hidden />
+			<div
+				className="toggle"
+				onClick={async () => {
+					set_open(!open);
+					set_last_select(selected);
+					container.current.focus();
+				}}
+			>
+				{options[selected]?.name}
+				<ExpandMore />
+			</div>
+			<div
+				className="list"
+				onMouseLeave={() => {
+					set_last_select(-1);
+				}}
+			>
+				{list}
+			</div>
+		</div>
+	);
+});
