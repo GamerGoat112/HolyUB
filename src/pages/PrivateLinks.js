@@ -56,7 +56,6 @@ export default function PrivateLinks(props) {
 								<Notification
 									title={error.name}
 									description={error.message}
-									duration={10e5}
 									type="error"
 								/>
 							);
