@@ -9,6 +9,7 @@ import engines from '../engines.js';
 import clsx from 'clsx';
 import '../styles/Proxy.scss';
 import { ThemeInputBar } from '../ThemeElements.js';
+import useRefDefault from '../useRefDefault.js';
 
 export default function Proxies(props) {
 	const service_frame = useRef();
@@ -86,10 +87,12 @@ export default function Proxies(props) {
 	}
 
 	let engine;
-	const format = props.layout.current.settings.get('search');
+	const format = useRefDefault(() =>
+		props.layout.current.settings.get('search')
+	);
 
 	for (let _engine of engines) {
-		if (_engine.format === format) {
+		if (_engine.format === format.current) {
 			engine = _engine;
 			break;
 		}
