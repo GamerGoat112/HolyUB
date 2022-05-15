@@ -1,8 +1,6 @@
-import { CheckCircle, Error, Info, Warning } from '@mui/icons-material';
-import clsx from 'clsx';
-import { Component, createRef, useEffect, useRef, useState } from 'react';
+import NotificationsManager from './Notifications.js';
+import { Component, createRef, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Obfuscated } from './obfuscate.js';
 import Settings from './Settings.js';
 
 export const THEMES = ['night', 'day'];
@@ -41,111 +39,6 @@ function ScrollManager() {
 	}
 
 	return <></>;
-}
-const ANIMATION = 0.3e3;
-
-/**
- *
- * @param {{manager: NotificationsManager, id: string, type: 'warning'|'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
- */
-export function Notification(props) {
-	const [hide, set_hide] = useState(false);
-
-	const duration = props.duration || 5e3;
-
-	useEffect(() => {
-		setTimeout(() => {
-			set_hide(true);
-			setTimeout(() => props.manager.delete(props.id), ANIMATION);
-		}, duration);
-	}, [duration, props.id, props.manager]);
-
-	let Icon;
-
-	switch (props.type) {
-		case 'warning':
-			Icon = Warning;
-			break;
-		case 'error':
-			Icon = Error;
-			break;
-		case 'success':
-			Icon = CheckCircle;
-			break;
-		default:
-		case 'info':
-			Icon = Info;
-			break;
-	}
-
-	return (
-		<div
-			className={clsx('notification', hide && 'hide', props.title && 'title')}
-		>
-			<Icon className={`icon ${props.type}`} />
-			<div className="content">
-				{props.title && (
-					<div className="title">
-						<Obfuscated>{props.title}</Obfuscated>
-					</div>
-				)}
-				{props.description && (
-					<div className="description">
-						<Obfuscated>{props.description}</Obfuscated>
-					</div>
-				)}
-			</div>
-			<div
-				className="timer"
-				style={{ animationDuration: `${duration / 1000}s` }}
-			/>
-		</div>
-	);
-}
-
-class NotificationsManager extends Component {
-	/**
-	 * @type {Notification[]}
-	 */
-	notifications = [];
-	animations = [];
-	/**
-	 *
-	 * @param {Notification} notification
-	 */
-	add(notification) {
-		const id = Math.random();
-
-		this.notifications.push(
-			<Notification {...notification.props} key={id} id={id} manager={this} />
-		);
-
-		this.forceUpdate();
-	}
-	/**
-	 *
-	 * @param {string} id
-	 */
-	delete(id) {
-		for (let i = 0; i < this.notifications.length; i++) {
-			const notification = this.notifications[i];
-
-			console.log(notification.props.id, id);
-			if (notification.props.id !== id) {
-				continue;
-			}
-
-			this.notifications.splice(i, 1);
-			this.forceUpdate();
-
-			return true;
-		}
-
-		return false;
-	}
-	render() {
-		return <div className="notifications">{this.notifications}</div>;
-	}
 }
 
 export default class Layout extends Component {

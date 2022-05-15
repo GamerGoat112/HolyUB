@@ -1,7 +1,7 @@
 import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
 import { useRef } from 'react';
-import { Notification } from '../../Layout.js';
+import { Notification } from '../../Notifications.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
@@ -81,6 +81,7 @@ async function cloak_url(url) {
 			return {
 				title: 'about:blank',
 				icon: 'none',
+				url: 'about:blank',
 			};
 		default:
 			return await extract_data(url);

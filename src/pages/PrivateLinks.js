@@ -3,7 +3,7 @@ import { ObfuscatedA } from '../obfuscate.js';
 import { VOUCHER_URL, VO_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
 import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
-import { Notification } from '../Layout.js';
+import { Notification } from '../Notifications.js';
 import '../styles/PrivateLinks.scss';
 
 export default function PrivateLinks(props) {
