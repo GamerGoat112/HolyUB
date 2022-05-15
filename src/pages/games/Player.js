@@ -61,21 +61,6 @@ export default function GamesPlayer(props) {
 		props.layout.current.settings.get('seen_games').includes(props.id)
 	);
 
-	async function set_seen(value) {
-		const seen = props.layout.current.settings.get('seen_games');
-
-		if (value) {
-			seen.push(props.id);
-		} else {
-			const i = seen.indexOf(props.id);
-			seen.splice(i, 1);
-		}
-
-		props.layout.current.settings.set('seen_games', seen);
-
-		_set_seen(value);
-	}
-
 	function focus_listener() {
 		if (!iframe.current) {
 			return;
@@ -94,6 +79,21 @@ export default function GamesPlayer(props) {
 
 	useEffect(() => {
 		const abort = new AbortController();
+
+		async function set_seen(value) {
+			const seen = props.layout.current.settings.get('seen_games');
+
+			if (value) {
+				seen.push(props.id);
+			} else {
+				const i = seen.indexOf(props.id);
+				seen.splice(i, 1);
+			}
+
+			props.layout.current.settings.set('seen_games', seen);
+
+			_set_seen(value);
+		}
 
 		void (async function () {
 			const api = new GamesAPI(DB_API, abort.signal);
@@ -131,7 +131,7 @@ export default function GamesPlayer(props) {
 			window.removeEventListener('focus', focus_listener);
 			abort.abort();
 		};
-	}, [props.id, props.layout]);
+	}, [seen, props.id, props.layout]);
 
 	if (error) {
 		return (
