@@ -1,5 +1,5 @@
 import NotificationsManager from './Notifications.js';
-import { Component, createRef, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Settings from './Settings.js';
 
@@ -41,110 +41,79 @@ function ScrollManager() {
 	return <></>;
 }
 
-export default class Layout extends Component {
-	notifications = createRef();
-	state = {
-		fullscreen: this.get_fullscreen(),
-		expanded: false,
-	};
-	icon = document.querySelector('link[rel="icon"]');
-	get mobile() {
-		const mobile = matchMedia('only screen and (max-width: 650px)');
+export default forwardRef((props, ref) => {
+	const notifications = useRef();
+	const icon = document.querySelector('link[rel="icon"]');
 
-		return mobile.matches;
-	}
-	constructor(props) {
-		super(props);
+	const theme = useMemo(() => {
+		const { matches: prefers_light } = matchMedia(
+			'(prefers-color-scheme: light)'
+		);
 
-		let theme;
+		return prefers_light ? 'day' : 'night';
+	}, []);
 
-		const prefers_light = matchMedia('(prefers-color-scheme: light)');
-
-		if (prefers_light.matches) {
-			theme = 'day';
-		} else {
-			theme = 'night';
-		}
-
-		this.settings = new Settings(
-			'global settings',
-			{
+	const settings = useMemo(
+		() =>
+			new Settings('global settings', {
 				theme,
 				proxy: 'automatic',
 				search: 'https://www.google.com/search?q=%s',
 				favorite_games: [],
 				seen_games: [],
-			},
-			this
-		);
+			}),
+		[theme]
+	);
 
-		this.cloak = new Settings(
-			'cloak settings',
-			{
+	const cloak = useMemo(
+		() =>
+			new Settings('cloak settings', {
 				value: '',
 				title: '',
 				icon: '',
-			},
-			this
-		);
+			}),
+		[]
+	);
 
-		this.listen_fullscreen = this.fullscreen.bind(this);
-		this.listen_keydown = this.keydown.bind(this);
-	}
-	get_fullscreen() {
-		return document.fullscreenElement !== null;
-	}
-	fullscreen() {
-		this.setState({
-			fullscreen: this.get_fullscreen(),
-		});
-	}
-	keydown(event) {
-		if (this.state.expanded && event.key === 'Escape') {
-			this.setState({
-				expanded: false,
-			});
-		}
-	}
-	componentDidMount() {
-		document.addEventListener('keydown', this.listen_keydown);
-		document.addEventListener('fullscreenchange', this.listen_fullscreen);
-	}
-	componentWillUnmount() {
-		document.removeEventListener('keydown', this.listen_keydown);
-		document.removeEventListener('fullscreenchange', this.listen_fullscreen);
-	}
-	render() {
-		document.documentElement.dataset.theme = this.settings.get('theme');
-		document.documentElement.dataset.expanded = Number(this.state.expanded);
+	useImperativeHandle(
+		ref,
+		() => ({
+			notifications,
+			settings,
+			cloak,
+		}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[notifications]
+	);
 
-		if (this.cloak.get('title') === '') {
-			document.title = 'Holy Unblocker';
-		} else {
-			document.title = this.cloak.get('title');
-		}
+	document.documentElement.dataset.theme = settings.get('theme');
 
-		let href;
-
-		switch (this.cloak.get('icon')) {
-			case '':
-				href = '/favicon.ico';
-				break;
-			case 'none':
-				href = 'data:,';
-				break;
-			default:
-				href = this.cloak.get('icon');
-				break;
-		}
-
-		this.icon.href = href;
-
-		return (
-			<>
-				<NotificationsManager ref={this.notifications} />
-				<ScrollManager />
-			</>
-		);
+	if (cloak.get('title') === '') {
+		document.title = 'Holy Unblocker';
+	} else {
+		document.title = cloak.get('title');
 	}
-}
+
+	let href;
+
+	switch (cloak.get('icon')) {
+		case '':
+			href = '/favicon.ico';
+			break;
+		case 'none':
+			href = 'data:,';
+			break;
+		default:
+			href = cloak.get('icon');
+			break;
+	}
+
+	icon.href = href;
+
+	return (
+		<>
+			<NotificationsManager ref={notifications} />
+			<ScrollManager />
+		</>
+	);
+});

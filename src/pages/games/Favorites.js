@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Obfuscated } from '../../obfuscate.js';
 import '../../styles/GamesCategory.scss';
-import useRefDefault from '../../useRefDefault.js';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
 export default function FavoritesCategory(props) {
-	const favorite_games = useRefDefault(() =>
-		props.layout.current.settings.get('favorite_games')
+	const favorite_games = useMemo(
+		() => props.layout.current.settings.get('favorite_games'),
+		[props.layout]
 	);
 	const [data, set_data] = useState(() =>
 		favorite_games.current.map(id => ({

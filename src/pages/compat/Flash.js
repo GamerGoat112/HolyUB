@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { Script } from '../../CompatLayout.js';
+import { Obfuscated } from '../../obfuscate.js';
 
 export default function Flash(props) {
 	const player = useRef();
 	const container = useRef();
 	const [ruffle_loaded, set_ruffle_loaded] = useState(false);
+	const ruffle_bundle = useRef();
 
 	useEffect(() => {
 		void (async function () {
@@ -11,7 +14,8 @@ export default function Flash(props) {
 
 			try {
 				error_cause = 'Error loading Ruffle player.';
-				await props.layout.current.load_script('/ruffle/ruffle.js');
+				console.log(ruffle_bundle.current);
+				await ruffle_bundle.current.promise;
 				error_cause = undefined;
 
 				const ruffle = global.RufflePlayer.newest();
@@ -37,13 +41,20 @@ export default function Flash(props) {
 		return () => {
 			player.current.remove();
 		};
-	}, [props.layout]);
+	}, [props.layout, ruffle_bundle]);
 
 	return (
 		<main
 			className="compat-flash"
 			data-loaded={Number(ruffle_loaded)}
 			ref={container}
-		></main>
+		>
+			<Script src="/ruffle/ruffle.js" ref={ruffle_bundle} />
+			{!ruffle_loaded && (
+				<>
+					Loading <Obfuscated>Flash Player</Obfuscated>...
+				</>
+			)}
+		</main>
 	);
 }

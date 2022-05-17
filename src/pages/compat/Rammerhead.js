@@ -11,10 +11,6 @@ export default function Rammerhead(props) {
 			try {
 				const api = new RammerheadAPI(RH_APP);
 
-				error_cause = 'Error loading Ruffle player.';
-				await props.layout.current.load_script('/ruffle/ruffle.js');
-				error_cause = undefined;
-
 				error_cause = 'Rammerhead server is unreachable.';
 				await fetch(RH_APP);
 				error_cause = undefined;

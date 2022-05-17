@@ -1,6 +1,6 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
 import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
-import { createRef, useRef, useState } from 'react';
+import { createRef, useMemo, useRef, useState } from 'react';
 import { NorthWest, Search } from '@mui/icons-material';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
@@ -8,7 +8,6 @@ import engines from '../engines.js';
 import clsx from 'clsx';
 import '../styles/Proxy.scss';
 import { ThemeInputBar } from '../ThemeElements.js';
-import useRefDefault from '../useRefDefault.js';
 
 export default function Proxies(props) {
 	const service_frame = useRef();
@@ -82,12 +81,13 @@ export default function Proxies(props) {
 	}
 
 	let engine;
-	const format = useRefDefault(() =>
-		props.layout.current.settings.get('search')
+	const format = useMemo(
+		() => props.layout.current.settings.get('search'),
+		[props.layout]
 	);
 
 	for (let _engine of engines) {
-		if (_engine.format === format.current) {
+		if (_engine.format === format) {
 			engine = _engine;
 			break;
 		}

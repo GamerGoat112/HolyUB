@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { ScriptsOrder, Script } from '../../CompatLayout.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 
@@ -26,15 +27,16 @@ import { BARE_API } from '../../root.js';
  */
 
 export default function Ultraviolet(props) {
+	const uv_bundle = useRef();
+	const uv_config = useRef();
+
 	useEffect(() => {
 		void (async function () {
 			let error_cause;
 
 			try {
 				error_cause = 'Failure loading the Ultraviolet bundle.';
-				await props.layout.current.load_script('/uv/uv.bundle.js');
-				error_cause = 'Failure loading the Ultraviolet config.';
-				await props.layout.current.load_script('/uv/uv.config.js');
+				await uv_bundle.current.promise;
 				error_cause = undefined;
 
 				/**
@@ -71,10 +73,14 @@ export default function Ultraviolet(props) {
 				props.layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	}, [props.layout]);
+	}, [props.layout, uv_bundle, uv_config]);
 
 	return (
 		<main className="compat">
+			<ScriptsOrder ref={uv_bundle}>
+				<Script src="/uv/uv.bundle.js" />
+				<Script src="/uv/uv.config.js" />
+			</ScriptsOrder>
 			Loading <Obfuscated>Ultraviolet</Obfuscated>...
 		</main>
 	);

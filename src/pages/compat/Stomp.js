@@ -1,16 +1,19 @@
 import process from 'process';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { Script } from '../../CompatLayout.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
 
 export default function Rammerhead(props) {
+	const bootstrapper = useRef();
+
 	useEffect(() => {
 		void (async function () {
 			let error_cause;
 
 			try {
 				error_cause = 'Failure loading the Stomp bootstrapper.';
-				await props.layout.current.load_script('/stomp/bootstrapper.js');
+				await bootstrapper.current.promise;
 				error_cause = undefined;
 
 				const { StompBoot } = global;
@@ -48,10 +51,11 @@ export default function Rammerhead(props) {
 				props.layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	}, [props.layout]);
+	}, [props.layout, bootstrapper]);
 
 	return (
 		<main className="compat">
+			<Script src="/stomp/bootstrapper.js" ref={bootstrapper} />
 			Loading <Obfuscated>Stomp</Obfuscated>...
 		</main>
 	);

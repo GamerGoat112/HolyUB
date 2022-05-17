@@ -3,6 +3,7 @@ import {
 	forwardRef,
 	useEffect,
 	useImperativeHandle,
+	useMemo,
 	useRef,
 	useState,
 } from 'react';
@@ -12,11 +13,9 @@ import BareClient from 'bare-client';
 import resolve_proxy from './ProxyResolver.js';
 import { ChevronLeft, Fullscreen, Public } from '@mui/icons-material';
 import './styles/Service.scss';
-import useRefDefault from './useRefDefault.js';
 
 export default forwardRef((props, ref) => {
 	const iframe = useRef();
-	const links_tried = useRef(new WeakMap());
 	const proxy = useRef();
 	const [title, set_title] = useState('');
 	const [src, set_src] = useState('');
@@ -24,7 +23,8 @@ export default forwardRef((props, ref) => {
 	const [first_load, set_first_load] = useState(false);
 	const [revoke_icon, set_revoke_icon] = useState(false);
 	const abort = useRef();
-	const bare = useRefDefault(() => new BareClient(BARE_API));
+	const bare = useMemo(() => new BareClient(BARE_API), []);
+	const links_tried = useMemo(() => new WeakMap(), []);
 
 	useEffect(() => {
 		function focus_listener() {
@@ -76,14 +76,14 @@ export default forwardRef((props, ref) => {
 					icon = new URL('/favicon.ico', location).toString();
 				}
 
-				if (!links_tried.current.has(location)) {
-					links_tried.current.set(location, new Set());
+				if (!links_tried.has(location)) {
+					links_tried.set(location, new Set());
 				}
 
-				if (!links_tried.current.get(location).has(icon)) {
-					links_tried.current.get(location).add(icon);
+				if (!links_tried.get(location).has(icon)) {
+					links_tried.get(location).add(icon);
 
-					const outgoing = await bare.current.fetch(icon);
+					const outgoing = await bare.fetch(icon);
 
 					set_icon(URL.createObjectURL(await outgoing.blob()));
 					set_revoke_icon(true);
@@ -97,7 +97,7 @@ export default forwardRef((props, ref) => {
 
 		test_proxy_update();
 		return () => clearInterval(interval);
-	}, [proxy, bare, src, iframe]);
+	}, [proxy, bare, src, iframe, links_tried]);
 
 	useImperativeHandle(ref, () => ({
 		async omnibox_entries(query) {
@@ -110,7 +110,7 @@ export default forwardRef((props, ref) => {
 
 				abort.current = new AbortController();
 
-				const outgoing = await bare.current.fetch(
+				const outgoing = await bare.fetch(
 					'https://www.bing.com/AS/Suggestions?' +
 						new URLSearchParams({
 							qry: query,

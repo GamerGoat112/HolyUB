@@ -1,6 +1,12 @@
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
-import { createRef, forwardRef } from 'react';
+import {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import categories from './pages/games/categories.js';
 import {
@@ -80,160 +86,148 @@ export function MenuTab(props) {
 	}
 }
 
-function MainMenuTab(props) {
-	const { layout, ...attributes } = props;
-	return (
-		<MenuTab
-			onClick={() => {
-				layout.setState({
-					expanded: false,
-				});
-			}}
-			{...attributes}
-		/>
+export default forwardRef((props, ref) => {
+	const nav = useRef();
+	const layout = useRef();
+	const [expanded, set_expanded] = useState(false);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			...layout.current,
+			set_expanded,
+		}),
+		[layout]
 	);
-}
 
-class MainLayout extends Layout {
-	nav = createRef();
-	constructor(props) {
-		super(props);
-
-		this.listen_keydown = this.keydown.bind(this);
-	}
-	render() {
-		const ui_categories = [];
-
-		for (let id in categories) {
-			const { short, name } = categories[id];
-			ui_categories.push(
-				<Link
-					key={id}
-					to={`${resolveRoute('/games/', 'category')}?id=${id}`}
-					className="entry text"
-					onClick={() => {
-						this.setState({
-							expanded: false,
-						});
-					}}
-				>
-					<Obfuscated>{short || name}</Obfuscated>
-				</Link>
-			);
+	useEffect(() => {
+		function keydown(event) {
+			if (expanded && event.key === 'Escape') {
+				set_expanded(false);
+			}
 		}
 
-		return (
-			<>
-				{super.render()}
-				<ObfuscateLayout />
-				<nav ref={this.nav}>
-					<div
-						className="button"
-						onClick={() => this.setState({ expanded: true })}
-					>
-						<Menu />
-					</div>
-					<Link to="/" className="entry logo">
-						<Hat />
-					</Link>
-					<div className="shift-right"></div>
-					<Link
-						className="button"
-						to={resolveRoute('/settings/', 'search')}
-						onClick={() => this.setState({ expanded: false })}
-					>
-						<Settings />
-					</Link>
-				</nav>
-				<div className="content">
-					<div
-						className="cover"
-						onClick={() => this.setState({ expanded: false })}
-					></div>
-					<div tabIndex={0} className="menu" ref={this.menu}>
-						<div className="top">
-							<div
-								className="button"
-								onClick={() => this.setState({ expanded: false })}
-							>
-								<Menu />
-							</div>
-							<Link
-								to="/"
-								className="entry logo"
-								onClick={() => this.setState({ expanded: false })}
-							>
-								<Hat />
-							</Link>
-						</div>
-						<div className="menu-list">
-							<MainMenuTab
-								route={resolveRoute('/', '')}
-								name="Home"
-								iconFilled={<Home />}
-								iconOutlined={<HomeOutlined />}
-								layout={this}
-							/>
-							<MainMenuTab
-								route={resolveRoute('/', 'proxy')}
-								name="Proxy"
-								iconFilled={<WebAsset />}
-								layout={this}
-							/>
-							<MainMenuTab
-								route={resolveRoute('/', 'faq')}
-								name="FAQ"
-								iconFilled={<QuestionMark />}
-								layout={this}
-							/>
-							<div className="bar" />
-							<MainMenuTab
-								route={resolveRoute('/', 'privatelinks')}
-								name="Private Links"
-								iconFilled={<ShoppingCart />}
-								layout={this}
-							/>
-							<MainMenuTab
-								href={PATREON_URL}
-								name="Patreon"
-								iconFilled={<Patreon style={{ width: 18, height: 18 }} />}
-								layout={this}
-							/>
-							<div className="bar" />
-							<div className="title">
-								<Obfuscated>Games</Obfuscated>
-							</div>
-							<MainMenuTab
-								route={resolveRoute('/games/', 'all')}
-								name="All"
-								iconFilled={<Apps />}
-								layout={this}
-							/>{' '}
-							<MainMenuTab
-								route={resolveRoute('/games/', 'popular')}
-								name="Popular"
-								iconFilled={<SortRounded />}
-								layout={this}
-							/>
-							<MainMenuTab
-								route={resolveRoute('/games/', 'favorites')}
-								name="Favorites"
-								iconFilled={<StarRounded />}
-								iconOutlined={<StarOutlineRounded />}
-								layout={this}
-							/>
-							<div className="title">Genre</div>
-							<div className="genres">{ui_categories}</div>
-						</div>
-					</div>
-					<Outlet />
-					<Footer />
-				</div>
-			</>
+		document.addEventListener('keydown', keydown);
+
+		return () => document.removeEventListener('keydown', keydown);
+	}, [expanded]);
+
+	useEffect(() => {
+		document.documentElement.dataset.expanded = Number(expanded);
+	}, [expanded]);
+
+	const ui_categories = [];
+
+	for (let id in categories) {
+		const { short, name } = categories[id];
+		ui_categories.push(
+			<Link
+				key={id}
+				to={`${resolveRoute('/games/', 'category')}?id=${id}`}
+				className="entry text"
+				onClick={() => {
+					set_expanded(false);
+				}}
+			>
+				<Obfuscated>{short || name}</Obfuscated>
+			</Link>
 		);
 	}
-}
 
-export default forwardRef((props, ref) => {
-	return <MainLayout ref={ref} location={useLocation()} {...props} />;
+	function close_menu() {
+		set_expanded(false);
+	}
+
+	return (
+		<>
+			<ObfuscateLayout />
+			<Layout ref={layout} />
+			<nav ref={nav}>
+				<div className="button" onClick={() => set_expanded(true)}>
+					<Menu />
+				</div>
+				<Link to="/" className="entry logo">
+					<Hat />
+				</Link>
+				<div className="shift-right"></div>
+				<Link className="button" to={resolveRoute('/settings/', 'search')}>
+					<Settings />
+				</Link>
+			</nav>
+			<div className="content">
+				<div className="cover" onClick={close_menu}></div>
+				<div tabIndex={0} className="menu">
+					<div className="top">
+						<div className="button" onClick={close_menu}>
+							<Menu />
+						</div>
+						<Link to="/" className="entry logo" onClick={close_menu}>
+							<Hat />
+						</Link>
+					</div>
+					<div className="menu-list">
+						<MenuTab
+							route={resolveRoute('/', '')}
+							name="Home"
+							iconFilled={<Home />}
+							iconOutlined={<HomeOutlined />}
+							onClick={close_menu}
+						/>
+						<MenuTab
+							route={resolveRoute('/', 'proxy')}
+							name="Proxy"
+							iconFilled={<WebAsset />}
+							onClick={close_menu}
+						/>
+						<MenuTab
+							route={resolveRoute('/', 'faq')}
+							name="FAQ"
+							iconFilled={<QuestionMark />}
+							onClick={close_menu}
+						/>
+						<div className="bar" />
+						<MenuTab
+							route={resolveRoute('/', 'privatelinks')}
+							name="Private Links"
+							iconFilled={<ShoppingCart />}
+							onClick={close_menu}
+						/>
+						<MenuTab
+							href={PATREON_URL}
+							name="Patreon"
+							iconFilled={<Patreon style={{ width: 18, height: 18 }} />}
+							onClick={close_menu}
+						/>
+						<div className="bar" />
+						<div className="title">
+							<Obfuscated>Games</Obfuscated>
+						</div>
+						<MenuTab
+							route={resolveRoute('/games/', 'all')}
+							name="All"
+							iconFilled={<Apps />}
+							onClick={close_menu}
+						/>{' '}
+						<MenuTab
+							route={resolveRoute('/games/', 'popular')}
+							name="Popular"
+							iconFilled={<SortRounded />}
+							onClick={close_menu}
+						/>
+						<MenuTab
+							route={resolveRoute('/games/', 'favorites')}
+							name="Favorites"
+							iconFilled={<StarRounded />}
+							iconOutlined={<StarOutlineRounded />}
+							onClick={close_menu}
+						/>
+						<div className="title">Genre</div>
+						<div className="genres">{ui_categories}</div>
+					</div>
+				</div>
+				<Outlet />
+				<Footer />
+			</div>
+		</>
+	);
 });

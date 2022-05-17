@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
@@ -6,7 +6,6 @@ import { ThemeSelect } from '../../ThemeElements.js';
 import Settings from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
-import useRefDefault from '../../useRefDefault.js';
 import '../../styles/GamesCategory.scss';
 
 export default function Category(props) {
@@ -24,13 +23,14 @@ export default function Category(props) {
 	});
 	const error_cause = useRef();
 	const [error, set_error] = useState();
-	const settings = useRefDefault(
+	const settings = useMemo(
 		() =>
 			new Settings(`games category ${props.id} settings`, {
 				sort: 'Most Played',
-			})
+			}),
+		[props.id]
 	);
-	const [sort, set_sort] = useState(() => settings.current.get('sort'));
+	const [sort, set_sort] = useState(() => settings.get('sort'));
 
 	useEffect(() => {
 		const abort = new AbortController();
