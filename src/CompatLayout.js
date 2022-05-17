@@ -31,14 +31,17 @@ function load_script(src) {
 
 	return [promise, script];
 }
+
+function create_promise_external() {
+	let promise_external;
+	const promise = new Promise((resolve, reject) => {
+		promise_external = { resolve, reject };
+	});
+	return [promise, promise_external];
+}
+
 export const ScriptsOrder = forwardRef((props, ref) => {
-	let [promise, promise_external] = useMemo(() => {
-		let promise_external;
-		const promise = new Promise((resolve, reject) => {
-			promise_external = { resolve, reject };
-		});
-		return [promise, promise_external];
-	}, []);
+	let [promise, promise_external] = useMemo(create_promise_external, []);
 
 	useImperativeHandle(ref, () => ({
 		promise,
@@ -80,33 +83,16 @@ export const ScriptsOrder = forwardRef((props, ref) => {
 });
 
 export const Script = forwardRef((props, ref) => {
-	let [promise, promise_external] = useMemo(() => {
-		let promise_external;
-		const promise = new Promise((resolve, reject) => {
-			promise_external = { resolve, reject };
-		});
-		return [promise, promise_external];
-	}, []);
+	let [promise, promise_external] = useMemo(create_promise_external, []);
 
 	useImperativeHandle(ref, () => ({
 		promise,
 	}));
 
 	useEffect(() => {
-		const script = document.createElement('script');
-		script.src = props.src;
-		script.async = true;
+		const [promise, script] = load_script(props.src);
 
-		script.addEventListener('load', () => {
-			promise_external.resolve();
-			console.log(global.Ultraviolet, 'e');
-		});
-
-		script.addEventListener('error', () => {
-			promise_external.reject();
-		});
-
-		document.body.append(script);
+		promise.then(promise_external.resolve).catch(promise_external.reject);
 
 		return () => {
 			script.remove();
