@@ -1,297 +1,217 @@
-import root, { BARE_API } from './root.js';
-import { ReactComponent as GlobeSVG } from './assets/globe.svg';
-import SleepingComponent from './SleepingComponent';
-import { createRef } from 'react';
-import { render } from 'react-dom';
+import { BARE_API } from './root.js';
+import {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from 'react';
 import { Obfuscated } from './obfuscate.js';
 import SearchBuilder from './SearchBuilder.js';
 import BareClient from 'bare-client';
 import resolve_proxy from './ProxyResolver.js';
+import { ChevronLeft, Fullscreen, Public } from '@mui/icons-material';
 import './styles/Service.scss';
-import { ChevronLeft, Fullscreen } from '@mui/icons-material';
+import useRefDefault from './useRefDefault.js';
 
-export default class ServiceFrame extends SleepingComponent {
-	state = {
-		title: '',
-		icon: 'globe',
-		// if icon is a blob: uri, revoke it once loaded
-		revoke_icon: false,
-		src: '',
-		embed: {
-			current: false,
-		},
-		proxy: {
-			current: false,
-			src: '',
-		},
-		first_load: false,
-	};
-	links_tried = new WeakMap();
-	iframe = createRef();
-	// headless client for serviceworker
-	headless = createRef();
-	bare = new BareClient(BARE_API);
-	/**
-	 * @returns {import('react').RefObject<import('./MainLayout.js').default>}
-	 */
-	get layout() {
-		return this.props.layout;
-	}
-	async embed(src, title = src, icon = 'globe') {
-		await this.setState({
-			title,
-			src,
-			icon,
-			embed: {
-				current: true,
-				src,
-			},
-		});
-	}
-	async proxy(input) {
-		const builder = new SearchBuilder(
-			this.layout.current.settings.get('search')
-		);
+export default forwardRef((props, ref) => {
+	const iframe = useRef();
+	const links_tried = useRef(new WeakMap());
+	const proxy = useRef();
+	const [title, set_title] = useState('');
+	const [src, set_src] = useState('');
+	const [icon, set_icon] = useState('');
+	const [first_load, set_first_load] = useState(false);
+	const [revoke_icon, set_revoke_icon] = useState(false);
+	const abort = useRef();
+	const bare = useRefDefault(() => new BareClient(BARE_API));
 
-		const src = builder.query(input);
+	useEffect(() => {
+		function focus_listener() {
+			iframe.current.contentWindow.focus();
+		}
 
-		const proxied_src = await resolve_proxy(
-			src,
-			this.layout.current.settings.get('proxy')
-		);
+		window.addEventListener('focus', focus_listener);
 
-		await this.setState({
-			title: src,
-			src: proxied_src,
-			icon: 'globe',
-			proxy: {
-				current: true,
-				src,
-			},
-		});
-	}
-	focus_listener() {
-		this.iframe.current.contentWindow.focus();
-	}
-	constructor(props) {
-		super(props);
+		return () => {
+			window.removeEventListener('focus', focus_listener);
+		};
+	}, [iframe]);
 
-		this.focus_listener = this.focus_listener.bind(this);
-	}
-	async componentDidMount() {
-		window.addEventListener('focus', this.focus_listener);
+	useEffect(() => {
+		async function test_proxy_update() {
+			const { contentWindow } = iframe.current;
 
-		while (!this.unmounting) {
-			if (this.state.proxy.current) {
-				this.test_proxy_update();
+			let location;
+
+			// * didn't hook our call to new Function
+			try {
+				location = new contentWindow.Function('return location')();
+			} catch (error) {
+				// possibly an x-frame error
+				return;
 			}
 
-			await this.sleep(100);
-		}
-	}
-	async componentWillUnmount() {
-		window.removeEventListener('focus', this.focus_listener);
-		super.componentWillUnmount();
-	}
-	test_proxy_update() {
-		let location;
+			let title;
 
-		// * didn't hook our call to new Function
-		try {
-			location = new this.iframe_window.Function('return location')();
-		} catch (error) {
-			// possibly an x-frame error
-			return;
-		}
-
-		const titles = [];
-
-		if (location === this.iframe_window.location) {
-			titles.push(this.state.proxy.src);
-		} else {
-			const current_title = this.iframe_window.document.title;
-
-			if (current_title === '') {
-				titles.push(location.toString());
+			if (location === contentWindow.location) {
+				title = proxy.current;
 			} else {
-				titles.push(current_title);
-			}
+				const current_title = contentWindow.document.title;
 
-			const selector =
-				this.iframe_window.document.querySelector('link[rel*="icon"]');
-
-			let icon;
-
-			if (selector !== null && selector.href !== '') {
-				icon = selector.href;
-			} else {
-				icon = new URL('/favicon.ico', location).toString();
-			}
-
-			if (!this.links_tried.has(location)) {
-				this.links_tried.set(location, new Set());
-			}
-
-			if (!this.links_tried.get(location).has(icon)) {
-				this.links_tried.get(location).add(icon);
-				this.load_icon(icon);
-			}
-		}
-
-		this.setState({
-			title: titles[0],
-		});
-	}
-	/**
-	 * @returns {Window}
-	 */
-	get iframe_window() {
-		return this.iframe.current.contentWindow;
-	}
-	add_fields(datalist, _fields) {
-		const fields = [..._fields];
-
-		for (let i = 0; i < fields.length; i++) {
-			fields[i] = <option key={fields[i]} value={fields[i]} />;
-		}
-
-		render(fields, datalist);
-	}
-	async omnibox_entries(query) {
-		const entries = [];
-
-		try {
-			if (this.abort !== undefined) {
-				this.abort.abort();
-			}
-
-			this.abort = new AbortController();
-
-			const outgoing = await this.bare.fetch(
-				'https://www.bing.com/AS/Suggestions?' +
-					new URLSearchParams({
-						qry: query,
-						cvid: '\u0001',
-						bareServer: true,
-					}),
-				{
-					signal: this.abort.signal,
+				if (current_title) {
+					title = current_title;
+				} else {
+					title = location.toString();
 				}
+
+				const selector =
+					contentWindow.document.querySelector('link[rel*="icon"]');
+
+				let icon;
+
+				if (selector !== null && selector.href !== '') {
+					icon = selector.href;
+				} else {
+					icon = new URL('/favicon.ico', location).toString();
+				}
+
+				if (!links_tried.current.has(location)) {
+					links_tried.current.set(location, new Set());
+				}
+
+				if (!links_tried.current.get(location).has(icon)) {
+					links_tried.current.get(location).add(icon);
+
+					const outgoing = await bare.current.fetch(icon);
+
+					set_icon(URL.createObjectURL(await outgoing.blob()));
+					set_revoke_icon(true);
+				}
+			}
+
+			set_title(title);
+		}
+
+		const interval = setInterval(() => test_proxy_update(), 100);
+
+		test_proxy_update();
+		return () => clearInterval(interval);
+	}, [proxy, bare, src, iframe]);
+
+	useImperativeHandle(ref, () => ({
+		async omnibox_entries(query) {
+			const entries = [];
+
+			try {
+				if (abort.current !== undefined) {
+					abort.current.abort();
+				}
+
+				abort.current = new AbortController();
+
+				const outgoing = await bare.current.fetch(
+					'https://www.bing.com/AS/Suggestions?' +
+						new URLSearchParams({
+							qry: query,
+							cvid: '\u0001',
+							bareServer: true,
+						}),
+					{
+						signal: abort.current.signal,
+					}
+				);
+
+				if (outgoing.ok) {
+					const text = await outgoing.text();
+
+					for (let [, phrase] of text.matchAll(
+						/<span class="sa_tm_text">(.*?)<\/span>/g
+					)) {
+						entries.push(phrase);
+					}
+				} else {
+					throw await outgoing.text();
+				}
+			} catch (error) {
+				// likely abort error
+				if (error.message === 'Failed to fetch') {
+					console.error('Error fetching Bare server.');
+				} else if (
+					!error.message.includes('The operation was aborted') &&
+					!error.message.includes('The user aborted a request.')
+				) {
+					throw error;
+				}
+			}
+
+			return entries;
+		},
+		async proxy(input) {
+			const builder = new SearchBuilder(
+				props.layout.current.settings.get('search')
 			);
 
-			if (outgoing.ok) {
-				const text = await outgoing.text();
+			const src = builder.query(input);
 
-				for (let [, phrase] of text.matchAll(
-					/<span class="sa_tm_text">(.*?)<\/span>/g
-				)) {
-					entries.push(phrase);
-				}
-			} else {
-				throw await outgoing.text();
-			}
-		} catch (error) {
-			// likely abort error
-			if (error.message === 'Failed to fetch') {
-				console.error('Error fetching Bare server.');
-			} else if (
-				error.message !== 'The operation was aborted' &&
-				error.message !== 'The user aborted a request.'
-			) {
-				throw error;
-			}
-		}
+			const proxied_src = await resolve_proxy(
+				src,
+				props.layout.current.settings.get('proxy')
+			);
 
-		return entries;
-	}
-	// cant set image src to serviceworker url unless the page is a client
-	async load_icon(icon) {
-		const outgoing = await this.bare.fetch(icon);
+			proxy.current = src;
+			set_title(src);
+			set_src(proxied_src);
+			set_first_load(false);
+			set_icon('');
+		},
+	}));
 
-		this.setState({
-			icon: URL.createObjectURL(await outgoing.blob()),
-			revoke_icon: true,
-		});
-	}
-	on_icon_error() {
-		this.state.icon = 'globe';
-	}
-	on_icon_load() {
-		if (this.state.revoke_icon) {
-			this.setState({
-				revoke_icon: false,
-			});
+	document.documentElement.dataset.service = Number(Boolean(src));
 
-			URL.revokeObjectURL(this.state.icon);
-		}
-	}
-	close() {
-		this.setState({
-			src: '',
-			first_load: false,
-			proxy: {
-				current: false,
-			},
-			embed: {
-				current: false,
-			},
-		});
-	}
-	fullscreen() {
-		root.requestFullscreen();
-	}
-	render() {
-		let current;
-
-		if (this.state.embed.current) {
-			current = 'embed';
-			document.documentElement.dataset.service = 1;
-		} else if (this.state.proxy.current) {
-			current = 'proxy';
-			document.documentElement.dataset.service = 1;
-		} else {
-			delete document.documentElement.dataset.service;
-		}
-
-		return (
-			<div className="service" ref={this.container} data-current={current}>
-				<div className="buttons">
-					<ChevronLeft className="button" onClick={this.close.bind(this)} />
-					{this.state.icon === 'globe' ? (
-						<GlobeSVG className="icon" />
-					) : (
-						<img
-							className="icon"
-							alt=""
-							src={this.state.icon}
-							onError={this.on_icon_error.bind(this)}
-							onLoad={this.on_icon_load.bind(this)}
-						/>
-					)}
-					<p className="title">
-						<Obfuscated ellipsis>{this.state.title}</Obfuscated>
-					</p>
-					<div className="shift-right"></div>
-					<Fullscreen className="button" />
-				</div>
-				<iframe
-					className="headless"
-					title="headless"
-					ref={this.headless}
-				></iframe>
-				<iframe
-					className="embed"
-					src={this.state.src}
-					title="embed"
-					ref={this.iframe}
-					data-first-load={Number(this.state.first_load)}
-					onLoad={() => {
-						if (this.state.src !== '') {
-							this.setState({ first_load: true });
-						}
+	return (
+		<div className="service">
+			<div className="buttons">
+				<ChevronLeft
+					className="button"
+					onClick={() => {
+						set_src('');
 					}}
-				></iframe>
+				/>
+				{icon ? (
+					<img
+						className="icon"
+						alt=""
+						src={icon}
+						onError={() => set_icon('')}
+						onLoad={() => {
+							if (revoke_icon) {
+								URL.revokeObjectURL(icon);
+								set_revoke_icon(false);
+							}
+						}}
+					/>
+				) : (
+					<Public className="icon" />
+				)}
+				<p className="title">
+					<Obfuscated ellipsis>{title}</Obfuscated>
+				</p>
+				<div className="shift-right"></div>
+				<Fullscreen className="button" />
 			</div>
-		);
-	}
-}
+			<iframe
+				className="embed"
+				src={src}
+				title="embed"
+				ref={iframe}
+				data-first-load={Number(first_load)}
+				onLoad={() => {
+					if (src !== '') {
+						set_first_load(true);
+					}
+				}}
+			></iframe>
+		</div>
+	);
+});
