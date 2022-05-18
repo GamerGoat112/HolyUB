@@ -115,7 +115,7 @@ export default forwardRef((_props, ref) => {
 				return false;
 			},
 		}),
-		[notifications]
+		[notifications, ref]
 	);
 
 	return <div className="notifications">{notifications}</div>;
