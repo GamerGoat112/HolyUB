@@ -43,6 +43,7 @@ main.proxy {
 			width: 100%;
 
 			&[data-focused='1'] {
+				margin: 0;
 				position: absolute;
 				z-index: 100;
 				top: 0px;
