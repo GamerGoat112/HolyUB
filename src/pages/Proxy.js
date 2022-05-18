@@ -145,9 +145,7 @@ export default function Proxies(props) {
 
 							switch (event.code) {
 								case 'Escape':
-									this.setState({
-										input_focused: false,
-									});
+									set_input_focused(false);
 									break;
 								case 'ArrowDown':
 								case 'ArrowUp':
@@ -198,9 +196,7 @@ export default function Proxies(props) {
 					ref={suggested}
 					className="suggested"
 					onMouseLeave={() => {
-						this.setState({
-							last_select: -1,
-						});
+						set_last_select(-1);
 					}}
 				>
 					{suggested_list}

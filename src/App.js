@@ -86,7 +86,13 @@ function CategoryProxy(props) {
 
 	return (
 		<Suspense fallback={<></>}>
-			<GamesCategory {...props} key={id} name={categories[id].name} id={id} />
+			<GamesCategory
+				{...props}
+				key={id}
+				name={categories[id].name}
+				category={id}
+				id={id}
+			/>
 		</Suspense>
 	);
 }
@@ -180,7 +186,12 @@ export default function App() {
 							path={resolveRoute('/games/', 'all', false)}
 							element={
 								<Suspense fallback={<></>}>
-									<GamesCategory name="All Games" key="all" {...layouts} />
+									<GamesCategory
+										name="All Games"
+										id="all"
+										key="all"
+										{...layouts}
+									/>
 								</Suspense>
 							}
 						/>

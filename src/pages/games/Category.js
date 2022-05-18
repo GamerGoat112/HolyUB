@@ -66,7 +66,7 @@ export default function Category(props) {
 				error_cause.current = 'Unable to fetch the category data.';
 
 				const data = await api.category({
-					category: props.id,
+					category: props.category,
 					sort,
 					leastGreatest,
 				});

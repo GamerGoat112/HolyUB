@@ -1,21 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-
-/**
- * @typedef {bool|string|Serializable{}|object.<string, Serializable>|undefined} Serializable
- */
 export default class Settings {
-	value = {};
 	/**
 	 *
 	 * @param {string} key
 	 * @param {object.<string, Serializable>} default_settings
-	 * @param {import('react').Component} component
 	 */
 	constructor(key, default_settings) {
 		this.key = key;
 		this.default_settings = default_settings;
 		this.load();
-		Reflect.setPrototypeOf(this.value, null);
 	}
 	load() {
 		if (localStorage[this.key] === undefined) {
@@ -33,7 +26,22 @@ export default class Settings {
 		const settings = {};
 		Reflect.setPrototypeOf(settings, null);
 
-		this.set_object(parsed);
+		let updated = false;
+
+		for (let key in this.default_settings) {
+			if (this.valid_value(key, parsed[key])) {
+				settings[key] = parsed[key];
+			} else {
+				settings[key] = this.default_settings[key];
+				updated = true;
+			}
+		}
+
+		this.value = settings;
+
+		if (updated) {
+			localStorage[this.key] = JSON.stringify(this.value);
+		}
 	}
 	valid_value(key, value) {
 		return typeof value === typeof this.default_settings[key];
@@ -66,9 +74,6 @@ export default class Settings {
 		if (this.valid_value(key, value)) {
 			this.value[key] = value;
 			localStorage[this.key] = JSON.stringify(this.value);
-			if (this.component !== undefined) {
-				this.component.forceUpdate();
-			}
 			return true;
 		} else {
 			return false;

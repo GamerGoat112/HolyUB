@@ -1,9 +1,9 @@
-import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Notification } from '../../Notifications.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
+import { Check } from '@mui/icons-material';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
 const bare = new BareClient(BARE_API);
@@ -128,10 +128,6 @@ export default function TabCloak(props) {
 			);
 		}
 	}
-
-	useEffect(() => {
-		console.log('RENDER');
-	}, [props.layout.current.cloak]);
 
 	return (
 		<section>
