@@ -85,7 +85,7 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [props.id, settings.sort]);
+	}, [props.category, props.id, settings.sort]);
 
 	if (error) {
 		return (

@@ -37,7 +37,7 @@ html {
 		> .embed {
 			border: none;
 			width: 100%;
-			height: 100%;
+			height: calc(100% - var(--nav-height-border));
 			background: var(--background);
 
 			&[data-first-load='1'] {

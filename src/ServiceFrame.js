@@ -165,7 +165,9 @@ export default forwardRef((props, ref) => {
 		},
 	}));
 
-	document.documentElement.dataset.service = Number(Boolean(src));
+	useEffect(() => {
+		document.documentElement.dataset.service = Number(Boolean(src));
+	}, [src]);
 
 	return (
 		<div className="service">
@@ -196,7 +198,10 @@ export default forwardRef((props, ref) => {
 					<Obfuscated ellipsis>{title}</Obfuscated>
 				</p>
 				<div className="shift-right"></div>
-				<Fullscreen className="button" />
+				<Fullscreen
+					className="button"
+					onClick={() => iframe.current.requestFullscreen()}
+				/>
 			</div>
 			<iframe
 				className="embed"
