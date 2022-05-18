@@ -18,7 +18,7 @@ export default function Settings() {
 					<div className="menu-list">
 						<MenuTab
 							route={resolveRoute('/settings/', 'search')}
-							name="Search & Proxy"
+							name="Search"
 							iconFilled={<Public />}
 						/>
 						<MenuTab
