@@ -7,17 +7,17 @@ const ANIMATION = 0.3e3;
 
 /**
  *
- * @param {{manager: NotificationsManager, id: string, type: 'warning'|'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
+ * @param {{manager: import('react').RefObject<NotificationsManager>, id: string, type: 'warning'|'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
  */
 export function Notification(props) {
 	const [hide, set_hide] = useState(false);
 
-	const duration = props.duration || 5e3;
+	const duration = props.duration || 2e3;
 
 	useEffect(() => {
 		setTimeout(() => {
 			set_hide(true);
-			setTimeout(() => props.manager.delete(props.id), ANIMATION);
+			setTimeout(() => props.manager.current.delete(props.id), ANIMATION);
 		}, duration);
 	}, [duration, props.id, props.manager]);
 
@@ -86,7 +86,7 @@ export default forwardRef((_props, ref) => {
 						{...notification.props}
 						key={id}
 						id={id}
-						manager={this}
+						manager={ref}
 					/>
 				);
 
