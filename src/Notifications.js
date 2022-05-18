@@ -12,7 +12,7 @@ const ANIMATION = 0.3e3;
 export function Notification(props) {
 	const [hide, set_hide] = useState(false);
 
-	const duration = props.duration || 2e3;
+	const duration = props.duration || 5e3;
 
 	useEffect(() => {
 		setTimeout(() => {
