@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Obfuscated } from '../../obfuscate.js';
@@ -7,12 +7,8 @@ import '../../styles/GamesCategory.scss';
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
 export default function FavoritesCategory(props) {
-	const favorite_games = useMemo(
-		() => props.layout.current.settings.favorite_games,
-		[props.layout]
-	);
 	const [data, set_data] = useState(() =>
-		favorite_games.current.map(id => ({
+		props.layout.current.settings.favorite_games.map(id => ({
 			loading: true,
 			id,
 		}))
@@ -25,33 +21,33 @@ export default function FavoritesCategory(props) {
 			const api = new GamesAPI(DB_API, abort.signal);
 			const data = [];
 
-			for (let id of favorite_games.current) {
+			for (let id of props.layout.current.settings.favorite_games) {
 				try {
 					data.push(await api.game(id));
 				} catch (error) {
 					// cancelled? page unload?
 					if (!FETCH_FAILED.test(error)) {
 						console.warn('Unable to fetch game:', id, error);
-						favorite_games.current.splice(
-							favorite_games.current.indexOf(id),
+						props.layout.current.settings.favorite_games.splice(
+							props.layout.current.settings.favorite_games.indexOf(id),
 							1
 						);
 					}
 				}
 			}
 
+			// update settings
 			props.layout.current.set_settings({
 				...props.layout.current.settings,
-				favorite_games: favorite_games.current,
 			});
 
 			set_data(data);
 		})();
 
 		return () => abort.abort();
-	}, [favorite_games, props.layout]);
+	}, [props.layout]);
 
-	if (favorite_games.current.length === 0) {
+	if (props.layout.current.settings.favorite_games.length === 0) {
 		return (
 			<main className="error">
 				<p>You haven't added any favorite games.</p>

@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
 import { GamesAPI, ItemList } from '../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
-import Settings from '../../Settings.js';
+import { useSettings } from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
 import '../../styles/GamesCategory.scss';
@@ -23,14 +23,12 @@ export default function Category(props) {
 	});
 	const error_cause = useRef();
 	const [error, set_error] = useState();
-	const settings = useMemo(
-		() =>
-			new Settings(`games category ${props.id} settings`, {
-				sort: 'Most Played',
-			}),
-		[props.id]
+	const [settings, set_settings] = useSettings(
+		`games category ${props.id} settings`,
+		{
+			sort: 'Most Played',
+		}
 	);
-	const [sort, set_sort] = useState(() => settings.get('sort'));
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -38,29 +36,29 @@ export default function Category(props) {
 		void (async function () {
 			const api = new GamesAPI(DB_API, abort.signal);
 			let leastGreatest = false;
-			let sort_id;
+			let sort;
 
-			switch (sort) {
+			switch (settings.sort) {
 				case 'Least Played':
 					leastGreatest = true;
 				// falls through
 				case 'Most Played':
-					sort_id = 'plays';
+					sort = 'plays';
 					break;
 				case 'Least Favorites':
 					leastGreatest = true;
 				// falls through
 				case 'Most Favorites':
-					sort_id = 'favorites';
+					sort = 'favorites';
 					break;
 				case 'Name (Z-A)':
 					leastGreatest = true;
 				// falls through
 				case 'Name (A-Z)':
-					sort_id = 'name';
+					sort = 'name';
 					break;
 				default:
-					console.warn('Unknown sort', sort);
+					console.warn('Unknown sort', settings.sort);
 					break;
 			}
 
@@ -69,7 +67,7 @@ export default function Category(props) {
 
 				const data = await api.category({
 					category: props.id,
-					sort: sort_id,
+					sort,
 					leastGreatest,
 				});
 
@@ -87,7 +85,7 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [sort, props.id]);
+	}, [props.id, settings.sort]);
 
 	if (error) {
 		return (
@@ -141,11 +139,14 @@ export default function Category(props) {
 					</h1>
 					<ThemeSelect
 						className="sort"
-						defaultValue={sort}
+						defaultValue={settings.sort}
 						style={{ width: 200 }}
 						onChange={event => {
 							settings.current.set('sort', event.target.value);
-							set_sort(event.target.value);
+							set_settings({
+								...settings,
+								sort: event.target.value,
+							});
 						}}
 					>
 						<option value="Most Played">Most Played</option>
