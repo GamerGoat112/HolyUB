@@ -1,4 +1,3 @@
-import Layout from './Layout.js';
 import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import {
@@ -132,7 +131,6 @@ export default forwardRef((props, ref) => {
 
 	return (
 		<>
-			<Layout />
 			<ObfuscateLayout />
 			{error ? (
 				<main className="error">

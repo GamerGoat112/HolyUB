@@ -148,15 +148,13 @@ export default forwardRef((props, ref) => {
 			return entries;
 		},
 		async proxy(input) {
-			const builder = new SearchBuilder(
-				props.layout.current.settings.get('search')
-			);
+			const builder = new SearchBuilder(props.layout.current.settings.search);
 
 			const src = builder.query(input);
 
 			const proxied_src = await resolve_proxy(
 				src,
-				props.layout.current.settings.get('proxy')
+				props.layout.current.settings.proxy
 			);
 
 			proxy.current = src;

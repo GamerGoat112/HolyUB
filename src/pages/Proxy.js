@@ -82,7 +82,7 @@ export default function Proxies(props) {
 
 	let engine;
 	const format = useMemo(
-		() => props.layout.current.settings.get('search'),
+		() => props.layout.current.settings.search,
 		[props.layout]
 	);
 

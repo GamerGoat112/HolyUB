@@ -46,7 +46,7 @@ async function resolve_game(src, type, setting) {
 
 export default function GamesPlayer(props) {
 	const [favorited, set_favorited] = useState(() =>
-		props.layout.current.settings.get('favorite_games').includes(props.id)
+		props.layout.current.settings.favorite_games.includes(props.id)
 	);
 	const [panorama, set_panorama] = useState();
 	const [controls_expanded, set_controls_expanded] = useState(false);
@@ -58,7 +58,7 @@ export default function GamesPlayer(props) {
 	const [resolved_src, set_resolved_src] = useState();
 	const controls_popup = useRef();
 	const [seen, _set_seen] = useState(() =>
-		props.layout.current.settings.get('seen_games').includes(props.id)
+		props.layout.current.settings.seen_games.includes(props.id)
 	);
 
 	function focus_listener() {
@@ -81,7 +81,7 @@ export default function GamesPlayer(props) {
 		const abort = new AbortController();
 
 		async function set_seen(value) {
-			const seen = props.layout.current.settings.get('seen_games');
+			const seen = props.layout.current.settings.seen_games;
 
 			if (value) {
 				seen.push(props.id);
@@ -90,7 +90,10 @@ export default function GamesPlayer(props) {
 				seen.splice(i, 1);
 			}
 
-			props.layout.current.settings.set('seen_games', seen);
+			props.layout.current.set_settings({
+				...props.layout.current.settings,
+				seen_games: seen,
+			});
 
 			_set_seen(value);
 		}
@@ -106,7 +109,7 @@ export default function GamesPlayer(props) {
 				const resolved_src = await resolve_game(
 					new URL(data.src, GAMES_CDN).toString(),
 					data.type,
-					props.layout.current.settings.get('proxy')
+					props.layout.current.settings.proxy
 				);
 				error_cause.current = undefined;
 				set_data(data);
@@ -279,8 +282,7 @@ export default function GamesPlayer(props) {
 				<div
 					className="button"
 					onClick={() => {
-						const favorites =
-							props.layout.current.settings.get('favorite_games');
+						const favorites = props.layout.current.settings.favorite_games;
 						const i = favorites.indexOf(props.id);
 
 						if (i === -1) {
@@ -289,7 +291,11 @@ export default function GamesPlayer(props) {
 							favorites.splice(i, 1);
 						}
 
-						props.layout.current.settings.set('favorite_games', favorites);
+						props.layout.current.set_settings({
+							...props.layout.current.settings,
+							favorite_games: favorites,
+						});
+
 						set_favorited(true);
 					}}
 				>

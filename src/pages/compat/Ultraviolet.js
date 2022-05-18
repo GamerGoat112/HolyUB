@@ -65,15 +65,15 @@ export default function Ultraviolet(props) {
 
 				global.location.assign(
 					new URL(
-						config.encodeUrl(props.layout.current.destination),
+						config.encodeUrl(props.compat_layout.current.destination),
 						new URL(config.prefix, global.location)
 					)
 				);
 			} catch (error) {
-				props.layout.current.report(error, error_cause, 'Stomp');
+				props.compat_layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	}, [props.layout, uv_bundle, uv_config]);
+	}, [props.compat_layout, uv_bundle, uv_config]);
 
 	return (
 		<main className="compat">

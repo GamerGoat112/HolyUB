@@ -5,6 +5,7 @@ import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
 import categories from './pages/games/categories.js';
+import Layout from './Layout.js';
 
 /* javascript-obfuscator:disable */
 const GamesPopular = lazy(() =>
@@ -93,187 +94,201 @@ function CategoryProxy(props) {
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default function App() {
 	const layout = createRef();
+	const main_layout = createRef();
+	const compat_layout = createRef();
+
+	const layouts = {
+		layout,
+		main_layout,
+		compat_layout,
+	};
 
 	return (
-		<Routes>
-			<Route path={resolveRoute('/', '')} element={<MainLayout ref={layout} />}>
+		<>
+			<Layout ref={layout} />
+			<Routes>
 				<Route
-					index
-					element={
-						<Suspense fallback={<></>}>
-							<Home layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'proxy')}
-					element={
-						<Suspense fallback={<></>}>
-							<Proxy layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'faq')}
-					element={
-						<Suspense fallback={<></>}>
-							<FAQ layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'contact')}
-					element={
-						<Suspense fallback={<></>}>
-							<Contact layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'privacy')}
-					element={
-						<Suspense fallback={<></>}>
-							<Privacy layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'privatelinks')}
-					element={
-						<Suspense fallback={<></>}>
-							<PrivateLinks layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'terms')}
-					element={
-						<Suspense fallback={<></>}>
-							<Terms layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/', 'credits')}
-					element={
-						<Suspense fallback={<></>}>
-							<Credits layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route path={resolveRoute('/games/', '')}>
-					<Route
-						path={resolveRoute('/games/', 'all', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<GamesCategory name="All Games" key="all" layout={layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/games/', 'popular', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<GamesPopular layout={layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/games/', 'favorites', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<GamesFavorites layout={layout} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/games/', 'player', false)}
-						element={<PlayerProxy layout={layout} />}
-					/>
-					<Route
-						path={resolveRoute('/games/', 'category', false)}
-						element={<CategoryProxy layout={layout} />}
-					/>
-				</Route>
-				<Route
-					path={resolveRoute('/settings/', '')}
-					element={
-						<Suspense fallback={<></>}>
-							<Settings layout={layout} />
-						</Suspense>
-					}
+					path={resolveRoute('/', '')}
+					element={<MainLayout ref={main_layout} />}
 				>
 					<Route
-						path={resolveRoute('/settings/', 'search', false)}
+						index
 						element={
 							<Suspense fallback={<></>}>
-								<SearchSettings layout={layout} />
+								<Home {...layouts} />
 							</Suspense>
 						}
 					/>
 					<Route
-						path={resolveRoute('/settings/', 'appearance', false)}
+						path={resolveRoute('/', 'proxy')}
 						element={
 							<Suspense fallback={<></>}>
-								<AppearanceSettings layout={layout} />
+								<Proxy {...layouts} />
 							</Suspense>
 						}
 					/>
 					<Route
-						path={resolveRoute('/settings/', 'tabcloak', false)}
+						path={resolveRoute('/', 'faq')}
 						element={
 							<Suspense fallback={<></>}>
-								<TabCloakSettings layout={layout} />
+								<FAQ {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/', 'contact')}
+						element={
+							<Suspense fallback={<></>}>
+								<Contact {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/', 'privacy')}
+						element={
+							<Suspense fallback={<></>}>
+								<Privacy {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/', 'privatelinks')}
+						element={
+							<Suspense fallback={<></>}>
+								<PrivateLinks {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/', 'terms')}
+						element={
+							<Suspense fallback={<></>}>
+								<Terms {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/', 'credits')}
+						element={
+							<Suspense fallback={<></>}>
+								<Credits {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route path={resolveRoute('/games/', '')}>
+						<Route
+							path={resolveRoute('/games/', 'all', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<GamesCategory name="All Games" key="all" {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/games/', 'popular', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<GamesPopular {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/games/', 'favorites', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<GamesFavorites {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/games/', 'player', false)}
+							element={<PlayerProxy {...layouts} />}
+						/>
+						<Route
+							path={resolveRoute('/games/', 'category', false)}
+							element={<CategoryProxy {...layouts} />}
+						/>
+					</Route>
+					<Route
+						path={resolveRoute('/settings/', '')}
+						element={
+							<Suspense fallback={<></>}>
+								<Settings {...layouts} />
+							</Suspense>
+						}
+					>
+						<Route
+							path={resolveRoute('/settings/', 'search', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<SearchSettings {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/settings/', 'appearance', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<AppearanceSettings {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/settings/', 'tabcloak', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<TabCloakSettings {...layouts} />
+								</Suspense>
+							}
+						/>
+					</Route>
+					<Route
+						path="*"
+						element={
+							<Suspense fallback={<></>}>
+								<NotFound {...layouts} />
 							</Suspense>
 						}
 					/>
 				</Route>
 				<Route
-					path="*"
-					element={
-						<Suspense fallback={<></>}>
-							<NotFound layout={layout} />
-						</Suspense>
-					}
-				/>
-			</Route>
-			<Route
-				path={resolveRoute('/compat/', '')}
-				element={<CompatLayout ref={layout} />}
-			>
-				<Route
-					path={resolveRoute('/compat/', 'rammerhead', false)}
-					element={
-						<Suspense fallback={<></>}>
-							<Rammerhead layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/compat/', 'stomp', false)}
-					element={
-						<Suspense fallback={<></>}>
-							<Stomp layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/compat/', 'ultraviolet', false)}
-					element={
-						<Suspense fallback={<></>}>
-							<Ultraviolet layout={layout} />
-						</Suspense>
-					}
-				/>
-				<Route
-					path={resolveRoute('/compat/', 'flash', false)}
-					element={
-						<Suspense fallback={<></>}>
-							<Flash layout={layout} />
-						</Suspense>
-					}
-				/>
-			</Route>
-		</Routes>
+					path={resolveRoute('/compat/', '')}
+					element={<CompatLayout ref={compat_layout} />}
+				>
+					<Route
+						path={resolveRoute('/compat/', 'rammerhead', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<Rammerhead {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/compat/', 'stomp', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<Stomp {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/compat/', 'ultraviolet', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<Ultraviolet {...layouts} />
+							</Suspense>
+						}
+					/>
+					<Route
+						path={resolveRoute('/compat/', 'flash', false)}
+						element={
+							<Suspense fallback={<></>}>
+								<Flash {...layouts} />
+							</Suspense>
+						}
+					/>
+				</Route>
+			</Routes>
+		</>
 	);
 }

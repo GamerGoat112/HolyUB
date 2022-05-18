@@ -1,6 +1,6 @@
 import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Notification } from '../../Notifications.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { BARE_API } from '../../root.js';
@@ -113,7 +113,7 @@ export default function TabCloak(props) {
 
 			input.current.value = url;
 
-			props.layout.current.cloak.set({
+			props.layout.current.set_cloak({
 				title,
 				icon,
 				url,
@@ -128,6 +128,10 @@ export default function TabCloak(props) {
 			);
 		}
 	}
+
+	useEffect(() => {
+		console.log('RENDER');
+	}, [props.layout.current.cloak]);
 
 	return (
 		<section>
@@ -150,7 +154,7 @@ export default function TabCloak(props) {
 					<ThemeInputBar>
 						<input
 							className="thin-pad-right"
-							defaultValue={props.layout.current.cloak.get('url')}
+							defaultValue={props.layout.current.cloak.url}
 							placeholder="https://example.org/"
 							ref={input}
 						/>
@@ -161,7 +165,7 @@ export default function TabCloak(props) {
 			<div>
 				<ThemeButton
 					onClick={() => {
-						props.layout.current.cloak.set({
+						props.layout.current.set_cloak({
 							title: '',
 							icon: '',
 							url: '',

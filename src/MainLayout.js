@@ -22,7 +22,6 @@ import {
 	ShoppingCart,
 	Apps,
 } from '@mui/icons-material';
-import Layout from './Layout.js';
 import { PATREON_URL } from './root.js';
 import resolveRoute from './resolveRoute.js';
 import process from 'process';
@@ -88,16 +87,15 @@ export function MenuTab(props) {
 
 export default forwardRef((props, ref) => {
 	const nav = useRef();
-	const layout = useRef();
 	const [expanded, set_expanded] = useState(false);
 
 	useImperativeHandle(
 		ref,
 		() => ({
-			...layout.current,
+			expanded,
 			set_expanded,
 		}),
-		[layout]
+		[expanded, set_expanded]
 	);
 
 	useEffect(() => {
@@ -141,7 +139,6 @@ export default forwardRef((props, ref) => {
 	return (
 		<>
 			<ObfuscateLayout />
-			<Layout ref={layout} />
 			<nav ref={nav}>
 				<div className="button" onClick={() => set_expanded(true)}>
 					<Menu />

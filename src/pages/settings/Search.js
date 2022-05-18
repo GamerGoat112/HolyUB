@@ -11,9 +11,12 @@ export default function Search(props) {
 				</span>
 				<ThemeSelect
 					onChange={event =>
-						props.layout.current.settings.set('proxy', event.target.value)
+						props.layout.current.set_settings({
+							...props.layout.current.settings,
+							proxy: event.target.value,
+						})
 					}
-					defaultValue={props.layout.current.settings.get('proxy')}
+					defaultValue={props.layout.current.settings.proxy}
 				>
 					<option value="automatic">Automatic (Default)</option>
 					<option value="ultraviolet">Ultraviolet</option>
@@ -27,9 +30,12 @@ export default function Search(props) {
 				</span>
 				<ThemeSelect
 					onChange={event =>
-						props.layout.current.settings.set('search', event.target.value)
+						props.layout.current.set_settings({
+							...props.layout.current.settings,
+							search: event.target.value,
+						})
 					}
-					defaultValue={props.layout.current.settings.get('search')}
+					defaultValue={props.layout.current.settings.search}
 				>
 					{engines.map(({ name, format }) => (
 						<option key={format} value={format}>

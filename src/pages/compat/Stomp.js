@@ -46,12 +46,14 @@ export default function Rammerhead(props) {
 				}
 				error_cause = undefined;
 
-				global.location.assign(boot.html(props.layout.current.destination));
+				global.location.assign(
+					boot.html(props.compat_layout.current.destination)
+				);
 			} catch (error) {
-				props.layout.current.report(error, error_cause, 'Stomp');
+				props.compat_layout.current.report(error, error_cause, 'Stomp');
 			}
 		})();
-	}, [props.layout, bootstrapper]);
+	}, [props.compat_layout, bootstrapper]);
 
 	return (
 		<main className="compat">

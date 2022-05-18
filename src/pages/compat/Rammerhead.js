@@ -42,15 +42,17 @@ export default function Rammerhead(props) {
 
 				global.location.assign(
 					new URL(
-						`${session}/${shuffler.shuffle(props.layout.current.destination)}`,
+						`${session}/${shuffler.shuffle(
+							props.compat_layout.current.destination
+						)}`,
 						RH_APP
 					)
 				);
 			} catch (error) {
-				props.layout.current.report(error, error_cause, 'Rammerhead');
+				props.compat_layout.current.report(error, error_cause, 'Rammerhead');
 			}
 		})();
-	}, [props.layout]);
+	}, [props.compat_layout]);
 
 	return (
 		<main className="compat">

@@ -31,17 +31,17 @@ export default function Flash(props) {
 				});
 
 				player.current.load({
-					url: props.layout.current.destination.toString(),
+					url: props.compat_layout.current.destination.toString(),
 				});
 			} catch (error) {
-				props.layout.current.report(error, error_cause, 'Rammerhead');
+				props.compat_layout.current.report(error, error_cause, 'Rammerhead');
 			}
 		})();
 
 		return () => {
 			player.current.remove();
 		};
-	}, [props.layout, ruffle_bundle]);
+	}, [props.compat_layout, ruffle_bundle]);
 
 	return (
 		<main

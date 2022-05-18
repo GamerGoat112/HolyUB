@@ -8,7 +8,7 @@ const FETCH_FAILED = /TypeError: Failed to fetch/;
 
 export default function FavoritesCategory(props) {
 	const favorite_games = useMemo(
-		() => props.layout.current.settings.get('favorite_games'),
+		() => props.layout.current.settings.favorite_games,
 		[props.layout]
 	);
 	const [data, set_data] = useState(() =>
@@ -40,10 +40,10 @@ export default function FavoritesCategory(props) {
 				}
 			}
 
-			props.layout.current.settings.set(
-				'favorite_games',
-				favorite_games.current
-			);
+			props.layout.current.set_settings({
+				...props.layout.current.settings,
+				favorite_games: favorite_games.current,
+			});
 
 			set_data(data);
 		})();

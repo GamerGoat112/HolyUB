@@ -1,7 +1,13 @@
 import NotificationsManager from './Notifications.js';
-import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+} from 'react';
 import { useLocation } from 'react-router-dom';
-import Settings from './Settings.js';
+import { useSettings } from './Settings.js';
 
 export const THEMES = ['night', 'day'];
 
@@ -43,7 +49,6 @@ function ScrollManager() {
 
 export default forwardRef((props, ref) => {
 	const notifications = useRef();
-	const icon = document.querySelector('link[rel="icon"]');
 
 	const theme = useMemo(() => {
 		const { matches: prefers_light } = matchMedia(
@@ -53,62 +58,62 @@ export default forwardRef((props, ref) => {
 		return prefers_light ? 'day' : 'night';
 	}, []);
 
-	const settings = useMemo(
-		() =>
-			new Settings('global settings', {
-				theme,
-				proxy: 'automatic',
-				search: 'https://www.google.com/search?q=%s',
-				favorite_games: [],
-				seen_games: [],
-			}),
-		[theme]
-	);
+	const [settings, set_settings] = useSettings('global settings', () => ({
+		theme,
+		proxy: 'automatic',
+		search: 'https://www.google.com/search?q=%s',
+		favorite_games: [],
+		seen_games: [],
+	}));
 
-	const cloak = useMemo(
-		() =>
-			new Settings('cloak settings', {
-				value: '',
-				title: '',
-				icon: '',
-			}),
-		[]
-	);
+	const [cloak, set_cloak] = useSettings('cloak settings', () => ({
+		value: '',
+		title: '',
+		icon: '',
+	}));
 
 	useImperativeHandle(
 		ref,
 		() => ({
 			notifications,
 			settings,
+			set_settings,
 			cloak,
-		}),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[notifications]
+			set_cloak,
+		})
+		// [settings, set_settings, cloak, set_cloak]
 	);
 
-	document.documentElement.dataset.theme = settings.get('theme');
+	useEffect(() => {
+		document.documentElement.dataset.theme = settings.theme;
+	}, [settings.theme]);
 
-	if (cloak.get('title') === '') {
-		document.title = 'Holy Unblocker';
-	} else {
-		document.title = cloak.get('title');
-	}
+	useEffect(() => {
+		const icon = document.querySelector('link[rel="icon"]');
 
-	let href;
+		if (cloak.title === '') {
+			document.title = 'Holy Unblocker';
+		} else {
+			document.title = cloak.title;
+		}
 
-	switch (cloak.get('icon')) {
-		case '':
-			href = '/favicon.ico';
-			break;
-		case 'none':
-			href = 'data:,';
-			break;
-		default:
-			href = cloak.get('icon');
-			break;
-	}
+		let href;
 
-	icon.href = href;
+		switch (cloak.icon) {
+			case '':
+				href = '/favicon.ico';
+				break;
+			case 'none':
+				href = 'data:,';
+				break;
+			default:
+				href = cloak.icon;
+				break;
+		}
+
+		icon.href = href;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cloak]);
 
 	return (
 		<>

@@ -6,9 +6,12 @@ export default function Appearance(props) {
 			<div>
 				<span>Theme:</span>
 				<ThemeSelect
-					defaultValue={props.layout.current.settings.get('theme')}
+					defaultValue={props.layout.current.settings.theme}
 					onChange={event => {
-						props.layout.current.settings.set('theme', event.target.value);
+						props.layout.current.set_settings({
+							...props.layout.current.settings,
+							theme: event.target.value,
+						});
 					}}
 				>
 					<option value="day">Day</option>
