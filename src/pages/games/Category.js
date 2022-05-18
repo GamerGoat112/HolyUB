@@ -25,9 +25,9 @@ export default function Category(props) {
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
 		`games category ${props.id} settings`,
-		{
+		() => ({
 			sort: 'Most Played',
-		}
+		})
 	);
 
 	useEffect(() => {
