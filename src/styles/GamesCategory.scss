@@ -175,6 +175,7 @@ main.games-category {
 				color: var(--text);
 				display: flex;
 				flex-direction: column;
+				width: 200px;
 
 				&:hover {
 					> .thumbnail::before {

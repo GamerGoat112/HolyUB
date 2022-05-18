@@ -142,7 +142,6 @@ export default function Category(props) {
 						defaultValue={settings.sort}
 						style={{ width: 200 }}
 						onChange={event => {
-							settings.current.set('sort', event.target.value);
 							set_settings({
 								...settings,
 								sort: event.target.value,
