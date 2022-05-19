@@ -239,7 +239,7 @@ export default function Popular(props) {
 				data-focused={Number(input_focused)}
 				data-suggested={Number(render_suggested)}
 				onBlur={event => {
-					if (!main.contains(event.relatedTarget)) {
+					if (!main.current.contains(event.relatedTarget)) {
 						set_input_focused(false);
 					}
 				}}

@@ -48,7 +48,7 @@ export default function GamesPlayer(props) {
 	const [favorited, set_favorited] = useState(() =>
 		props.layout.current.settings.favorite_games.includes(props.id)
 	);
-	const [panorama, set_panorama] = useState();
+	const [panorama, set_panorama] = useState(false);
 	const [controls_expanded, set_controls_expanded] = useState(false);
 	const [error, set_error] = useState();
 	const error_cause = useRef();
