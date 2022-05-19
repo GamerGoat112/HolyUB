@@ -39,8 +39,12 @@ async function extract_data(url) {
 		}
 	}
 
+	const outgoing = await bare.fetch(icon, { redirect: 'follow' });
+
 	icon = await blobToDataURL(
-		await (await bare.fetch(icon, { redirect: 'follow' })).blob()
+		new Blob([await outgoing.arrayBuffer()], {
+			type: outgoing.headers.get('content-type'),
+		})
 	);
 
 	{
