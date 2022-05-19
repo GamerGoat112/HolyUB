@@ -61,22 +61,6 @@ export default function GamesPlayer(props) {
 		props.layout.current.settings.seen_games.includes(props.id)
 	);
 
-	function focus_listener() {
-		if (!iframe.current) {
-			return;
-		}
-
-		iframe.current.contentWindow.focus();
-
-		if (
-			document.activeElement &&
-			!iframe.current.contains(document.activeElement)
-		) {
-			document.activeElement.blur();
-			document.activeElement.dispatchEvent(new Event('blur'));
-		}
-	}
-
 	useEffect(() => {
 		const abort = new AbortController();
 
@@ -128,13 +112,36 @@ export default function GamesPlayer(props) {
 			}
 		})();
 
-		window.addEventListener('focus', focus_listener);
-
 		return () => {
-			window.removeEventListener('focus', focus_listener);
 			abort.abort();
 		};
 	}, [seen, props.id, props.layout]);
+
+	function focus_listener() {
+		if (!iframe.current) {
+			return;
+		}
+
+		iframe.current.contentWindow.focus();
+
+		if (
+			document.activeElement &&
+			!iframe.current.contains(document.activeElement)
+		) {
+			document.activeElement.blur();
+			document.activeElement.dispatchEvent(new Event('blur'));
+		}
+	}
+
+	useEffect(() => {
+		window.addEventListener('focus', focus_listener);
+
+		focus_listener();
+
+		return () => {
+			window.removeEventListener('focus', focus_listener);
+		};
+	}, [data]);
 
 	if (error) {
 		return (
@@ -228,8 +235,8 @@ export default function GamesPlayer(props) {
 							}
 						});
 					}}
-					onClick={() => focus_listener()}
-					onFocus={() => focus_listener()}
+					onClick={focus_listener}
+					onFocus={focus_listener}
 					src={resolved_src}
 				/>
 				<div
