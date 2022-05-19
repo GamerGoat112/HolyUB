@@ -200,15 +200,15 @@ export default forwardRef((props, ref) => {
 							<Obfuscated>Games</Obfuscated>
 						</div>
 						<MenuTab
-							route={resolveRoute('/games/', 'all')}
-							name="All"
-							iconFilled={<Apps />}
-							onClick={close_menu}
-						/>{' '}
-						<MenuTab
 							route={resolveRoute('/games/', 'popular')}
 							name="Popular"
 							iconFilled={<SortRounded />}
+							onClick={close_menu}
+						/>
+						<MenuTab
+							route={resolveRoute('/games/', 'all')}
+							name="All"
+							iconFilled={<Apps />}
 							onClick={close_menu}
 						/>
 						<MenuTab

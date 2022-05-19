@@ -140,7 +140,7 @@ export default function Category(props) {
 					<ThemeSelect
 						className="sort"
 						defaultValue={settings.sort}
-						style={{ width: 200 }}
+						style={{ width: 250 }}
 						onChange={event => {
 							set_settings({
 								...settings,
