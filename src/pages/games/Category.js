@@ -135,7 +135,7 @@ export default function Category(props) {
 			<section>
 				<div className="name">
 					<h1>
-						<Obfuscated>{props.name}</Obfuscated>
+						<Obfuscated ellipsis>{props.name}</Obfuscated>
 					</h1>
 					<ThemeSelect
 						className="sort"
