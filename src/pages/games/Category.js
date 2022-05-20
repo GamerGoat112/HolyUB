@@ -8,19 +8,21 @@ import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
 import '../../styles/GamesCategory.scss';
 
+function loading_categories() {
+	const data = [];
+
+	for (let i = 0; i < 40; i++) {
+		data.push({
+			id: i,
+			loading: true,
+		});
+	}
+
+	return data;
+}
+
 export default function Category(props) {
-	const [data, set_data] = useState(() => {
-		const data = [];
-
-		for (let i = 0; i < 40; i++) {
-			data.push({
-				id: i,
-				loading: true,
-			});
-		}
-
-		return data;
-	});
+	const [data, set_data] = useState(loading_categories);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
@@ -31,6 +33,8 @@ export default function Category(props) {
 	);
 
 	useEffect(() => {
+		set_data(loading_categories());
+
 		const abort = new AbortController();
 
 		void (async function () {
@@ -140,7 +144,7 @@ export default function Category(props) {
 					<ThemeSelect
 						className="sort"
 						defaultValue={settings.sort}
-						style={{ width: 250 }}
+						style={{ width: 145, flex: 'none' }}
 						onChange={event => {
 							set_settings({
 								...settings,
@@ -154,9 +158,7 @@ export default function Category(props) {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<div className="items">
-					<ItemList items={data} />
-				</div>
+				<ItemList className="items" items={data} />
 			</section>
 		</main>
 	);

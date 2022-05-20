@@ -121,20 +121,21 @@ function Item(props) {
 	const [loaded, set_loaded] = useState(false);
 
 	return (
-		<Link to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}>
-			<div className="item">
-				<div className="thumbnail">
-					<img
-						alt=""
-						loading="lazy"
-						onLoad={() => set_loaded(true)}
-						data-loaded={Number(loaded)}
-						src={`/thumbnails/${props.id}.webp`}
-					></img>
-				</div>
-				<div className="name">
-					<Obfuscated ellipsis>{props.name}</Obfuscated>
-				</div>
+		<Link
+			className="item"
+			to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}
+		>
+			<div className="thumbnail">
+				<img
+					alt=""
+					loading="lazy"
+					onLoad={() => set_loaded(true)}
+					data-loaded={Number(loaded)}
+					src={`/thumbnails/${props.id}.webp`}
+				></img>
+			</div>
+			<div className="name">
+				<Obfuscated ellipsis>{props.name}</Obfuscated>
 			</div>
 		</Link>
 	);
@@ -149,23 +150,22 @@ function LoadingItem() {
 	);
 }
 
+/**
+ * @param {React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {items: {id:string,name?:string,loading:boolean}}} props
+ * @returns
+ */
 export function ItemList(props) {
-	const items = [];
+	const { items, ...attributes } = props;
 
-	for (let item of props.items) {
+	const children = [];
+
+	for (let item of items) {
 		if (item.loading) {
-			items.push(<LoadingItem key={item.id} id={item.id} />);
+			children.push(<LoadingItem key={item.id} id={item.id} />);
 		} else {
-			items.push(
-				<Item
-					key={item.id}
-					id={item.id}
-					name={item.name}
-					layout={props.layout}
-				/>
-			);
+			children.push(<Item key={item.id} id={item.id} name={item.name} />);
 		}
 	}
 
-	return items;
+	return <div {...attributes}>{children}</div>;
 }

@@ -135,19 +135,15 @@ main.games-category {
 			width: 100%;
 			line-height: 65px;
 			align-items: center;
+			flex-wrap: wrap;
 
 			h1 {
 				font-size: 22px;
 				margin: 0;
 				margin-right: auto;
-				text-align: center;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
-
-				@include screen_mobile {
-					width: 100%;
-				}
 			}
 
 			.see-all {
@@ -169,10 +165,8 @@ main.games-category {
 			padding: 10px;
 			width: 100%;
 			border-radius: 10px;
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			flex-wrap: wrap;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 			gap: 12px;
 
 			.item {
@@ -180,7 +174,9 @@ main.games-category {
 				color: var(--text);
 				display: flex;
 				flex-direction: column;
-				width: 200px;
+				width: 100%;
+				position: relative;
+				padding-bottom: 40px;
 
 				&:hover {
 					> .thumbnail::before {
@@ -191,8 +187,6 @@ main.games-category {
 				> .thumbnail {
 					position: relative;
 					border-radius: 8px;
-					width: 200px;
-					height: 200px;
 					transition: opacity 0.5s;
 					background-color: var(--background-accent);
 					animation: shimmer 1.7s linear 0s infinite normal forwards;
@@ -204,6 +198,8 @@ main.games-category {
 					);
 					background-repeat: no-repeat;
 					background-size: 100% 100%;
+					height: 0px;
+					padding-bottom: 100%;
 
 					&::before {
 						content: '';
@@ -219,6 +215,8 @@ main.games-category {
 					}
 
 					> img {
+						position: absolute;
+						top: 0;
 						border-radius: 8px;
 						width: 100%;
 						height: 100%;
@@ -233,6 +231,10 @@ main.games-category {
 				}
 
 				> .name {
+					position: absolute;
+					width: 100%;
+					padding: 0;
+					margin-top: 100%;
 					font-size: 14px;
 					$padding-lr: 10px;
 					padding: 0px $padding-lr;
@@ -241,6 +243,7 @@ main.games-category {
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					box-sizing: border-box;
 				}
 
 				&.loading {
@@ -254,20 +257,46 @@ main.games-category {
 							hsla(0, 0%, 100%, 0.3) 50%,
 							hsla(0, 0%, 100%, 0)
 						);
-						margin: 10px 0px;
-						height: 20px;
-						padding: 0;
-						width: 200px;
 
 						background-color: var(--background-accent);
 						background-repeat: no-repeat;
 						background-size: 100% 100%;
+						margin-top: calc(100% + 10px);
+						margin-bottom: 10px;
+						height: 20px;
 					}
 
 					&:hover {
 						> .thumbnail::before {
 							opacity: 0;
 						}
+					}
+				}
+			}
+
+			&.flex {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				flex-wrap: wrap;
+
+				.item {
+					padding-bottom: 0px;
+					width: unset;
+
+					> .thumbnail {
+						width: 200px;
+						height: 200px;
+						padding-bottom: 0;
+
+						> img {
+							position: relative;
+						}
+					}
+
+					> .name {
+						position: relative;
+						margin: 10px 0px;
 					}
 				}
 			}

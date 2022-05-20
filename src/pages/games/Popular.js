@@ -20,9 +20,7 @@ function ExpandSection(props) {
 					<ArrowForward />
 				</Link>
 			</div>
-			<div className="items">
-				<ItemList items={props.items} />
-			</div>
+			<ItemList className="items flex" items={props.items} />
 		</section>
 	);
 }
