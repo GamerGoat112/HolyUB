@@ -40,7 +40,7 @@ export default class VoucherAPI {
 		const outgoing = await this.fetch(`./vouchers/${voucher}/`);
 
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw (await outgoing.json()).error;
 		}
 
 		return await outgoing.json();
@@ -51,13 +51,14 @@ export default class VoucherAPI {
 	 * @returns {RedeemedVoucher}
 	 */
 	async redeem_voucher(voucher, domain) {
-		const outgoing = await this.fetch(`./vouchers/${voucher}/`, {
+		/*const outgoing = await this.fetch(`./vouchers/${voucher}/`, {
 			method: 'POST',
 			body: JSON.stringify({ domain }),
-		});
+		});*/
+		const outgoing = await this.fetch(`./vouchers/${voucher}/${domain}`);
 
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw (await outgoing.json()).error;
 		}
 
 		return await outgoing.json();
