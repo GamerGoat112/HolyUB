@@ -159,6 +159,7 @@
 	text-align: left;
 
 	> .entry {
+		white-space: pre;
 		background-color: transparent;
 		border: none;
 		color: var(--contrast-background);

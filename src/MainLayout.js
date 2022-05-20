@@ -55,7 +55,7 @@ export function MenuTab(props) {
 				{(selected && iconFilled) || iconOutlined || iconFilled}
 			</span>
 			<span className="name">
-				<Obfuscated>{name}</Obfuscated>
+				<Obfuscated ellipsis>{name}</Obfuscated>
 			</span>
 		</>
 	);
