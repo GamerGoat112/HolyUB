@@ -5,18 +5,45 @@ import VoucherAPI from '../VoucherAPI.js';
 import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
 import { Notification } from '../Notifications.js';
 import '../styles/PrivateLinks.scss';
+import { Link } from 'react-router-dom';
+import resolveRoute from '../resolveRoute.js';
 
 export default function PrivateLinks(props) {
 	const voucher = createRef();
 	const domain = createRef();
 	const abort = useRef();
 	const [tld, set_tld] = useState();
+	const [host, set_host] = useState();
 
 	useEffect(() => {
 		if (abort.current) {
 			abort.current.abort();
 		}
 	}, []);
+
+	if (host) {
+		return (
+			<main className="private-links redeemed">
+				<h2>Voucher successfully redeemed.</h2>
+				<p>
+					You've successfully redeemed your voucher for the link{' '}
+					<ObfuscatedA className="theme-link" href={`https://${host}`}>
+						{host}
+					</ObfuscatedA>
+					.
+				</p>
+				<p>
+					<b>Please note:</b> Link take 15 minutes - 8 hours to be available.
+					You may have to clear your browser cache to access the link. If you're
+					still unable to reach your link, please{' '}
+					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+						Contact Us
+					</Link>
+					.
+				</p>
+			</main>
+		);
+	}
 
 	return (
 		<main className="private-links">
@@ -40,10 +67,12 @@ export default function PrivateLinks(props) {
 					event.preventDefault();
 
 					try {
-						// PLACEHOLDER
-						// no idea what to do with this data...
-						// see https://discord.com/channels/956789074121863178/957489824909111317/972748339223334962
-						await api.redeem(voucher.current.value, domain.current.value);
+						const { host } = await api.redeem(
+							voucher.current.value,
+							domain.current.value
+						);
+
+						set_host(host);
 					} catch (error) {
 						if (
 							error.message !== 'The operation was aborted' &&
@@ -57,6 +86,8 @@ export default function PrivateLinks(props) {
 								/>
 							);
 						}
+
+						return;
 					}
 				}}
 				className="redeem"
