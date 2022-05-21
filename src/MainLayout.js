@@ -22,6 +22,7 @@ import {
 	Settings,
 	ShoppingCart,
 	Apps,
+	List,
 } from '@mui/icons-material';
 import { PATREON_URL } from './root.js';
 import resolveRoute from './resolveRoute.js';
@@ -222,11 +223,11 @@ export default forwardRef((props, ref) => {
 						<MenuTab
 							route={resolveRoute('/theatre/games/', 'all')}
 							name="All"
-							iconFilled={<Apps />}
+							iconFilled={<List />}
 							onClick={close_menu}
 						/>
 						<MenuTab
-							route={resolveRoute('/theatre/games/', 'favorite')}
+							route={resolveRoute('/theatre/games/', 'favorites')}
 							name="Favorites"
 							iconFilled={<StarRounded />}
 							iconOutlined={<StarOutlineRounded />}
