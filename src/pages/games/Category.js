@@ -6,6 +6,7 @@ import { ThemeSelect } from '../../ThemeElements.js';
 import { useSettings } from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
+import SearchBar from './Search.js';
 import '../../styles/GamesCategory.scss';
 
 function loading_categories() {
@@ -136,6 +137,7 @@ export default function Category(props) {
 
 	return (
 		<main className="games-category">
+			<SearchBar category={props.category} />
 			<section>
 				<div className="name">
 					<h1>

@@ -6,12 +6,7 @@ import resolveRoute from './resolveRoute.js';
 /**
  *
  * @typedef {object} GamesCategoryParams
- * @property {boolean} [leastGreatest]
- * @property {string} [category]
- * @property {string} [sort]
- * @property {string} [search]
- * @property {number} [limit]
- * @property {number} [limitPerCategory]
+
  */
 
 /**
@@ -105,7 +100,7 @@ export class GamesAPI {
 	}
 	/**
 	 *
-	 * @param {GamesCategoryParams} params
+	 * @param {{leastGreatest?:boolean,category?:string[],sort?:string,search?:string,limit?:number,limitPerCategory:?number}} params
 	 * @returns {GamesCategory}
 	 */
 	async category(params) {
