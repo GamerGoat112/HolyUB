@@ -31,7 +31,7 @@ module.exports = {
 				},
 			});
 
-			if (config.mode === 'ass') {
+			if (config.mode === 'production') {
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',
