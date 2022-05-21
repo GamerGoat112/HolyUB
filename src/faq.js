@@ -57,7 +57,7 @@ const faq = [
 		a: (
 			<>
 				The proxies used on this website can be found in{' '}
-				<Link to={resolveRoute('/', 'credits')}>
+				<Link className="theme-link" to={resolveRoute('/', 'credits')}>
 					credits and open-source licenses
 				</Link>
 				.
@@ -74,7 +74,10 @@ const faq = [
 			<>
 				We do not collect any data, your information is only as secure as the
 				sites you are accessing. For privacy concerns, you can review our{' '}
-				<Link to={resolveRoute('/', 'privacy')}>Privacy Policy</Link>.
+				<Link className="theme-link" to={resolveRoute('/', 'privacy')}>
+					Privacy Policy
+				</Link>
+				.
 			</>
 		),
 	},
