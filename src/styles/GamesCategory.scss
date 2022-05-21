@@ -187,7 +187,6 @@ main.games-category {
 				> .thumbnail {
 					position: relative;
 					border-radius: 8px;
-					transition: opacity 0.5s;
 					background-color: var(--background-accent);
 					animation: shimmer 1.7s linear 0s infinite normal forwards;
 					background-image: linear-gradient(
@@ -221,10 +220,14 @@ main.games-category {
 						width: 100%;
 						height: 100%;
 						opacity: 0;
+						transition: opacity 0.5s;
+					}
 
-						&[data-loaded='1'] {
-							background: transparent;
-							animation: unset;
+					&[data-loaded='1'] {
+						background-image: none;
+						animation: unset;
+
+						img {
 							opacity: 1;
 						}
 					}

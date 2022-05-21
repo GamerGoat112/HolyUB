@@ -131,12 +131,11 @@ function Item(props) {
 			className="item"
 			to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}
 		>
-			<div className="thumbnail">
+			<div className="thumbnail" data-loaded={Number(loaded)}>
 				<img
 					alt=""
 					loading="lazy"
 					onLoad={() => set_loaded(true)}
-					data-loaded={Number(loaded)}
 					src={`/thumbnails/${props.id}.webp`}
 				></img>
 			</div>
