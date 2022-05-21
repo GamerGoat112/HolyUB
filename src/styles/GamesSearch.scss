@@ -4,14 +4,14 @@
 	display: flex;
 	$border: 1px;
 	$height: 44px;
-	width: 700px;
+	width: 667px;
 	height: $height;
 	position: relative;
 	flex-direction: row;
 	max-height: 100%;
 	margin: 10px auto;
 
-	@media only screen and (max-width: 700px) {
+	@media only screen and (max-width: 741px) {
 		width: 100%;
 	}
 

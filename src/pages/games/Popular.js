@@ -124,7 +124,7 @@ export default function Popular() {
 		}
 
 		jsx_categories.push(
-			<section className="expand">
+			<section className="expand" key={id}>
 				<div className="name">
 					<h1>{name}</h1>
 					<Link

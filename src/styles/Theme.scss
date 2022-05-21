@@ -14,6 +14,7 @@ $night: (
 	text-secondary: #aaa,
 	text-accent: #bbb,
 	text-placeholder: #9aa0a6,
+	text-disabled: #717171,
 	border: #555,
 	link: $nord8,
 	shadow: #000a,
@@ -26,6 +27,7 @@ $day: (
 	text-secondary: #f0f8ff,
 	text-accent: #222,
 	text-placeholder: #9aa0a6,
+	text-disabled: #909090,
 	border: #ccc,
 	link: $nord10,
 	shadow: #0004,
@@ -44,6 +46,7 @@ $day: (
 	--contrast-text: #{map.get($contrast, 'text')};
 	--text-placeholder: #{map.get($theme, 'text-placeholder')};
 	--text-accent: #{map.get($theme, 'text-accent')};
+	--text-disabled: #{map.get($theme, 'text-disabled')};
 	--background-accent: #{map.get($theme, 'background-accent')};
 	--background-accent-deep-1: #{offsetHex(
 			map.get($theme, 'background-accent'),
