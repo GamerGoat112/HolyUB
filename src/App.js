@@ -190,6 +190,21 @@ export default function App() {
 										name="All Games"
 										id="all"
 										key="all"
+										category={Object.keys(categories).join(',')}
+										{...layouts}
+									/>
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/games/', 'tools', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<GamesCategory
+										name="Tools"
+										id="tools"
+										key="tools"
+										category="tool"
 										{...layouts}
 									/>
 								</Suspense>

@@ -37,7 +37,4 @@ export default categories = {
 	puzzle: {
 		name: 'Puzzle',
 	},
-	tool: {
-		name: 'Tools',
-	},
 };
