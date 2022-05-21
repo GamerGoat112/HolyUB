@@ -66,6 +66,14 @@ export default function PrivateLinks(props) {
 
 					event.preventDefault();
 
+					props.layout.current.notifications.current.add(
+						<Notification
+							title="Redeeming voucher..."
+							description="This may take a while."
+							type="info"
+						/>
+					);
+
 					try {
 						const { host } = await api.redeem(
 							voucher.current.value,
@@ -93,7 +101,7 @@ export default function PrivateLinks(props) {
 				className="redeem"
 			>
 				<ThemeInput
-					onChange={async () => {
+					onBlur={async () => {
 						if (abort.current) {
 							abort.current.abort();
 						}
