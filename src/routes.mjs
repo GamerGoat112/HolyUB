@@ -17,23 +17,23 @@ export default routes = [
 		],
 	},
 	{
-		dir: 'theatre/',
+		dir: '/theatre/',
 		pages: ['category', 'player', 'all'],
 	},
 	{
-		dir: 'theatre/games/',
+		dir: '/theatre/games/',
 		pages: ['', 'favorites', 'all'],
 	},
 	{
-		dir: 'theatre/apps/',
+		dir: '/theatre/apps/',
 		pages: [''],
 	},
 	{
-		dir: 'compat/',
+		dir: '/compat/',
 		pages: ['rammerhead', 'stomp', 'ultraviolet', 'flash'],
 	},
 	{
-		dir: 'settings/',
+		dir: '/settings/',
 		pages: ['search', 'appearance', 'tabcloak'],
 	},
 ];

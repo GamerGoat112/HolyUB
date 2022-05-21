@@ -45,7 +45,7 @@ const routers = {
 	async id() {
 		for (let dir_i in routes) {
 			const { dir, pages } = routes[dir_i];
-			const dir_name = dir === '' ? '' : dir_i;
+			const dir_name = dir === '/' ? '' : dir_i;
 			const dir_abs = join(build, dir_name);
 
 			try {
