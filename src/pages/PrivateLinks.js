@@ -43,10 +43,7 @@ export default function PrivateLinks(props) {
 						// PLACEHOLDER
 						// no idea what to do with this data...
 						// see https://discord.com/channels/956789074121863178/957489824909111317/972748339223334962
-						await api.redeem_voucher(
-							voucher.current.value,
-							domain.current.value
-						);
+						await api.redeem(voucher.current.value, domain.current.value);
 					} catch (error) {
 						if (
 							error.message !== 'The operation was aborted' &&
@@ -75,7 +72,7 @@ export default function PrivateLinks(props) {
 						const api = new VoucherAPI(VO_API, abort.current.signal);
 
 						try {
-							const data = await api.show_voucher(voucher.current.value);
+							const data = await api.show(voucher.current.value);
 
 							set_tld(data.tld);
 						} catch (error) {

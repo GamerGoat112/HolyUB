@@ -36,31 +36,37 @@ export default class VoucherAPI {
 	 * @param {AbortSignal} [signal]
 	 * @returns {Voucher}
 	 */
-	async show_voucher(voucher) {
+	async show(voucher) {
 		const outgoing = await this.fetch(`./vouchers/${voucher}/`);
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw (await outgoing.json()).error;
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 	/**
 	 *
 	 * @param {string} voucher
 	 * @returns {RedeemedVoucher}
 	 */
-	async redeem_voucher(voucher, domain) {
-		/*const outgoing = await this.fetch(`./vouchers/${voucher}/`, {
+	async redeem(voucher, domain) {
+		const outgoing = await this.fetch(`./vouchers/${voucher}/`, {
 			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+			},
 			body: JSON.stringify({ domain }),
-		});*/
-		const outgoing = await this.fetch(`./vouchers/${voucher}/${domain}`);
+		});
+
+		const json = await outgoing.json();
 
 		if (!outgoing.ok) {
-			throw (await outgoing.json()).error;
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 }

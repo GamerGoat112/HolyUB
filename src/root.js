@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 	_BARE_API = 'http://localhost:8001/';
 	_RH_APP = 'http://localhost:8002/';
 	_DB_API = 'http://localhost:3001/';
-	_VO_API = 'https://localhost:3002/';
+	_VO_API = 'http://localhost:3002/';
 	_HCAPTCHA_KEY = '10000000-ffff-ffff-ffff-000000000001';
 } else {
 	const { host } = global.location;
