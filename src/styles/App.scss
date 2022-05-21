@@ -49,15 +49,12 @@ $scrollbar-width: 16px;
 	}
 }
 
-#root {
-	width: calc(100% - $scrollbar-width);
-}
-
+#root,
 .fixed-wide {
 	width: calc(100vw - $scrollbar-width);
 }
 
-@include screen_mobile {
+/*@include screen_mobile {
 	#root {
 		width: 100%;
 	}
@@ -65,7 +62,7 @@ $scrollbar-width: 16px;
 	.fixed-wide {
 		width: 100vw;
 	}
-}
+}*/
 
 #root {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
