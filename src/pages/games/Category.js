@@ -9,21 +9,17 @@ import { Obfuscated } from '../../obfuscate.js';
 import SearchBar from './Search.js';
 import '../../styles/GamesCategory.scss';
 
-function loading_categories() {
-	const data = [];
+const loading_200 = [];
 
-	for (let i = 0; i < 40; i++) {
-		data.push({
-			id: i,
-			loading: true,
-		});
-	}
-
-	return data;
+for (let i = 0; i < 200; i++) {
+	loading_200.push({
+		id: i,
+		loading: true,
+	});
 }
 
 export default function Category(props) {
-	const [data, set_data] = useState(loading_categories);
+	const [data, set_data] = useState(loading_200);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
@@ -34,7 +30,7 @@ export default function Category(props) {
 	);
 
 	useEffect(() => {
-		set_data(loading_categories());
+		set_data(loading_200);
 
 		const abort = new AbortController();
 
@@ -160,7 +156,7 @@ export default function Category(props) {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<ItemList className="items" items={data} />
+				<ItemList className="items" loading={200} items={data} />
 			</section>
 		</main>
 	);

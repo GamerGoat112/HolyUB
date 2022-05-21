@@ -9,41 +9,23 @@ import resolveRoute from '../../resolveRoute.js';
 import SearchBar from './Search.js';
 import '../../styles/GamesCategory.scss';
 
-function ExpandSection(props) {
-	return (
-		<section className="expand">
-			<div className="name">
-				<h1>{props.name}</h1>
-				<Link to={props.href} className="theme-link see-all">
-					See All
-					<ArrowForward />
-				</Link>
-			</div>
-			<ItemList className="items flex" items={props.items} />
-		</section>
-	);
-}
-
 const LIMIT = 8;
+const loading_categories = [];
+
+for (let category in categories) {
+	for (let i = 0; i < LIMIT; i++) {
+		loading_categories.push({
+			id: i,
+			loading: true,
+			category,
+		});
+	}
+}
 
 export default function Popular() {
 	const category = Object.keys(categories).join(',');
 
-	const [data, set_data] = useState(() => {
-		const data = [];
-
-		for (let category in categories) {
-			for (let i = 0; i < LIMIT; i++) {
-				data.push({
-					id: i,
-					loading: true,
-					category,
-				});
-			}
-		}
-
-		return data;
-	});
+	const [data, set_data] = useState(loading_categories);
 
 	const [error, set_error] = useState();
 	const main = useRef();
@@ -60,14 +42,6 @@ export default function Popular() {
 					category,
 					limitPerCategory: LIMIT,
 				});
-
-				const categories_keys = Object.keys(categories);
-
-				data.sort(
-					(a, b) =>
-						categories_keys.indexOf(a.category) -
-						categories_keys.indexOf(b.category)
-				);
 
 				set_data(data);
 			} catch (error) {
@@ -130,11 +104,11 @@ export default function Popular() {
 
 	const _categories = {};
 
-	for (let item of data) {
-		if (!(item.category in _categories)) {
-			_categories[item.category] = [];
-		}
+	for (let category in categories) {
+		_categories[category] = [];
+	}
 
+	for (let item of data) {
 		_categories[item.category].push(item);
 	}
 
@@ -150,12 +124,19 @@ export default function Popular() {
 		}
 
 		jsx_categories.push(
-			<ExpandSection
-				href={`${resolveRoute('/games/', 'category')}?id=${id}`}
-				items={_categories[id]}
-				name={name}
-				key={id}
-			/>
+			<section className="expand">
+				<div className="name">
+					<h1>{name}</h1>
+					<Link
+						to={`${resolveRoute('/games/', 'category')}?id=${id}`}
+						className="theme-link see-all"
+					>
+						See All
+						<ArrowForward />
+					</Link>
+				</div>
+				<ItemList className="items flex" items={_categories[id]} />
+			</section>
 		);
 	}
 
