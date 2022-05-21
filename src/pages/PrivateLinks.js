@@ -102,6 +102,10 @@ export default function PrivateLinks(props) {
 			>
 				<ThemeInput
 					onBlur={async () => {
+						if (!voucher.current.value) {
+							return;
+						}
+
 						if (abort.current) {
 							abort.current.abort();
 						}

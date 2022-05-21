@@ -21,6 +21,25 @@
 	padding: 0px 15px;
 }
 
+html[data-tab='1'] {
+	.theme-input,
+	.theme-button,
+	.theme-input-bar > input {
+		&:focus-visible {
+			outline: var(--action) solid 2px;
+		}
+	}
+
+	.theme-input-bar > input:focus {
+		outline-offset: 2px;
+	}
+
+	a:focus {
+		outline: var(--action) solid 1px;
+		border-radius: 5px;
+	}
+}
+
 .theme-input-bar {
 	height: 44px;
 	background: var(--background-accent);
@@ -90,6 +109,8 @@
 		background-color: transparent;
 		color: inherit;
 		border: none;
+		border-radius: 5px;
+		z-index: 1;
 
 		&.thin-pad-left {
 			padding-left: 0;

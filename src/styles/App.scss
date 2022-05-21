@@ -23,8 +23,11 @@ h3 {
 
 $scrollbar-width: 16px;
 
-* {
+:focus-visible {
 	outline: none;
+}
+
+* {
 	scrollbar-color: var(--text-placeholder) transparent;
 
 	// 12px wide

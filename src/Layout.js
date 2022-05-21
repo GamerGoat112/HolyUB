@@ -5,6 +5,7 @@ import {
 	useImperativeHandle,
 	useMemo,
 	useRef,
+	useState,
 } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSettings } from './Settings.js';
@@ -43,6 +44,34 @@ function ScrollManager() {
 
 		last_page.current = location.pathname;
 	}
+
+	return <></>;
+}
+
+function TabMode() {
+	const [tab, set_tab] = useState(false);
+
+	useEffect(() => {
+		function keydown(event) {
+			if (event.code === 'Tab') {
+				set_tab(true);
+			}
+		}
+
+		function mousedown() {
+			set_tab(false);
+		}
+
+		document.documentElement.dataset.tab = Number(tab);
+
+		document.addEventListener('keydown', keydown);
+		document.addEventListener('mousedown', mousedown);
+
+		return () => {
+			document.removeEventListener('keydown', keydown);
+			document.removeEventListener('mousedown', mousedown);
+		};
+	}, [tab]);
 
 	return <></>;
 }
@@ -117,6 +146,7 @@ export default forwardRef((props, ref) => {
 
 	return (
 		<>
+			<TabMode />
 			<NotificationsManager ref={notifications} />
 			<ScrollManager />
 		</>
