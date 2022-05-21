@@ -4,21 +4,21 @@ import MainLayout from './MainLayout.js';
 import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
 import './styles/App.scss';
-import categories from './pages/games/categories.js';
+import categories from './pages/theatre/games/categories.js';
 import Layout from './Layout.js';
 
 /* javascript-obfuscator:disable */
 const GamesPopular = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/Popular.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular.js')
 );
 const GamesFavorites = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/Favorites.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/games/Favorites.js')
 );
-const GamesCategory = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/Category.js')
+const TheatreCategory = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/theatre/Category.js')
 );
-const GamesPlayer = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/games/Player.js')
+const TheatrePlayer = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/theatre/Player.js')
 );
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
 const PrivateLinks = lazy(() =>
@@ -75,7 +75,7 @@ function PlayerProxy(props) {
 
 	return (
 		<Suspense fallback={<></>}>
-			<GamesPlayer {...props} key={id} id={id} />
+			<TheatrePlayer {...props} key={id} id={id} />
 		</Suspense>
 	);
 }
@@ -86,12 +86,13 @@ function CategoryProxy(props) {
 
 	return (
 		<Suspense fallback={<></>}>
-			<GamesCategory
+			<TheatreCategory
 				{...props}
 				key={id}
 				name={categories[id].name}
 				category={id}
 				id={id}
+				placeholder="Search by game name"
 			/>
 		</Suspense>
 	);
@@ -181,57 +182,63 @@ export default function App() {
 							</Suspense>
 						}
 					/>
-					<Route path={resolveRoute('/games/', '')}>
+					<Route path={resolveRoute('/theatre/', '')}>
+						<Route path={resolveRoute('/theatre/games/', '')}>
+							<Route
+								index
+								element={
+									<Suspense fallback={<></>}>
+										<GamesPopular {...layouts} />
+									</Suspense>
+								}
+							/>
+							<Route
+								path={resolveRoute('/theatre/games/', 'all', false)}
+								element={
+									<Suspense fallback={<></>}>
+										<TheatreCategory
+											name="All Games"
+											id="all"
+											key="all"
+											category={Object.keys(categories).join(',')}
+											placeholder="Search by game name"
+											{...layouts}
+										/>
+									</Suspense>
+								}
+							/>
+							<Route
+								path={resolveRoute('/theatre/games/', 'favorites', false)}
+								element={
+									<Suspense fallback={<></>}>
+										<GamesFavorites {...layouts} />
+									</Suspense>
+								}
+							/>
+						</Route>
+						<Route path={resolveRoute('/theatre/apps/', '')}>
+							<Route
+								index
+								element={
+									<Suspense fallback={<></>}>
+										<TheatreCategory
+											name="Apps"
+											id="apps"
+											key="apps"
+											category="app"
+											placeholder="Search by app name"
+											{...layouts}
+										/>
+									</Suspense>
+								}
+							/>
+						</Route>
 						<Route
-							path={resolveRoute('/games/', 'all', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesCategory
-										name="All Games"
-										id="all"
-										key="all"
-										category={Object.keys(categories).join(',')}
-										{...layouts}
-									/>
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'tools', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesCategory
-										name="Tools"
-										id="tools"
-										key="tools"
-										category="tool"
-										{...layouts}
-									/>
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'popular', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesPopular {...layouts} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'favorites', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesFavorites {...layouts} />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={resolveRoute('/games/', 'player', false)}
+							path={resolveRoute('/theatre/', 'player', false)}
 							element={<PlayerProxy {...layouts} />}
 						/>
 						<Route
-							path={resolveRoute('/games/', 'category', false)}
+							path={resolveRoute('/theatre/', 'category', false)}
 							element={<CategoryProxy {...layouts} />}
 						/>
 					</Route>

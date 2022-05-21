@@ -4,15 +4,15 @@ import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GamesAPI } from '../../GamesCommon.js';
 import { DB_API } from '../../root.js';
-import categories from './categories.js';
+// import categories from './games/categories.js';
 import clsx from 'clsx';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
-import '../../styles/GamesSearch.scss';
+import '../../styles/TheatreSearch.scss';
 
 const LIMIT = 8;
 
-export default function SearchBar({ category }) {
+export default function SearchBar(props) {
 	const navigate = useNavigate();
 	const input = useRef();
 	const [category_data, set_category_data] = useState([]);
@@ -35,7 +35,7 @@ export default function SearchBar({ category }) {
 				sort: 'search',
 				search: query,
 				limit: LIMIT,
-				category,
+				category: props.category,
 			});
 
 			set_category_data(category_data);
@@ -57,13 +57,13 @@ export default function SearchBar({ category }) {
 			const game = category_data[i];
 			let category_name;
 
-			if (game.category in categories) {
+			/*if (game.category in categories) {
 				const category = categories[game.category];
 				category_name = category.short || category.name;
 			} else {
 				console.warn(`Unknown category ${game.category}`);
 				category_name = '';
-			}
+			}*/
 
 			const classes = ['option'];
 
@@ -77,7 +77,7 @@ export default function SearchBar({ category }) {
 					key={game.id}
 					onClick={() => set_input_focused(false)}
 					onMouseOver={() => set_last_select(i)}
-					to={`${resolveRoute('/games/', 'player')}?id=${game.id}`}
+					to={`${resolveRoute('/theatre/', 'player')}?id=${game.id}`}
 					className={clsx('option', i === last_select && 'hover')}
 				>
 					<div className="name">
@@ -91,7 +91,7 @@ export default function SearchBar({ category }) {
 
 	return (
 		<div
-			className="games-search-bar"
+			className="theatre-search-bar"
 			data-focused={Number(input_focused)}
 			data-suggested={Number(render_suggested)}
 			ref={bar}
@@ -107,7 +107,7 @@ export default function SearchBar({ category }) {
 					ref={input}
 					type="text"
 					className="thin-pad-left"
-					placeholder="Search by game name"
+					placeholder={props.placeholder}
 					onFocus={event => {
 						set_input_focused(true);
 						set_last_select(-1);
@@ -160,7 +160,7 @@ export default function SearchBar({ category }) {
 									input.current.blur();
 									set_input_focused(false);
 									navigate(
-										`${resolveRoute('/games/', 'player')}?id=${game.id}`
+										`${resolveRoute('/theatre/', 'player')}?id=${game.id}`
 									);
 								}
 								break;

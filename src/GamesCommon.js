@@ -124,7 +124,7 @@ function Item(props) {
 	return (
 		<Link
 			className="item"
-			to={`${resolveRoute('/games/', 'player')}?id=${props.id}`}
+			to={`${resolveRoute('/theatre/', 'player')}?id=${props.id}`}
 		>
 			<div className="thumbnail" data-loaded={Number(loaded)}>
 				<img

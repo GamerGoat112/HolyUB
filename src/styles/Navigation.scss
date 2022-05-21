@@ -60,7 +60,6 @@
 	nav {
 		display: flex;
 		height: var(--nav-height);
-		width: 100%;
 		box-sizing: border-box;
 		align-content: center;
 		position: fixed;
@@ -244,6 +243,7 @@
 
 html[data-expanded='1'] {
 	body {
+		margin-right: 16px;
 		overflow: hidden;
 	}
 

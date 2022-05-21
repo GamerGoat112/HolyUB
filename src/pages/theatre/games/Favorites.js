@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { DB_API } from '../../root.js';
-import { GamesAPI, ItemList } from '../../GamesCommon.js';
-import { Obfuscated } from '../../obfuscate.js';
-import '../../styles/GamesCategory.scss';
+import { DB_API } from '../../../root.js';
+import { GamesAPI, ItemList } from '../../../GamesCommon.js';
+import { Obfuscated } from '../../../obfuscate.js';
+import '../../../styles/TheatreCategory.scss';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
-export default function FavoritesCategory(props) {
+export default function Favorites(props) {
 	const [data, set_data] = useState(() =>
 		props.layout.current.settings.favorite_games.map(id => ({
 			loading: true,
@@ -55,7 +55,7 @@ export default function FavoritesCategory(props) {
 		);
 	} else {
 		return (
-			<main className="games-category">
+			<main className="theatre-category">
 				<section>
 					<div className="name">
 						<h1>

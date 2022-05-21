@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { DB_API } from '../../root.js';
-import { GamesAPI, ItemList } from '../../GamesCommon.js';
+import { DB_API } from '../../../root.js';
+import { GamesAPI, ItemList } from '../../../GamesCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
 import categories from './categories.js';
-import { Obfuscated } from '../../obfuscate.js';
-import resolveRoute from '../../resolveRoute.js';
-import SearchBar from './Search.js';
-import '../../styles/GamesCategory.scss';
+import { Obfuscated } from '../../../obfuscate.js';
+import resolveRoute from '../../../resolveRoute.js';
+import SearchBar from '../Search.js';
+import '../../../styles/TheatreCategory.scss';
 
 const LIMIT = 8;
 const loading_categories = [];
@@ -128,7 +128,7 @@ export default function Popular() {
 				<div className="name">
 					<h1>{name}</h1>
 					<Link
-						to={`${resolveRoute('/games/', 'category')}?id=${id}`}
+						to={`${resolveRoute('/theatre/', 'category')}?id=${id}`}
 						className="theme-link see-all"
 					>
 						See All
@@ -141,8 +141,8 @@ export default function Popular() {
 	}
 
 	return (
-		<main ref={main} className="games-category">
-			<SearchBar category={category} />
+		<main ref={main} className="theatre-category">
+			<SearchBar category={category} placeholder="Search by game name" />
 			{jsx_categories}
 		</main>
 	);

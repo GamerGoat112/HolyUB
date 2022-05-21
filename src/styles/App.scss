@@ -1,6 +1,7 @@
 @import './Lato.scss';
 @import './MontserratAlternates.scss';
 @import './Theme.scss';
+@import './Common.scss';
 
 html {
 	background-color: var(--background);
@@ -20,6 +21,8 @@ h3 {
 	font-family: 'Montserrat Alternates';
 }
 
+$scrollbar-width: 16px;
+
 * {
 	outline: none;
 	scrollbar-color: var(--text-placeholder) transparent;
@@ -27,7 +30,7 @@ h3 {
 	// 12px wide
 
 	&::-webkit-scrollbar {
-		width: 14px;
+		width: $scrollbar-width;
 	}
 
 	&::-webkit-scrollbar-thumb {
@@ -44,6 +47,24 @@ h3 {
 }
 
 #root {
+	width: calc(100% - $scrollbar-width);
+}
+
+.fixed-wide {
+	width: calc(100vw - $scrollbar-width);
+}
+
+@include screen_mobile {
+	#root {
+		width: 100%;
+	}
+
+	.fixed-wide {
+		width: 100vw;
+	}
+}
+
+#root {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);
@@ -52,6 +73,7 @@ h3 {
 	min-height: 100vh;
 	// hide "absolute" overflow
 	overflow: hidden;
+	position: relative;
 }
 
 .notifications {

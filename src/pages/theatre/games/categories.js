@@ -2,13 +2,6 @@ let categories;
 
 // eslint-disable-next-line no-unused-vars
 export default categories = {
-	social: {
-		short: 'Social',
-		name: 'Social Media',
-	},
-	entertainment: {
-		name: 'Entertainment',
-	},
 	action: {
 		short: 'Action',
 		name: 'Action & Adventure',

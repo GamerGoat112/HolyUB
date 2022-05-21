@@ -3,7 +3,7 @@ import { Obfuscated } from '../../obfuscate.js';
 import { DB_API, GAMES_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { GamesAPI } from '../../GamesCommon.js';
-import '../../styles/GamesPlayer.scss';
+import '../../styles/TheatrePlayer.scss';
 import {
 	ArrowDropDown,
 	ArrowDropUp,
@@ -44,7 +44,7 @@ async function resolve_game(src, type, setting) {
 	}
 }
 
-export default function GamesPlayer(props) {
+export default function Player(props) {
 	const [favorited, set_favorited] = useState(() =>
 		props.layout.current.settings.favorite_games.includes(props.id)
 	);
@@ -213,7 +213,7 @@ export default function GamesPlayer(props) {
 
 	return (
 		<main
-			className="games-player"
+			className="theatre-player"
 			data-panorama={Number(panorama)}
 			data-controls={Number(controls_expanded)}
 		>

@@ -14,7 +14,7 @@ export default function Settings() {
 	return (
 		<>
 			<main className="settings">
-				<div className="menu">
+				<div className="menu fixed-wide">
 					<div className="menu-list">
 						<MenuTab
 							route={resolveRoute('/settings/', 'search')}

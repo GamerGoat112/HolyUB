@@ -1,3 +1,4 @@
+import process from 'process';
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
 import { ReactComponent as Patreon } from './assets/patreon.svg';
 import {
@@ -8,7 +9,7 @@ import {
 	useState,
 } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import categories from './pages/games/categories.js';
+import categories from './pages/theatre/games/categories.js';
 import {
 	Home,
 	HomeOutlined,
@@ -21,11 +22,9 @@ import {
 	Settings,
 	ShoppingCart,
 	Apps,
-	Construction,
 } from '@mui/icons-material';
 import { PATREON_URL } from './root.js';
 import resolveRoute from './resolveRoute.js';
-import process from 'process';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
@@ -122,7 +121,7 @@ export default forwardRef((props, ref) => {
 		ui_categories.push(
 			<Link
 				key={id}
-				to={`${resolveRoute('/games/', 'category')}?id=${id}`}
+				to={`${resolveRoute('/theatre/', 'category')}?id=${id}`}
 				className="entry text"
 				onClick={() => {
 					set_expanded(false);
@@ -140,7 +139,7 @@ export default forwardRef((props, ref) => {
 	return (
 		<>
 			<ObfuscateLayout />
-			<nav ref={nav}>
+			<nav ref={nav} className="fixed-wide">
 				<div className="button" onClick={() => set_expanded(true)}>
 					<Menu />
 				</div>
@@ -153,7 +152,7 @@ export default forwardRef((props, ref) => {
 				</Link>
 			</nav>
 			<div className="content">
-				<div className="cover" onClick={close_menu}></div>
+				<div className="cover fixed-wide" onClick={close_menu}></div>
 				<div tabIndex={0} className="menu">
 					<div className="top">
 						<div className="button" onClick={close_menu}>
@@ -183,7 +182,9 @@ export default forwardRef((props, ref) => {
 							iconFilled={<QuestionMark />}
 							onClick={close_menu}
 						/>
+
 						<div className="bar" />
+
 						<MenuTab
 							route={resolveRoute('/', 'privatelinks')}
 							name="Private Links"
@@ -196,33 +197,39 @@ export default forwardRef((props, ref) => {
 							iconFilled={<Patreon style={{ width: 18, height: 18 }} />}
 							onClick={close_menu}
 						/>
+
 						<div className="bar" />
+
+						<MenuTab
+							route={resolveRoute('/theatre/apps/', '')}
+							name="Apps"
+							iconFilled={<Apps />}
+							onClick={close_menu}
+						/>
+
+						<div className="bar" />
+
 						<div className="title">
 							<Obfuscated>Games</Obfuscated>
 						</div>
+
 						<MenuTab
-							route={resolveRoute('/games/', 'popular')}
+							route={resolveRoute('/theatre/games/', '')}
 							name="Popular"
 							iconFilled={<SortRounded />}
 							onClick={close_menu}
 						/>
 						<MenuTab
-							route={resolveRoute('/games/', 'all')}
+							route={resolveRoute('/theatre/games/', 'all')}
 							name="All"
 							iconFilled={<Apps />}
 							onClick={close_menu}
 						/>
 						<MenuTab
-							route={resolveRoute('/games/', 'favorites')}
+							route={resolveRoute('/theatre/games/', 'favorite')}
 							name="Favorites"
 							iconFilled={<StarRounded />}
 							iconOutlined={<StarOutlineRounded />}
-							onClick={close_menu}
-						/>
-						<MenuTab
-							route={resolveRoute('/games/', 'tools')}
-							name="Tools"
-							iconFilled={<Construction />}
 							onClick={close_menu}
 						/>
 						<div className="title">Genre</div>

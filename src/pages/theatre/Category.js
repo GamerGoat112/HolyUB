@@ -7,7 +7,7 @@ import { useSettings } from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
 import SearchBar from './Search.js';
-import '../../styles/GamesCategory.scss';
+import '../../styles/TheatreCategory.scss';
 
 const loading_200 = [];
 
@@ -132,8 +132,8 @@ export default function Category(props) {
 	}
 
 	return (
-		<main className="games-category">
-			<SearchBar category={props.category} />
+		<main className="theatre-category">
+			<SearchBar category={props.category} placeholder={props.placeholder} />
 			<section>
 				<div className="name">
 					<h1>
