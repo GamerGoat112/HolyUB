@@ -5,6 +5,7 @@ export default routes = [
 	{
 		dir: '/',
 		pages: [
+			'',
 			'faq',
 			'contact',
 			'privacy',
@@ -16,23 +17,23 @@ export default routes = [
 		],
 	},
 	{
-		dir: '/theatre/',
+		dir: 'theatre/',
 		pages: ['category', 'player', 'all'],
 	},
 	{
-		dir: '/theatre/games/',
-		pages: ['favorites', 'all'],
+		dir: 'theatre/games/',
+		pages: ['', 'favorites', 'all'],
 	},
 	{
-		dir: '/theatre/apps/',
-		pages: [],
+		dir: 'theatre/apps/',
+		pages: [''],
 	},
 	{
-		dir: '/compat/',
+		dir: 'compat/',
 		pages: ['rammerhead', 'stomp', 'ultraviolet', 'flash'],
 	},
 	{
-		dir: '/settings/',
+		dir: 'settings/',
 		pages: ['search', 'appearance', 'tabcloak'],
 	},
 ];

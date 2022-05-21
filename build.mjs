@@ -28,7 +28,7 @@ const routers = {
 			}
 
 			for (let page of pages) {
-				const page_name = `${page}.html`;
+				const page_name = page === '' ? 'index.html' : `${page}.html`;
 				const page_abs = join(dir_abs, page_name);
 
 				try {
@@ -45,7 +45,7 @@ const routers = {
 	async id() {
 		for (let dir_i in routes) {
 			const { dir, pages } = routes[dir_i];
-			const dir_name = dir === '/' ? '' : dir_i;
+			const dir_name = dir === '' ? '' : dir_i;
 			const dir_abs = join(build, dir_name);
 
 			try {
@@ -59,7 +59,8 @@ const routers = {
 
 			for (let page_i in pages) {
 				// const page = pages[page_i];
-				const page_name = `${page_i}.html`;
+				const page_name =
+					pages[page_i] === '' ? 'index.html' : `${page_i}.html`;
 				const page_abs = join(dir_abs, page_name);
 
 				try {
