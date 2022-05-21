@@ -32,7 +32,7 @@ async function resolve_game(src, type, setting) {
 		case 'emulator.nes':
 		case 'emulator.genesis':
 			return new URL(
-				'./webretro/?' +
+				'./html5/webretro/?' +
 					new URLSearchParams({
 						rom: src,
 						core: 'autodetect',
