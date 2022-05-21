@@ -8,11 +8,13 @@ export class CompatAPI {
 	async compat(host) {
 		const outgoing = await fetch(new URL(`./compat/${host}/`, this.server));
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 	sort_params(params) {
 		for (let param in params) {
@@ -42,11 +44,13 @@ export class CompatAPI {
 			{ signal }
 		);
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 }
 

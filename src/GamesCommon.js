@@ -57,11 +57,13 @@ export class GamesAPI {
 	async game(id) {
 		const outgoing = await this.fetch(`./games/${id}/`);
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 	/**
 	 *
@@ -80,11 +82,13 @@ export class GamesAPI {
 			}
 		);
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 	sort_params(params) {
 		for (let param in params) {
@@ -109,11 +113,13 @@ export class GamesAPI {
 			'./games/?' + new URLSearchParams(this.sort_params(params))
 		);
 
+		const json = await outgoing.json();
+
 		if (!outgoing.ok) {
-			throw await outgoing.json();
+			throw new Error(json.message || json.error);
 		}
 
-		return await outgoing.json();
+		return json;
 	}
 }
 

@@ -14,7 +14,6 @@ export default function Flash(props) {
 
 			try {
 				error_cause = 'Error loading Ruffle player.';
-				console.log(ruffle_bundle.current);
 				await ruffle_bundle.current.promise;
 				error_cause = undefined;
 
