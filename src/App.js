@@ -127,7 +127,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'proxy')}
+						path={resolveRoute('/', 'proxy', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Proxy {...layouts} />
@@ -135,7 +135,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'faq')}
+						path={resolveRoute('/', 'faq', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<FAQ {...layouts} />
@@ -143,7 +143,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'contact')}
+						path={resolveRoute('/', 'contact', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Contact {...layouts} />
@@ -151,7 +151,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'privacy')}
+						path={resolveRoute('/', 'privacy', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy {...layouts} />
@@ -159,7 +159,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'privatelinks')}
+						path={resolveRoute('/', 'privatelinks', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<PrivateLinks {...layouts} />
@@ -167,7 +167,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'terms')}
+						path={resolveRoute('/', 'terms', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Terms {...layouts} />
@@ -175,64 +175,64 @@ export default function App() {
 						}
 					/>
 					<Route
-						path={resolveRoute('/', 'credits')}
+						path={resolveRoute('/', 'credits', false)}
 						element={
 							<Suspense fallback={<></>}>
 								<Credits {...layouts} />
 							</Suspense>
 						}
 					/>
+					<Route path={resolveRoute('/theatre/games/', '')}>
+						<Route
+							index
+							element={
+								<Suspense fallback={<></>}>
+									<GamesPopular {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/theatre/games/', 'all', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<TheatreCategory
+										name="All Games"
+										id="all"
+										key="all"
+										category={Object.keys(categories).join(',')}
+										placeholder="Search by game name"
+										{...layouts}
+									/>
+								</Suspense>
+							}
+						/>
+						<Route
+							path={resolveRoute('/theatre/games/', 'favorites', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<GamesFavorites {...layouts} />
+								</Suspense>
+							}
+						/>
+					</Route>
+					<Route path={resolveRoute('/theatre/apps/', '')}>
+						<Route
+							index
+							element={
+								<Suspense fallback={<></>}>
+									<TheatreCategory
+										name="Apps"
+										id="apps"
+										key="apps"
+										category="app"
+										placeholder="Search by app name"
+										{...layouts}
+									/>
+								</Suspense>
+							}
+						/>
+					</Route>
 					<Route path={resolveRoute('/theatre/', '')}>
-						<Route path={resolveRoute('/theatre/games/', '')}>
-							<Route
-								index
-								element={
-									<Suspense fallback={<></>}>
-										<GamesPopular {...layouts} />
-									</Suspense>
-								}
-							/>
-							<Route
-								path={resolveRoute('/theatre/games/', 'all', false)}
-								element={
-									<Suspense fallback={<></>}>
-										<TheatreCategory
-											name="All Games"
-											id="all"
-											key="all"
-											category={Object.keys(categories).join(',')}
-											placeholder="Search by game name"
-											{...layouts}
-										/>
-									</Suspense>
-								}
-							/>
-							<Route
-								path={resolveRoute('/theatre/games/', 'favorites', false)}
-								element={
-									<Suspense fallback={<></>}>
-										<GamesFavorites {...layouts} />
-									</Suspense>
-								}
-							/>
-						</Route>
-						<Route path={resolveRoute('/theatre/apps/', '')}>
-							<Route
-								index
-								element={
-									<Suspense fallback={<></>}>
-										<TheatreCategory
-											name="Apps"
-											id="apps"
-											key="apps"
-											category="app"
-											placeholder="Search by app name"
-											{...layouts}
-										/>
-									</Suspense>
-								}
-							/>
-						</Route>
 						<Route
 							path={resolveRoute('/theatre/', 'player', false)}
 							element={<PlayerProxy {...layouts} />}
