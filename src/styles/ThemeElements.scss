@@ -15,6 +15,10 @@
 	background-color: var(--background-accent-disabled) !important;
 }
 
+.theme-input-bar[data-disabled='1'] > input {
+	cursor: not-allowed !important;
+}
+
 html[data-tab='1'] {
 	.theme-input,
 	.theme-button,
