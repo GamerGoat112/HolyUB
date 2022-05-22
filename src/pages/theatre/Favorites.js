@@ -27,7 +27,7 @@ export default function Favorites(props) {
 				} catch (error) {
 					// cancelled? page unload?
 					if (!FETCH_FAILED.test(error)) {
-						console.warn('Unable to fetch game:', id, error);
+						console.warn('Unable to fetch entry:', id, error);
 						props.layout.current.settings.favorites.splice(
 							props.layout.current.settings.favorites.indexOf(id),
 							1
@@ -50,7 +50,7 @@ export default function Favorites(props) {
 	if (props.layout.current.settings.favorites.length === 0) {
 		return (
 			<main className="error">
-				<p>You haven't added any favorite games.</p>
+				<p>You haven't added any favorites.</p>
 			</main>
 		);
 	} else {
