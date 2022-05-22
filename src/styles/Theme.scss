@@ -10,6 +10,7 @@ https://www.nordtheme.com/
 $night: (
 	background: $nord0,
 	background-accent: $nord1,
+	background-accent-disabled: #282d38,
 	text: #fff,
 	text-secondary: #aaa,
 	text-accent: #bbb,
@@ -23,6 +24,7 @@ $night: (
 $day: (
 	background: $nord4,
 	background-accent: $nord5,
+	background-accent-disabled: #d6dadf,
 	text: #000,
 	text-secondary: #f0f8ff,
 	text-accent: #222,
@@ -48,6 +50,7 @@ $day: (
 	--text-accent: #{map.get($theme, 'text-accent')};
 	--text-disabled: #{map.get($theme, 'text-disabled')};
 	--background-accent: #{map.get($theme, 'background-accent')};
+	--background-accent-disabled: #{map.get($theme, 'background-accent-disabled')};
 	--background-accent-deep-1: #{offsetHex(
 			map.get($theme, 'background-accent'),
 			-5

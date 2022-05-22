@@ -13,6 +13,7 @@ export default function PrivateLinks(props) {
 	const domain = createRef();
 	const abort = useRef();
 	const [tld, set_tld] = useState();
+	const [status, set_status] = useState();
 	const [host, set_host] = useState();
 
 	useEffect(() => {
@@ -21,28 +22,43 @@ export default function PrivateLinks(props) {
 		}
 	}, []);
 
-	if (host) {
-		return (
-			<main className="private-links redeemed">
-				<h2>Voucher successfully redeemed.</h2>
-				<p>
-					You've successfully redeemed your voucher for the link{' '}
-					<ObfuscatedA className="theme-link" href={`https://${host}`}>
-						{host}
-					</ObfuscatedA>
-					.
-				</p>
-				<p>
-					<b>Please note:</b> Link take 15 minutes - 8 hours to be available.
-					You may have to clear your browser cache to access the link. If you're
-					still unable to reach your link, please{' '}
-					<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-						Contact Us
-					</Link>
-					.
-				</p>
-			</main>
-		);
+	switch (status) {
+		case 'redeemed':
+			return (
+				<main className="private-links redeemed">
+					<h2>Voucher successfully redeemed.</h2>
+					<p>
+						You've successfully redeemed your voucher for the link{' '}
+						<ObfuscatedA className="theme-link" href={`https://${host}`}>
+							{host}
+						</ObfuscatedA>
+						.
+					</p>
+					<p>
+						<b>Please note:</b> Link take 15 minutes - 8 hours to be available.
+						You may have to clear your browser cache to access the link. If
+						you're still unable to reach your link, please{' '}
+						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+							Contact Us
+						</Link>
+						.
+					</p>
+					<p>
+						Click{' '}
+						<a
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								set_status();
+							}}
+						>
+							here
+						</a>{' '}
+						to go back.
+					</p>
+				</main>
+			);
+		// no default
 	}
 
 	return (
@@ -74,12 +90,15 @@ export default function PrivateLinks(props) {
 						/>
 					);
 
+					set_status('redeeming');
+
 					try {
 						const { host } = await api.redeem(
 							voucher.current.value,
 							domain.current.value
 						);
 
+						set_status('redeemed');
 						set_host(host);
 					} catch (error) {
 						if (
@@ -138,19 +157,27 @@ export default function PrivateLinks(props) {
 					ref={voucher}
 					placeholder="Voucher"
 					required
+					disabled={status === 'redeeming'}
 				/>
-				<ThemeInputBar className="domain" style={{ width: '100%' }}>
+				<ThemeInputBar
+					className="domain"
+					style={{ width: '100%' }}
+					data-disabled={status === 'redeeming'}
+				>
 					<input
 						className="thin-pad-right"
 						placeholder="Domain"
 						ref={domain}
 						required
+						disabled={status === 'redeeming'}
 					/>
 					<div className="block right" style={{ width: 64 }}>
 						{tld || '.com'}
 					</div>
 				</ThemeInputBar>
-				<ThemeButton type="submit">Redeem</ThemeButton>
+				<ThemeButton type="submit" disabled={status === 'redeeming'}>
+					Redeem
+				</ThemeButton>
 			</form>
 		</main>
 	);
