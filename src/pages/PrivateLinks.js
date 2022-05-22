@@ -113,8 +113,6 @@ export default function PrivateLinks(props) {
 								/>
 							);
 						}
-
-						return;
 					}
 				}}
 				className="redeem"
@@ -162,7 +160,7 @@ export default function PrivateLinks(props) {
 				<ThemeInputBar
 					className="domain"
 					style={{ width: '100%' }}
-					data-disabled={status === 'redeeming'}
+					data-disabled={Number(status === 'redeeming')}
 				>
 					<input
 						className="thin-pad-right"

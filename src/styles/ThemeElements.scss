@@ -8,9 +8,9 @@
 	}
 }
 
-.theme-input-bar[data-disabled],
+.theme-input-bar[data-disabled='1'],
 .theme-input[disabled],
-.theme-button {
+.theme-button[disabled] {
 	cursor: default !important;
 	background-color: var(--background-accent-disabled) !important;
 }
