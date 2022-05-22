@@ -13,9 +13,7 @@ export default function PrivateLinks(props) {
 	const domain = createRef();
 	const abort = useRef();
 	const [tld, set_tld] = useState();
-	const [status, set_status] = useState();
-	const [host, set_host] = useState();
-	const [error, set_error] = useState();
+	const [status, set_status] = useState({});
 
 	useEffect(() => {
 		if (abort.current) {
@@ -23,13 +21,13 @@ export default function PrivateLinks(props) {
 		}
 	}, []);
 
-	switch (status) {
+	switch (status.status) {
 		case 'errored':
 			return (
 				<main className="private-links errored">
 					<h2>Unable to redeem voucher.</h2>
 					<p>We encountered an error while redeeming your voucher.</p>
-					<pre>{error.toString()}</pre>
+					<pre>{status.error.toString()}</pre>
 					<p>
 						In order to be eligible for a refund, please forward the following
 						to our support:
@@ -51,7 +49,7 @@ export default function PrivateLinks(props) {
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
-								set_status();
+								set_status({});
 							}}
 						>
 							here
@@ -66,8 +64,8 @@ export default function PrivateLinks(props) {
 					<h2>Voucher successfully redeemed.</h2>
 					<p>
 						You've successfully redeemed your voucher for the link{' '}
-						<ObfuscatedA className="theme-link" href={`https://${host}`}>
-							{host}
+						<ObfuscatedA className="theme-link" href={`https://${status.host}`}>
+							{status.host}
 						</ObfuscatedA>
 						.
 					</p>
@@ -87,7 +85,7 @@ export default function PrivateLinks(props) {
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
-								set_status();
+								set_status({});
 							}}
 						>
 							here
@@ -128,7 +126,7 @@ export default function PrivateLinks(props) {
 						/>
 					);
 
-					set_status('redeeming');
+					set_status({ status: 'redeeming' });
 
 					try {
 						const { host } = await api.redeem(
@@ -136,15 +134,24 @@ export default function PrivateLinks(props) {
 							domain.current.value
 						);
 
-						set_status('redeemed');
-						set_host(host);
+						set_status({ status: 'redeemed', host });
 					} catch (error) {
 						if (
 							error.message !== 'The operation was aborted' &&
 							error.message !== 'The user aborted a request.'
 						) {
-							set_status('errored');
-							set_error(error);
+							if (error.message === 'Invalid voucher.') {
+								set_status({});
+								props.layout.current.notifications.current.add(
+									<Notification
+										title={error.type}
+										description={error.message}
+										type="error"
+									/>
+								);
+							} else {
+								set_status({ status: 'errored', error });
+							}
 						}
 					}
 				}}
@@ -188,25 +195,25 @@ export default function PrivateLinks(props) {
 					ref={voucher}
 					placeholder="Voucher"
 					required
-					disabled={status === 'redeeming'}
+					disabled={status.status === 'redeeming'}
 				/>
 				<ThemeInputBar
 					className="domain"
 					style={{ width: '100%' }}
-					data-disabled={Number(status === 'redeeming')}
+					data-disabled={Number(status.status === 'redeeming')}
 				>
 					<input
 						className="thin-pad-right"
 						placeholder="Domain"
 						ref={domain}
 						required
-						disabled={status === 'redeeming'}
+						disabled={status.status === 'redeeming'}
 					/>
 					<div className="block right" style={{ width: 64 }}>
 						{tld || '.com'}
 					</div>
 				</ThemeInputBar>
-				<ThemeButton type="submit" disabled={status === 'redeeming'}>
+				<ThemeButton type="submit" disabled={status.status === 'redeeming'}>
 					Redeem
 				</ThemeButton>
 			</form>
