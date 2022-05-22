@@ -7,7 +7,65 @@ const t = require('@babel/types');
 
 const command_prefix = 'obfuscation:';
 
+const call_function = '$CAll_string';
+const call_key = '$CAll_key';
+const call_strings = '$CAll_strings';
+
+function transform_string(input, key) {
+	const xor = key >> 0x4;
+	const frequency = key & 0xf;
+
+	let output = '';
+
+	for (let i = 0; i < input.length; i++) {
+		if (i % frequency === 0) {
+			output += String.fromCharCode(input[i].charCodeAt() ^ xor);
+		} else {
+			output += input[i];
+		}
+	}
+
+	return output;
+}
+
+const {
+	program: {
+		body: [call_function_ast],
+	},
+} = parse(`
+function ${call_function}(i){
+	const input = ${call_strings}[i];
+	const xor = ${call_key} >> 0x4;
+	const frequency = ${call_key} & 0xf;
+
+	let output = '';
+
+	for (let i = 0; i < input.length; i++) {
+		if (i % frequency === 0) {
+			output += String.fromCharCode(input[i].charCodeAt() ^ xor);
+		} else {
+			output += input[i];
+		}
+	}
+
+	return output;
+}`);
+
 function loader(code) {
+	const { salt } = this.getOptions();
+	let key;
+
+	{
+		let bad_key = 0xfff + (salt % 0xfff);
+		const xor = bad_key >> 0x4;
+		// 2-3
+		const frequency = ((bad_key & 0xf) % 2) + 2;
+
+		// SHORT xor
+		// CHAR frequency
+		key = (xor << 4) + frequency;
+	}
+
 	const tree = parse(code, {
 		allowAwaitOutsideFunction: true,
 		allowImportExportEverywhere: true,
@@ -17,7 +75,7 @@ function loader(code) {
 
 	const strings = new Map();
 	const strings_array = [];
-	const call = t.identifier('$CALL_string');
+	const call_function_id = t.identifier(call_function);
 
 	/**
 	 * @param {string} string
@@ -26,21 +84,24 @@ function loader(code) {
 	function append_string(string) {
 		if (!strings.has(string)) {
 			const i = strings_array.length;
-			strings_array.push(string);
+			strings_array.push(transform_string(string, key));
 			strings.set(string, i);
 		}
 
-		return t.callExpression(call, [t.numericLiteral(strings.get(string))]);
+		return t.callExpression(call_function_id, [
+			t.numericLiteral(strings.get(string)),
+		]);
 	}
 
-	// `${x}str` => x+call()
-	// 2:
-	// `${x}str` => `${x}${call()}`
+	/*
+	`${x}str`
+	`${x}${call()}`
+	*/
 
-	// const { test } =
-	// const { [call()]: test } =
-
-	// console.log(JSON.stringify(tree));
+	/*
+	const { test } =
+	const { [call()]: test } =
+	*/
 
 	const skip_obfuscation = [];
 
@@ -147,28 +208,16 @@ function loader(code) {
 		},
 	});
 
-	{
-		const strings_id = t.identifier('$CALL_strings');
-		const index_var = t.identifier('i');
-
-		tree.program.body.unshift(
-			t.variableDeclaration('const', [
-				t.variableDeclarator(
-					strings_id,
-					t.arrayExpression(
-						strings_array.map(string => t.stringLiteral(string))
-					)
-				),
-			]),
-			t.functionDeclaration(
-				call,
-				[index_var],
-				t.blockStatement([
-					t.returnStatement(t.memberExpression(strings_id, index_var, true)),
-				])
-			)
-		);
-	}
+	tree.program.body.unshift(
+		t.variableDeclaration('const', [
+			t.variableDeclarator(
+				t.identifier(call_strings),
+				t.arrayExpression(strings_array.map(string => t.stringLiteral(string)))
+			),
+			t.variableDeclarator(t.identifier(call_key), t.numericLiteral(key)),
+		]),
+		call_function_ast
+	);
 
 	return generate(tree).code;
 }

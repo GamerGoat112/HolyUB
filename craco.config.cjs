@@ -38,7 +38,7 @@ module.exports = {
 				use: {
 					loader: join(__dirname, 'strings', 'loader.js'),
 					options: {
-						salt: 'holyunblocker',
+						salt: 9185,
 					},
 				},
 			});

@@ -23,7 +23,7 @@ ${'console.log(`The day is: ${Date.now()}.`)'}
 ${'console.log(`${Date.now()}!${Date.now() * 5}`)'}
 `;
 
-const obfuscated = loader.call({ getOptions: () => ({}) }, code);
+const obfuscated = loader.call({ getOptions: () => ({ salt: 4218 }) }, code);
 
 console.log(obfuscated);
 
