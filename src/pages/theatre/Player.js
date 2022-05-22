@@ -112,9 +112,7 @@ export default function Player(props) {
 			}
 		})();
 
-		return () => {
-			abort.abort();
-		};
+		return () => abort.abort();
 	}, [seen, props.id, props.layout]);
 
 	function focus_listener() {
@@ -158,10 +156,23 @@ export default function Player(props) {
 
 	if (!data) {
 		return (
-			<main>
-				<span>
-					Fetching <Obfuscated>game</Obfuscated> info...
-				</span>
+			<main
+				className="theatre-player loading"
+				data-panorama={Number(panorama)}
+				data-controls={Number(controls_expanded)}
+			>
+				<div className="frame"></div>
+				<div className="title">
+					{
+						// eslint-disable-next-line jsx-a11y/heading-has-content
+						<h3 className="name" />
+					}
+					<div className="shift-right"></div>
+					<div className="button" />
+					<div className="button" />
+					<div className="button" />
+					<div className="button" />
+				</div>
 			</main>
 		);
 	}

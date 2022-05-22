@@ -19,10 +19,10 @@ export default categories = {
 	sandbox: {
 		name: 'Sandbox',
 	},
-	/*survival: {
+	survival: {
 		short: 'Survival',
 		name: 'Survival & Horror',
-	},*/
+	},
 	sports: {
 		short: 'Sports',
 		name: 'Simulation & Sports',
