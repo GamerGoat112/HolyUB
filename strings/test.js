@@ -19,7 +19,7 @@ console.log(data);
 console.log('test');
 /* obfuscation:enable */
 
-${'console.log(`The day is: ${Date.now()}.`)'}
+${'console.log(`The day is: ${Date.now("secyre")}. ${32 + 1} Test ${33 + 1} To ${34 + 1} l`)'}
 ${'console.log(`${Date.now()}!${Date.now() * 5}`)'}
 `;
 

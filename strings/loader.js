@@ -127,6 +127,10 @@ function loader(code) {
 	}
 
 	function will_skip(path) {
+		if (path.node.obfuscated) {
+			return true;
+		}
+
 		for (let { start, end } of skip_obfuscation) {
 			if (start < path.node.start && end > path.node.start) {
 				return true;
@@ -158,15 +162,21 @@ function loader(code) {
 				}
 
 				if (!element.tail) {
-					expressions.push(node_expressions.pop());
+					expressions.push(node_expressions.shift());
 					quasis.push(t.templateElement({ raw: '' }, false));
 				}
 			}
 
 			quasis.push(t.templateElement({ raw: '' }, true));
 
-			path.replaceWith(t.templateLiteral(quasis, expressions));
-			path.skip();
+			// dont skip the entire node and children
+			// keep children but dont re-process replaced node
+			// path.skip()
+
+			const ast = t.templateLiteral(quasis, expressions);
+			ast.obfuscated = true;
+
+			path.replaceWith(ast);
 		},
 		Property(path) {
 			if (will_skip(path)) return;
