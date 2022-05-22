@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import DatabaseAPI from './DatabaseAPI.js';
 import { Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 
@@ -22,43 +23,14 @@ import resolveRoute from './resolveRoute.js';
  * @typedef {LimitedGame[]} GamesCategory
  */
 
-export class GamesAPI {
-	/**
-	 *
-	 * @param {string} server
-	 * @param {AbortSignal} [signal]
-	 */
-	constructor(server, signal) {
-		this.server = server;
-		this.signal = signal;
-	}
-	/**
-	 *
-	 * @param {string} url
-	 * @param {object} init
-	 * @returns
-	 */
-	async fetch(url, init = {}) {
-		return await fetch(new URL(url, this.server), {
-			...init,
-			signal: this.signal,
-		});
-	}
+export class GamesAPI extends DatabaseAPI {
 	/**
 	 *
 	 * @param {string} id
 	 * @returns {LimitedGame}
 	 */
 	async game(id) {
-		const outgoing = await this.fetch(`./games/${id}/`);
-
-		const json = await outgoing.json();
-
-		if (!outgoing.ok) {
-			throw new Error(json.message || json.error);
-		}
-
-		return json;
+		return await this.fetch(`./games/${id}/`);
 	}
 	/**
 	 *
@@ -67,7 +39,7 @@ export class GamesAPI {
 	 * @returns {LimitedGame}
 	 */
 	async game_plays(id, token) {
-		const outgoing = await this.fetch(
+		return await this.fetch(
 			`./games/${id}/plays?` +
 				new URLSearchParams({
 					token,
@@ -76,27 +48,6 @@ export class GamesAPI {
 				method: 'PUT',
 			}
 		);
-
-		const json = await outgoing.json();
-
-		if (!outgoing.ok) {
-			throw new Error(json.message || json.error);
-		}
-
-		return json;
-	}
-	sort_params(params) {
-		for (let param in params) {
-			switch (typeof params[param]) {
-				case 'undefined':
-				case 'object':
-					delete params[param];
-					break;
-				// no default
-			}
-		}
-
-		return params;
 	}
 	/**
 	 *
@@ -104,17 +55,9 @@ export class GamesAPI {
 	 * @returns {GamesCategory}
 	 */
 	async category(params) {
-		const outgoing = await this.fetch(
+		return await this.fetch(
 			'./games/?' + new URLSearchParams(this.sort_params(params))
 		);
-
-		const json = await outgoing.json();
-
-		if (!outgoing.ok) {
-			throw new Error(json.message || json.error);
-		}
-
-		return json;
 	}
 }
 

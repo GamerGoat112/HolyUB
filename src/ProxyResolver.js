@@ -1,58 +1,6 @@
 import { DB_API, DEFAULT_PROXY } from './root.js';
+import CompatAPI from './CompatAPI.js';
 import resolveRoute from './resolveRoute.js';
-
-export class CompatAPI {
-	constructor(server) {
-		this.server = server;
-	}
-	async compat(host) {
-		const outgoing = await fetch(new URL(`./compat/${host}/`, this.server));
-
-		const json = await outgoing.json();
-
-		if (!outgoing.ok) {
-			throw new Error(json.message || json.error);
-		}
-
-		return json;
-	}
-	sort_params(params) {
-		for (let param in params) {
-			switch (typeof params[param]) {
-				case 'undefined':
-				case 'object':
-					delete params[param];
-					break;
-				// no default
-			}
-		}
-
-		return params;
-	}
-	/**
-	 *
-	 * @param {GamesCategoryParams} params
-	 * @param {AbortSignal} signal
-	 * @returns {GamesCategory}
-	 */
-	async category(params, signal) {
-		const outgoing = await fetch(
-			new URL(
-				'./games/?' + new URLSearchParams(this.sort_params(params)),
-				this.server
-			),
-			{ signal }
-		);
-
-		const json = await outgoing.json();
-
-		if (!outgoing.ok) {
-			throw new Error(json.message || json.error);
-		}
-
-		return json;
-	}
-}
 
 /**
  *

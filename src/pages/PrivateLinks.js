@@ -1,6 +1,6 @@
 import { createRef, useEffect, useRef, useState } from 'react';
 import { ObfuscatedA } from '../obfuscate.js';
-import { VOUCHER_URL, VO_API } from '../root.js';
+import { VOUCHER_URL, DB_API } from '../root.js';
 import VoucherAPI from '../VoucherAPI.js';
 import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
 import { Notification } from '../Notifications.js';
@@ -78,7 +78,7 @@ export default function PrivateLinks(props) {
 
 					abort.current = new AbortController();
 
-					const api = new VoucherAPI(VO_API, abort.current.signal);
+					const api = new VoucherAPI(DB_API, abort.current.signal);
 
 					event.preventDefault();
 
@@ -129,7 +129,7 @@ export default function PrivateLinks(props) {
 
 						abort.current = new AbortController();
 
-						const api = new VoucherAPI(VO_API, abort.current.signal);
+						const api = new VoucherAPI(DB_API, abort.current.signal);
 
 						try {
 							const data = await api.show(voucher.current.value);
