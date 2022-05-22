@@ -1,5 +1,4 @@
-const WebpackObfuscator = require('webpack-obfuscator');
-const { resolve } = require('path');
+const { join } = require('path');
 require('react-scripts/config/env.js');
 
 const env = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
@@ -31,36 +30,19 @@ module.exports = {
 				},
 			});
 
-			if (config.mode === 'production') {
-				config.module.rules.push({
-					test: /\.js$/,
-					enforce: 'post',
-					exclude: [resolve(__dirname, 'node_modules')],
-					use: {
-						loader: WebpackObfuscator.loader,
-						options: {
-							compact: true,
-							controlFlowFlattening: false,
-							deadCodeInjection: false,
-							debugProtection: false,
-							disableConsoleOutput: false,
-							identifierNamesGenerator: 'mangled',
-							log: false,
-							stringArray: true,
-							stringArrayEncoding: ['base64'],
-							stringArrayIndexShift: false,
-							stringArrayRotate: false,
-							stringArrayShuffle: false,
-							stringArrayWrappersCount: 1,
-							stringArrayWrappersChainedCalls: false,
-							stringArrayWrappersParametersMaxCount: 1,
-							stringArrayWrappersType: 'variable',
-							stringArrayThreshold: 1,
-							unicodeEscapeSequence: false,
-						},
+			// if (config.mode === 'production') {
+			config.module.rules.push({
+				test: /\.js$/,
+				enforce: 'post',
+				exclude: [join(__dirname, 'node_modules')],
+				use: {
+					loader: join(__dirname, 'strings', 'loader.js'),
+					options: {
+						salt: 'holyunblocker',
 					},
-				});
-			}
+				},
+			});
+			// }
 
 			return config;
 		},
