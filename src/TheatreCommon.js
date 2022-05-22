@@ -6,13 +6,7 @@ import resolveRoute from './resolveRoute.js';
 
 /**
  *
- * @typedef {object} GamesCategoryParams
-
- */
-
-/**
- *
- * @typedef {object} LimitedGame
+ * @typedef {object} LimitedEntry
  * @property {string} name
  * @property {string} id
  * @property {string} category
@@ -20,27 +14,27 @@ import resolveRoute from './resolveRoute.js';
 
 /**
  *
- * @typedef {LimitedGame[]} GamesCategory
+ * @typedef {LimitedEntry[]} TheatreCategory
  */
 
-export class GamesAPI extends DatabaseAPI {
+export class TheatreAPI extends DatabaseAPI {
 	/**
 	 *
 	 * @param {string} id
-	 * @returns {LimitedGame}
+	 * @returns {LimitedEntry}
 	 */
-	async game(id) {
-		return await this.fetch(`./games/${id}/`);
+	async show(id) {
+		return await this.fetch(`./theatre/${id}/`);
 	}
 	/**
 	 *
 	 * @param {string} id
 	 * @param {string} token
-	 * @returns {LimitedGame}
+	 * @returns {LimitedEntry}
 	 */
-	async game_plays(id, token) {
+	async plays(id, token) {
 		return await this.fetch(
-			`./games/${id}/plays?` +
+			`./theatre/${id}/plays?` +
 				new URLSearchParams({
 					token,
 				}),
@@ -52,11 +46,11 @@ export class GamesAPI extends DatabaseAPI {
 	/**
 	 *
 	 * @param {{leastGreatest?:boolean,category?:string[],sort?:string,search?:string,limit?:number,limitPerCategory:?number}} params
-	 * @returns {GamesCategory}
+	 * @returns {TheatreCategory}
 	 */
 	async category(params) {
 		return await this.fetch(
-			'./games/?' + new URLSearchParams(this.sort_params(params))
+			'./theatre/?' + new URLSearchParams(this.sort_params(params))
 		);
 	}
 }

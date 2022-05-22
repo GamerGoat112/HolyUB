@@ -91,7 +91,7 @@ export default forwardRef((props, ref) => {
 		theme,
 		proxy: 'automatic',
 		search: 'https://www.google.com/search?q=%s',
-		favorite_games: [],
+		favorites: [],
 		seen_games: [],
 	}));
 

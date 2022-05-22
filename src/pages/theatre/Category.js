@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../root.js';
-import { GamesAPI, ItemList } from '../../GamesCommon.js';
+import { TheatreAPI, ItemList } from '../../TheatreCommon.js';
 import { Link } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
 import { useSettings } from '../../Settings.js';
@@ -23,7 +23,7 @@ export default function Category(props) {
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
-		`games category ${props.id} settings`,
+		`theatre category ${props.id} settings`,
 		() => ({
 			sort: 'Most Played',
 		})
@@ -35,7 +35,7 @@ export default function Category(props) {
 		const abort = new AbortController();
 
 		void (async function () {
-			const api = new GamesAPI(DB_API, abort.signal);
+			const api = new TheatreAPI(DB_API, abort.signal);
 			let leastGreatest = false;
 			let sort;
 
@@ -156,7 +156,7 @@ export default function Category(props) {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<ItemList className="items" loading={200} items={data} />
+				<ItemList className="items" loading={220} items={data} />
 			</section>
 		</main>
 	);

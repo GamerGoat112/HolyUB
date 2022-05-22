@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../../root.js';
-import { GamesAPI, ItemList } from '../../../GamesCommon.js';
+import { TheatreAPI, ItemList } from '../../../TheatreCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
 import categories from './categories.js';
@@ -34,7 +34,7 @@ export default function Popular() {
 		const abort = new AbortController();
 
 		void (async function () {
-			const api = new GamesAPI(DB_API, abort.signal);
+			const api = new TheatreAPI(DB_API, abort.signal);
 
 			try {
 				const data = await api.category({

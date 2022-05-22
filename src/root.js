@@ -33,7 +33,7 @@ export const DB_API = _DB_API;
 export const HCAPTCHA_KEY = _HCAPTCHA_KEY;
 
 export const DEFAULT_PROXY = 'ultraviolet';
-export const GAMES_CDN = new URL('/gdata/', global.location);
+export const THEATRE_CDN = new URL('/gdata/', global.location);
 
 export const PATREON_URL = 'https://www.patreon.com/holyunblocker';
 export const VOUCHER_URL = 'https://example.org/';

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { DB_API, GAMES_CDN } from '../../root.js';
+import { DB_API, THEATRE_CDN } from '../../root.js';
 import resolve_proxy from '../../ProxyResolver.js';
-import { GamesAPI } from '../../GamesCommon.js';
+import { TheatreAPI } from '../../TheatreCommon.js';
 import '../../styles/TheatrePlayer.scss';
 import {
 	ArrowDropDown,
@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 import resolveRoute from '../../resolveRoute.js';
 
-async function resolve_game(src, type, setting) {
+async function resolve_src(src, type, setting) {
 	switch (type) {
 		case 'proxy':
 			return await resolve_proxy(src, setting);
@@ -37,7 +37,7 @@ async function resolve_game(src, type, setting) {
 						rom: src,
 						core: 'autodetect',
 					}),
-				GAMES_CDN
+				THEATRE_CDN
 			).toString();
 		default:
 			throw new TypeError(`Unrecognized target: ${type}`);
@@ -46,7 +46,7 @@ async function resolve_game(src, type, setting) {
 
 export default function Player(props) {
 	const [favorited, set_favorited] = useState(() =>
-		props.layout.current.settings.favorite_games.includes(props.id)
+		props.layout.current.settings.favorites.includes(props.id)
 	);
 	const [panorama, set_panorama] = useState(false);
 	const [controls_expanded, set_controls_expanded] = useState(false);
@@ -83,15 +83,15 @@ export default function Player(props) {
 		}
 
 		void (async function () {
-			const api = new GamesAPI(DB_API, abort.signal);
+			const api = new TheatreAPI(DB_API, abort.signal);
 
 			try {
 				error_cause.current = 'Unable to fetch game info';
-				const data = await api.game(props.id);
+				const data = await api.show(props.id);
 				error_cause.current = undefined;
 				error_cause.current = 'Unable to resolve game location';
-				const resolved_src = await resolve_game(
-					new URL(data.src, GAMES_CDN).toString(),
+				const resolved_src = await resolve_src(
+					new URL(data.src, THEATRE_CDN).toString(),
 					data.type,
 					props.layout.current.settings.proxy
 				);
@@ -101,7 +101,7 @@ export default function Player(props) {
 
 				if (!seen) {
 					error_cause.current = 'Unable to update plays';
-					await api.game_plays(props.id);
+					await api.plays(props.id);
 					set_seen(true);
 					error_cause.current = undefined;
 				}
@@ -144,9 +144,7 @@ export default function Player(props) {
 	if (error) {
 		return (
 			<main className="error">
-				<p>
-					An error occurreds when loading the <Obfuscated>game</Obfuscated>:
-				</p>
+				<p>An error occurreds when loading the entry:</p>
 				<pre>
 					<Obfuscated>{error_cause.current || error.toString()}</Obfuscated>
 				</pre>
@@ -300,7 +298,7 @@ export default function Player(props) {
 				<div
 					className="button"
 					onClick={() => {
-						const favorites = props.layout.current.settings.favorite_games;
+						const favorites = props.layout.current.settings.favorites;
 						const i = favorites.indexOf(props.id);
 
 						if (i === -1) {
@@ -311,7 +309,7 @@ export default function Player(props) {
 
 						props.layout.current.set_settings({
 							...props.layout.current.settings,
-							favorite_games: favorites,
+							favorites,
 						});
 
 						set_favorited(true);

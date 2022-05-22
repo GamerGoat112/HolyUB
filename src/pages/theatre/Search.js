@@ -2,7 +2,7 @@ import { ThemeInputBar } from '../../ThemeElements.js';
 import { Search } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GamesAPI } from '../../GamesCommon.js';
+import { TheatreAPI } from '../../TheatreCommon.js';
 import { DB_API } from '../../root.js';
 // import categories from './games/categories.js';
 import clsx from 'clsx';
@@ -28,7 +28,7 @@ export default function SearchBar(props) {
 
 		search_abort.current = new AbortController();
 
-		const api = new GamesAPI(DB_API, search_abort.current.signal);
+		const api = new TheatreAPI(DB_API, search_abort.current.signal);
 
 		try {
 			const category_data = await api.category({
