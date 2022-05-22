@@ -15,6 +15,7 @@ export default function PrivateLinks(props) {
 	const [tld, set_tld] = useState();
 	const [status, set_status] = useState();
 	const [host, set_host] = useState();
+	const [error, set_error] = useState();
 
 	useEffect(() => {
 		if (abort.current) {
@@ -23,6 +24,42 @@ export default function PrivateLinks(props) {
 	}, []);
 
 	switch (status) {
+		case 'errored':
+			return (
+				<main className="private-links errored">
+					<h2>Unable to redeem voucher.</h2>
+					<p>We encountered an error while redeeming your voucher.</p>
+					<pre>{error.toString()}</pre>
+					<p>
+						In order to be eligible for a refund, please forward the following
+						to our support:
+					</p>
+					<ul>
+						<li>The date ({new Date().toISOString()})</li>
+						<li>Your voucher code</li>
+						<li>Sellix recipt</li>
+					</ul>
+					<p>
+						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
+							Contact Us
+						</Link>
+					</p>
+					<p>
+						Click{' '}
+						<a
+							className="theme-link"
+							href="i:"
+							onClick={event => {
+								event.preventDefault();
+								set_status();
+							}}
+						>
+							here
+						</a>{' '}
+						to go back.
+					</p>
+				</main>
+			);
 		case 'redeemed':
 			return (
 				<main className="private-links redeemed">
@@ -46,6 +83,7 @@ export default function PrivateLinks(props) {
 					<p>
 						Click{' '}
 						<a
+							className="theme-link"
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
@@ -105,13 +143,8 @@ export default function PrivateLinks(props) {
 							error.message !== 'The operation was aborted' &&
 							error.message !== 'The user aborted a request.'
 						) {
-							props.layout.current.notifications.current.add(
-								<Notification
-									title={error.name}
-									description={error.message}
-									type="error"
-								/>
-							);
+							set_status('errored');
+							set_error(error);
 						}
 					}
 				}}
@@ -132,9 +165,9 @@ export default function PrivateLinks(props) {
 						const api = new VoucherAPI(DB_API, abort.current.signal);
 
 						try {
-							const data = await api.show(voucher.current.value);
+							const { tld } = await api.show(voucher.current.value);
 
-							set_tld(data.tld);
+							set_tld(tld);
 						} catch (error) {
 							if (
 								error.message !== 'The operation was aborted' &&
