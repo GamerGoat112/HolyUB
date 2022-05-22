@@ -8,6 +8,8 @@ import '../styles/PrivateLinks.scss';
 import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
 
+const SAFE_ERRORS = ['Invalid voucher', 'Invalid domain name.'];
+
 export default function PrivateLinks(props) {
 	const voucher = createRef();
 	const domain = createRef();
@@ -140,7 +142,7 @@ export default function PrivateLinks(props) {
 							error.message !== 'The operation was aborted' &&
 							error.message !== 'The user aborted a request.'
 						) {
-							if (error.message === 'Invalid voucher.') {
+							if (SAFE_ERRORS.includes(error.message)) {
 								set_status({});
 								props.layout.current.notifications.current.add(
 									<Notification
