@@ -18,15 +18,11 @@ export default routes = [
 	},
 	{
 		dir: '/theatre/',
-		pages: ['category', 'player', 'all'],
+		pages: ['category', 'player', 'all', 'apps', 'favorites'],
 	},
 	{
 		dir: '/theatre/games/',
-		pages: ['', 'favorites', 'all'],
-	},
-	{
-		dir: '/theatre/apps/',
-		pages: [''],
+		pages: ['', 'all'],
 	},
 	{
 		dir: '/compat/',

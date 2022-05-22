@@ -1,9 +1,9 @@
+import './styles/App.scss';
 import { createRef, lazy, Suspense } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import MainLayout from './MainLayout.js';
 import CompatLayout from './CompatLayout.js';
 import resolveRoute from './resolveRoute.js';
-import './styles/App.scss';
 import categories from './pages/theatre/games/categories.js';
 import Layout from './Layout.js';
 
@@ -11,8 +11,8 @@ import Layout from './Layout.js';
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular.js')
 );
-const GamesFavorites = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/games/Favorites.js')
+const TheatreFavorites = lazy(() =>
+	import(/* webpackPrefetch: true */ './pages/theatre/Favorites.js')
 );
 const TheatreCategory = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/theatre/Category.js')
@@ -206,31 +206,6 @@ export default function App() {
 								</Suspense>
 							}
 						/>
-						<Route
-							path={resolveRoute('/theatre/games/', 'favorites', false)}
-							element={
-								<Suspense fallback={<></>}>
-									<GamesFavorites {...layouts} />
-								</Suspense>
-							}
-						/>
-					</Route>
-					<Route path={resolveRoute('/theatre/apps/', '')}>
-						<Route
-							index
-							element={
-								<Suspense fallback={<></>}>
-									<TheatreCategory
-										name="Apps"
-										id="apps"
-										key="apps"
-										category="app"
-										placeholder="Search by app name"
-										{...layouts}
-									/>
-								</Suspense>
-							}
-						/>
 					</Route>
 					<Route path={resolveRoute('/theatre/', '')}>
 						<Route
@@ -241,6 +216,31 @@ export default function App() {
 							path={resolveRoute('/theatre/', 'category', false)}
 							element={<CategoryProxy {...layouts} />}
 						/>
+						<Route
+							path={resolveRoute('/theatre/', 'favorites', false)}
+							element={
+								<Suspense fallback={<></>}>
+									<TheatreFavorites {...layouts} />
+								</Suspense>
+							}
+						/>
+						<Route path={resolveRoute('/theatre/', 'apps', false)}>
+							<Route
+								index
+								element={
+									<Suspense fallback={<></>}>
+										<TheatreCategory
+											name="Apps"
+											id="apps"
+											key="apps"
+											category="app"
+											placeholder="Search by app name"
+											{...layouts}
+										/>
+									</Suspense>
+								}
+							/>
+						</Route>
 					</Route>
 					<Route
 						path={resolveRoute('/settings/', '')}

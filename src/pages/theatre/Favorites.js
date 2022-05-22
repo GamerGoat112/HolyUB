@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { DB_API } from '../../../root.js';
-import { TheatreAPI, ItemList } from '../../../TheatreCommon.js';
-import { Obfuscated } from '../../../obfuscate.js';
-import '../../../styles/TheatreCategory.scss';
+import { DB_API } from '../../root.js';
+import { TheatreAPI, ItemList } from '../../TheatreCommon.js';
+import { Obfuscated } from '../../obfuscate.js';
+import '../../styles/TheatreCategory.scss';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 

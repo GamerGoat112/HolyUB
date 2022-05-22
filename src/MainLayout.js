@@ -202,9 +202,17 @@ export default forwardRef((props, ref) => {
 						<div className="bar" />
 
 						<MenuTab
-							route={resolveRoute('/theatre/apps/', '')}
+							route={resolveRoute('/theatre/', 'apps')}
 							name="Apps"
 							iconFilled={<Apps />}
+							onClick={close_menu}
+						/>
+
+						<MenuTab
+							route={resolveRoute('/theatre/', 'favorites')}
+							name="Favorites"
+							iconFilled={<StarRounded />}
+							iconOutlined={<StarOutlineRounded />}
 							onClick={close_menu}
 						/>
 
@@ -224,13 +232,6 @@ export default forwardRef((props, ref) => {
 							route={resolveRoute('/theatre/games/', 'all')}
 							name="All"
 							iconFilled={<List />}
-							onClick={close_menu}
-						/>
-						<MenuTab
-							route={resolveRoute('/theatre/games/', 'favorites')}
-							name="Favorites"
-							iconFilled={<StarRounded />}
-							iconOutlined={<StarOutlineRounded />}
 							onClick={close_menu}
 						/>
 						<div className="title">Genre</div>
