@@ -36,7 +36,7 @@ export const DEFAULT_PROXY = 'ultraviolet';
 export const THEATRE_CDN = new URL('/gdata/', global.location);
 
 export const PATREON_URL = 'https://www.patreon.com/holyunblocker';
-export const VOUCHER_URL = 'https://example.org/';
+export const VOUCHER_URL = 'https://holyunblocker.sellix.io/';
 export const TN_DISCORD_URL = 'https://discord.gg/unblock';
 export const HU_DISCORD_URL = 'https://discord.gg/QKMwvd6tx6';
 
