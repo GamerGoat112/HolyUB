@@ -1,5 +1,5 @@
 {
-	"name": "holyunblocker-website",
+	"name": "website",
 	"version": "0.0.1",
 	"dependencies": {
 		"@babel/generator": "^7.18.0",
