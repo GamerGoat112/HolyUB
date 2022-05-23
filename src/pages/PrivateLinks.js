@@ -41,6 +41,7 @@ export default function PrivateLinks(props) {
 						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
 							Contact Us
 						</Link>
+						.
 					</p>
 					<p>
 						Click{' '}
