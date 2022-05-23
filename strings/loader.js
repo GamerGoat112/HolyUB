@@ -1,5 +1,3 @@
-'use strict';
-
 const { parse } = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
@@ -230,16 +228,6 @@ function loader(code) {
 	);
 
 	return generate(tree).code;
-}
-
-function time(call) {
-	return function (...args) {
-		const name = call.name + ' ' + Math.random();
-		console.time(name);
-		const result = call.call(this, ...args);
-		console.timeEnd(name);
-		return result;
-	};
 }
 
 module.exports = loader;
