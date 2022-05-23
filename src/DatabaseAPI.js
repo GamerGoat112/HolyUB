@@ -44,7 +44,9 @@ export default class DatabaseAPI {
 		const json = await outgoing.json();
 
 		if (!outgoing.ok) {
-			throw new Error(json.message);
+			const error = new Error(json.message);
+			error.statusCode = json.statusCode;
+			throw error;
 		}
 
 		return json;
