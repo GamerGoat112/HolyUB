@@ -30,19 +30,19 @@ module.exports = {
 				},
 			});
 
-			// if (config.mode === 'production') {
-			config.module.rules.push({
-				test: /\.js$/,
-				enforce: 'post',
-				exclude: [join(__dirname, 'node_modules')],
-				use: {
-					loader: join(__dirname, 'strings', 'loader.js'),
-					options: {
-						salt: 9185,
+			if (config.mode === 'production') {
+				config.module.rules.push({
+					test: /\.js$/,
+					enforce: 'post',
+					exclude: [join(__dirname, 'node_modules')],
+					use: {
+						loader: join(__dirname, 'strings', 'loader.js'),
+						options: {
+							salt: 9185,
+						},
 					},
-				},
-			});
-			// }
+				});
+			}
 
 			return config;
 		},
