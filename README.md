@@ -4,12 +4,12 @@
 
 This repository contains submodules. You can clone this repository using the git parameter to update the submodules or update them after cloning the repo.
 
-```
+```sh
 # Cloning with submodules
 git clone --recurse-submodules https://git.holy.how/holy/website.git
 ```
 
-```
+```sh
 # Cloning then updating submodules
 git clone https://git.holy.how/holy/website.git
 cd website
