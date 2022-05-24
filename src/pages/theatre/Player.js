@@ -232,15 +232,17 @@ export default function Player(props) {
 					title="Embed"
 					onLoad={() => {
 						iframe.current.contentWindow.addEventListener('keydown', event => {
-							switch (event.code) {
-								case 'Space':
-								case 'ArrowUp':
-								case 'ArrowDown':
-								case 'ArrowLeft':
-								case 'ArrowRight':
-									event.preventDefault();
-									break;
-								// no default
+							if (event.target === iframe.current.contentWindow.document.body) {
+								switch (event.code) {
+									case 'Space':
+									case 'ArrowUp':
+									case 'ArrowDown':
+									case 'ArrowLeft':
+									case 'ArrowRight':
+										event.preventDefault();
+										break;
+									// no default
+								}
 							}
 						});
 					}}
