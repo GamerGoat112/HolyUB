@@ -141,7 +141,7 @@ export default function PrivateLinks(props) {
 							error.message !== 'The operation was aborted' &&
 							error.message !== 'The user aborted a request.'
 						) {
-							if (error.statusCode === 404) {
+							if (error.statusCode === 404 || error.statusCode === 400) {
 								set_status({});
 								props.layout.current.notifications.current.add(
 									<Notification
