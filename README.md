@@ -1,5 +1,21 @@
 # Getting Started with HolyUnblocker frontend
 
+## Cloning
+
+This repository contains submodules. You can clone this repository using the git parameter to update the submodules or update them after cloning the repo.
+
+```
+# Cloning with submodules
+git clone --recurse-submodules https://git.holy.how/holy/website.git
+```
+
+```
+# Cloning then updating submodules
+git clone https://git.holy.how/holy/website.git
+cd website
+git submodule update --init --recursive
+```
+
 ## APIs
 
 This project depends on the following APIs/scripts:
