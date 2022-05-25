@@ -1,6 +1,10 @@
 const { join } = require('path');
 require('react-scripts/config/env.js');
 
+const {
+	loader: basic_webpack_obfuscator_loader,
+} = require('basic-webpack-obfuscator');
+
 const env = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
 
 /*console.log(
@@ -30,13 +34,19 @@ module.exports = {
 				},
 			});
 
+			if (!config.resolve.fallback) {
+				config.resolve.fallback = {};
+			}
+
+			config.resolve.fallback.process = require.resolve('process/browser');
+
 			if (config.mode === 'production') {
 				config.module.rules.push({
 					test: /\.js$/,
 					enforce: 'post',
 					exclude: [join(__dirname, 'node_modules')],
 					use: {
-						loader: join(__dirname, 'strings', 'loader.js'),
+						loader: basic_webpack_obfuscator_loader,
 						options: {
 							salt: 9185,
 						},
