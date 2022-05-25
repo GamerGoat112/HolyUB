@@ -10,6 +10,7 @@
 		"@testing-library/jest-dom": "^5.16.2",
 		"@testing-library/react": "^12.1.4",
 		"@testing-library/user-event": "^13.5.0",
+		"adm-zip": "^0.5.9",
 		"arraybuffer-loader": "^1.0.8",
 		"bare-client": "github:tomphttp/bare-client",
 		"basic-webpack-obfuscator": "git+https://git.holy.how/holy/basic-webpack-obfuscator",
@@ -28,8 +29,6 @@
 		"sass": "^1.49.9",
 		"stomp": "github:sysce/stomp",
 		"string-replace-loader": "^3.1.0",
-		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet",
-		"unzipper": "^0.10.11",
 		"web-vitals": "^2.1.4",
 		"webpack": "^5.70.0"
 	},
@@ -37,14 +36,15 @@
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.7",
-		"prettier": "2.6.0"
+		"prettier": "2.6.0",
+		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet"
 	},
 	"lint-staged": {
 		"*.{js,json}": "prettier --write"
 	},
 	"scripts": {
 		"build-stomp": "node ./build-scripts/stomp.mjs",
-		"build-uv": "node ./build-scripts/ultraviolet.mjs",
+		"build-ultraviolet": "node ./build-scripts/ultraviolet.mjs",
 		"start": "craco start",
 		"build": "node ./build.mjs",
 		"test": "craco test",
