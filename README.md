@@ -1,20 +1,10 @@
-# Getting Started with HolyUnblocker frontend
+# READ ME
 
-## Cloning
+This repository requires a lot of setup. Because of this, this repository cannot be deployed to services such as Heroku, Repl.it, etc..
 
-This repository contains submodules. You can clone this repository using the git parameter to update the submodules or update them after cloning the repo.
+If you aren't familiar with manually setting up proxy scripts or webservers, **please wait for a deployable version**.
 
-```sh
-# Cloning with submodules
-git clone --recurse-submodules https://git.holy.how/holy/website.git
-```
-
-```sh
-# Cloning then updating submodules
-git clone https://git.holy.how/holy/website.git
-cd website
-git submodule update --init --recursive
-```
+# Prerequisites
 
 ## APIs
 
@@ -24,9 +14,9 @@ This project depends on the following APIs/scripts:
 - [Bare Server Node](https://github.com/tomphttp/bare-server-node) (ran on port 8001)
 - [Rammerhead](https://github.com/binary-person/rammerhead) (ran on port 8002)
 
-## Rammerhead config:
+## Rammerhead config
 
-src/config.js:
+`src/config.js`:
 
 ```js
 // ...
@@ -51,20 +41,18 @@ Protections against clickjacking and CORS prevents the website running locally f
 - [CORS unblock](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino)
 - [Ignore X-Frame headers](https://chrome.google.com/webstore/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe)
 
-
-## Scripts
+# Scripts
 
 In the project directory, you can run:
 
 **npm start**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> Runs the React development server.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+By default, the development server listens on [http://localhost:3000](http://localhost:3000).
 
 **npm run build**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> Builds and obfuscates the React app.
+
+Output is found in the `build` folder.
