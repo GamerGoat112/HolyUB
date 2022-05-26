@@ -32,8 +32,8 @@ export const BARE_API = _BARE_API;
 export const RH_API = _RH_API;
 export const DB_API = _DB_API;
 export const THEATRE_CDN = _THEATRE_CDN;
-export const DEFAULT_PROXY = 'ultraviolet';
 
+export const DEFAULT_PROXY = 'ultraviolet';
 export const PATREON_URL = 'https://www.patreon.com/holyunblocker';
 export const VOUCHER_URL = 'https://holyunblocker.sellix.io/';
 export const TN_DISCORD_URL = 'https://discord.gg/unblock';
