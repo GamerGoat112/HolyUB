@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === 'development') {
 	const { host } = global.location;
 	_BARE_API = `https://uv.${host}/`;
 	_RH_API = `https://rh.${host}/`;
-	_DB_API = new URL('/db/', global.location);
+	_DB_API = `https://${host}/db/`;
+	_THEATRE_CDN = `https://${host}/theatre/`;
 }
 
 /*Test Key Set: Publisher Account
