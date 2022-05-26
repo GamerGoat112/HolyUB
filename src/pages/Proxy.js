@@ -1,5 +1,5 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { PATREON_URL, TN_DISCORD_URL } from '../root.js';
+import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
 import { createRef, useMemo, useRef, useState } from 'react';
 import { NorthWest, Search } from '@mui/icons-material';
 import ServiceFrame from '../ServiceFrame.js';

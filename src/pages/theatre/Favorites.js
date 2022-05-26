@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DB_API } from '../../root.js';
+import { DB_API } from '../../consts.js';
 import { TheatreAPI, ItemList } from '../../TheatreCommon.js';
 import { Obfuscated } from '../../obfuscate.js';
 import '../../styles/TheatreCategory.scss';

@@ -1,6 +1,6 @@
 import { createRef, useEffect, useRef, useState } from 'react';
 import { ObfuscatedA } from '../obfuscate.js';
-import { VOUCHER_URL, DB_API } from '../root.js';
+import { VOUCHER_URL, DB_API } from '../consts.js';
 import VoucherAPI from '../VoucherAPI.js';
 import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
 import { Notification } from '../Notifications.js';

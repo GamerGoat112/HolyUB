@@ -2,7 +2,7 @@ import BareClient from 'bare-client';
 import { useRef } from 'react';
 import { Notification } from '../../Notifications.js';
 import { Obfuscated } from '../../obfuscate.js';
-import { BARE_API } from '../../root.js';
+import { BARE_API } from '../../consts.js';
 import { Check } from '@mui/icons-material';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 

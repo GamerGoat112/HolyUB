@@ -1,4 +1,4 @@
-import { BARE_API } from './root.js';
+import { BARE_API } from './consts.js';
 import {
 	forwardRef,
 	useEffect,

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
-import { DB_API, THEATRE_CDN } from '../../root.js';
+import { DB_API, THEATRE_CDN } from '../../consts.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import { TheatreAPI } from '../../TheatreCommon.js';
 import '../../styles/TheatrePlayer.scss';

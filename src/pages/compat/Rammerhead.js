@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
-import { RH_APP } from '../../root.js';
+import { RH_API } from '../../consts.js';
 
 export default function Rammerhead(props) {
 	useEffect(() => {
@@ -9,10 +9,10 @@ export default function Rammerhead(props) {
 			let error_cause;
 
 			try {
-				const api = new RammerheadAPI(RH_APP);
+				const api = new RammerheadAPI(RH_API);
 
 				error_cause = 'Rammerhead server is unreachable.';
-				await fetch(RH_APP);
+				await fetch(RH_API);
 				error_cause = undefined;
 
 				error_cause = 'Unable to check if the saved session exists.';
@@ -45,7 +45,7 @@ export default function Rammerhead(props) {
 						`${session}/${shuffler.shuffle(
 							props.compat_layout.current.destination
 						)}`,
-						RH_APP
+						RH_API
 					)
 				);
 			} catch (error) {

@@ -24,7 +24,7 @@ import {
 	Apps,
 	List,
 } from '@mui/icons-material';
-import { PATREON_URL } from './root.js';
+import { PATREON_URL } from './consts.js';
 import resolveRoute from './resolveRoute.js';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';

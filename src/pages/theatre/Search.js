@@ -3,7 +3,7 @@ import { Search } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TheatreAPI } from '../../TheatreCommon.js';
-import { DB_API } from '../../root.js';
+import { DB_API } from '../../consts.js';
 // import categories from './games/categories.js';
 import clsx from 'clsx';
 import resolveRoute from '../../resolveRoute.js';

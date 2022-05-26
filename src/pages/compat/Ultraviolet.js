@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ScriptsOrder, Script } from '../../CompatLayout.js';
 import { Obfuscated } from '../../obfuscate.js';
-import { BARE_API } from '../../root.js';
+import { BARE_API } from '../../consts.js';
 
 /**
  * @callback UVEncode

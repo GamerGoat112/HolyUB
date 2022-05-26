@@ -1,5 +1,5 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { HU_DISCORD_URL } from '../root.js';
+import { HU_DISCORD_URL } from '../consts.js';
 
 export default function Contact(props) {
 	return (

@@ -1,5 +1,5 @@
 import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { PATREON_URL } from '../root.js';
+import { PATREON_URL } from '../consts.js';
 
 export default function Credits() {
 	return (

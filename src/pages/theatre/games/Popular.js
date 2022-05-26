@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { DB_API } from '../../../root.js';
+import { DB_API } from '../../../consts.js';
 import { TheatreAPI, ItemList } from '../../../TheatreCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
