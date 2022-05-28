@@ -1,8 +1,10 @@
-import routes from './src/routes.mjs';
 import { spawn } from 'node:child_process';
+import { copyFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { mkdir, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
+import routes from './src/routes.js';
+
 process.env.NODE_ENV = 'production';
 await import('react-scripts/config/env.js');
 

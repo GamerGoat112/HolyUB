@@ -1,7 +1,6 @@
 import './styles/Compat.scss';
 import './styles/ThemeElements.scss';
-import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
-import { Outlet, useLocation } from 'react-router-dom';
+
 import {
 	forwardRef,
 	useEffect,
@@ -9,6 +8,9 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+
+import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 import { ThemeA, ThemeLink } from './ThemeElements.js';
 

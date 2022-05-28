@@ -1,4 +1,7 @@
-import { BARE_API } from './consts.js';
+import './styles/Service.scss';
+
+import { ChevronLeft, Fullscreen, Public } from '@mui/icons-material';
+import BareClient from 'bare-client';
 import {
 	forwardRef,
 	useEffect,
@@ -7,12 +10,11 @@ import {
 	useRef,
 	useState,
 } from 'react';
+
+import { BARE_API } from './consts.js';
 import { Obfuscated } from './obfuscate.js';
-import SearchBuilder from './SearchBuilder.js';
-import BareClient from 'bare-client';
 import resolve_proxy from './ProxyResolver.js';
-import { ChevronLeft, Fullscreen, Public } from '@mui/icons-material';
-import './styles/Service.scss';
+import SearchBuilder from './SearchBuilder.js';
 
 export default forwardRef((props, ref) => {
 	const iframe = useRef();

@@ -1,9 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Obfuscated } from '../../obfuscate.js';
-import { DB_API, THEATRE_CDN } from '../../consts.js';
-import resolve_proxy from '../../ProxyResolver.js';
-import { TheatreAPI } from '../../TheatreCommon.js';
 import '../../styles/TheatrePlayer.scss';
+
 import {
 	ArrowDropDown,
 	ArrowDropUp,
@@ -17,7 +13,13 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
+import { useEffect, useRef, useState } from 'react';
+
+import { DB_API, THEATRE_CDN } from '../../consts.js';
+import { Obfuscated } from '../../obfuscate.js';
+import resolve_proxy from '../../ProxyResolver.js';
 import resolveRoute from '../../resolveRoute.js';
+import { TheatreAPI } from '../../TheatreCommon.js';
 
 async function resolve_src(src, type, setting) {
 	switch (type) {

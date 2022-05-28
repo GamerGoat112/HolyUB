@@ -49,10 +49,7 @@ export default function Terms(props) {
 			<h2>Contact Information</h2>
 			<p>
 				If you have any questions about our Privacy Policy, please{' '}
-				<ThemeLink to={resolveRoute('/', 'contact')}>
-					Contact Us
-				</ThemeLink>
-				.
+				<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 			</p>
 		</main>
 	);

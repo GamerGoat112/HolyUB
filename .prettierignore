@@ -1,4 +1,6 @@
+/node_modules
 /build/
-/public/assets/theatre/
-/public/tomp/
+/public/ruffle/
+/public/stomp/
 /public/uv/
+/uv/

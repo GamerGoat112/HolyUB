@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import { THEATRE_CDN } from './consts.js';
 import DatabaseAPI from './DatabaseAPI.js';
 import { Obfuscated } from './obfuscate.js';

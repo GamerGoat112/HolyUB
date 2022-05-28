@@ -1,6 +1,7 @@
 import './styles/Footer.scss';
-import { Obfuscated } from './obfuscate.js';
+
 import { ReactComponent as Waves } from './assets/waves.svg';
+import { Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 import { ThemeLink } from './ThemeElements.js';
 

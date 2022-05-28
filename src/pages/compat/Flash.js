@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+
 import { Script } from '../../CompatLayout.js';
 import { Obfuscated } from '../../obfuscate.js';
 

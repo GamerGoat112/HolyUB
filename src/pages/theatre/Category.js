@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { DB_API } from '../../consts.js';
-import { TheatreAPI, ItemList } from '../../TheatreCommon.js';
-import { Link, useSearchParams } from 'react-router-dom';
-import { ThemeSelect } from '../../ThemeElements.js';
-import { useSettings } from '../../Settings.js';
-import resolveRoute from '../../resolveRoute.js';
-import { Obfuscated } from '../../obfuscate.js';
-import SearchBar from './Search.js';
 import '../../styles/TheatreCategory.scss';
+
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+
+import { DB_API } from '../../consts.js';
+import { Obfuscated } from '../../obfuscate.js';
+import resolveRoute from '../../resolveRoute.js';
+import { useSettings } from '../../Settings.js';
+import { ItemList, TheatreAPI } from '../../TheatreCommon.js';
+import { ThemeSelect } from '../../ThemeElements.js';
+import SearchBar from './Search.js';
 
 const LIMIT = 30;
 

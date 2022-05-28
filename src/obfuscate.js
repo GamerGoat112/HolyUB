@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { create } from 'random-seed';
+import { useEffect, useRef } from 'react';
 
 const rand = create(navigator.userAgent + global.location.origin);
 

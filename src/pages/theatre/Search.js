@@ -1,14 +1,16 @@
-import { ThemeInputBar } from '../../ThemeElements.js';
+import '../../styles/TheatreSearch.scss';
+
 import { Search } from '@mui/icons-material';
-import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { TheatreAPI } from '../../TheatreCommon.js';
-import { DB_API } from '../../consts.js';
 // import categories from './games/categories.js';
 import clsx from 'clsx';
-import resolveRoute from '../../resolveRoute.js';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { DB_API } from '../../consts.js';
 import { Obfuscated } from '../../obfuscate.js';
-import '../../styles/TheatreSearch.scss';
+import resolveRoute from '../../resolveRoute.js';
+import { TheatreAPI } from '../../TheatreCommon.js';
+import { ThemeInputBar } from '../../ThemeElements.js';
 
 const LIMIT = 8;
 

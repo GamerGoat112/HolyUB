@@ -1,6 +1,22 @@
+import './styles/Navigation.scss';
+import './styles/Footer.scss';
+
 import process from 'process';
-import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
-import { ReactComponent as Patreon } from './assets/patreon.svg';
+
+import {
+	Apps,
+	Home,
+	HomeOutlined,
+	List,
+	Menu,
+	QuestionMark,
+	Settings,
+	ShoppingCart,
+	SortRounded,
+	StarOutlineRounded,
+	StarRounded,
+	WebAsset,
+} from '@mui/icons-material';
 import {
 	forwardRef,
 	useEffect,
@@ -8,30 +24,17 @@ import {
 	useRef,
 	useState,
 } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import categories from './pages/theatre/games/categories.js';
-import {
-	Home,
-	HomeOutlined,
-	QuestionMark,
-	SortRounded,
-	StarOutlineRounded,
-	StarRounded,
-	WebAsset,
-	Menu,
-	Settings,
-	ShoppingCart,
-	Apps,
-	List,
-} from '@mui/icons-material';
-import { PATREON_URL } from './consts.js';
-import resolveRoute from './resolveRoute.js';
-import { ReactComponent as HatDev } from './assets/hat-dev.svg';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
+import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
+import { ReactComponent as Patreon } from './assets/patreon.svg';
+import { PATREON_URL } from './consts.js';
 import Footer from './Footer.js';
-import './styles/Navigation.scss';
-import './styles/Footer.scss';
+import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
+import categories from './pages/theatre/games/categories.js';
+import resolveRoute from './resolveRoute.js';
 
 function Hat(props) {
 	const { children, ...attributes } = props;

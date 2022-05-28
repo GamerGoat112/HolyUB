@@ -1,8 +1,9 @@
+import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+
+import { RH_API } from '../../consts.js';
 import { Obfuscated } from '../../obfuscate.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
-import { RH_API } from '../../consts.js';
-import Cookies from 'js-cookie';
 
 export default function Rammerhead(props) {
 	useEffect(() => {

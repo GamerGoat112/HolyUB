@@ -1,10 +1,12 @@
-import webpack from 'webpack';
-import fetch from 'node-fetch';
-import { join, basename } from 'node:path';
-import { WEBROOT } from './output.mjs';
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
 import { promisify } from 'node:util';
+
 import AdmZip from 'adm-zip';
+import fetch from 'node-fetch';
+import webpack from 'webpack';
+
+import { WEBROOT } from './output.mjs';
 
 const ARCHIVE =
 	'https://github.com/titaniumnetwork-dev/Ultraviolet-Core/archive/refs/heads/main.zip';

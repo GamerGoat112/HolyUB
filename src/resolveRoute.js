@@ -1,5 +1,6 @@
 import process from 'process';
-import routes from './routes.mjs';
+
+import routes from './routes.js';
 
 export default function resolveRoute(dir, page, absolute = true) {
 	let pages;

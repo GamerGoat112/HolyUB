@@ -1,6 +1,6 @@
+import { PATREON_URL } from '../consts.js';
 import { Obfuscated } from '../obfuscate.js';
 import { ObfuscatedThemeA } from '../ThemeElements.js';
-import { PATREON_URL } from '../consts.js';
 
 export default function Credits() {
 	return (

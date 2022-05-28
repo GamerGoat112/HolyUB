@@ -1,9 +1,11 @@
-import { ExpandMore } from '@mui/icons-material';
-import { useState, useRef, forwardRef } from 'react';
-import clsx from 'clsx';
 import './styles/ThemeElements.scss';
-import { ObfuscatedA } from './obfuscate';
+
+import { ExpandMore } from '@mui/icons-material';
+import clsx from 'clsx';
+import { forwardRef, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { ObfuscatedA } from './obfuscate';
 
 export function ThemeButton(props) {
 	const { children, className, ...attributes } = props;

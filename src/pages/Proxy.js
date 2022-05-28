@@ -1,12 +1,14 @@
 import '../styles/Proxy.scss';
+
+import { NorthWest, Search } from '@mui/icons-material';
+import clsx from 'clsx';
+import { createRef, useMemo, useRef, useState } from 'react';
+
+import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
+import engines from '../engines.js';
+import { Obfuscated } from '../obfuscate.js';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
-import engines from '../engines.js';
-import clsx from 'clsx';
-import { Obfuscated } from '../obfuscate.js';
-import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
-import { createRef, useMemo, useRef, useState } from 'react';
-import { NorthWest, Search } from '@mui/icons-material';
 import { ObfuscatedThemeA, ThemeInputBar } from '../ThemeElements.js';
 
 export default function Proxies(props) {

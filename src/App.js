@@ -1,11 +1,13 @@
 import './styles/App.scss';
-import { createRef, lazy, Suspense } from 'react';
-import { Routes, Route, useSearchParams } from 'react-router-dom';
-import MainLayout from './MainLayout.js';
+
+import { Suspense, createRef, lazy } from 'react';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
+
 import CompatLayout from './CompatLayout.js';
-import resolveRoute from './resolveRoute.js';
-import categories from './pages/theatre/games/categories.js';
 import Layout from './Layout.js';
+import MainLayout from './MainLayout.js';
+import categories from './pages/theatre/games/categories.js';
+import resolveRoute from './resolveRoute.js';
 
 /* obfuscation:disable */
 const GamesPopular = lazy(() =>

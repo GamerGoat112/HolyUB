@@ -1,7 +1,4 @@
-let routes;
-
-// eslint-disable-next-line no-unused-vars
-export default routes = [
+module.exports = [
 	{
 		dir: '/',
 		pages: [

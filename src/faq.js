@@ -1,6 +1,6 @@
-import resolveRoute from './resolveRoute.js';
-import { Obfuscated } from './obfuscate.js';
 import { PATREON_URL } from './consts.js';
+import { Obfuscated } from './obfuscate.js';
+import resolveRoute from './resolveRoute.js';
 import { ObfuscatedThemeA, ThemeLink } from './ThemeElements.js';
 
 const faq = [

@@ -1,9 +1,10 @@
+import { Check } from '@mui/icons-material';
 import BareClient from 'bare-client';
 import { useRef } from 'react';
+
+import { BARE_API } from '../../consts.js';
 import { Notification } from '../../Notifications.js';
 import { Obfuscated } from '../../obfuscate.js';
-import { BARE_API } from '../../consts.js';
-import { Check } from '@mui/icons-material';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
 const bare = new BareClient(BARE_API);

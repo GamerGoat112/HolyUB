@@ -1,6 +1,8 @@
-import Builder from 'stomp';
-import { WEBROOT } from './output.mjs';
 import { join } from 'node:path';
+
+import Builder from 'stomp';
+
+import { WEBROOT } from './output.mjs';
 
 const st_output = join(WEBROOT, 'stomp');
 

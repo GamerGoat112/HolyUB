@@ -1,8 +1,10 @@
 import '../styles/PrivateLinks.scss';
-import resolveRoute from '../resolveRoute.js';
-import VoucherAPI from '../VoucherAPI.js';
+
 import { createRef, useEffect, useRef, useState } from 'react';
-import { VOUCHER_URL, DB_API } from '../consts.js';
+
+import { DB_API, VOUCHER_URL } from '../consts.js';
+import { Notification } from '../Notifications.js';
+import resolveRoute from '../resolveRoute.js';
 import {
 	ObfuscatedThemeA,
 	ThemeA,
@@ -11,7 +13,7 @@ import {
 	ThemeInputBar,
 	ThemeLink,
 } from '../ThemeElements.js';
-import { Notification } from '../Notifications.js';
+import VoucherAPI from '../VoucherAPI.js';
 
 export default function PrivateLinks(props) {
 	const voucher = createRef();

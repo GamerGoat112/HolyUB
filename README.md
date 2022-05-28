@@ -34,7 +34,13 @@ This project depends on the following APIs/scripts:
 // ...
 ```
 
-## Recommended extensions
+## Recommended VSC Extensions
+
+- [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Prettier ESLint](https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint)
+
+## Recommended Chromium extensions
 
 Protections against clickjacking and CORS prevents the website running locally from interacting with other scripts such as Rammerhead. These extensions will circumvent these protections for development.
 

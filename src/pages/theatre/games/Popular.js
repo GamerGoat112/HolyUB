@@ -1,14 +1,16 @@
 import '../../../styles/TheatreCategory.scss';
-import categories from './categories.js';
-import resolveRoute from '../../../resolveRoute.js';
-import SearchBar from '../Search.js';
-import { useEffect, useRef, useState } from 'react';
-import { DB_API } from '../../../consts.js';
-import { TheatreAPI, ItemList } from '../../../TheatreCommon.js';
-import { Link } from 'react-router-dom';
+
 import { ArrowForward } from '@mui/icons-material';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import { DB_API } from '../../../consts.js';
 import { Obfuscated } from '../../../obfuscate.js';
+import resolveRoute from '../../../resolveRoute.js';
+import { ItemList, TheatreAPI } from '../../../TheatreCommon.js';
 import { ThemeLink } from '../../../ThemeElements.js';
+import SearchBar from '../Search.js';
+import categories from './categories.js';
 
 const LIMIT = 8;
 const loading_categories = {
