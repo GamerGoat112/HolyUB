@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { THEATRE_CDN } from './consts.js';
 import DatabaseAPI from './DatabaseAPI.js';
 import { Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
@@ -63,7 +64,7 @@ function Item(props) {
 					alt=""
 					loading="lazy"
 					onLoad={() => set_loaded(true)}
-					src={`/thumbnails/${props.id}.webp`}
+					src={new URL(`./thumbnails/${props.id}.webp`, THEATRE_CDN)}
 				></img>
 			</div>
 			<div className="name">
