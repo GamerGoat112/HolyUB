@@ -1,15 +1,11 @@
-import { spawn } from 'node:child_process';
-import { copyFile, mkdir } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+const { fork } = require('child_process');
+const { copyFile, mkdir } = require('fs/promises');
+const { join } = require('path');
 
-import routes from './src/routes.js';
+const routes = require('./src/routes.js');
 
 process.env.NODE_ENV = 'production';
-await import('react-scripts/config/env.js');
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+require('react-scripts/config/env.js');
 
 const build = join(__dirname, 'build');
 const index = join(__dirname, 'build', 'index.html');
@@ -78,28 +74,27 @@ const routers = {
 	},
 };
 
-function spawnAsync(...args) {
-	return new Promise((resolve, reject) => {
-		const process = spawn(...args);
+async function main() {
+	if (!process.argv.includes('--skip-npm')) await new Promise((resolve, reject) => {
+		const process = fork(require.resolve('@craco/craco/bin/craco.js'), ['build'], {
+			stdio: 'inherit',
+			cwd: __dirname,
+		});
+
 		process.on('exit', resolve);
 		process.on('error', reject);
 	});
-}
 
-if (!process.argv.includes('--skip-npm')) {
-	await spawnAsync('npx', ['craco', 'build'], {
-		stdio: 'inherit',
-		cwd: __dirname,
-	});
-}
+	await routers[process.env.REACT_APP_ROUTER]();
 
-await routers[process.env.REACT_APP_ROUTER]();
-
-try {
-	await copyFile(index, join(build, '404.html'));
-	console.log('Copy', index, '/404.html');
-} catch (error) {
-	if (error.code !== 'EEXIST') {
-		throw error;
+	try {
+		await copyFile(index, join(build, '404.html'));
+		console.log('Copy', index, '/404.html');
+	} catch (error) {
+		if (error.code !== 'EEXIST') {
+			throw error;
+		}
 	}
 }
+
+main();

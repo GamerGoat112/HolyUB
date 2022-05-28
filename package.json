@@ -53,7 +53,7 @@
 		"build-stomp": "node ./build-scripts/stomp.mjs",
 		"build-ultraviolet": "node ./build-scripts/ultraviolet.mjs",
 		"start": "craco start",
-		"build": "node ./build.mjs",
+		"build": "node ./build.js",
 		"test": "craco test",
 		"prepare": "husky install"
 	},
