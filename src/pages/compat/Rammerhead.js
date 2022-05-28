@@ -44,7 +44,7 @@ export default function Rammerhead(props) {
 				// according to our NGINX config
 				if (process.env.NODE_ENV === 'PRODUCTION') {
 					Cookies.set('auth_proxy', 1, {
-						domain: RH_API,
+						domain: `.${global.location.host}`,
 						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
 						secure: true,
 						sameSite: 'lax',
