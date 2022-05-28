@@ -1,13 +1,14 @@
+import '../../../styles/TheatreCategory.scss';
+import categories from './categories.js';
+import resolveRoute from '../../../resolveRoute.js';
+import SearchBar from '../Search.js';
 import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../../consts.js';
 import { TheatreAPI, ItemList } from '../../../TheatreCommon.js';
 import { Link } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
-import categories from './categories.js';
 import { Obfuscated } from '../../../obfuscate.js';
-import resolveRoute from '../../../resolveRoute.js';
-import SearchBar from '../Search.js';
-import '../../../styles/TheatreCategory.scss';
+import { ThemeLink } from '../../../ThemeElements.js';
 
 const LIMIT = 8;
 const loading_categories = {
@@ -84,21 +85,13 @@ export default function Popular() {
 					.
 					<br />
 					If this problem still occurs, check{' '}
-					<Link
-						className="theme-link"
-						to={resolveRoute('/', 'faq')}
-						target="_parent"
-					>
+					<ThemeLink to={resolveRoute('/', 'faq')} target="_parent">
 						Support
-					</Link>{' '}
+					</ThemeLink>{' '}
 					or{' '}
-					<Link
-						className="theme-link"
-						to={resolveRoute('/', 'contact')}
-						target="_parent"
-					>
+					<ThemeLink to={resolveRoute('/', 'contact')} target="_parent">
 						Contact Us
-					</Link>
+					</ThemeLink>
 					.
 				</p>
 			</main>

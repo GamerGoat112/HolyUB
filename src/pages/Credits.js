@@ -1,4 +1,5 @@
-import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate.js';
+import { ObfuscatedThemeA } from '../ThemeElements.js';
 import { PATREON_URL } from '../consts.js';
 
 export default function Credits() {
@@ -22,9 +23,7 @@ export default function Credits() {
 			<ul>
 				<li>
 					<Obfuscated>Our</Obfuscated>{' '}
-					<ObfuscatedA className="theme-link" href={PATREON_URL}>
-						Patrons
-					</ObfuscatedA>
+					<ObfuscatedThemeA href={PATREON_URL}>Patrons</ObfuscatedThemeA>
 					<Obfuscated>.</Obfuscated>
 				</li>
 				<li>
@@ -79,32 +78,23 @@ export default function Credits() {
 			<ul>
 				<li>
 					<Obfuscated>Rammerhead:</Obfuscated>{' '}
-					<ObfuscatedA
-						className="theme-link"
-						href="https://github.com/binary-person/rammerhead"
-					>
+					<ObfuscatedThemeA href="https://github.com/binary-person/rammerhead">
 						<Obfuscated>https://github.com/binary-person/rammerhead</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 				<li>
 					<Obfuscated>Ultraviolet:</Obfuscated>{' '}
-					<ObfuscatedA
-						className="theme-link"
-						href="https://github.com/titaniumnetwork-dev/Ultraviolet"
-					>
+					<ObfuscatedThemeA href="https://github.com/titaniumnetwork-dev/Ultraviolet">
 						<Obfuscated>
 							https://github.com/titaniumnetwork-dev/Ultraviolet
 						</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 				<li>
 					<Obfuscated>Stomp:</Obfuscated>{' '}
-					<ObfuscatedA
-						className="theme-link"
-						href="https://github.com/sysce/stomp"
-					>
+					<ObfuscatedThemeA href="https://github.com/sysce/stomp">
 						<Obfuscated>https://github.com/sysce/stomp</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 			</ul>
 		</main>

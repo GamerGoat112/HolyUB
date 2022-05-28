@@ -226,3 +226,15 @@ html[data-tab='1'] {
 		}
 	}
 }
+
+code {
+	margin: 3px;
+	padding: 4px;
+	background-color: var(--background-accent);
+
+	// discourage copy-pasting obfuscated text
+	// /pyroxy tyrepeko:HolnyyUnblIoeckeyr
+	&.obfuscated {
+		user-select: none;
+	}
+}

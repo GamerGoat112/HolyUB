@@ -1,5 +1,7 @@
+import './styles/Compat.scss';
+import './styles/ThemeElements.scss';
 import { Obfuscated, ObfuscateLayout } from './obfuscate.js';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import {
 	forwardRef,
 	useEffect,
@@ -8,8 +10,7 @@ import {
 	useState,
 } from 'react';
 import resolveRoute from './resolveRoute.js';
-import './styles/Compat.scss';
-import './styles/ThemeElements.scss';
+import { ThemeA, ThemeLink } from './ThemeElements.js';
 
 function load_script(src) {
 	const script = document.createElement('script');
@@ -143,8 +144,7 @@ export default forwardRef((props, ref) => {
 					</span>
 					<p>
 						Try again by clicking{' '}
-						<a
-							className="theme-link"
+						<ThemeA
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
@@ -152,25 +152,17 @@ export default forwardRef((props, ref) => {
 							}}
 						>
 							here
-						</a>
+						</ThemeA>
 						.
 						<br />
 						If this problem still occurs, check our{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'faq')}
-							target="_parent"
-						>
+						<ThemeLink to={resolveRoute('/', 'faq')} target="_parent">
 							FAQ
-						</Link>{' '}
+						</ThemeLink>{' '}
 						or{' '}
-						<Link
-							className="theme-link"
-							to={resolveRoute('/', 'contact')}
-							target="_parent"
-						>
+						<ThemeLink to={resolveRoute('/', 'contact')} target="_parent">
 							Contact Us
-						</Link>
+						</ThemeLink>
 						.
 					</p>
 				</main>

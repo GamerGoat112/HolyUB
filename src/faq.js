@@ -1,9 +1,27 @@
-import { Link } from 'react-router-dom';
-import { Obfuscated, ObfuscatedA } from './obfuscate.js';
-import { PATREON_URL } from './consts.js';
 import resolveRoute from './resolveRoute.js';
+import { Obfuscated } from './obfuscate.js';
+import { PATREON_URL } from './consts.js';
+import { ObfuscatedThemeA, ThemeLink } from './ThemeElements.js';
 
 const faq = [
+	{
+		q: <>How do I get more links?.</>,
+		a: (
+			<>
+				<Obfuscated>
+					You can join the TitaniumNetwork Discord server to receive more links.
+					Go to
+				</Obfuscated>{' '}
+				<ObfuscatedThemeA href="https://discord.com/channels/419123358698045453/743648232717942805">
+					<Obfuscated>#proxy-commands</Obfuscated>
+				</ObfuscatedThemeA>{' '}
+				and send:
+				<code className="obfuscated">
+					<Obfuscated>/proxy type:HolyUnblocker</Obfuscated>
+				</code>
+			</>
+		),
+	},
 	{
 		q: (
 			<>
@@ -14,9 +32,9 @@ const faq = [
 			<>
 				Our <Obfuscated>proxy</Obfuscated> servers are paid for by our
 				supporters on{' '}
-				<ObfuscatedA className="theme-link" href={PATREON_URL}>
+				<ObfuscatedThemeA href={PATREON_URL}>
 					<Obfuscated>Patreon</Obfuscated>
-				</ObfuscatedA>
+				</ObfuscatedThemeA>
 				. If you subscribe, you can help us purchase faster servers in the
 				future.
 			</>
@@ -40,9 +58,9 @@ const faq = [
 		a: (
 			<>
 				Yes. This website is open source. See our{' '}
-				<ObfuscatedA className="theme-link" href="https://git.holy.how/holy">
+				<ObfuscatedThemeA href="https://git.holy.how/holy">
 					Git repository
-				</ObfuscatedA>
+				</ObfuscatedThemeA>
 				.
 			</>
 		),
@@ -57,9 +75,9 @@ const faq = [
 		a: (
 			<>
 				The proxies used on this website can be found in{' '}
-				<Link className="theme-link" to={resolveRoute('/', 'credits')}>
+				<ThemeLink to={resolveRoute('/', 'credits')}>
 					credits and open-source licenses
-				</Link>
+				</ThemeLink>
 				.
 			</>
 		),
@@ -74,10 +92,7 @@ const faq = [
 			<>
 				We do not collect any data, your information is only as secure as the
 				sites you are accessing. For privacy concerns, you can review our{' '}
-				<Link className="theme-link" to={resolveRoute('/', 'privacy')}>
-					Privacy Policy
-				</Link>
-				.
+				<ThemeLink to={resolveRoute('/', 'privacy')}>Privacy Policy</ThemeLink>.
 			</>
 		),
 	},

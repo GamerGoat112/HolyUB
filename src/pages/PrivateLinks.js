@@ -1,12 +1,17 @@
-import { createRef, useEffect, useRef, useState } from 'react';
-import { ObfuscatedA } from '../obfuscate.js';
-import { VOUCHER_URL, DB_API } from '../consts.js';
-import VoucherAPI from '../VoucherAPI.js';
-import { ThemeButton, ThemeInput, ThemeInputBar } from '../ThemeElements.js';
-import { Notification } from '../Notifications.js';
 import '../styles/PrivateLinks.scss';
-import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
+import VoucherAPI from '../VoucherAPI.js';
+import { createRef, useEffect, useRef, useState } from 'react';
+import { VOUCHER_URL, DB_API } from '../consts.js';
+import {
+	ObfuscatedThemeA,
+	ThemeA,
+	ThemeButton,
+	ThemeInput,
+	ThemeInputBar,
+	ThemeLink,
+} from '../ThemeElements.js';
+import { Notification } from '../Notifications.js';
 
 export default function PrivateLinks(props) {
 	const voucher = createRef();
@@ -38,15 +43,11 @@ export default function PrivateLinks(props) {
 						<li>Sellix recipt</li>
 					</ul>
 					<p>
-						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-							Contact Us
-						</Link>
-						.
+						<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 					</p>
 					<p>
 						Click{' '}
-						<a
-							className="theme-link"
+						<ThemeA
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
@@ -54,7 +55,7 @@ export default function PrivateLinks(props) {
 							}}
 						>
 							here
-						</a>{' '}
+						</ThemeA>{' '}
 						to go back.
 					</p>
 				</main>
@@ -65,24 +66,20 @@ export default function PrivateLinks(props) {
 					<h2>Voucher successfully redeemed.</h2>
 					<p>
 						You've successfully redeemed your voucher for the link{' '}
-						<ObfuscatedA className="theme-link" href={`https://${status.host}`}>
+						<ObfuscatedThemeA href={`https://${status.host}`}>
 							{status.host}
-						</ObfuscatedA>
+						</ObfuscatedThemeA>
 						.
 					</p>
 					<p>
 						<b>Please note:</b> Link take 15 minutes - 8 hours to be available.
 						You may have to clear your browser cache to access the link. If
 						you're still unable to reach your link, please{' '}
-						<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-							Contact Us
-						</Link>
-						.
+						<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 					</p>
 					<p>
 						Click{' '}
-						<a
-							className="theme-link"
+						<ThemeA
 							href="i:"
 							onClick={event => {
 								event.preventDefault();
@@ -90,7 +87,7 @@ export default function PrivateLinks(props) {
 							}}
 						>
 							here
-						</a>{' '}
+						</ThemeA>{' '}
 						to go back.
 					</p>
 				</main>
@@ -102,10 +99,7 @@ export default function PrivateLinks(props) {
 		<main className="private-links">
 			<p>
 				To use this service, you will need a voucher. Purchase a voucher{' '}
-				<ObfuscatedA className="theme-link" href={VOUCHER_URL}>
-					here
-				</ObfuscatedA>
-				.
+				<ObfuscatedThemeA href={VOUCHER_URL}>here</ObfuscatedThemeA>.
 			</p>
 			<form
 				onSubmit={async event => {

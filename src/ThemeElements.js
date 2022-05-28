@@ -2,6 +2,8 @@ import { ExpandMore } from '@mui/icons-material';
 import { useState, useRef, forwardRef } from 'react';
 import clsx from 'clsx';
 import './styles/ThemeElements.scss';
+import { ObfuscatedA } from './obfuscate';
+import { Link } from 'react-router-dom';
 
 export function ThemeButton(props) {
 	const { children, className, ...attributes } = props;
@@ -24,6 +26,36 @@ export function ThemeInputBar(props) {
 		<div className={clsx('theme-input-bar', className)} {...attributes}>
 			{children}
 		</div>
+	);
+}
+
+export function ObfuscatedThemeA(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<ObfuscatedA className={clsx('theme-link', className)} {...attributes}>
+			{children}
+		</ObfuscatedA>
+	);
+}
+
+export function ThemeA(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<a className={clsx('theme-link', className)} {...attributes}>
+			{children}
+		</a>
+	);
+}
+
+export function ThemeLink(props) {
+	const { children, className, ...attributes } = props;
+
+	return (
+		<Link className={clsx('theme-link', className)} {...attributes}>
+			{children}
+		</Link>
 	);
 }
 

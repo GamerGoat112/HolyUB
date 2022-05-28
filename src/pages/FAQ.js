@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import resolveRoute from '../resolveRoute.js';
 import faq from '../faq.js';
+import resolveRoute from '../resolveRoute.js';
+import { ThemeLink } from '../ThemeElements.js';
 
-export default function FAQ(props) {
+export default function FAQ() {
 	const sections = [];
 
 	for (let i = 0; i < faq.length; i++) {
@@ -21,10 +21,7 @@ export default function FAQ(props) {
 			{sections}
 			<p style={{ marginTop: 30, opacity: 0.75 }}>
 				Not what you're looking for?{' '}
-				<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-					Contact Us
-				</Link>
-				.
+				<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 			</p>
 		</main>
 	);

@@ -1,5 +1,6 @@
-import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate.js';
 import { HU_DISCORD_URL } from '../consts.js';
+import { ObfuscatedThemeA } from '../ThemeElements.js';
 
 export default function Contact(props) {
 	return (
@@ -8,21 +9,21 @@ export default function Contact(props) {
 			<ul>
 				<li>
 					GitHub:{' '}
-					<ObfuscatedA className="theme-link" href="https://git.holy.how/holy">
+					<ObfuscatedThemeA href="https://git.holy.how/holy">
 						<Obfuscated>https://git.holy.how/holy</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 				<li>
 					Email:{' '}
-					<ObfuscatedA className="theme-link" href="mailto:support@holy.how">
+					<ObfuscatedThemeA href="mailto:support@holy.how">
 						<Obfuscated>support@holy.how</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 				<li>
 					<Obfuscated>Discord</Obfuscated>:{' '}
-					<ObfuscatedA className="theme-link" href={HU_DISCORD_URL}>
+					<ObfuscatedThemeA href={HU_DISCORD_URL}>
 						<Obfuscated>{HU_DISCORD_URL}</Obfuscated>
-					</ObfuscatedA>
+					</ObfuscatedThemeA>
 				</li>
 			</ul>
 		</main>

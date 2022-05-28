@@ -1,13 +1,13 @@
-import { Obfuscated, ObfuscatedA } from '../obfuscate.js';
-import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
-import { createRef, useMemo, useRef, useState } from 'react';
-import { NorthWest, Search } from '@mui/icons-material';
+import '../styles/Proxy.scss';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
 import engines from '../engines.js';
 import clsx from 'clsx';
-import '../styles/Proxy.scss';
-import { ThemeInputBar } from '../ThemeElements.js';
+import { Obfuscated } from '../obfuscate.js';
+import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
+import { createRef, useMemo, useRef, useState } from 'react';
+import { NorthWest, Search } from '@mui/icons-material';
+import { ObfuscatedThemeA, ThemeInputBar } from '../ThemeElements.js';
 
 export default function Proxies(props) {
 	const service_frame = useRef();
@@ -207,16 +207,14 @@ export default function Proxies(props) {
 					This is a free service paid for by our Patreons. If you want faster
 					servers, donate to Holy Unblocker on{' '}
 				</Obfuscated>
-				<ObfuscatedA className="theme-link" href={PATREON_URL}>
+				<ObfuscatedThemeA href={PATREON_URL}>
 					<Obfuscated>Patreon</Obfuscated>
-				</ObfuscatedA>
+				</ObfuscatedThemeA>
 				.
 			</p>
 			<p>
 				<Obfuscated>Click </Obfuscated>
-				<ObfuscatedA className="theme-link" href={TN_DISCORD_URL}>
-					here
-				</ObfuscatedA>
+				<ObfuscatedThemeA href={TN_DISCORD_URL}>here</ObfuscatedThemeA>
 				<Obfuscated>
 					{' '}
 					to join the TN Discord for access to new Holy Unblocker links.

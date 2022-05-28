@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import resolveRoute from '../resolveRoute.js';
+import { ThemeLink } from '../ThemeElements.js';
 
 export default function NotFound(props) {
 	return (
@@ -10,10 +10,7 @@ export default function NotFound(props) {
 				If you typed in the URL yourself, please double-check the spelling.
 				<br />
 				If you got here from a link within our site, please{' '}
-				<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-					Contact Us
-				</Link>
-				.
+				<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 			</p>
 		</main>
 	);

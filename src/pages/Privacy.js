@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { Obfuscated } from '../obfuscate.js';
 import resolveRoute from '../resolveRoute.js';
+import { Obfuscated } from '../obfuscate.js';
+import { ThemeLink } from '../ThemeElements.js';
 
 export default function Privacy(props) {
 	return (
@@ -52,10 +52,7 @@ export default function Privacy(props) {
 			<p>
 				For any additional information or clarification regarding the privacy
 				policy, please{' '}
-				<Link className="theme-link" to={resolveRoute('/', 'contact')}>
-					Contact Us
-				</Link>
-				.
+				<ThemeLink to={resolveRoute('/', 'contact')}>Contact Us</ThemeLink>.
 			</p>
 		</main>
 	);
