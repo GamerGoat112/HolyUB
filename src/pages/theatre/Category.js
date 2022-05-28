@@ -9,17 +9,20 @@ import { Obfuscated } from '../../obfuscate.js';
 import SearchBar from './Search.js';
 import '../../styles/TheatreCategory.scss';
 
-const loading_200 = [];
+const loading = {
+	total: 200,
+	entries: [],
+};
 
-for (let i = 0; i < 200; i++) {
-	loading_200.push({
+for (let i = 0; i < loading.total; i++) {
+	loading.entries.push({
 		id: i,
 		loading: true,
 	});
 }
 
 export default function Category(props) {
-	const [data, set_data] = useState(loading_200);
+	const [data, set_data] = useState(loading);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
@@ -30,7 +33,7 @@ export default function Category(props) {
 	);
 
 	useEffect(() => {
-		set_data(loading_200);
+		set_data(loading);
 
 		const abort = new AbortController();
 
@@ -156,7 +159,7 @@ export default function Category(props) {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<ItemList className="items" loading={220} items={data} />
+				<ItemList className="items" loading={220} items={data.entries} />
 			</section>
 		</main>
 	);

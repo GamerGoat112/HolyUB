@@ -10,11 +10,14 @@ import SearchBar from '../Search.js';
 import '../../../styles/TheatreCategory.scss';
 
 const LIMIT = 8;
-const loading_categories = [];
+const loading_categories = {
+	total: NaN,
+	entries: [],
+};
 
 for (let category in categories) {
 	for (let i = 0; i < LIMIT; i++) {
-		loading_categories.push({
+		loading_categories.entries.push({
 			id: i,
 			loading: true,
 			category,
@@ -108,7 +111,7 @@ export default function Popular() {
 		_categories[category] = [];
 	}
 
-	for (let item of data) {
+	for (let item of data.entries) {
 		_categories[item.category].push(item);
 	}
 

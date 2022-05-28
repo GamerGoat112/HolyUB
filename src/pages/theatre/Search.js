@@ -15,7 +15,10 @@ const LIMIT = 8;
 export default function SearchBar(props) {
 	const navigate = useNavigate();
 	const input = useRef();
-	const [category_data, set_category_data] = useState([]);
+	const [category_data, set_category_data] = useState({
+		total: 0,
+		entries: [],
+	});
 	const [last_select, set_last_select] = useState(-1);
 	const [input_focused, set_input_focused] = useState(false);
 	const search_abort = useRef();
@@ -49,12 +52,12 @@ export default function SearchBar(props) {
 		}
 	}
 
-	const render_suggested = input_focused && category_data.length !== 0;
+	const render_suggested = input_focused && category_data.entries.length !== 0;
 	const suggested_list = [];
 
 	if (render_suggested) {
-		for (let i = 0; i < category_data.length; i++) {
-			const game = category_data[i];
+		for (let i = 0; i < category_data.entries.length; i++) {
+			const game = category_data.entries[i];
 			let category_name;
 
 			/*if (game.category in categories) {

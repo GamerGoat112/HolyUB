@@ -12,11 +12,6 @@ import resolveRoute from './resolveRoute.js';
  * @property {string} category
  */
 
-/**
- *
- * @typedef {LimitedEntry[]} TheatreCategory
- */
-
 export class TheatreAPI extends DatabaseAPI {
 	/**
 	 *
@@ -45,8 +40,8 @@ export class TheatreAPI extends DatabaseAPI {
 	}
 	/**
 	 *
-	 * @param {{leastGreatest?:boolean,category?:string[],sort?:string,search?:string,limit?:number,limitPerCategory:?number}} params
-	 * @returns {TheatreCategory}
+	 * @param {{leastGreatest?:boolean,category?:string[],sort?:string,search?:string,offset?:number,limit?:number,limitPerCategory:?number}} params
+	 * @returns {{total:number,entries:LimitedEntry[]}}
 	 */
 	async category(params) {
 		return await this.fetch(
