@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Obfuscated } from '../../obfuscate.js';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
 import { RH_API } from '../../consts.js';
+import Cookies from 'js-cookie';
 
 export default function Rammerhead(props) {
 	useEffect(() => {
@@ -39,6 +40,16 @@ export default function Rammerhead(props) {
 				error_cause = undefined;
 
 				const shuffler = new StrShuffler(dict);
+
+				// according to our NGINX config
+				if (process.env.NODE_ENV === 'PRODUCTION') {
+					Cookies.set('auth_proxy', 1, {
+						domain: RH_API,
+						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
+						secure: true,
+						sameSite: 'lax',
+					});
+				}
 
 				global.location.assign(
 					new URL(
