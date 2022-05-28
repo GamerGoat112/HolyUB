@@ -177,13 +177,7 @@ export default function Category(props) {
 				</div>
 				<ItemList className="items" loading={220} items={data.entries} />
 			</section>
-			<div
-				className={clsx(
-					'pages',
-					max_page === 0 && 'useless',
-					data.loading && 'loading'
-				)}
-			>
+			<div className={clsx('pages', max_page === 0 && 'useless')}>
 				<ChevronLeft
 					className={clsx('button', !page && 'disabled')}
 					onClick={() => {
