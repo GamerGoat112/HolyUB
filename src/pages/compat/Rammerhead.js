@@ -42,7 +42,7 @@ export default function Rammerhead(props) {
 				const shuffler = new StrShuffler(dict);
 
 				// according to our NGINX config
-				if (process.env.NODE_ENV === 'PRODUCTION') {
+				if (process.env.NODE_ENV === 'production') {
 					Cookies.set('auth_proxy', 1, {
 						domain: `.${global.location.host}`,
 						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
