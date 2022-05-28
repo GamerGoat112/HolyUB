@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { DB_API } from '../../consts.js';
 import { TheatreAPI, ItemList } from '../../TheatreCommon.js';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ThemeSelect } from '../../ThemeElements.js';
 import { useSettings } from '../../Settings.js';
 import resolveRoute from '../../resolveRoute.js';
 import { Obfuscated } from '../../obfuscate.js';
 import SearchBar from './Search.js';
 import '../../styles/TheatreCategory.scss';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import clsx from 'clsx';
+
+const LIMIT = 30;
 
 const loading = {
-	total: 200,
+	total: LIMIT,
 	entries: [],
+	loading: true,
 };
 
 for (let i = 0; i < loading.total; i++) {
@@ -23,6 +28,14 @@ for (let i = 0; i < loading.total; i++) {
 
 export default function Category(props) {
 	const [data, set_data] = useState(loading);
+	const [search, set_search] = useSearchParams({
+		page: 0,
+	});
+	const page = parseInt(search.get('page'));
+	const [last_total, set_last_total] = useState(LIMIT);
+	const max_page = Math.floor(
+		data.loading && last_total !== undefined ? last_total : data.total / LIMIT
+	);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
@@ -73,10 +86,13 @@ export default function Category(props) {
 					category: props.category,
 					sort,
 					leastGreatest,
+					offset: page * LIMIT,
+					limit: LIMIT,
 				});
 
 				error_cause.current = undefined;
 				set_data(data);
+				set_last_total(data.total);
 			} catch (error) {
 				if (
 					error.message !== 'The operation was aborted' &&
@@ -89,7 +105,7 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [props.category, props.id, settings.sort]);
+	}, [props.category, props.id, settings.sort, search, page]);
 
 	if (error) {
 		return (
@@ -135,7 +151,7 @@ export default function Category(props) {
 	}
 
 	return (
-		<main className="theatre-category">
+		<main className={clsx('theatre-category')}>
 			<SearchBar category={props.category} placeholder={props.placeholder} />
 			<section>
 				<div className="name">
@@ -161,6 +177,34 @@ export default function Category(props) {
 				</div>
 				<ItemList className="items" loading={220} items={data.entries} />
 			</section>
+			<div
+				className={clsx(
+					'pages',
+					max_page === 0 && 'useless',
+					data.loading && 'loading'
+				)}
+			>
+				<ChevronLeft
+					className={clsx('button', !page && 'disabled')}
+					onClick={() => {
+						if (!data.loading && page) {
+							set_search({
+								page: Math.max(page - 1, 0),
+							});
+						}
+					}}
+				/>
+				<ChevronRight
+					className={clsx('button', page >= max_page && 'disabled')}
+					onClick={() => {
+						if (!data.loading && page < max_page) {
+							set_search({
+								page: page + 1,
+							});
+						}
+					}}
+				/>
+			</div>
 		</main>
 	);
 }

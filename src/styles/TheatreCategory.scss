@@ -6,6 +6,42 @@ main.theatre-category {
 	display: flex;
 	flex-direction: column;
 
+	> .pages {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+
+		&.loading > .button {
+			cursor: default;
+		}
+
+		&.useless {
+			display: none;
+		}
+
+		> .button {
+			display: flex;
+			width: 40px;
+			height: 40px;
+			box-sizing: border-box;
+			padding: 8px;
+			border: 2px solid var(--background-accent-disabled);
+			border-radius: 8px;
+			margin: 2px;
+			background-color: var(--background-accent);
+			cursor: pointer;
+
+			&:hover {
+				background-color: var(--background-accent-deep-2);
+			}
+
+			&.disabled {
+				background-color: var(--background-accent-disabled);
+				cursor: not-allowed;
+			}
+		}
+	}
+
 	> .sort {
 		display: block;
 		margin-left: auto;
