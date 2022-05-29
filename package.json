@@ -77,7 +77,7 @@
 	},
 	"importSort": {
 		".mjs, .js, .jsx, .ts, .tsx": {
-			"style": "module"
+			"style": "react"
 		}
 	},
 	"scripts": {

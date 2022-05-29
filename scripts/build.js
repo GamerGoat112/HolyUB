@@ -71,9 +71,12 @@ checkBrowsers(paths.appPath, isInteractive)
 	})
 	.then(async build => {
 		// copy files
-		
+
 		try {
-			await fs.promises.copyFile(paths.appHtml, path.join(paths.appBuild, '404.html'));
+			await fs.promises.copyFile(
+				paths.appHtml,
+				path.join(paths.appBuild, '404.html')
+			);
 		} catch (error) {
 			if (error.code !== 'EEXIST') {
 				throw error;
@@ -86,7 +89,7 @@ checkBrowsers(paths.appPath, isInteractive)
 					const { dir, pages } = routes[dir_i];
 					const dir_name = dir === '/' ? '' : dir_i;
 					const dir_abs = path.join(paths.appBuild, dir_name);
-		
+
 					try {
 						await fs.promises.mkdir(dir_abs);
 					} catch (error) {
@@ -94,13 +97,13 @@ checkBrowsers(paths.appPath, isInteractive)
 							throw error;
 						}
 					}
-		
+
 					for (let page_i in pages) {
 						// const page = pages[page_i];
 						const page_name =
 							pages[page_i] === '' ? 'index.html' : `${page_i}.html`;
 						const page_abs = path.join(dir_abs, page_name);
-		
+
 						try {
 							fs.promises.copyFile(paths.appHtml, page_abs);
 						} catch (error) {
@@ -116,7 +119,7 @@ checkBrowsers(paths.appPath, isInteractive)
 				for (let { dir, pages } of routes) {
 					const dir_name = dir;
 					const dir_abs = path.join(paths.appBuild, dir_name);
-		
+
 					try {
 						await fs.promises.mkdir(dir_abs);
 					} catch (error) {
@@ -124,11 +127,11 @@ checkBrowsers(paths.appPath, isInteractive)
 							throw error;
 						}
 					}
-		
+
 					for (let page of pages) {
 						const page_name = page === '' ? 'index.html' : `${page}.html`;
 						const page_abs = path.join(dir_abs, page_name);
-		
+
 						try {
 							await fs.promises.copyFile(paths.appHtml, page_abs);
 						} catch (error) {
