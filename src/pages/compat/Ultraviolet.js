@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Script, ScriptsOrder } from '../../CompatLayout.js';
 import { BARE_API } from '../../consts.js';
@@ -69,11 +69,10 @@ export default function Ultraviolet(props) {
 					)
 				);
 			} catch (error) {
-				console.error(error, x);
 				props.compat_layout.current.report(error, error_cause, 'Ultraviolet');
 			}
 		})();
-	}, []);
+	}, [props.compat_layout]);
 
 	return (
 		<main className="compat">
