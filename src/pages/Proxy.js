@@ -206,7 +206,8 @@ function SearchBar(props) {
 					{suggested_list}
 				</div>
 			</form>
-		</>);
+		</>
+	);
 }
 
 export default function Proxies(props) {

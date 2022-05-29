@@ -10,7 +10,7 @@ import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 const bare = new BareClient(BARE_API);
 
 /**
- * 
+ *
  * @param {string} url
  * @returns {{title:string,icon:string,url:string}}
  */
@@ -110,9 +110,7 @@ export default function TabCloak(props) {
 						<Notification description="Fetching..." type="info" />
 					);
 
-					({ title, icon, url } = await extract_data(
-						resolved
-					));
+					({ title, icon, url } = await extract_data(resolved));
 
 					break;
 			}

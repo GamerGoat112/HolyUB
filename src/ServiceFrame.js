@@ -120,11 +120,11 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 				const outgoing = await bare.fetch(
 					'https://www.bing.com/AS/Suggestions?' +
-					new URLSearchParams({
-						qry: query,
-						cvid: '\u0001',
-						bareServer: true,
-					}),
+						new URLSearchParams({
+							qry: query,
+							cvid: '\u0001',
+							bareServer: true,
+						}),
 					{
 						signal: abort.current.signal,
 					}

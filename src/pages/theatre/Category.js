@@ -2,7 +2,7 @@ import '../../styles/TheatreCategory.scss';
 
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { DB_API } from '../../consts.js';
@@ -15,29 +15,30 @@ import SearchBar from './Search.js';
 
 const LIMIT = 30;
 
-const loading = {
-	total: LIMIT,
-	entries: [],
-	loading: true,
-};
-
-for (let i = 0; i < loading.total; i++) {
-	loading.entries.push({
-		id: i,
-		loading: true,
-	});
-}
-
 export default function Category(props) {
-	const [data, set_data] = useState(loading);
 	const [search, set_search] = useSearchParams({
 		page: 0,
 	});
 	const page = parseInt(search.get('page'));
-	const [last_total, set_last_total] = useState(LIMIT);
-	const max_page = Math.floor(
-		data.loading && last_total !== undefined ? last_total : data.total / LIMIT
-	);
+	const [last_total, set_last_total] = useState(LIMIT * 2);
+	const loading = useMemo(() => {
+		const loading = {
+			total: last_total,
+			entries: [],
+			loading: true,
+		};
+
+		for (let i = 0; i < LIMIT; i++) {
+			loading.entries.push({
+				id: i,
+				loading: true,
+			});
+		}
+
+		return loading;
+	}, [last_total]);
+	const [data, set_data] = useState(loading);
+	const max_page = Math.floor(data.total / LIMIT);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
 	const [settings, set_settings] = useSettings(
@@ -48,6 +49,7 @@ export default function Category(props) {
 	);
 
 	useEffect(() => {
+		console.log('set data to loading');
 		set_data(loading);
 
 		const abort = new AbortController();
@@ -107,7 +109,11 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [props.category, props.id, settings.sort, search, page]);
+	}, [props.category, props.id, settings.sort, search, page, loading]);
+
+	useEffect(() => {
+		console.log(loading.entries.length, loading.total, max_page);
+	}, [loading, max_page]);
 
 	if (error) {
 		return (
@@ -169,6 +175,10 @@ export default function Category(props) {
 								...settings,
 								sort: event.target.value,
 							});
+							set_search({
+								...Object.fromEntries(search),
+								page: 0,
+							});
 						}}
 					>
 						<option value="Most Played">Most Played</option>
@@ -177,7 +187,7 @@ export default function Category(props) {
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<ItemList className="items" loading={220} items={data.entries} />
+				<ItemList className="items" items={data.entries} />
 			</section>
 			<div className={clsx('pages', max_page === 0 && 'useless')}>
 				<ChevronLeft
@@ -185,6 +195,7 @@ export default function Category(props) {
 					onClick={() => {
 						if (!data.loading && page) {
 							set_search({
+								...Object.fromEntries(search),
 								page: Math.max(page - 1, 0),
 							});
 						}
@@ -195,6 +206,7 @@ export default function Category(props) {
 					onClick={() => {
 						if (!data.loading && page < max_page) {
 							set_search({
+								...Object.fromEntries(search),
 								page: page + 1,
 							});
 						}
