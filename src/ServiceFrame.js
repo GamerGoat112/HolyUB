@@ -45,7 +45,6 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 		async function test_proxy_update() {
 			if (!iframe.current) {
-				clearInterval(interval);
 				return;
 			}
 
