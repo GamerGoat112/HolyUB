@@ -40,12 +40,13 @@ export default forwardRef(function ServiceFrame(props, ref) {
 		};
 	}, [iframe]);
 
-	useEffect(function run_proxy_interval() {
+	useEffect(() => {
 		let interval;
 
 		async function test_proxy_update() {
 			if (!iframe.current) {
 				clearInterval(interval);
+				return;
 			}
 
 			const { contentWindow } = iframe.current;
