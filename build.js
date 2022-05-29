@@ -75,20 +75,23 @@ const routers = {
 };
 
 async function main() {
-	if (!process.argv.includes('--skip-npm')) await new Promise((resolve, reject) => {
-		const process = fork(join(__dirname, 'scripts', 'build.js'), ['build'], {
-			stdio: 'inherit',
-			cwd: __dirname,
-		});
+	if (!process.argv.includes('--skip-npm'))
+		await new Promise((resolve, reject) => {
+			const process = fork(join(__dirname, 'scripts', 'build.js'), ['build'], {
+				stdio: 'inherit',
+				cwd: __dirname,
+			});
 
-		process.on('exit', (code, signal) => {
-			if (code !== 0) {
-				reject();
-			}
-		});
+			process.on('exit', code => {
+				if (code !== 0) {
+					reject();
+				} else {
+					resolve();
+				}
+			});
 
-		process.on('error', reject);
-	});
+			process.on('error', reject);
+		});
 
 	await routers[process.env.REACT_APP_ROUTER]();
 
