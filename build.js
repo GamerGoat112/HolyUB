@@ -5,7 +5,7 @@ const { join } = require('path');
 const routes = require('./src/routes.js');
 
 process.env.NODE_ENV = 'production';
-require('react-scripts/config/env.js');
+require('./config/env.js');
 
 const build = join(__dirname, 'build');
 const index = join(__dirname, 'build', 'index.html');
@@ -76,7 +76,7 @@ const routers = {
 
 async function main() {
 	if (!process.argv.includes('--skip-npm')) await new Promise((resolve, reject) => {
-		const process = fork(require.resolve('@craco/craco/bin/craco.js'), ['build'], {
+		const process = fork(join(__dirname, 'scripts', 'build.js'), ['build'], {
 			stdio: 'inherit',
 			cwd: __dirname,
 		});
