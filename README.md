@@ -36,9 +36,8 @@ This project depends on the following APIs/scripts:
 
 ## Recommended VSC Extensions
 
-- [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports)
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Prettier ESLint](https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 ## Recommended Chromium extensions
 
