@@ -81,7 +81,12 @@ async function main() {
 			cwd: __dirname,
 		});
 
-		process.on('exit', resolve);
+		process.on('exit', (code, signal) => {
+			if (code !== 0) {
+				reject();
+			}
+		});
+
 		process.on('error', reject);
 	});
 
