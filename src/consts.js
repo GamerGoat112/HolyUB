@@ -1,10 +1,13 @@
 import process from 'process';
 
-const { host } = global.location;
+const { host, hostname, protocol } = global.location;
 
 function format(env) {
 	// eslint-disable-next-line no-template-curly-in-string
-	return env.replace('%{host}', host);
+	return env
+		.replace('%{location.host}', host)
+		.replace('%{location.hostname}', hostname)
+		.replace('%{location.protocol}', protocol);
 }
 
 export const BARE_API = /*#__PURE__*/ format(process.env.REACT_APP_BARE_API);
