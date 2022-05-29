@@ -8,10 +8,7 @@
 		"@mui/icons-material": "^5.8.0",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
 		"@svgr/webpack": "^6.2.1",
-		"@testing-library/jest-dom": "^5.16.4",
 		"adm-zip": "^0.5.9",
-		"arraybuffer-loader": "^1.0.8",
-		"babel-jest": "^28.1.0",
 		"babel-loader": "^8.2.5",
 		"babel-plugin-named-asset-import": "^0.3.8",
 		"babel-preset-react-app": "^10.0.1",
@@ -32,11 +29,7 @@
 		"file-loader": "^6.2.0",
 		"fs-extra": "^10.1.0",
 		"html-webpack-plugin": "^5.5.0",
-		"http-server": "^14.1.0",
 		"identity-obj-proxy": "^3.0.0",
-		"jest": "^28.1.0",
-		"jest-resolve": "^28.1.0",
-		"jest-watch-typeahead": "^1.1.0",
 		"js-cookie": "^3.0.1",
 		"mini-css-extract-plugin": "^2.6.0",
 		"node-fetch": "^3.2.4",
@@ -60,7 +53,6 @@
 		"sass-loader": "^13.0.0",
 		"semver": "^7.3.7",
 		"source-map-loader": "^3.0.1",
-		"string-replace-loader": "^3.1.0",
 		"style-loader": "^3.3.1",
 		"tailwindcss": "^3.0.24",
 		"terser-webpack-plugin": "^5.3.1",
@@ -98,8 +90,7 @@
 	},
 	"eslintConfig": {
 		"extends": [
-			"react-app",
-			"react-app/jest"
+			"react-app"
 		]
 	},
 	"browserslist": {
@@ -113,55 +104,6 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
-	},
-	"jest": {
-		"roots": [
-			"<rootDir>/src"
-		],
-		"collectCoverageFrom": [
-			"src/**/*.{js,jsx,ts,tsx}",
-			"!src/**/*.d.ts"
-		],
-		"setupFiles": [
-			"react-app-polyfill/jsdom"
-		],
-		"setupFilesAfterEnv": [],
-		"testMatch": [
-			"<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-			"<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-		],
-		"testEnvironment": "jsdom",
-		"transform": {
-			"^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-			"^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-			"^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-		},
-		"transformIgnorePatterns": [
-			"[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-			"^.+\\.module\\.(css|sass|scss)$"
-		],
-		"modulePaths": [],
-		"moduleNameMapper": {
-			"^react-native$": "react-native-web",
-			"^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-		},
-		"moduleFileExtensions": [
-			"web.js",
-			"js",
-			"web.ts",
-			"ts",
-			"web.tsx",
-			"tsx",
-			"json",
-			"web.jsx",
-			"jsx",
-			"node"
-		],
-		"watchPlugins": [
-			"jest-watch-typeahead/filename",
-			"jest-watch-typeahead/testname"
-		],
-		"resetMocks": true
 	},
 	"babel": {
 		"presets": [

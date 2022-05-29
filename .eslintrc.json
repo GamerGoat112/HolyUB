@@ -3,7 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["eslint:recommended", "react-app", "react-app/jest", "prettier"],
+	"extends": ["eslint:recommended", "react-app", "prettier"],
 	"parserOptions": {
 		"ecmaVersion": "latest",
 		"sourceType": "module"
