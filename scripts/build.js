@@ -71,10 +71,11 @@ checkBrowsers(paths.appPath, isInteractive)
 	})
 	.then(async build => {
 		// copy files
+		const appBuildHTML = path.join(paths.appBuild, 'index.html');
 
 		try {
 			await fs.promises.copyFile(
-				paths.appHtml,
+				appBuildHTML,
 				path.join(paths.appBuild, '404.html')
 			);
 		} catch (error) {
@@ -105,7 +106,7 @@ checkBrowsers(paths.appPath, isInteractive)
 						const page_abs = path.join(dir_abs, page_name);
 
 						try {
-							fs.promises.copyFile(paths.appHtml, page_abs);
+							fs.promises.copyFile(appBuildHTML, page_abs);
 						} catch (error) {
 							if (error.code !== 'EEXIST') {
 								throw error;
@@ -133,7 +134,7 @@ checkBrowsers(paths.appPath, isInteractive)
 						const page_abs = path.join(dir_abs, page_name);
 
 						try {
-							await fs.promises.copyFile(paths.appHtml, page_abs);
+							await fs.promises.copyFile(appBuildHTML, page_abs);
 						} catch (error) {
 							if (error.code !== 'EEXIST') {
 								throw error;

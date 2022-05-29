@@ -30,7 +30,19 @@ const createEnvironmentHash = require('./webpack/persistentCache/createEnvironme
 
 const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
 
-const EXPOSE_ENV = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
+const EXPOSE_ENV = [
+	'NODE_ENV',
+	'REACT_APP_HAT_BADGE',
+	'REACT_APP_DEFAULT_PROXY',
+	'REACT_APP_PATREON_URL',
+	'REACT_APP_VOUCHER_URL',
+	'REACT_APP_TN_DISCORD_URL',
+	'REACT_APP_HU_DISCORD_URL',
+	'REACT_APP_BARE_API',
+	'REACT_APP_RH_API',
+	'REACT_APP_DB_API',
+	'REACT_APP_THEATRE_CDN',
+];
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';

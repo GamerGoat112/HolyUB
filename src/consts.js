@@ -1,40 +1,31 @@
 import process from 'process';
 
-// bareserver
-let _BARE_API;
-// rammerhead
-let _RH_API;
-// db-server
-let _DB_API;
-// theatre
-let _THEATRE_CDN;
+const { host } = global.location;
 
-if (process.env.NODE_ENV === 'development') {
-	_BARE_API = 'http://localhost:8001/';
-	_RH_API = 'http://localhost:8002/';
-	_DB_API = 'http://localhost:3001/';
-	_THEATRE_CDN = 'http://localhost:3002/';
-} else {
-	const { host } = global.location;
-	_BARE_API = `https://uv.${host}/`;
-	_RH_API = `https://rh.${host}/`;
-	_DB_API = `https://${host}/db/`;
-	_THEATRE_CDN = `https://${host}/theatre/`;
+function format(env) {
+	// eslint-disable-next-line no-template-curly-in-string
+	return env.replace('%{host}', host);
 }
 
-/*Test Key Set: Publisher Account
+export const BARE_API = /*#__PURE__*/ format(process.env.REACT_APP_BARE_API);
+export const RH_API = /*#__PURE__*/ format(process.env.REACT_APP_RH_API);
+export const DB_API = /*#__PURE__*/ format(process.env.REACT_APP_DB_API);
+export const THEATRE_CDN = /*#__PURE__*/ format(
+	process.env.REACT_APP_THEATRE_CDN
+);
 
-Test parameter Value
-
-Site Key 10000000-ffff-ffff-ffff-000000000001 Secret Key 0x0000000000000000000000000000000000000000*/
-
-export const BARE_API = _BARE_API;
-export const RH_API = _RH_API;
-export const DB_API = _DB_API;
-export const THEATRE_CDN = _THEATRE_CDN;
-
-export const DEFAULT_PROXY = 'ultraviolet';
-export const PATREON_URL = 'https://www.patreon.com/holyunblocker';
-export const VOUCHER_URL = 'https://holyunblocker.sellix.io/';
-export const TN_DISCORD_URL = 'https://discord.gg/unblock';
-export const HU_DISCORD_URL = 'https://discord.gg/QKMwvd6tx6';
+export const DEFAULT_PROXY = /*#__PURE__*/ format(
+	process.env.REACT_APP_DEFAULT_PROXY
+);
+export const PATREON_URL = /*#__PURE__*/ format(
+	process.env.REACT_APP_PATREON_URL
+);
+export const VOUCHER_URL = /*#__PURE__*/ format(
+	process.env.REACT_APP_VOUCHER_URL
+);
+export const TN_DISCORD_URL = /*#__PURE__*/ format(
+	process.env.REACT_APP_TN_DISCORD_URL
+);
+export const HU_DISCORD_URL = /*#__PURE__*/ format(
+	process.env.REACT_APP_HU_DISCORD_URL
+);
