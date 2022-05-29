@@ -11,16 +11,32 @@ import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
 import { ObfuscatedThemeA, ThemeInputBar } from '../ThemeElements.js';
 
-export default function Proxies(props) {
+function SearchBar(props) {
 	const service_frame = useRef();
 	const input = useRef();
-	const form = useRef();
-	const suggested = useRef();
 	const input_value = useRef();
 	const last_input = useRef();
 	const [last_select, set_last_select] = useState(-1);
 	const [omnibox_entries, set_omnibox_entries] = useState([]);
 	const [input_focused, set_input_focused] = useState(false);
+
+	const format = useMemo(
+		() => props.layout.current.settings.search,
+		[props.layout]
+	);
+
+	let engine;
+
+	for (let _engine of engines) {
+		if (_engine.format === format) {
+			engine = _engine;
+			break;
+		}
+	}
+
+	if (engine === undefined) {
+		engine = engines[0];
+	}
 
 	async function on_input() {
 		if (input_value.current !== input.current.value) {
@@ -82,25 +98,11 @@ export default function Proxies(props) {
 		}
 	}
 
-	let engine;
-	const format = useMemo(
-		() => props.layout.current.settings.search,
-		[props.layout]
-	);
-
-	for (let _engine of engines) {
-		if (_engine.format === format) {
-			engine = _engine;
-			break;
-		}
-	}
-
-	if (engine === undefined) {
-		engine = engines[0];
-	}
+	const form = useRef();
+	const suggested = useRef();
 
 	return (
-		<main className="proxy">
+		<>
 			<ServiceFrame layout={props.layout} ref={service_frame} />
 			<form
 				className="omnibox"
@@ -204,6 +206,13 @@ export default function Proxies(props) {
 					{suggested_list}
 				</div>
 			</form>
+		</>);
+}
+
+export default function Proxies(props) {
+	return (
+		<main className="proxy">
+			<SearchBar layout={props.layout} />
 			<p>
 				<Obfuscated>
 					This is a free service paid for by our Patreons. If you want faster

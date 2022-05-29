@@ -42,7 +42,7 @@ function create_promise_external() {
 	return [promise, promise_external];
 }
 
-export const ScriptsOrder = forwardRef((props, ref) => {
+export const ScriptsOrder = forwardRef(function ScriptsOrder(props, ref) {
 	let [promise, promise_external] = useMemo(create_promise_external, []);
 
 	useImperativeHandle(ref, () => ({
@@ -84,7 +84,7 @@ export const ScriptsOrder = forwardRef((props, ref) => {
 	return <></>;
 });
 
-export const Script = forwardRef((props, ref) => {
+export const Script = forwardRef(function Script(props, ref) {
 	let [promise, promise_external] = useMemo(create_promise_external, []);
 
 	useImperativeHandle(ref, () => ({
@@ -104,7 +104,7 @@ export const Script = forwardRef((props, ref) => {
 	return <></>;
 });
 
-export default forwardRef((props, ref) => {
+export default forwardRef(function CompatLayout(props, ref) {
 	const location = useLocation();
 
 	const [error, set_error] = useState();

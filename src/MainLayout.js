@@ -89,7 +89,7 @@ export function MenuTab(props) {
 	}
 }
 
-export default forwardRef((props, ref) => {
+export default forwardRef(function Layout(props, ref) {
 	const nav = useRef();
 	const [expanded, set_expanded] = useState(false);
 

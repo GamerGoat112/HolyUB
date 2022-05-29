@@ -61,7 +61,7 @@ export function ThemeLink(props) {
 	);
 }
 
-export const ThemeInput = forwardRef((props, ref) => {
+export const ThemeInput = forwardRef(function ThemeInput(props, ref) {
 	const { children, className, ...attributes } = props;
 
 	return (
@@ -73,7 +73,7 @@ export const ThemeInput = forwardRef((props, ref) => {
 
 // <select ref={dummy_ref} forwardRef={ref}>
 
-export const ThemeSelect = forwardRef((props, ref) => {
+export const ThemeSelect = forwardRef(function ThemeSelect(props, ref) {
 	// ref target
 	const input = useRef();
 	const container = useRef();

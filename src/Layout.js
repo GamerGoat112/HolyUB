@@ -77,7 +77,7 @@ function TabMode() {
 	return <></>;
 }
 
-export default forwardRef((props, ref) => {
+export default forwardRef(function Layout(props, ref) {
 	const notifications = useRef();
 
 	const theme = useMemo(() => {

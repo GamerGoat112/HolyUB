@@ -65,7 +65,7 @@ export function Notification(props) {
 	);
 }
 
-export default forwardRef((_props, ref) => {
+export default forwardRef(function NotificationsManager(_props, ref) {
 	/**
 	 * @type {Notification[]}
 	 */

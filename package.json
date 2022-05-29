@@ -8,7 +8,7 @@
 		"@hcaptcha/react-hcaptcha": "^1.1.1",
 		"@mui/icons-material": "^5.6.2",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
-		"@svgr/webpack": "^5.5.0",
+		"@svgr/webpack": "^6.2.1",
 		"@testing-library/jest-dom": "^5.16.2",
 		"adm-zip": "^0.5.9",
 		"arraybuffer-loader": "^1.0.8",
@@ -50,6 +50,7 @@
 		"process": "^0.11.10",
 		"prompts": "^2.4.2",
 		"random-seed": "^0.3.0",
+		"react": "^18.1.0",
 		"react-app-polyfill": "^3.0.0",
 		"react-dev-utils": "^12.0.1",
 		"react-refresh": "^0.11.0",
@@ -60,7 +61,6 @@
 		"sass-loader": "^12.3.0",
 		"semver": "^7.3.5",
 		"source-map-loader": "^3.0.0",
-		"stomp": "github:sysce/stomp",
 		"string-replace-loader": "^3.1.0",
 		"style-loader": "^3.3.1",
 		"tailwindcss": "^3.0.2",
@@ -78,6 +78,7 @@
 		"lint-staged": "^12.3.7",
 		"prettier": "^2.6.2",
 		"prettier-plugin-import-sort": "^0.0.7",
+		"stomp": "github:sysce/stomp",
 		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet"
 	},
 	"lint-staged": {

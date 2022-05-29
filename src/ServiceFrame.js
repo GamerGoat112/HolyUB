@@ -16,7 +16,7 @@ import { Obfuscated } from './obfuscate.js';
 import resolve_proxy from './ProxyResolver.js';
 import SearchBuilder from './SearchBuilder.js';
 
-export default forwardRef((props, ref) => {
+export default forwardRef(function ServiceFrame(props, ref) {
 	const iframe = useRef();
 	const proxy = useRef();
 	const [title, set_title] = useState('');
@@ -40,8 +40,14 @@ export default forwardRef((props, ref) => {
 		};
 	}, [iframe]);
 
-	useEffect(() => {
+	useEffect(function run_proxy_interval() {
+		let interval;
+
 		async function test_proxy_update() {
+			if (!iframe.current) {
+				clearInterval(interval);
+			}
+
 			const { contentWindow } = iframe.current;
 
 			let location;
@@ -95,8 +101,7 @@ export default forwardRef((props, ref) => {
 			set_title(title);
 		}
 
-		const interval = setInterval(() => test_proxy_update(), 100);
-
+		interval = setInterval(test_proxy_update, 100);
 		test_proxy_update();
 		return () => clearInterval(interval);
 	}, [proxy, bare, src, iframe, links_tried]);
@@ -114,11 +119,11 @@ export default forwardRef((props, ref) => {
 
 				const outgoing = await bare.fetch(
 					'https://www.bing.com/AS/Suggestions?' +
-						new URLSearchParams({
-							qry: query,
-							cvid: '\u0001',
-							bareServer: true,
-						}),
+					new URLSearchParams({
+						qry: query,
+						cvid: '\u0001',
+						bareServer: true,
+					}),
 					{
 						signal: abort.current.signal,
 					}
