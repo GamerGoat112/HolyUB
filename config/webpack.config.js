@@ -28,9 +28,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
-const {
-	loader: basic_webpack_obfuscator_loader,
-} = require('basic-webpack-obfuscator');
+const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
 
 const EXPOSE_ENV = ['NODE_ENV', 'REACT_APP_ROUTER', 'REACT_APP_HAT_BADGE'];
 
@@ -345,31 +343,6 @@ module.exports = function (webpackEnv) {
 		module: {
 			strictExportPresence: true,
 			rules: [
-				{
-					test: /\.js$/,
-					loader: 'string-replace-loader',
-					options: {
-						search: /process\.env\.(\w+)/g,
-						replace: (match, env) => {
-							if (EXPOSE_ENV.includes(env)) {
-								return JSON.stringify(process.env[env]);
-							} else {
-								return match;
-							}
-						},
-					},
-				},
-				{
-					test: /\.js$/,
-					enforce: 'post',
-					exclude: /node_modules/,
-					use: {
-						loader: basic_webpack_obfuscator_loader,
-						options: {
-							salt: process.env.OBFUSCATE_SALT,
-						},
-					},
-				},
 				// Handle node_modules packages that contain sourcemaps
 				shouldUseSourceMap && {
 					enforce: 'pre',
@@ -640,7 +613,8 @@ module.exports = function (webpackEnv) {
 			// It is absolutely essential that NODE_ENV is set to production
 			// during a production build.
 			// Otherwise React will be compiled in the very slow development mode.
-			new webpack.DefinePlugin(env.stringified),
+			// new webpack.DefinePlugin(env.stringified),
+			new webpack.EnvironmentPlugin(EXPOSE_ENV),
 			// Experimental hot reloading for React .
 			// https://github.com/facebook/react/tree/main/packages/react-refresh
 			isEnvDevelopment &&
@@ -777,6 +751,12 @@ module.exports = function (webpackEnv) {
 						}),
 					},
 				},
+			}),
+			isEnvProduction &&
+			new BasicWebpackObfuscator({
+				sourceMap: true,
+				salt: process.env.OBFUSCATE_SALT,
+				compact: true,
 			}),
 		].filter(Boolean),
 		// Turn off performance processing because we utilize

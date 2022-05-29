@@ -9,7 +9,6 @@ import MainLayout from './MainLayout.js';
 import categories from './pages/theatre/games/categories.js';
 import resolveRoute from './resolveRoute.js';
 
-/* obfuscation:disable */
 const GamesPopular = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular.js')
 );
@@ -69,7 +68,6 @@ const Stomp = lazy(() =>
 const Flash = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/compat/Flash.js')
 );
-/* obfuscation:enable */
 
 function PlayerProxy(props) {
 	const [searchParams] = useSearchParams();
