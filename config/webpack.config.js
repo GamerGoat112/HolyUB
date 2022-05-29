@@ -771,6 +771,40 @@ module.exports = function (webpackEnv) {
 					salt: process.env.OBFUSCATE_SALT,
 					compact: true,
 				}),
+			{
+				/**
+				 *
+				 * @param {import('webpack').Compiler} compiler
+				 */
+				apply: compiler => {
+					compiler.hooks.compilation.tap('DefineUV', compilation => {
+						compilation.hooks.processAssets.tap(
+							{
+								name: 'WebpackObfuscator',
+								stage: webpack.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+							},
+							assets => {
+								let content = fs.readFileSync(paths.uvConfig).toString();
+
+								content = content.replace(
+									/process\.env\.(\w+)/g,
+									(match, env) => {
+										if (EXPOSE_ENV.includes(env) && env in process.env) {
+											return JSON.stringify(process.env[env]);
+										} else {
+											return 'undefined';
+										}
+									}
+								);
+
+								assets['uv/uv.config.js'] = new webpack.sources.RawSource(
+									content
+								);
+							}
+						);
+					});
+				},
+			},
 		].filter(Boolean),
 		// Turn off performance processing because we utilize
 		// our own hints via the FileSizeReporter

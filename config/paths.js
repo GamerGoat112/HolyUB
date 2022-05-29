@@ -56,6 +56,7 @@ module.exports = {
 	appPath: resolveApp('.'),
 	appBuild: resolveApp(buildPath),
 	appPublic: resolveApp('public'),
+	uvConfig: resolveApp('public/uv/uv.config.js'),
 	appHtml: resolveApp('public/index.html'),
 	appIndexJs: resolveModule(resolveApp, 'src/index'),
 	appPackageJson: resolveApp('package.json'),

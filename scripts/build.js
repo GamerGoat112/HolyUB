@@ -66,6 +66,7 @@ checkBrowsers(paths.appPath, isInteractive)
 		fs.emptyDirSync(paths.appBuild);
 		// Merge with the public folder
 		copyPublicFolder();
+
 		// Start the webpack build
 		return build(previousFileSizes);
 	})
@@ -292,6 +293,6 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
 	fs.copySync(paths.appPublic, paths.appBuild, {
 		dereference: true,
-		filter: file => file !== paths.appHtml,
+		filter: file => file !== paths.appHtml && file !== paths.uvConfig,
 	});
 }
