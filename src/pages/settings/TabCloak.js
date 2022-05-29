@@ -9,6 +9,11 @@ import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
 
 const bare = new BareClient(BARE_API);
 
+/**
+ * 
+ * @param {string} url
+ * @returns {{title:string,icon:string,url:string}}
+ */
 async function extract_data(url) {
 	const response = await bare.fetch(url, {
 		redirect: 'follow',
@@ -75,24 +80,6 @@ function resolve_url(input) {
 	}
 }
 
-/**
- *
- * @param {string} url
- * @returns {{title:string,icon:string,url:string}}
- */
-async function cloak_url(url) {
-	switch (url) {
-		case 'about:blank':
-			return {
-				title: 'about:blank',
-				icon: 'none',
-				url: 'about:blank',
-			};
-		default:
-			return await extract_data(url);
-	}
-}
-
 async function blobToDataURL(blob) {
 	const reader = new FileReader();
 
@@ -108,13 +95,27 @@ export default function TabCloak(props) {
 
 	async function onSubmit() {
 		try {
-			props.layout.current.notifications.current.add(
-				<Notification description="Fetching..." type="info" />
-			);
+			const resolved = resolve_url(input.current.value);
 
-			const { title, icon, url } = await cloak_url(
-				resolve_url(input.current.value)
-			);
+			let title, icon, url;
+
+			switch (resolved) {
+				case 'about:blank':
+					title = 'about:blank';
+					icon = 'none';
+					url = 'about:blank';
+					break;
+				default:
+					props.layout.current.notifications.current.add(
+						<Notification description="Fetching..." type="info" />
+					);
+
+					({ title, icon, url } = await extract_data(
+						resolved
+					));
+
+					break;
+			}
 
 			input.current.value = url;
 

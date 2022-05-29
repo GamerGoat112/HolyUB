@@ -1,7 +1,6 @@
 import '../../styles/TheatreSearch.scss';
 
 import { Search } from '@mui/icons-material';
-// import categories from './games/categories.js';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -59,16 +58,8 @@ export default function SearchBar(props) {
 
 	if (render_suggested) {
 		for (let i = 0; i < category_data.entries.length; i++) {
-			const game = category_data.entries[i];
+			const entry = category_data.entries[i];
 			let category_name;
-
-			/*if (game.category in categories) {
-				const category = categories[game.category];
-				category_name = category.short || category.name;
-			} else {
-				console.warn(`Unknown category ${game.category}`);
-				category_name = '';
-			}*/
 
 			const classes = ['option'];
 
@@ -79,14 +70,14 @@ export default function SearchBar(props) {
 			suggested_list.push(
 				<Link
 					tabIndex={0}
-					key={game.id}
+					key={entry.id}
 					onClick={() => set_input_focused(false)}
 					onMouseOver={() => set_last_select(i)}
-					to={`${resolveRoute('/theatre/', 'player')}?id=${game.id}`}
+					to={`${resolveRoute('/theatre/', 'player')}?id=${entry.id}`}
 					className={clsx('option', i === last_select && 'hover')}
 				>
 					<div className="name">
-						<Obfuscated ellipsis>{game.name}</Obfuscated>
+						<Obfuscated ellipsis>{entry.name}</Obfuscated>
 					</div>
 					<div className="category">{category_name}</div>
 				</Link>
@@ -160,12 +151,12 @@ export default function SearchBar(props) {
 								break;
 							case 'Enter':
 								{
-									const game = category_data[last_select];
+									const entry = category_data.entries[last_select];
 
 									input.current.blur();
 									set_input_focused(false);
 									navigate(
-										`${resolveRoute('/theatre/', 'player')}?id=${game.id}`
+										`${resolveRoute('/theatre/', 'player')}?id=${entry.id}`
 									);
 								}
 								break;
