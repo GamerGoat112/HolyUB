@@ -32,6 +32,7 @@ const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
 
 const EXPOSE_ENV = [
 	'NODE_ENV',
+	'REACT_APP_ROUTER',
 	'REACT_APP_HAT_BADGE',
 	'REACT_APP_DEFAULT_PROXY',
 	'REACT_APP_PATREON_URL',
