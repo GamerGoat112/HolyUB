@@ -49,7 +49,6 @@ export default function Category(props) {
 	);
 
 	useEffect(() => {
-		console.log('set data to loading');
 		set_data(loading);
 
 		const abort = new AbortController();
@@ -110,10 +109,6 @@ export default function Category(props) {
 
 		return () => abort.abort();
 	}, [props.category, props.id, settings.sort, search, page, loading]);
-
-	useEffect(() => {
-		console.log(loading.entries.length, loading.total, max_page);
-	}, [loading, max_page]);
 
 	if (error) {
 		return (
