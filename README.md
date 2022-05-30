@@ -11,6 +11,7 @@ If you aren't familiar with manually setting up proxy scripts or webservers, **p
 This project depends on the following APIs/scripts:
 
 - [DB server](https://git.holy.how/holy/db-server) (ran on port 3001)
+- [Theatre](https://git.holy.how/holy/theatre) (webserver on `public`, ran on port 3002)
 - [Bare Server Node](https://github.com/tomphttp/bare-server-node) (ran on port 8001)
 - [Rammerhead](https://github.com/binary-person/rammerhead) (ran on port 8002)
 
