@@ -42,10 +42,9 @@ export default function Rammerhead(props) {
 
 				const shuffler = new StrShuffler(dict);
 
-				// according to our NGINX config
+				// help rammerhead figure out the client's origin
 				if (process.env.NODE_ENV === 'production') {
-					Cookies.set('auth_proxy', 1, {
-						domain: `.${global.location.host}`,
+					Cookies.set('origin_proxy', global.location.origin, {
 						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
 						secure: true,
 						sameSite: 'lax',
