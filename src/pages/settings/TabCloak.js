@@ -128,7 +128,11 @@ export default function TabCloak(props) {
 			);
 		} catch (error) {
 			props.layout.current.notifications.current.add(
-				<Notification description={error.message} type="error" />
+				<Notification
+					title="Unable to fetch cloak"
+					description={error.message}
+					type="error"
+				/>
 			);
 		}
 	}

@@ -12,6 +12,7 @@ import {
 } from 'react';
 
 import { BARE_API } from './consts.js';
+import { Notification } from './Notifications.js';
 import { Obfuscated } from './obfuscate.js';
 import resolve_proxy from './ProxyResolver.js';
 import SearchBuilder from './SearchBuilder.js';
@@ -164,16 +165,27 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 			const src = builder.query(input);
 
-			const proxied_src = await resolve_proxy(
-				src,
-				props.layout.current.settings.proxy
-			);
+			try {
+				const proxied_src = await resolve_proxy(
+					src,
+					props.layout.current.settings.proxy
+				);
 
-			proxy.current = src;
-			set_title(src);
-			set_src(proxied_src);
-			set_first_load(false);
-			set_icon('');
+				proxy.current = src;
+				set_title(src);
+				set_src(proxied_src);
+				set_first_load(false);
+				set_icon('');
+			} catch (error) {
+				console.error(error);
+				props.layout.current.notifications.current.add(
+					<Notification
+						title="Unable to find compatible proxy"
+						description={error.message}
+						type="error"
+					/>
+				);
+			}
 		},
 	}));
 
