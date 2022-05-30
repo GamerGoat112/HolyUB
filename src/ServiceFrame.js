@@ -30,6 +30,10 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 	useEffect(() => {
 		function focus_listener() {
+			if (!iframe.current) {
+				return;
+			}
+
 			iframe.current.contentWindow.focus();
 		}
 
