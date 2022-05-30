@@ -48,7 +48,7 @@ export default function Rammerhead(props) {
 				}
 				error_cause = undefined;
 
-				global.location.assign(
+				global.location.replace(
 					boot.html(props.compat_layout.current.destination)
 				);
 			} catch (error) {

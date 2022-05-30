@@ -62,7 +62,7 @@ export default function Ultraviolet(props) {
 				}
 				error_cause = undefined;
 
-				global.location.assign(
+				global.location.replace(
 					new URL(
 						config.encodeUrl(props.compat_layout.current.destination),
 						new URL(config.prefix, global.location)

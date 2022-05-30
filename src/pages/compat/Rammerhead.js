@@ -52,7 +52,7 @@ export default function Rammerhead(props) {
 					});
 				}
 
-				global.location.assign(
+				global.location.replace(
 					new URL(
 						`${session}/${shuffler.shuffle(
 							props.compat_layout.current.destination
