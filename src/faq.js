@@ -15,10 +15,11 @@ const faq = [
 				<ObfuscatedThemeA href="https://discord.com/channels/419123358698045453/743648232717942805">
 					<Obfuscated>#proxy-commands</Obfuscated>
 				</ObfuscatedThemeA>{' '}
-				and send:
+				and type:
 				<code className="obfuscated">
-					<Obfuscated>/proxy type:HolyUnblocker</Obfuscated>
+					<Obfuscated>/proxy</Obfuscated>
 				</code>
+				<Obfuscated>, select HolyUnblocker, then enter.</Obfuscated>
 			</>
 		),
 	},
