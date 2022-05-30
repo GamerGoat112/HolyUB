@@ -13,6 +13,15 @@ export default function Rammerhead(props) {
 			try {
 				const api = new RammerheadAPI(RH_API);
 
+				// help rammerhead figure out the client's origin
+				if (process.env.NODE_ENV === 'production') {
+					Cookies.set('origin_proxy', global.location.origin, {
+						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
+						secure: true,
+						sameSite: 'lax',
+					});
+				}
+
 				error_cause = 'Rammerhead server is unreachable.';
 				await fetch(RH_API);
 				error_cause = undefined;
@@ -41,15 +50,6 @@ export default function Rammerhead(props) {
 				error_cause = undefined;
 
 				const shuffler = new StrShuffler(dict);
-
-				// help rammerhead figure out the client's origin
-				if (process.env.NODE_ENV === 'production') {
-					Cookies.set('origin_proxy', global.location.origin, {
-						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
-						secure: true,
-						sameSite: 'lax',
-					});
-				}
 
 				global.location.assign(
 					new URL(
