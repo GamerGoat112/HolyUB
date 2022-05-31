@@ -15,29 +15,30 @@ import SearchBar from './Search.js';
 
 const LIMIT = 30;
 
+function create_loading(total) {
+	const loading = {
+		total,
+		entries: [],
+		loading: true,
+	};
+
+	for (let i = 0; i < LIMIT; i++) {
+		loading.entries.push({
+			id: i,
+			loading: true,
+		});
+	}
+
+	return loading;
+}
+
 export default function Category(props) {
 	const [search, set_search] = useSearchParams({
 		page: 0,
 	});
 	const page = parseInt(search.get('page'));
 	const [last_total, set_last_total] = useState(LIMIT * 2);
-	const loading = useMemo(() => {
-		const loading = {
-			total: last_total,
-			entries: [],
-			loading: true,
-		};
-
-		for (let i = 0; i < LIMIT; i++) {
-			loading.entries.push({
-				id: i,
-				loading: true,
-			});
-		}
-
-		return loading;
-	}, [last_total]);
-	const [data, set_data] = useState(loading);
+	const [data, set_data] = useState(() => create_loading(last_total));
 	const max_page = Math.floor(data.total / LIMIT);
 	const error_cause = useRef();
 	const [error, set_error] = useState();
@@ -48,10 +49,13 @@ export default function Category(props) {
 		})
 	);
 
-	useEffect(() => {
-		set_data(loading);
+	const x = useMemo(() => Math.random(), []);
+	//console.log('render', x);
 
+	useEffect(() => {
 		const abort = new AbortController();
+
+		console.log('fetch db', x);
 
 		void (async function () {
 			const api = new TheatreAPI(DB_API, abort.signal);
@@ -108,7 +112,7 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [props.category, props.id, settings.sort, search, page, loading]);
+	}, [page, props.category, settings.sort, x]);
 
 	if (error) {
 		return (
@@ -166,6 +170,7 @@ export default function Category(props) {
 						defaultValue={settings.sort}
 						style={{ width: 145, flex: 'none' }}
 						onChange={event => {
+							set_data(create_loading(last_total));
 							set_settings({
 								...settings,
 								sort: event.target.value,
