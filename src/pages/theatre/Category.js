@@ -45,7 +45,7 @@ export default function Category(props) {
 	const [settings, set_settings] = useSettings(
 		`theatre category ${props.id} settings`,
 		() => ({
-			sort: 'Most Played',
+			sort: 'Most Popular',
 		})
 	);
 
@@ -58,10 +58,10 @@ export default function Category(props) {
 			let sort;
 
 			switch (settings.sort) {
-				case 'Least Played':
+				case 'Least Popular':
 					leastGreatest = true;
 				// falls through
-				case 'Most Played':
+				case 'Most Popular':
 					sort = 'plays';
 					break;
 				case 'Least Favorites':
@@ -176,8 +176,8 @@ export default function Category(props) {
 							});
 						}}
 					>
-						<option value="Most Played">Most Played</option>
-						<option value="Least Played">Least Played</option>
+						<option value="Most Popular">Most Popular</option>
+						<option value="Least Popular">Least Popular</option>
 						<option value="Name (A-Z)">Name (A-Z)</option>
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
