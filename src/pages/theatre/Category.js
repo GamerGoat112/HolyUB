@@ -49,13 +49,8 @@ export default function Category(props) {
 		})
 	);
 
-	const x = useMemo(() => Math.random(), []);
-	//console.log('render', x);
-
 	useEffect(() => {
 		const abort = new AbortController();
-
-		console.log('fetch db', x);
 
 		void (async function () {
 			const api = new TheatreAPI(DB_API, abort.signal);
@@ -112,7 +107,7 @@ export default function Category(props) {
 		})();
 
 		return () => abort.abort();
-	}, [page, props.category, settings.sort, x]);
+	}, [page, props.category, settings.sort]);
 
 	if (error) {
 		return (
