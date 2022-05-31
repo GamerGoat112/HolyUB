@@ -11,6 +11,7 @@ export default function Footer() {
 			<Waves />
 			<div className="background">
 				<div className="content">
+					<div className="shift-right" />
 					<ThemeLink to={resolveRoute('/', 'credits')}>Credits</ThemeLink>
 					<ThemeLink to={resolveRoute('/', 'contact')}>Contact</ThemeLink>
 					<ThemeLink to={resolveRoute('/', 'privacy')}>Privacy</ThemeLink>

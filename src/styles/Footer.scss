@@ -54,17 +54,17 @@ footer {
 		padding-top: 10px;
 		display: flex;
 		width: 100%;
-		justify-content: flex-end;
 
 		> .content {
 			padding: 0 5% 16px 5%;
+			width: 100%;
 			height: 24px;
 			display: flex;
 			color: var(--text-accent);
 			font-size: 12px;
 			line-height: 16px;
 
-			> *:first-child {
+			> .shift-right {
 				margin-left: auto;
 			}
 

@@ -30,21 +30,6 @@ const createEnvironmentHash = require('./webpack/persistentCache/createEnvironme
 
 const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
 
-const EXPOSE_ENV = [
-	'NODE_ENV',
-	'REACT_APP_ROUTER',
-	'REACT_APP_HAT_BADGE',
-	'REACT_APP_DEFAULT_PROXY',
-	'REACT_APP_PATREON_URL',
-	'REACT_APP_VOUCHER_URL',
-	'REACT_APP_TN_DISCORD_URL',
-	'REACT_APP_HU_DISCORD_URL',
-	'REACT_APP_BARE_API',
-	'REACT_APP_RH_API',
-	'REACT_APP_DB_API',
-	'REACT_APP_THEATRE_CDN',
-];
-
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
@@ -627,7 +612,7 @@ module.exports = function (webpackEnv) {
 			// during a production build.
 			// Otherwise React will be compiled in the very slow development mode.
 			// new webpack.DefinePlugin(env.stringified),
-			new webpack.EnvironmentPlugin(EXPOSE_ENV),
+			new webpack.DefinePlugin(env.stringified),
 			// Experimental hot reloading for React .
 			// https://github.com/facebook/react/tree/main/packages/react-refresh
 			isEnvDevelopment &&
@@ -788,9 +773,9 @@ module.exports = function (webpackEnv) {
 
 								content = content.replace(
 									/process\.env\.(\w+)/g,
-									(match, env) => {
-										if (EXPOSE_ENV.includes(env) && env in process.env) {
-											return JSON.stringify(process.env[env]);
+									(_match, target) => {
+										if (target in env.raw) {
+											return JSON.stringify(env.raw[env]);
 										} else {
 											return 'undefined';
 										}
