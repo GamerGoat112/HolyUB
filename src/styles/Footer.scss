@@ -1,3 +1,5 @@
+@import './Common.scss';
+
 footer {
 	margin-top: auto;
 	display: flex;
@@ -77,6 +79,14 @@ footer {
 
 				&:hover {
 					color: var(--text);
+				}
+			}
+
+			@include screen_mobile {
+				justify-content: space-around;
+
+				> .shift-right {
+					display: none;
 				}
 			}
 		}
