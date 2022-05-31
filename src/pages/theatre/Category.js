@@ -2,7 +2,7 @@ import '../../styles/TheatreCategory.scss';
 
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import clsx from 'clsx';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { DB_API } from '../../consts.js';
