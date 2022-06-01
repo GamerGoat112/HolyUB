@@ -775,7 +775,7 @@ module.exports = function (webpackEnv) {
 									/process\.env\.(\w+)/g,
 									(_match, target) => {
 										if (target in env.raw) {
-											return JSON.stringify(env.raw[env]);
+											return JSON.stringify(env.raw[target]);
 										} else {
 											return 'undefined';
 										}
