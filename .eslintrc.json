@@ -17,6 +17,6 @@
 		"react/jsx-uses-react": "off",
 		"react/react-in-jsx-scope": "off",
 		"no-lone-blocks": "off",
-		"quotes": ["error", "single"]
+		"quotes": ["off"]
 	}
 }

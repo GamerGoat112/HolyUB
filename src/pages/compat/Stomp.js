@@ -14,6 +14,19 @@ export default function Rammerhead(props) {
 			let error_cause;
 
 			try {
+				if (
+					process.env.NODE_ENV !== 'development' &&
+					global.location.protocol !== 'https:'
+				) {
+					error_cause = 'Stomp must be used under HTTPS.';
+					throw new Error(error_cause);
+				}
+
+				if (!('serviceWorker' in navigator)) {
+					error_cause = "Your browser doesn't support service workers.";
+					throw new Error(error_cause);
+				}
+
 				error_cause = 'Failure loading the Stomp bootstrapper.';
 				await bootstrapper.current.promise;
 				error_cause = undefined;
