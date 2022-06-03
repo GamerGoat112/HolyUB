@@ -4,7 +4,7 @@
 	"license": "GPL-3.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/e9x/website-aio.git"
+		"url": "https://git.holy.how/holy/website.git"
 	},
 	"dependencies": {
 		"@babel/core": "^7.18.2",
