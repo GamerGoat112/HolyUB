@@ -4,12 +4,12 @@ import { NorthWest, Search } from '@mui/icons-material';
 import clsx from 'clsx';
 import { createRef, useMemo, useRef, useState } from 'react';
 
-import { PATREON_URL, TN_DISCORD_URL } from '../consts.js';
 import engines from '../engines.js';
-import { Obfuscated } from '../obfuscate.js';
+import { Obfuscated } from '../obfuscate';
+import resolveRoute from '../resolveRoute';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
-import { ObfuscatedThemeA, ThemeInputBar } from '../ThemeElements.js';
+import { ThemeInputBar, ThemeLink } from '../ThemeElements.js';
 
 function SearchBar(props) {
 	const service_frame = useRef();
@@ -216,21 +216,13 @@ export default function Proxies(props) {
 			<SearchBar layout={props.layout} />
 			<p>
 				<Obfuscated>
-					This is a free service paid for by our Patreons. If you want faster
-					servers, donate to Holy Unblocker on{' '}
-				</Obfuscated>
-				<ObfuscatedThemeA href={PATREON_URL}>
-					<Obfuscated>Patreon</Obfuscated>
-				</ObfuscatedThemeA>
+					If you're having issues with the proxy, try troubleshooting your
+					problem by looking at the
+				</Obfuscated>{' '}
+				<ThemeLink to={resolveRoute('/', 'faq')}>
+					<Obfuscated>FAQ</Obfuscated>
+				</ThemeLink>
 				.
-			</p>
-			<p>
-				<Obfuscated>Click </Obfuscated>
-				<ObfuscatedThemeA href={TN_DISCORD_URL}>here</ObfuscatedThemeA>
-				<Obfuscated>
-					{' '}
-					to join the TN Discord for access to new Holy Unblocker links.
-				</Obfuscated>
 			</p>
 		</main>
 	);

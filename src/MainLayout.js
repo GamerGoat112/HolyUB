@@ -11,7 +11,6 @@ import {
 	Menu,
 	QuestionMark,
 	Settings,
-	ShoppingCart,
 	SortRounded,
 	StarOutlineRounded,
 	StarRounded,
@@ -29,8 +28,6 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
-import { ReactComponent as Patreon } from './assets/patreon.svg';
-import { PATREON_URL } from './consts.js';
 import Footer from './Footer.js';
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
 import categories from './pages/theatre/games/categories.js';
@@ -184,21 +181,6 @@ export default forwardRef(function Layout(props, ref) {
 							route={resolveRoute('/', 'faq')}
 							name="FAQ"
 							iconFilled={<QuestionMark />}
-							onClick={close_menu}
-						/>
-
-						<div className="bar" />
-
-						<MenuTab
-							route={resolveRoute('/', 'privatelinks')}
-							name="Private Links"
-							iconFilled={<ShoppingCart />}
-							onClick={close_menu}
-						/>
-						<MenuTab
-							href={PATREON_URL}
-							name="Patreon"
-							iconFilled={<Patreon style={{ width: 18, height: 18 }} />}
 							onClick={close_menu}
 						/>
 

@@ -10,7 +10,6 @@ module.exports = [
 			'credits',
 			'proxy',
 			'licenses',
-			'privatelinks',
 		],
 	},
 	{

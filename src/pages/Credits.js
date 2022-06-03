@@ -1,4 +1,3 @@
-import { PATREON_URL } from '../consts.js';
 import { Obfuscated } from '../obfuscate.js';
 import { ObfuscatedThemeA } from '../ThemeElements.js';
 
@@ -6,33 +5,6 @@ export default function Credits() {
 	return (
 		<main className="legal credits">
 			<h2>Credits</h2>
-
-			<h4>Operations</h4>
-
-			<ul>
-				<li>
-					<Obfuscated>Eli - NFT/Bitcoin specialist</Obfuscated>
-				</li>
-				<li>
-					<Obfuscated>Incoming - Accountant</Obfuscated>
-				</li>
-			</ul>
-
-			<h4>Sponsors</h4>
-
-			<ul>
-				<li>
-					<Obfuscated>Our</Obfuscated>{' '}
-					<ObfuscatedThemeA href={PATREON_URL}>Patrons</ObfuscatedThemeA>
-					<Obfuscated>.</Obfuscated>
-				</li>
-				<li>
-					<Obfuscated>The Kingdom of Saudi Arabia</Obfuscated>
-				</li>
-				<li>
-					<Obfuscated>Jeff Bezos - Server hosting</Obfuscated>
-				</li>
-			</ul>
 
 			<h4>Development</h4>
 
@@ -56,20 +28,6 @@ export default function Credits() {
 				</li>
 				<li>
 					<Obfuscated>011011000110111101101100 - Rammerhead</Obfuscated>
-				</li>
-			</ul>
-
-			<h4>Community</h4>
-
-			<ul>
-				<li>
-					<Obfuscated>Aub - Community Manager</Obfuscated>
-				</li>
-				<li>
-					<Obfuscated>Degenerate - Chat Mod</Obfuscated>
-				</li>
-				<li>
-					<Obfuscated>Simon - Chat Mod</Obfuscated>
 				</li>
 			</ul>
 

@@ -1,4 +1,4 @@
-import { PATREON_URL } from './consts.js';
+import { TN_DISCORD_URL } from './consts.js';
 import { Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 import { ObfuscatedThemeA, ThemeLink } from './ThemeElements.js';
@@ -8,10 +8,11 @@ const faq = [
 		q: <>How do I get more links?.</>,
 		a: (
 			<>
-				<Obfuscated>
-					You can join the TitaniumNetwork Discord server to receive more links.
-					Go to
-				</Obfuscated>{' '}
+				<Obfuscated>You can join the</Obfuscated>{' '}
+				<ObfuscatedThemeA href={TN_DISCORD_URL}>
+					<Obfuscated>TitaniumNetwork Discord Server</Obfuscated>
+				</ObfuscatedThemeA>{' '}
+				<Obfuscated>to receive more links. Go to</Obfuscated>{' '}
 				<ObfuscatedThemeA href="https://discord.com/channels/419123358698045453/743648232717942805">
 					<Obfuscated>#proxy-commands</Obfuscated>
 				</ObfuscatedThemeA>{' '}
@@ -20,24 +21,6 @@ const faq = [
 					<Obfuscated>/proxy</Obfuscated>
 				</code>
 				<Obfuscated>, select HolyUnblocker, then enter.</Obfuscated>
-			</>
-		),
-	},
-	{
-		q: (
-			<>
-				The proxy is <Obfuscated>slow</Obfuscated>.
-			</>
-		),
-		a: (
-			<>
-				Our <Obfuscated>proxy</Obfuscated> servers are paid for by our
-				supporters on{' '}
-				<ObfuscatedThemeA href={PATREON_URL}>
-					<Obfuscated>Patreon</Obfuscated>
-				</ObfuscatedThemeA>
-				. If you subscribe, you can help us purchase faster servers in the
-				future.
 			</>
 		),
 	},

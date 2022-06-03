@@ -22,9 +22,6 @@ const TheatrePlayer = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/theatre/Player.js')
 );
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
-const PrivateLinks = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/PrivateLinks.js')
-);
 const Settings = lazy(() =>
 	import(/* webpackPrefetch: true */ './pages/Settings.js')
 );
@@ -155,14 +152,6 @@ export default function App() {
 						element={
 							<Suspense fallback={<></>}>
 								<Privacy {...layouts} />
-							</Suspense>
-						}
-					/>
-					<Route
-						path={resolveRoute('/', 'privatelinks', false)}
-						element={
-							<Suspense fallback={<></>}>
-								<PrivateLinks {...layouts} />
 							</Suspense>
 						}
 					/>
