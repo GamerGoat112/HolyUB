@@ -2,7 +2,7 @@
 
 This repository requires a lot of setup. Because of this, this repository cannot be deployed to services such as Heroku, Repl.it, etc..
 
-If you aren't familiar with manually setting up proxy scripts or webservers, **please wait for a deployable version**.
+If you are looking for a solution to quickly deploy/self-host Holy Unblocker, please see [website-aio](https://github.com/e9x/website-aio).
 
 # Prerequisites
 
