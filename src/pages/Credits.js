@@ -31,7 +31,9 @@ export default function Credits() {
 				</li>
 			</ul>
 
-			<h2>Open-source licenses</h2>
+			<h2>
+				<Obfuscated>Proxy Scripts</Obfuscated>
+			</h2>
 
 			<ul>
 				<li>

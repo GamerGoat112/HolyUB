@@ -1,16 +1,7 @@
 module.exports = [
 	{
 		dir: '/',
-		pages: [
-			'',
-			'faq',
-			'contact',
-			'privacy',
-			'terms',
-			'credits',
-			'proxy',
-			'licenses',
-		],
+		pages: ['', 'faq', 'contact', 'privacy', 'terms', 'credits', 'proxy'],
 	},
 	{
 		dir: '/theatre/',
