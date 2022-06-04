@@ -723,8 +723,12 @@ module.exports = function (webpackEnv) {
 						infrastructure: 'silent',
 					},
 				}),
+			process.env.WEBPACK_BUNDLE_ANALYZER === 'true' &&
+				new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+					analyzerMode: 'static',
+				}),
 			isEnvDevelopment &&
-				new require('eslint-webpack-plugin')({
+				new (require('eslint-webpack-plugin'))({
 					// Plugin options
 					extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
 					formatter: require.resolve('react-dev-utils/eslintFormatter'),
