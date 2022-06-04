@@ -1,24 +1,29 @@
 import '../styles/Proxy.scss';
 
 import { NorthWest, Search } from '@mui/icons-material';
+import BareClient from 'bare-client';
 import clsx from 'clsx';
 import { createRef, useMemo, useRef, useState } from 'react';
 
+import { BARE_API } from '../consts';
 import engines from '../engines.js';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
+import SearchBuilder from '../SearchBuilder';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
 import { ThemeInputBar, ThemeLink } from '../ThemeElements.js';
 
 function SearchBar(props) {
-	const service_frame = useRef();
 	const input = useRef();
 	const input_value = useRef();
 	const last_input = useRef();
 	const [last_select, set_last_select] = useState(-1);
 	const [omnibox_entries, set_omnibox_entries] = useState([]);
 	const [input_focused, set_input_focused] = useState(false);
+	const service_frame = useRef();
+	const abort = useRef();
+	const bare = useMemo(() => new BareClient(BARE_API), []);
 
 	const format = useMemo(
 		() => props.layout.current.settings.search,
@@ -42,9 +47,51 @@ function SearchBar(props) {
 		if (input_value.current !== input.current.value) {
 			input_value.current = input.current.value;
 
-			set_omnibox_entries(
-				await service_frame.current.omnibox_entries(input.current.value)
-			);
+			const entries = [];
+
+			try {
+				if (abort.current !== undefined) {
+					abort.current.abort();
+				}
+
+				abort.current = new AbortController();
+
+				const outgoing = await bare.fetch(
+					'https://www.bing.com/AS/Suggestions?' +
+						new URLSearchParams({
+							qry: input.current.value,
+							cvid: '\u0001',
+							bareServer: true,
+						}),
+					{
+						signal: abort.current.signal,
+					}
+				);
+
+				if (outgoing.ok) {
+					const text = await outgoing.text();
+
+					for (let [, phrase] of text.matchAll(
+						/<span class="sa_tm_text">(.*?)<\/span>/g
+					)) {
+						entries.push(phrase);
+					}
+				} else {
+					throw await outgoing.text();
+				}
+			} catch (error) {
+				// likely abort error
+				if (error.message === 'Failed to fetch') {
+					console.error('Error fetching Bare server.');
+				} else if (
+					!error.message.includes('The operation was aborted') &&
+					!error.message.includes('The user aborted a request.')
+				) {
+					throw error;
+				}
+			}
+
+			set_omnibox_entries(entries);
 		}
 	}
 
@@ -58,8 +105,10 @@ function SearchBar(props) {
 			input.current.value = value;
 		}
 
+		const builder = new SearchBuilder(props.layout.current.settings.search);
+
 		set_input_focused(false);
-		service_frame.current.proxy(input.current.value);
+		service_frame.current.proxy(builder.query(input.current.value));
 		on_input();
 	}
 
@@ -103,7 +152,7 @@ function SearchBar(props) {
 
 	return (
 		<>
-			<ServiceFrame layout={props.layout} ref={service_frame} />
+			<ServiceFrame ref={service_frame} layout={props.layout} />
 			<form
 				className="omnibox"
 				data-suggested={Number(render_suggested)}

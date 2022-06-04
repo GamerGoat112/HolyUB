@@ -1,5 +1,6 @@
 import CompatAPI from './CompatAPI.js';
 import { DB_API, DEFAULT_PROXY } from './consts.js';
+import { encryptURL } from './cryptURL.js';
 import resolveRoute from './resolveRoute.js';
 
 /**
@@ -40,5 +41,5 @@ export default async function resolve_proxy(src, setting) {
 			break;
 	}
 
-	return `${route}#${src}`;
+	return `${route}#${encryptURL(src)}`;
 }

@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { decryptURL } from './cryptURL';
 import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 import { ThemeA, ThemeLink } from './ThemeElements.js';
@@ -117,7 +118,7 @@ export default forwardRef(function CompatLayout(props, ref) {
 					throw new Error('No hash was provided');
 				}
 
-				return new URL(location.hash.slice(1));
+				return new URL(decryptURL(location.hash.slice(1)));
 			},
 			report(error, cause, origin) {
 				console.error(error);

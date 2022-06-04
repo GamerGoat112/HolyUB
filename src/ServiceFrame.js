@@ -10,24 +10,75 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { BARE_API } from './consts.js';
+import { decryptURL, encryptURL } from './cryptURL';
 import { Notification } from './Notifications.js';
 import { Obfuscated } from './obfuscate.js';
 import resolve_proxy from './ProxyResolver.js';
-import SearchBuilder from './SearchBuilder.js';
 
 export default forwardRef(function ServiceFrame(props, ref) {
 	const iframe = useRef();
 	const proxy = useRef();
+	const [search, set_search] = useSearchParams();
 	const [title, set_title] = useState('');
-	const [src, set_src] = useState('');
 	const [icon, set_icon] = useState('');
 	const [first_load, set_first_load] = useState(false);
 	const [revoke_icon, set_revoke_icon] = useState(false);
-	const abort = useRef();
 	const bare = useMemo(() => new BareClient(BARE_API), []);
 	const links_tried = useMemo(() => new WeakMap(), []);
+
+	const src = useMemo(() => {
+		if (search.has('query')) {
+			return decryptURL(search.get('query'));
+		} else {
+			return '';
+		}
+	}, [search]);
+
+	const [proxied_src, set_proxied_src] = useState();
+
+	useEffect(() => {
+		if (src) {
+			void (async function () {
+				try {
+					const proxied_src = await resolve_proxy(
+						src,
+						props.layout.current.settings.proxy
+					);
+
+					proxy.current = src;
+					set_title(src);
+					set_first_load(false);
+					set_icon('');
+
+					set_proxied_src(proxied_src);
+				} catch (error) {
+					console.error(error);
+					props.layout.current.notifications.current.add(
+						<Notification
+							title="Unable to find compatible proxy"
+							description={error.message}
+							type="error"
+						/>
+					);
+				}
+			})();
+		} else {
+			set_proxied_src(undefined);
+		}
+	}, [props.layout, src]);
+
+	useImperativeHandle(ref, () => ({
+		proxy(src) {
+			search.has('query') && decryptURL(search.get('query'));
+			set_search({
+				...Object.fromEntries(search),
+				query: encryptURL(src),
+			});
+		},
+	}));
 
 	useEffect(() => {
 		function focus_listener() {
@@ -112,83 +163,6 @@ export default forwardRef(function ServiceFrame(props, ref) {
 		return () => clearInterval(interval);
 	}, [proxy, bare, src, iframe, links_tried]);
 
-	useImperativeHandle(ref, () => ({
-		async omnibox_entries(query) {
-			const entries = [];
-
-			try {
-				if (abort.current !== undefined) {
-					abort.current.abort();
-				}
-
-				abort.current = new AbortController();
-
-				const outgoing = await bare.fetch(
-					'https://www.bing.com/AS/Suggestions?' +
-						new URLSearchParams({
-							qry: query,
-							cvid: '\u0001',
-							bareServer: true,
-						}),
-					{
-						signal: abort.current.signal,
-					}
-				);
-
-				if (outgoing.ok) {
-					const text = await outgoing.text();
-
-					for (let [, phrase] of text.matchAll(
-						/<span class="sa_tm_text">(.*?)<\/span>/g
-					)) {
-						entries.push(phrase);
-					}
-				} else {
-					throw await outgoing.text();
-				}
-			} catch (error) {
-				// likely abort error
-				if (error.message === 'Failed to fetch') {
-					console.error('Error fetching Bare server.');
-				} else if (
-					!error.message.includes('The operation was aborted') &&
-					!error.message.includes('The user aborted a request.')
-				) {
-					throw error;
-				}
-			}
-
-			return entries;
-		},
-		async proxy(input) {
-			const builder = new SearchBuilder(props.layout.current.settings.search);
-
-			const src = builder.query(input);
-
-			try {
-				const proxied_src = await resolve_proxy(
-					src,
-					props.layout.current.settings.proxy
-				);
-
-				proxy.current = src;
-				set_title(src);
-				set_src(proxied_src);
-				set_first_load(false);
-				set_icon('');
-			} catch (error) {
-				console.error(error);
-				props.layout.current.notifications.current.add(
-					<Notification
-						title="Unable to find compatible proxy"
-						description={error.message}
-						type="error"
-					/>
-				);
-			}
-		},
-	}));
-
 	useEffect(() => {
 		document.documentElement.dataset.service = Number(Boolean(src));
 	}, [src]);
@@ -199,7 +173,8 @@ export default forwardRef(function ServiceFrame(props, ref) {
 				<ChevronLeft
 					className="button"
 					onClick={() => {
-						set_src('');
+						search.delete('query');
+						set_search(search);
 					}}
 				/>
 				{icon ? (
@@ -229,7 +204,7 @@ export default forwardRef(function ServiceFrame(props, ref) {
 			</div>
 			<iframe
 				className="embed"
-				src={src}
+				src={proxied_src}
 				title="embed"
 				ref={iframe}
 				data-first-load={Number(first_load)}
