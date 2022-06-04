@@ -1,6 +1,7 @@
 .theme-link {
 	color: var(--link);
 	text-decoration: none;
+	cursor: pointer;
 
 	&:hover,
 	&:hover * {

@@ -1,5 +1,6 @@
+import clsx from 'clsx';
 import { create } from 'random-seed';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 const rand = create(navigator.userAgent + global.location.origin);
 
@@ -99,15 +100,14 @@ class ObfuscateContext {
 
 /**
  *
- * @param {string} text
- * @param {boolean} ellipsis
+ * @param {{text:string,ellipsis:boolean}} props
  * @returns {JSX.Element}
  */
-export function obfuscateText(text, ellipsis, key) {
-	const context = new ObfuscateContext(text);
+export const ObfuscatedText = memo(function ObfuscatedText(props) {
+	const context = new ObfuscateContext(props.text);
 
 	const output = [];
-	const words = text.split(' ');
+	const words = props.text.split(' ');
 
 	for (let wi = 0; wi < words.length; wi++) {
 		const word = words[wi];
@@ -142,14 +142,11 @@ export function obfuscateText(text, ellipsis, key) {
 			);
 		}
 
-		let word_class;
-
-		if (ellipsis) {
-			word_class = context.ellipsis_class();
-		}
-
 		output.push(
-			<span className={word_class} key={`${wi}`}>
+			<span
+				className={clsx(props.ellipsis && context.ellipsis_class())}
+				key={`${wi}`}
+			>
 				{added}
 			</span>
 		);
@@ -159,18 +156,15 @@ export function obfuscateText(text, ellipsis, key) {
 		}
 	}
 
-	return (
-		<span key={key} className={string_class}>
-			{output}
-		</span>
-	);
-}
+	return <span className={string_class}>{output}</span>;
+});
 
 /**
- * @description A obfuscated text block. This will strip the input of all non-text elements.d
+ * @description A obfuscated text block. This will strip the input of all non-text elements.
  */
-export function Obfuscated(props) {
+export const Obfuscated = memo(function Obfuscated(props) {
 	let string = '';
+
 	const stack = [
 		{
 			props,
@@ -197,27 +191,44 @@ export function Obfuscated(props) {
 		}
 	}
 
-	return obfuscateText(string, 'ellipsis' in props);
-}
+	return (
+		<ObfuscatedText text={string} ellipsis={props.ellipsis}></ObfuscatedText>
+	);
+});
 
 export function ObfuscatedA(props) {
-	const { href, children, onClick, ...attributes } = props;
+	const { href, children, onClick, onMouseUp, target, ...attributes } = props;
 
 	return (
 		// eslint-disable-next-line jsx-a11y/anchor-is-valid
-		<a
-			href="i:"
+		<span
 			{...attributes}
+			onMouseUp={event => {
+				if (event.button === 1) {
+					if (typeof onMouseUp === 'function') {
+						onMouseUp(event);
+					}
+
+					event.preventDefault();
+
+					window.open(href, '_blank');
+				}
+			}}
 			onClick={event => {
 				if (typeof onClick === 'function') {
 					onClick(event);
 				}
 
 				event.preventDefault();
-				window.open(href, '_self');
+
+				if (event.ctrlKey) {
+					window.open(href, '_blank');
+				} else {
+					window.open(href, target || '_self');
+				}
 			}}
 		>
 			{children}
-		</a>
+		</span>
 	);
 }
