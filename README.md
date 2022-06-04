@@ -1,8 +1,14 @@
-# READ ME
+# Holy Unblocker website
 
-This repository requires a lot of setup. Because of this, this repository cannot be deployed to services such as Heroku, Repl.it, etc..
+# Who/What this repository is for
 
-If you are looking for a solution to quickly deploy/self-host Holy Unblocker, please see [website-aio](https://github.com/e9x/website-aio).
+This repository contains the base Holy Unblocker website. This includes tools and dependencies used to compile the website (Webpack, React) and development tools (ESLint, Prettier).
+
+This repository should not be ran alone. There are several dependencies that require configuration.
+
+If you are a developer, this repository is ideal for testing commits and building for production.
+
+If you are just looking to self-host/deploy Holy Unblocker, check out [website-aio](https://github.com/e9x/website-aio).
 
 # Prerequisites
 
