@@ -5,6 +5,24 @@ import { ObfuscatedThemeA, ThemeLink } from './ThemeElements.js';
 
 const faq = [
 	{
+		q: (
+			<>
+				<Obfuscated>How can I self-host Holy Unblocker?</Obfuscated>
+			</>
+		),
+		a: (
+			<>
+				<Obfuscated>
+					You can self-host/deploy Holy Unblocker by using our all-in-one script
+				</Obfuscated>{' '}
+				<ObfuscatedThemeA href="https://github.com/e9x/website-aio#website-aio">
+					here
+				</ObfuscatedThemeA>
+				.
+			</>
+		),
+	},
+	{
 		q: <>How do I get more links?.</>,
 		a: (
 			<>
@@ -25,43 +43,13 @@ const faq = [
 		),
 	},
 	{
-		q: <>My page won't load.</>,
+		q: <>Where is this website's source code?</>,
 		a: (
 			<>
-				Your page may be incompatible with our <Obfuscated>proxy</Obfuscated>.
-				Give the website at most 1 minute to load.
-			</>
-		),
-	},
-	{
-		q: (
-			<>
-				Can I host my own <Obfuscated>proxy site</Obfuscated>?
-			</>
-		),
-		a: (
-			<>
-				Yes. This website is open source. See our{' '}
-				<ObfuscatedThemeA href="https://git.holy.how/holy">
+				The source code to this website can be found in our{' '}
+				<ObfuscatedThemeA href="https://git.holy.how/holy/website">
 					Git repository
 				</ObfuscatedThemeA>
-				.
-			</>
-		),
-	},
-	{
-		q: (
-			<>
-				How can I contribute to the <Obfuscated>proxies</Obfuscated> on this
-				website?
-			</>
-		),
-		a: (
-			<>
-				The proxies used on this website can be found in{' '}
-				<ThemeLink to={resolveRoute('/', 'credits')}>
-					credits and open-source licenses
-				</ThemeLink>
 				.
 			</>
 		),
