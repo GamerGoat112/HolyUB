@@ -7,6 +7,7 @@ import { createRef, useMemo, useRef, useState } from 'react';
 
 import { BARE_API } from '../consts.js';
 import engines from '../engines.js';
+import isAbortError from '../isAbortError';
 import { Obfuscated } from '../obfuscate.js';
 import resolveRoute from '../resolveRoute.js';
 import SearchBuilder from '../SearchBuilder.js';
@@ -83,10 +84,7 @@ function SearchBar(props) {
 				// likely abort error
 				if (error.message === 'Failed to fetch') {
 					console.error('Error fetching Bare server.');
-				} else if (
-					!error.message.includes('The operation was aborted.') &&
-					!error.message.includes('The user aborted a request.')
-				) {
+				} else if (!isAbortError(error)) {
 					throw error;
 				}
 			}

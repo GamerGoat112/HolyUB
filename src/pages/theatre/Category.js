@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { DB_API } from '../../consts.js';
+import isAbortError from '../../isAbortError.js';
 import { Obfuscated } from '../../obfuscate.js';
 import resolveRoute from '../../resolveRoute.js';
 import { useSettings } from '../../Settings.js';
@@ -98,11 +99,7 @@ export default function Category(props) {
 				set_data(data);
 				set_last_total(data.total);
 			} catch (error) {
-				if (
-					error.message !== 'The operation was aborted.' &&
-					error.message !== 'The user aborted a request.'
-				) {
-					console.error(error);
+				if (isAbortError(error)) {
 					set_error(error);
 				}
 			}

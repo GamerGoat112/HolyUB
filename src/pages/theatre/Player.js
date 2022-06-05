@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { DB_API, THEATRE_CDN } from '../../consts.js';
 import { encryptURL } from '../../cryptURL.js';
+import isAbortError from '../../isAbortError.js';
 import { Obfuscated } from '../../obfuscate.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import resolveRoute from '../../resolveRoute.js';
@@ -109,9 +110,10 @@ export default function Player(props) {
 					error_cause.current = undefined;
 				}
 			} catch (error) {
-				console.error(error);
-				set_error(error);
-				return;
+				if (!isAbortError(error)) {
+					console.error(error);
+					set_error(error);
+				}
 			}
 		})();
 

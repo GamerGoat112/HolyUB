@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DB_API } from '../../../consts.js';
+import isAbortError from '../../../isAbortError.js';
 import { Obfuscated } from '../../../obfuscate.js';
 import resolveRoute from '../../../resolveRoute.js';
 import { ItemList, TheatreAPI } from '../../../TheatreCommon.js';
@@ -51,10 +52,7 @@ export default function Popular() {
 
 				set_data(data);
 			} catch (error) {
-				if (
-					error.message !== 'The operation was aborted.' &&
-					error.message !== 'The user aborted a request.'
-				) {
+				if (!isAbortError(error)) {
 					console.error(error);
 					set_error(error);
 				}

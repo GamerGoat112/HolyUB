@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { DB_API } from '../../consts.js';
+import isAbortError from '../../isAbortError.js';
 import { Obfuscated } from '../../obfuscate.js';
 import resolveRoute from '../../resolveRoute.js';
 import { TheatreAPI } from '../../TheatreCommon.js';
@@ -44,10 +45,7 @@ export default function SearchBar(props) {
 
 			set_category_data(category_data);
 		} catch (error) {
-			if (
-				error.message !== 'The operation was aborted.' &&
-				error.message !== 'The user aborted a request.'
-			) {
+			if (!isAbortError(error)) {
 				console.error(error);
 			}
 		}
