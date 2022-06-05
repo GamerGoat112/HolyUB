@@ -99,7 +99,7 @@ export default function Category(props) {
 				set_last_total(data.total);
 			} catch (error) {
 				if (
-					error.message !== 'The operation was aborted' &&
+					error.message !== 'The operation was aborted.' &&
 					error.message !== 'The user aborted a request.'
 				) {
 					console.error(error);

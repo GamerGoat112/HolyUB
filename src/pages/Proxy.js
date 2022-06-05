@@ -84,7 +84,7 @@ function SearchBar(props) {
 				if (error.message === 'Failed to fetch') {
 					console.error('Error fetching Bare server.');
 				} else if (
-					!error.message.includes('The operation was aborted') &&
+					!error.message.includes('The operation was aborted.') &&
 					!error.message.includes('The user aborted a request.')
 				) {
 					throw error;
