@@ -60,8 +60,6 @@ export default function Ultraviolet(props) {
 				error_cause = 'Failure registering the Ultraviolet Service Worker.';
 				await navigator.serviceWorker.register('/uv/sw.js', {
 					scope: config.prefix,
-					// cache sucks
-					// we have plenty of bandwidth to spare
 					updateViaCache: 'none',
 				});
 				error_cause = undefined;
