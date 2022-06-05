@@ -22,8 +22,6 @@ export default forwardRef(function ServiceFrame(props, ref) {
 	const iframe = useRef();
 	const proxy = useRef();
 	const [search, set_search] = useSearchParams();
-	const [title, set_title] = useState('');
-	const [icon, set_icon] = useState('');
 	const [first_load, set_first_load] = useState(false);
 	const [revoke_icon, set_revoke_icon] = useState(false);
 	const bare = useMemo(() => new BareClient(BARE_API), []);
@@ -36,10 +34,12 @@ export default forwardRef(function ServiceFrame(props, ref) {
 			return '';
 		}
 	}, [search]);
-
-	const [proxied_src, set_proxied_src] = useState();
+	const [title, set_title] = useState(src);
+	const [icon, set_icon] = useState('');
 
 	useEffect(() => {
+		window.ifr = iframe.current;
+
 		if (src) {
 			void (async function () {
 				try {
@@ -48,12 +48,7 @@ export default forwardRef(function ServiceFrame(props, ref) {
 						props.layout.current.settings.proxy
 					);
 
-					proxy.current = src;
-					set_title(src);
-					set_first_load(false);
-					set_icon('');
-
-					set_proxied_src(proxied_src);
+					iframe.current.contentWindow.location.replace(proxied_src);
 				} catch (error) {
 					console.error(error);
 					props.layout.current.notifications.current.add(
@@ -66,7 +61,10 @@ export default forwardRef(function ServiceFrame(props, ref) {
 				}
 			})();
 		} else {
-			set_proxied_src(undefined);
+			set_first_load(false);
+			set_title('');
+			set_icon('');
+			iframe.current.contentWindow.location.assign('about:blank');
 		}
 	}, [props.layout, src]);
 
@@ -120,7 +118,7 @@ export default forwardRef(function ServiceFrame(props, ref) {
 			let title;
 
 			if (location === contentWindow.location) {
-				title = proxy.current;
+				title = src;
 			} else {
 				const current_title = contentWindow.document.title;
 
@@ -204,7 +202,6 @@ export default forwardRef(function ServiceFrame(props, ref) {
 			</div>
 			<iframe
 				className="embed"
-				src={proxied_src}
 				title="embed"
 				ref={iframe}
 				data-first-load={Number(first_load)}
