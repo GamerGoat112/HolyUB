@@ -2,7 +2,7 @@ import { CheckCircle, Error, Info, Warning } from '@mui/icons-material';
 import clsx from 'clsx';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
-import { Obfuscated } from './obfuscate';
+import { Obfuscated } from './obfuscate.js';
 
 const ANIMATION = 0.3e3;
 

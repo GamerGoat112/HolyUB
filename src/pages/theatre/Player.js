@@ -16,7 +16,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 
 import { DB_API, THEATRE_CDN } from '../../consts.js';
-import { encryptURL } from '../../cryptURL';
+import { encryptURL } from '../../cryptURL.js';
 import { Obfuscated } from '../../obfuscate.js';
 import resolve_proxy from '../../ProxyResolver.js';
 import resolveRoute from '../../resolveRoute.js';

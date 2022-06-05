@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { decryptURL } from './cryptURL';
+import { decryptURL } from './cryptURL.js';
 import { ObfuscateLayout, Obfuscated } from './obfuscate.js';
 import resolveRoute from './resolveRoute.js';
 import { ThemeA, ThemeLink } from './ThemeElements.js';

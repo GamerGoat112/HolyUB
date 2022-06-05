@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { forwardRef, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ObfuscatedA } from './obfuscate';
+import { ObfuscatedA } from './obfuscate.js';
 
 export function ThemeButton(props) {
 	const { children, className, ...attributes } = props;

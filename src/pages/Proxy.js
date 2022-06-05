@@ -5,11 +5,11 @@ import BareClient from 'bare-client';
 import clsx from 'clsx';
 import { createRef, useMemo, useRef, useState } from 'react';
 
-import { BARE_API } from '../consts';
+import { BARE_API } from '../consts.js';
 import engines from '../engines.js';
-import { Obfuscated } from '../obfuscate';
-import resolveRoute from '../resolveRoute';
-import SearchBuilder from '../SearchBuilder';
+import { Obfuscated } from '../obfuscate.js';
+import resolveRoute from '../resolveRoute.js';
+import SearchBuilder from '../SearchBuilder.js';
 import ServiceFrame from '../ServiceFrame.js';
 import textContent from '../textContent.js';
 import { ThemeInputBar, ThemeLink } from '../ThemeElements.js';
