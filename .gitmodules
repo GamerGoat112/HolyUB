@@ -2,5 +2,5 @@
 	path = public/gdata
 	url = ssh://git@git.holy.how:654/holy/games.git
 [submodule "Ultraviolet-Core"]
-	path = build-proxy/Ultraviolet-Core
+	path = scripts/Ultraviolet-Core
 	url = https://github.com/titaniumnetwork-dev/Ultraviolet-Core.git

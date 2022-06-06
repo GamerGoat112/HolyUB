@@ -86,8 +86,8 @@
 		}
 	},
 	"scripts": {
-		"build-stomp": "node build-proxy/stomp.mjs",
-		"build-ultraviolet": "node build-proxy/ultraviolet.mjs",
+		"build-stomp": "node scripts/build-stomp.js",
+		"build-ultraviolet": "node scripts/build-ultraviolet.js",
 		"start": "node scripts/start.js",
 		"build": "node scripts/build.js",
 		"test": "node scripts/test.js",
