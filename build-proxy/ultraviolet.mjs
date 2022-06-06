@@ -1,18 +1,18 @@
-import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
-import { basename, join } from 'node:path';
+import { copyFile, mkdir, rm } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
-import AdmZip from 'adm-zip';
-import fetch from 'node-fetch';
 import webpack from 'webpack';
 
 import { WEBROOT } from './output.mjs';
 
-const ARCHIVE =
-	'https://github.com/titaniumnetwork-dev/Ultraviolet-Core/archive/refs/heads/main.zip';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const extract = ['uv.handler.js', 'uv.sw.js'];
-let copy = ['sw.js', 'uv.config.js'];
+const EXTRACT = ['uv.handler.js', 'uv.sw.js'];
+const COPY = ['sw.js', 'uv.config.js'];
+const UV_CORE = join(__dirname, 'Ultraviolet-Core');
 const UV_OUTPUT = join(WEBROOT, 'uv');
 
 {
@@ -37,49 +37,28 @@ const UV_OUTPUT = join(WEBROOT, 'uv');
 	}
 }
 
-{
-	console.log('Fetching', ARCHIVE);
-
-	// Download & Extract repository ZIP
-	const request = await fetch(ARCHIVE);
-
-	if (!request.ok) {
-		console.error(
-			`Error fetching archive ${ARCHIVE}, got unexpected status ${request.status}`
-		);
-		process.exit(1);
-	}
-
-	const buffer = await request.arrayBuffer();
-
-	console.log('Extracting archive');
-
-	const zip = new AdmZip(Buffer.from(buffer));
-
-	for (const entry of zip.getEntries()) {
-		const base = basename(entry.entryName);
-
-		if (extract.includes(base)) {
-			const data = new Promise((resolve, reject) => {
-				entry.getDataAsync((data, error) => {
-					if (error) {
-						reject(error);
-					} else {
-						resolve(data);
-					}
-				});
-			});
-
-			await writeFile(join(UV_OUTPUT, base), await data);
+for (let file of EXTRACT) {
+	try {
+		await copyFile(join(UV_CORE, file), join(UV_OUTPUT, file));
+	} catch (error) {
+		if (error.code === 'ENOENT') {
+			console.error(
+				`Unable to copy ${file}. Did you forget synchronize the Ultraviolet-Core submodule?`
+			);
+			process.exit(1);
+		} else {
+			throw error;
 		}
 	}
-
-	console.log('Extracted archive');
 }
 
-for (let file of copy) {
-	await cp(join(WEBROOT, '..', 'uv', file), join(UV_OUTPUT, file));
+console.log('Extracted scripts from Ultraviolet-Core');
+
+for (let file of COPY) {
+	await copyFile(join(WEBROOT, '..', 'uv', file), join(UV_OUTPUT, file));
 }
+
+console.log('Copied local scripts');
 
 console.log('Bundling UltraViolet...');
 
