@@ -23,7 +23,8 @@
 html[data-tab='1'] {
 	.theme-input,
 	.theme-button,
-	.theme-input-bar .button .theme-input-bar input {
+	.theme-input-bar .button,
+	.theme-input-bar input {
 		&:focus-visible {
 			outline: var(--action) solid 2px;
 		}
