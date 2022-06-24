@@ -320,7 +320,7 @@ export default function Player(props) {
 							favorites,
 						});
 
-						set_favorited(true);
+						set_favorited(favorites.includes(props.id));
 					}}
 				>
 					{favorited ? <Star /> : <StarBorder />}
