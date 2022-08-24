@@ -23,7 +23,7 @@ const faq = [
 		),
 	},
 	{
-		q: <>How do I get more links?.</>,
+		q: <>How do I get more links?</>,
 		a: (
 			<>
 				<Obfuscated>You can join the</Obfuscated>{' '}
