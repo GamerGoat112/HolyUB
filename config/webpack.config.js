@@ -12,9 +12,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
@@ -57,14 +57,6 @@ const imageInlineSizeLimit = parseInt(
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
-
-// Check if Tailwind config exists
-const useTailwind = fs.existsSync(
-	path.join(paths.appPath, 'tailwind.config.js')
-);
-
-// Get the path to the uncompiled service worker (if it exists).
-const swSrc = paths.swSrc;
 
 // style files regexes
 const cssRegex = /\.css$/;
@@ -120,52 +112,8 @@ module.exports = function (webpackEnv) {
 				loader: require.resolve('css-loader'),
 				options: cssOptions,
 			},
-			{
-				// Options for PostCSS as we reference these options twice
-				// Adds vendor prefixing based on your specified browser support in
-				// package.json
-				loader: require.resolve('postcss-loader'),
-				options: {
-					postcssOptions: {
-						// Necessary for external CSS imports to work
-						// https://github.com/facebook/create-react-app/issues/2677
-						ident: 'postcss',
-						config: false,
-						plugins: !useTailwind
-							? [
-									'postcss-flexbugs-fixes',
-									[
-										'postcss-preset-env',
-										{
-											autoprefixer: {
-												flexbox: 'no-2009',
-											},
-											stage: 3,
-										},
-									],
-									// Adds PostCSS Normalize as the reset css with default options,
-									// so that it honors browserslist config in package.json
-									// which in turn let's users customize the target behavior as per their needs.
-									'postcss-normalize',
-							  ]
-							: [
-									'tailwindcss',
-									'postcss-flexbugs-fixes',
-									[
-										'postcss-preset-env',
-										{
-											autoprefixer: {
-												flexbox: 'no-2009',
-											},
-											stage: 3,
-										},
-									],
-							  ],
-					},
-					sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-				},
-			},
 		].filter(Boolean);
+
 		if (preProcessor) {
 			loaders.push(
 				{
@@ -663,19 +611,6 @@ module.exports = function (webpackEnv) {
 				resourceRegExp: /^\.\/locale$/,
 				contextRegExp: /moment$/,
 			}),
-			// Generate a service worker script that will precache, and keep up to date,
-			// the HTML & assets that are part of the webpack build.
-			isEnvProduction &&
-				fs.existsSync(swSrc) &&
-				new WorkboxWebpackPlugin.InjectManifest({
-					swSrc,
-					dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-					exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
-					// Bump up the default maximum size (2mb) that's precached,
-					// to make lazy-loading failure scenarios less likely.
-					// See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
-					maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-				}),
 			// TypeScript type checking
 			useTypeScript &&
 				new ForkTsCheckerWebpackPlugin({
@@ -729,7 +664,7 @@ module.exports = function (webpackEnv) {
 					analyzerMode: 'static',
 				}),
 			isEnvDevelopment &&
-				new (require('eslint-webpack-plugin'))({
+				new ESLintPlugin({
 					// Plugin options
 					extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
 					formatter: require.resolve('react-dev-utils/eslintFormatter'),

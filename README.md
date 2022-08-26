@@ -57,7 +57,7 @@ Protections against clickjacking and CORS prevents the website running locally f
 
 In the project directory, you can run:
 
-**npm start**
+**npm run dev**
 
 > Runs the React development server.
 
