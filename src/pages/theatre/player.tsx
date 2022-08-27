@@ -22,6 +22,7 @@ import {
 	VideogameAsset,
 } from '@mui/icons-material';
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 async function resolveSrc(
 	src: TheatreEntry['src'],
@@ -52,9 +53,10 @@ async function resolveSrc(
 	}
 }
 
-const Player: HolyPage<{
-	id: string;
-}> = ({ layout, id }) => {
+const Player: HolyPage = ({ layout }) => {
+	const [searchParams] = useSearchParams();
+	const id = searchParams.get('id')!;
+	if (!id) throw new Error('Bad ID');
 	const [favorited, setFavorited] = useState(() =>
 		layout.current!.settings.favorites.includes(id)
 	);
