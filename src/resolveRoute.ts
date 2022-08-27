@@ -1,4 +1,4 @@
-import routes from './routes.mjs';
+import routes from './routes';
 
 export default function resolveRoute(
 	dir: string,

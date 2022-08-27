@@ -1,15 +1,11 @@
 'use strict';
 
-const { join } = require('path');
-
-const paths = require('../config/paths');
-
-const ST_OUTPUT = join(paths.appPublic, 'stomp');
+const { resolve } = require('path');
 
 void (async function () {
 	const { default: Builder } = await import('stomp');
 
-	const builder = new Builder(ST_OUTPUT);
+	const builder = new Builder(resolve('public/stomp'));
 
 	console.log('Bundling Stomp...');
 	await builder.build();
