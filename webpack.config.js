@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const crypto = require('crypto');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
@@ -15,17 +16,24 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const paths = require('./config/paths');
-const modules = require('./config/modules');
-const getClientEnvironment = require('./config/env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const createEnvironmentHash = require('./config/webpack/persistentCache/createEnvironmentHash');
-
 const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
+
+const { expand } = require('dotenv-expand');
+const { config } = require('dotenv-flow');
+
+const NODE_ENV = process.env.NODE_ENV;
+if (!NODE_ENV) {
+	throw new Error(
+		'The NODE_ENV environment variable is required but was not specified.'
+	);
+}
+
+expand(config());
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -53,6 +61,20 @@ const imageInlineSizeLimit = parseInt(
 	process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
 
+const moduleFileExtensions = [
+	'web.mjs',
+	'mjs',
+	'web.js',
+	'js',
+	'web.ts',
+	'ts',
+	'web.tsx',
+	'tsx',
+	'json',
+	'web.jsx',
+	'jsx',
+];
+
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -70,9 +92,62 @@ const isEnvProductionProfile =
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
 // Get environment variables to inject into our app.
-const env = getClientEnvironment();
+// We support resolving modules according to `NODE_PATH`.
+// This lets you use absolute paths in imports inside large monorepos:
+// https://github.com/facebook/create-react-app/issues/253.
+// It works similar to `NODE_PATH` in Node itself:
+// https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders
+// Note that unlike in Node, only *relative* paths from `NODE_PATH` are honored.
+// Otherwise, we risk importing Node.js core modules into an app instead of webpack shims.
+// https://github.com/facebook/create-react-app/issues/1023#issuecomment-265344421
+// We also resolve them to make sure all tools using them work consistently.
+const appDirectory = fs.realpathSync(process.cwd());
+process.env.NODE_PATH = (process.env.NODE_PATH || '')
+	.split(path.delimiter)
+	.filter((folder) => folder && !path.isAbsolute(folder))
+	.map((folder) => path.resolve(appDirectory, folder))
+	.join(path.delimiter);
 
-const shouldUseReactRefresh = env.raw.FAST_REFRESH;
+// Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
+// injected into the application via DefinePlugin in webpack configuration.
+const REACT_APP = /^REACT_APP_/i;
+
+const envRaw = Object.keys(process.env)
+	.filter((key) => REACT_APP.test(key))
+	.reduce(
+		(env, key) => {
+			env[key] = process.env[key];
+			return env;
+		},
+		{
+			// Useful for determining whether we’re running in production mode.
+			// Most importantly, it switches React into the correct mode.
+			NODE_ENV: process.env.NODE_ENV || 'development',
+			// Useful for resolving the correct path to static assets in `public`.
+			// For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
+			// This should only be used as an escape hatch. Normally you would put
+			// images into the `src` and `import` them in code to get their paths.
+			PUBLIC_URL: '/',
+			// We support configuring the sockjs pathname during development.
+			// These settings let a developer run multiple simultaneous projects.
+			// They are used as the connection `hostname`, `pathname` and `port`
+			// in webpackHotDevClient. They are used as the `sockHost`, `sockPath`
+			// and `sockPort` options in webpack-dev-server.
+			WDS_SOCKET_HOST: process.env.WDS_SOCKET_HOST,
+			WDS_SOCKET_PATH: process.env.WDS_SOCKET_PATH,
+			WDS_SOCKET_PORT: process.env.WDS_SOCKET_PORT,
+			// Whether or not react-refresh is enabled.
+			// It is defined here so it is available in the webpackHotDevClient.
+			FAST_REFRESH: process.env.FAST_REFRESH !== 'false',
+		}
+	);
+
+const envHash = crypto.createHash('md5');
+envHash.update(JSON.stringify(envRaw));
+
+const envRawHash = envHash.digest('hex');
+
+const shouldUseReactRefresh = envRaw.FAST_REFRESH;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -95,7 +170,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 				loader: require.resolve('resolve-url-loader'),
 				options: {
 					sourceMap: isEnvProduction ? shouldUseSourceMap : !isEnvProduction,
-					root: paths.appSrc,
+					root: path.resolve('src'),
 				},
 			},
 			{
@@ -112,7 +187,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 /**
  * @type {import('webpack').Configuration}
  */
-const config = {
+const webpackConfig = {
 	target: ['browserslist'],
 	// Webpack noise constrained to errors and warnings
 	// stats: 'errors-warnings',
@@ -150,20 +225,20 @@ const config = {
 		devtoolModuleFilenameTemplate: isEnvProduction
 			? (info) =>
 					path
-						.relative(paths.appSrc, info.absoluteResourcePath)
+						.relative(path.resolve('src'), info.absoluteResourcePath)
 						.replace(/\\/g, '/')
 			: !isEnvProduction &&
 			  ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
 	},
 	cache: {
 		type: 'filesystem',
-		version: createEnvironmentHash(env.raw),
-		cacheDirectory: paths.appWebpackCache,
+		version: envRawHash,
+		cacheDirectory: path.resolve('node_modules/.cache'),
 		store: 'pack',
 		buildDependencies: {
 			defaultWebpack: ['webpack/lib/'],
 			config: [__filename],
-			tsconfig: [paths.appTsConfig],
+			tsconfig: [path.resolve('tsconfig.json')],
 		},
 	},
 	infrastructureLogging: {
@@ -217,20 +292,13 @@ const config = {
 		],
 	},
 	resolve: {
-		// This allows you to set a fallback for where webpack should look for modules.
-		// We placed these paths second because we want `node_modules` to "win"
-		// if there are any conflicts. This matches Node resolution mechanism.
-		// https://github.com/facebook/create-react-app/issues/253
-		modules: ['node_modules', paths.appNodeModules].concat(
-			modules.additionalModulePaths || []
-		),
 		// These are the reasonable defaults supported by the Node ecosystem.
 		// We also include JSX as a common component filename extension to support
 		// some tools, although we do not recommend using it, see:
 		// https://github.com/facebook/create-react-app/issues/290
 		// `web` extension prefixes have been added for better support
 		// for React Native Web.
-		extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
+		extensions: moduleFileExtensions.map((ext) => `.${ext}`),
 		alias: {
 			// Support React Native Web
 			// https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -240,7 +308,6 @@ const config = {
 				'react-dom$': 'react-dom/profiling',
 				'scheduler/tracing': 'scheduler/tracing-profiling',
 			}),
-			...(modules.webpackAliases || {}),
 		},
 		plugins: [
 			// Prevents users from importing files from outside of src/ (or node_modules/).
@@ -248,8 +315,8 @@ const config = {
 			// To fix this, we prevent you from importing files out of src/ -- if you'd like to,
 			// please link the files into your node_modules/ and let module-resolution kick in.
 			// Make sure your source files are compiled, as they will not be processed in any way.
-			new ModuleScopePlugin(paths.appSrc, [
-				paths.appPackageJson,
+			new ModuleScopePlugin(path.resolve('src'), [
+				path.resolve('package.json'),
 				reactRefreshRuntimeEntry,
 				reactRefreshWebpackPluginRuntimeEntry,
 				babelRuntimeEntry,
@@ -327,7 +394,7 @@ const config = {
 					// The preset includes JSX, Flow, TypeScript, and some ESnext features.
 					{
 						test: /\.[mc]?[jt]sx?$/,
-						include: paths.appSrc,
+						include: path.resolve('src'),
 						use: [
 							{
 								loader: 'babel-loader',
@@ -498,7 +565,7 @@ const config = {
 		// Generates an `index.html` file with the <script> injected.
 		new HtmlWebpackPlugin({
 			inject: true,
-			template: paths.appHtml,
+			template: path.resolve('public/index.html'),
 			...(isEnvProduction
 				? {
 						minify: {
@@ -527,17 +594,22 @@ const config = {
 		// <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
 		// It will be an empty string unless you specify "homepage"
 		// in `package.json`, in which case it will be the pathname of that URL.
-		new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
+		new InterpolateHtmlPlugin(HtmlWebpackPlugin, envRaw),
 		// This gives some necessary context to module not found errors, such as
 		// the requesting resource.
-		new ModuleNotFoundPlugin(paths.appPath),
+		new ModuleNotFoundPlugin(path.resolve('.')),
 		// Makes some environment variables available to the JS code, for example:
 		// if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
 		// It is absolutely essential that NODE_ENV is set to production
 		// during a production build.
 		// Otherwise React will be compiled in the very slow development mode.
 		// new webpack.DefinePlugin(env.stringified),
-		new webpack.DefinePlugin(env.stringified),
+		new webpack.DefinePlugin({
+			'process.env': Object.keys(envRaw).reduce((env, key) => {
+				env[key] = JSON.stringify(envRaw[key]);
+				return env;
+			}, {}),
+		}),
 		// Experimental hot reloading for React .
 		// https://github.com/facebook/react/tree/main/packages/react-refresh
 		!isEnvProduction &&
@@ -599,14 +671,8 @@ const config = {
 				formatter: require.resolve('react-dev-utils/eslintFormatter'),
 				eslintPath: require.resolve('eslint'),
 				failOnError: !(!isEnvProduction && emitErrorsAsWarnings),
-				context: paths.appSrc,
 				cache: true,
-				cacheLocation: path.resolve(
-					paths.appNodeModules,
-					'.cache/.eslintcache'
-				),
-				// ESLint class options
-				cwd: paths.appPath,
+				cacheLocation: path.resolve('node_modules/.cache/.eslintcache'),
 				resolvePluginsRelativeTo: __dirname,
 			}),
 		isEnvProduction &&
@@ -627,13 +693,15 @@ const config = {
 							stage: webpack.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
 						},
 						(assets) => {
-							let content = fs.readFileSync(paths.uvConfig).toString();
+							let content = fs
+								.readFileSync(path.resolve('public/uv/uv.config.js'))
+								.toString();
 
 							content = content.replace(
 								/process\.env\.(\w+)/g,
 								(_match, target) =>
-									target in env.raw
-										? JSON.stringify(env.raw[target])
+									target in envRaw
+										? JSON.stringify(envRaw[target])
 										: 'undefined'
 							);
 
@@ -651,4 +719,4 @@ const config = {
 	performance: false,
 };
 
-module.exports = config;
+module.exports = webpackConfig;
