@@ -2,6 +2,7 @@
 	"name": "website",
 	"version": "0.0.1",
 	"license": "GPL-3.0",
+	"private": true,
 	"repository": {
 		"type": "git",
 		"url": "https://git.holy.how/holy/website.git"
@@ -11,6 +12,7 @@
 		"clsx": "^1.2.1",
 		"crypto-js": "^4.1.1",
 		"css-loader": "^6.7.1",
+		"dotenv-flow": "^3.2.0",
 		"js-cookie": "^3.0.1",
 		"nord": "^0.2.1",
 		"random-seed": "^0.3.0",
@@ -39,7 +41,6 @@
 		"browserslist": "^4.21.3",
 		"case-sensitive-paths-webpack-plugin": "^2.4.0",
 		"css-minimizer-webpack-plugin": "^4.0.0",
-		"dotenv": "^16.0.1",
 		"dotenv-expand": "^8.0.3",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -62,11 +63,11 @@
 		"stomp": "github:sysce/stomp",
 		"style-loader": "^3.3.1",
 		"terser-webpack-plugin": "^5.3.5",
-		"ts-loader": "^9.3.1",
-		"typescript": "^4.8.2",
+		"typescript": "4.8",
 		"ultraviolet": "github:titaniumnetwork-dev/Ultraviolet",
 		"webpack": "^5.74.0",
 		"webpack-bundle-analyzer": "^4.6.1",
+		"webpack-cli": "^4.10.0",
 		"webpack-dev-server": "^4.10.0",
 		"webpack-manifest-plugin": "^5.0.0"
 	},
@@ -76,8 +77,8 @@
 	"scripts": {
 		"build-stomp": "node scripts/build-stomp.js",
 		"build-ultraviolet": "node scripts/build-ultraviolet.js",
-		"dev": "node scripts/start.js",
-		"build": "node scripts/build.js",
+		"dev": "NODE_ENV=development npx webpack serve",
+		"build": "NODE_ENV=production npx webpack",
 		"lint": "eslint ./src/"
 	},
 	"eslintConfig": {
