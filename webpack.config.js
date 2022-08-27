@@ -15,7 +15,6 @@ import path from 'path';
 import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin.js';
 import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
 import ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin.js';
-import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin.js';
 import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent.js';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
@@ -33,21 +32,6 @@ expand(config());
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-
-const require = (await import('module')).createRequire(import.meta.url);
-
-const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
-const reactRefreshWebpackPluginRuntimeEntry = require.resolve(
-	'@pmmmwh/react-refresh-webpack-plugin'
-);
-const babelRuntimeEntry = require.resolve('babel-preset-react-app');
-const babelRuntimeEntryHelpers = require.resolve(
-	'@babel/runtime/helpers/esm/assertThisInitialized',
-	{ paths: [babelRuntimeEntry] }
-);
-const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
-	paths: [babelRuntimeEntry],
-});
 
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
@@ -150,21 +134,21 @@ const shouldUseReactRefresh = envRaw.FAST_REFRESH;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
 	const loaders = [
-		!isEnvProduction && require.resolve('style-loader'),
+		!isEnvProduction && 'style-loader',
 		isEnvProduction && {
 			loader: MiniCssExtractPlugin.loader,
 			// css is located in `static/css`, use '../../' to locate index.html folder
 			// in production `paths.publicUrlOrPath` can be a relative path
 		},
 		{
-			loader: require.resolve('css-loader'),
+			loader: 'css-loader',
 			options: cssOptions,
 		},
 		{
 			// Options for PostCSS as we reference these options twice
 			// Adds vendor prefixing based on your specified browser support in
 			// package.json
-			loader: require.resolve('postcss-loader'),
+			loader: 'postcss-loader',
 			options: {
 				postcssOptions: {
 					// Necessary for external CSS imports to work
@@ -196,14 +180,14 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 	if (preProcessor) {
 		loaders.push(
 			{
-				loader: require.resolve('resolve-url-loader'),
+				loader: 'resolve-url-loader',
 				options: {
 					sourceMap: isEnvProduction ? shouldUseSourceMap : !isEnvProduction,
 					root: path.resolve('src'),
 				},
 			},
 			{
-				loader: require.resolve(preProcessor),
+				loader: preProcessor,
 				options: {
 					sourceMap: true,
 				},
@@ -341,21 +325,6 @@ const webpackConfig = {
 				'scheduler/tracing': 'scheduler/tracing-profiling',
 			}),
 		},
-		plugins: [
-			// Prevents users from importing files from outside of src/ (or node_modules/).
-			// This often causes confusion because we only process files within src/ with babel.
-			// To fix this, we prevent you from importing files out of src/ -- if you'd like to,
-			// please link the files into your node_modules/ and let module-resolution kick in.
-			// Make sure your source files are compiled, as they will not be processed in any way.
-			new ModuleScopePlugin(path.resolve('src'), [
-				path.resolve('package.json'),
-				reactRefreshRuntimeEntry,
-				reactRefreshWebpackPluginRuntimeEntry,
-				babelRuntimeEntry,
-				babelRuntimeEntryHelpers,
-				babelRuntimeRegenerator,
-			]),
-		],
 	},
 	module: {
 		strictExportPresence: true,
@@ -365,7 +334,7 @@ const webpackConfig = {
 				enforce: 'pre',
 				exclude: /@babel(?:\/|\\{1,2})runtime/,
 				test: /\.(js|mjs|jsx|ts|tsx|css)$/,
-				loader: require.resolve('source-map-loader'),
+				loader: 'source-map-loader',
 			},
 			{
 				// "oneOf" will traverse all following loaders until one will
@@ -400,7 +369,7 @@ const webpackConfig = {
 						test: /\.svg$/,
 						use: [
 							{
-								loader: require.resolve('@svgr/webpack'),
+								loader: '@svgr/webpack',
 								options: {
 									prettier: false,
 									svgo: false,
@@ -412,7 +381,7 @@ const webpackConfig = {
 								},
 							},
 							{
-								loader: require.resolve('file-loader'),
+								loader: 'file-loader',
 								options: {
 									name: 'static/media/[name].[hash].[ext]',
 								},
@@ -431,18 +400,18 @@ const webpackConfig = {
 							{
 								loader: 'babel-loader',
 								options: {
-									customize: require.resolve(
-										'babel-preset-react-app/webpack-overrides'
+									customize: path.resolve(
+										'node_modules/babel-preset-react-app/webpack-overrides.js'
 									),
 									presets: [
 										[
-											require.resolve('@babel/preset-typescript'),
+											'@babel/preset-typescript',
 											{
 												allowDeclareFields: true,
 											},
 										],
 										[
-											require.resolve('babel-preset-react-app'),
+											'babel-preset-react-app',
 											{
 												runtime: 'automatic',
 											},
@@ -452,7 +421,7 @@ const webpackConfig = {
 									plugins: [
 										!isEnvProduction &&
 											shouldUseReactRefresh &&
-											require.resolve('react-refresh/babel'),
+											'react-refresh/babel',
 									].filter(Boolean),
 									// This is a feature of `babel-loader` for webpack (not Babel itself).
 									// It enables caching results in ./node_modules/.cache/babel-loader/
