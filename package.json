@@ -1,6 +1,6 @@
 {
 	"name": "website",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"license": "GPL-3.0",
 	"type": "module",
 	"private": true,
@@ -18,7 +18,8 @@
 		"nord": "^0.2.1",
 		"random-seed": "^0.3.0",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"serve": "^14.0.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.13",
@@ -85,6 +86,7 @@
 	"scripts": {
 		"build-stomp": "node scripts/build-stomp.js",
 		"build-ultraviolet": "node scripts/build-ultraviolet.js",
+		"start": "serve ./build/",
 		"dev": "NODE_ENV=development webpack serve",
 		"build": "NODE_ENV=production webpack",
 		"lint": "eslint ./src/"

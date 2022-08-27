@@ -57,14 +57,18 @@ Protections against clickjacking and CORS prevents the website running locally f
 
 In the project directory, you can run:
 
-**npm run dev**
+## **npm run dev**
 
-> Runs the React development server.
+> Starts the React development server.
 
 By default, the development server listens on [http://localhost:3000](http://localhost:3000).
 
-**npm run build**
+## **npm run build**
 
-> Builds and obfuscates the React app.
+> Builds the React app.
+
+## **npm start**
+
+> Starts the static webserver.
 
 Output is found in the `build` folder.
