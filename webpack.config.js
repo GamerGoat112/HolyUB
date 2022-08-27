@@ -8,7 +8,6 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import { expand } from 'dotenv-expand';
 import { config } from 'dotenv-flow';
 import ESLintPlugin from 'eslint-webpack-plugin';
-import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -21,12 +20,10 @@ import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 
-const NODE_ENV = process.env.NODE_ENV;
-if (!NODE_ENV) {
+if (!process.env.NODE_ENV)
 	throw new Error(
 		'The NODE_ENV environment variable is required but was not specified.'
 	);
-}
 
 expand(config());
 
@@ -69,26 +66,6 @@ const isEnvProduction = process.env.NODE_ENV === 'production';
 // passed into alias object. Uses a flag if passed into the build command
 const isEnvProductionProfile =
 	isEnvProduction && process.argv.includes('--profile');
-
-// We will provide `paths.publicUrlOrPath` to our app
-// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
-// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
-// Get environment variables to inject into our app.
-// We support resolving modules according to `NODE_PATH`.
-// This lets you use absolute paths in imports inside large monorepos:
-// https://github.com/facebook/create-react-app/issues/253.
-// It works similar to `NODE_PATH` in Node itself:
-// https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders
-// Note that unlike in Node, only *relative* paths from `NODE_PATH` are honored.
-// Otherwise, we risk importing Node.js core modules into an app instead of webpack shims.
-// https://github.com/facebook/create-react-app/issues/1023#issuecomment-265344421
-// We also resolve them to make sure all tools using them work consistently.
-const appDirectory = fs.realpathSync(process.cwd());
-process.env.NODE_PATH = (process.env.NODE_PATH || '')
-	.split(path.delimiter)
-	.filter((folder) => folder && !path.isAbsolute(folder))
-	.map((folder) => path.resolve(appDirectory, folder))
-	.join(path.delimiter);
 
 // Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
 // injected into the application via DefinePlugin in webpack configuration.
