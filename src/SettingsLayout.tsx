@@ -1,7 +1,7 @@
 import '../styles/Settings.scss';
-import type { HolyPage } from '../App';
-import { MenuTab } from '../MainLayout';
-import resolveRoute from '../resolveRoute';
+import type { HolyPage } from './App';
+import { MenuTab } from './MainLayout';
+import resolveRoute from './resolveRoute';
 import {
 	Brush,
 	BrushOutlined,
@@ -11,7 +11,7 @@ import {
 } from '@mui/icons-material';
 import { Outlet } from 'react-router-dom';
 
-const Settings: HolyPage = () => {
+const SettingsLayout: HolyPage = () => {
 	return (
 		<>
 			<main className="settings">
@@ -42,4 +42,4 @@ const Settings: HolyPage = () => {
 	);
 };
 
-export default Settings;
+export default SettingsLayout;
