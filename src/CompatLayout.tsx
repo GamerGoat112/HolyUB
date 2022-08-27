@@ -111,9 +111,13 @@ export const Script = forwardRef<{ promise: Promise<void> }, { src: string }>(
 			[]
 		);
 
-		useImperativeHandle(ref, () => ({
-			promise,
-		}));
+		useImperativeHandle(
+			ref,
+			() => ({
+				promise,
+			}),
+			[promise]
+		);
 
 		useEffect(() => {
 			const [promise, script] = loadScript(props.src);
