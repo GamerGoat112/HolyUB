@@ -2,6 +2,7 @@
 	"name": "website",
 	"version": "0.0.1",
 	"license": "GPL-3.0",
+	"type": "module",
 	"private": true,
 	"repository": {
 		"type": "git",
@@ -37,7 +38,7 @@
 		"babel-loader": "^8.2.5",
 		"babel-plugin-named-asset-import": "^0.3.8",
 		"babel-preset-react-app": "^10.0.1",
-		"basic-webpack-obfuscator": "git+https://git.holy.how/holy/basic-webpack-obfuscator",
+		"basic-webpack-obfuscator": "file:../basic-webpack-obfuscator",
 		"browserslist": "^4.21.3",
 		"case-sensitive-paths-webpack-plugin": "^2.4.0",
 		"copy-webpack-plugin": "^11.0.0",
@@ -82,8 +83,8 @@
 	"scripts": {
 		"build-stomp": "node scripts/build-stomp.js",
 		"build-ultraviolet": "node scripts/build-ultraviolet.js",
-		"dev": "NODE_ENV=development npx webpack serve",
-		"build": "NODE_ENV=production npx webpack",
+		"dev": "NODE_ENV=development webpack serve",
+		"build": "NODE_ENV=production webpack",
 		"lint": "eslint ./src/"
 	},
 	"eslintConfig": {

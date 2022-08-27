@@ -1,32 +1,26 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
-const crypto = require('crypto');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const BundleAnalyzerPlugin =
-	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-
-const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
-const HolyUnblockerRouterPlugin = require('./router');
-
-const { expand } = require('dotenv-expand');
-const { config } = require('dotenv-flow');
+import HolyUnblockerRouterPlugin from './router.js';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import BasicWebpackObfuscator from 'basic-webpack-obfuscator';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import { createHash } from 'crypto';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import { expand } from 'dotenv-expand';
+import { config } from 'dotenv-flow';
+import ESLintPlugin from 'eslint-webpack-plugin';
+import fs from 'fs';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin.js';
+import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
+import ModuleNotFoundPlugin from 'react-dev-utils/ModuleNotFoundPlugin.js';
+import ModuleScopePlugin from 'react-dev-utils/ModuleScopePlugin.js';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent.js';
+import TerserPlugin from 'terser-webpack-plugin';
+import webpack from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
@@ -39,6 +33,8 @@ expand(config());
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+
+const require = (await import('module')).createRequire(import.meta.url);
 
 const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
 const reactRefreshWebpackPluginRuntimeEntry = require.resolve(
@@ -144,7 +140,7 @@ const envRaw = Object.keys(process.env)
 		}
 	);
 
-const envHash = crypto.createHash('md5');
+const envHash = createHash('md5');
 envHash.update(JSON.stringify(envRaw));
 
 const envRawHash = envHash.digest('hex');
@@ -222,6 +218,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
  */
 const webpackConfig = {
 	target: ['browserslist'],
+	devServer: {
+		port: 3000,
+	},
 	// Webpack noise constrained to errors and warnings
 	// stats: 'errors-warnings',
 	mode: isEnvProduction ? 'production' : 'development',
@@ -270,7 +269,7 @@ const webpackConfig = {
 		store: 'pack',
 		buildDependencies: {
 			defaultWebpack: ['webpack/lib/'],
-			config: [__filename],
+			config: [path.resolve('webpack.config.js')],
 			tsconfig: [path.resolve('tsconfig.json')],
 		},
 	},
@@ -471,16 +470,13 @@ const webpackConfig = {
 					{
 						test: /\.(js|mjs)$/,
 						exclude: /@babel(?:\/|\\{1,2})runtime/,
-						loader: require.resolve('babel-loader'),
+						loader: 'babel-loader',
 						options: {
 							babelrc: false,
 							configFile: false,
 							compact: false,
 							presets: [
-								[
-									require.resolve('babel-preset-react-app/dependencies'),
-									{ helpers: true },
-								],
+								['babel-preset-react-app/dependencies', { helpers: true }],
 							],
 							cacheDirectory: true,
 							// See #6846 for context on why cacheCompression is disabled
@@ -709,12 +705,11 @@ const webpackConfig = {
 			new ESLintPlugin({
 				// Plugin options
 				extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-				formatter: require.resolve('react-dev-utils/eslintFormatter'),
-				eslintPath: require.resolve('eslint'),
+				formatter: 'react-dev-utils/eslintFormatter',
+				eslintPath: 'eslint',
 				failOnError: !(!isEnvProduction && emitErrorsAsWarnings),
 				cache: true,
 				cacheLocation: path.resolve('node_modules/.cache/.eslintcache'),
-				resolvePluginsRelativeTo: __dirname,
 			}),
 		{
 			/**
@@ -726,23 +721,21 @@ const webpackConfig = {
 					compilation.hooks.processAssets.tap(
 						{
 							name: 'WebpackObfuscator',
-							stage: webpack.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+							stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
 						},
 						(assets) => {
-							let content = fs
-								.readFileSync(path.resolve('public/uv/uv.config.js'))
-								.toString();
+							const config = assets['uv/uv.config.js'];
 
-							content = content.replace(
-								/process\.env\.(\w+)/g,
-								(_match, target) =>
+							if (!config) return;
+
+							const content = config.buffer().toString();
+
+							assets['uv/uv.config.js'] = new webpack.sources.RawSource(
+								content.replace(/process\.env\.(\w+)/g, (_match, target) =>
 									target in envRaw
 										? JSON.stringify(envRaw[target])
 										: 'undefined'
-							);
-
-							assets['uv/uv.config.js'] = new webpack.sources.RawSource(
-								content
+								)
 							);
 						}
 					);
@@ -761,4 +754,4 @@ const webpackConfig = {
 	performance: false,
 };
 
-module.exports = webpackConfig;
+export default webpackConfig;

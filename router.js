@@ -1,12 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-// eslint-disable-next-line strict
-'use strict';
+import routes from './src/routes.js';
+import path from 'path';
+import webpack from 'webpack';
 
-const webpack = require('webpack');
-const path = require('path');
-const routes = require('./src/routes.js');
-
-class HolyUnblockerRouterPlugin {
+export default class HolyUnblockerRouterPlugin {
 	/**
 	 *
 	 * @param {import('webpack').Compiler} compiler
@@ -64,5 +60,3 @@ class HolyUnblockerRouterPlugin {
 		);
 	}
 }
-
-module.exports = HolyUnblockerRouterPlugin;
