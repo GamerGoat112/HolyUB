@@ -20,8 +20,10 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const { default: BasicWebpackObfuscator } = require('basic-webpack-obfuscator');
+const HolyUnblockerRouterPlugin = require('./router');
 
 const { expand } = require('dotenv-expand');
 const { config } = require('dotenv-flow');
@@ -161,6 +163,37 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 		{
 			loader: require.resolve('css-loader'),
 			options: cssOptions,
+		},
+		{
+			// Options for PostCSS as we reference these options twice
+			// Adds vendor prefixing based on your specified browser support in
+			// package.json
+			loader: require.resolve('postcss-loader'),
+			options: {
+				postcssOptions: {
+					// Necessary for external CSS imports to work
+					// https://github.com/facebook/create-react-app/issues/2677
+					ident: 'postcss',
+					config: false,
+					plugins: [
+						'postcss-flexbugs-fixes',
+						[
+							'postcss-preset-env',
+							{
+								autoprefixer: {
+									flexbox: 'no-2009',
+								},
+								stage: 3,
+							},
+						],
+						// Adds PostCSS Normalize as the reset css with default options,
+						// so that it honors browserslist config in package.json
+						// which in turn let's users customize the target behavior as per their needs.
+						'postcss-normalize',
+					],
+				},
+				sourceMap: isEnvProduction ? shouldUseSourceMap : true,
+			},
 		},
 	].filter(Boolean);
 
@@ -583,6 +616,14 @@ const webpackConfig = {
 				  }
 				: {}),
 		}),
+		new CopyPlugin({
+			patterns: [
+				{
+					from: './public',
+					filter: (file) => file !== path.resolve('public/index.html'),
+				},
+			],
+		}),
 		// Inlines the webpack runtime script. This script is too small to warrant
 		// a network request.
 		// https://github.com/facebook/create-react-app/issues/5358
@@ -675,11 +716,6 @@ const webpackConfig = {
 				cacheLocation: path.resolve('node_modules/.cache/.eslintcache'),
 				resolvePluginsRelativeTo: __dirname,
 			}),
-		isEnvProduction &&
-			new BasicWebpackObfuscator({
-				sourceMap: true,
-				compact: true,
-			}),
 		{
 			/**
 			 *
@@ -713,6 +749,12 @@ const webpackConfig = {
 				});
 			},
 		},
+		new HolyUnblockerRouterPlugin(),
+		isEnvProduction &&
+			new BasicWebpackObfuscator({
+				sourceMap: true,
+				compact: true,
+			}),
 	].filter(Boolean),
 	// Turn off performance processing because we utilize
 	// our own hints via the FileSizeReporter

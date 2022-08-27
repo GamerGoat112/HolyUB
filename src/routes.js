@@ -1,3 +1,6 @@
+// eslint-disable-next-line strict
+'use strict';
+
 const routes = [
 	{
 		dir: '/',
@@ -21,4 +24,4 @@ const routes = [
 	},
 ];
 
-export default routes;
+module.exports = routes;

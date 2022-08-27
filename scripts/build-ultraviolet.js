@@ -1,18 +1,12 @@
 'use strict';
 
 const { copyFile, mkdir, rm } = require('fs/promises');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const { promisify } = require('util');
-
 const webpack = require('webpack');
-const { appSrc } = require('../config/paths');
-
-const paths = require('../config/paths');
 
 const EXTRACT = ['uv.handler.js', 'uv.sw.js'];
 const COPY = ['sw.js', 'uv.config.js'];
-const UV_CORE = join(__dirname, 'Ultraviolet-Core');
-const UV_OUTPUT = join(paths.appPublic, 'uv');
 
 void (async function () {
 	{
@@ -21,10 +15,10 @@ void (async function () {
 		while (true) {
 			try {
 				if (remove) {
-					await rm(UV_OUTPUT, { recursive: true });
+					await rm('public/uv', { recursive: true });
 				}
 
-				await mkdir(UV_OUTPUT);
+				await mkdir('public/uv');
 				break;
 			} catch (error) {
 				if (error.code === 'EEXIST') {
@@ -39,7 +33,10 @@ void (async function () {
 
 	for (const file of EXTRACT) {
 		try {
-			await copyFile(join(UV_CORE, file), join(UV_OUTPUT, file));
+			await copyFile(
+				join('scripts/Ultraviolet-Core', file),
+				join('public/uv', file)
+			);
 		} catch (error) {
 			if (error.code === 'ENOENT') {
 				console.error(
@@ -55,7 +52,7 @@ void (async function () {
 	console.log('Extracted scripts from Ultraviolet-Core');
 
 	for (const file of COPY) {
-		await copyFile(join(appSrc, 'uv', file), join(UV_OUTPUT, file));
+		await copyFile(resolve('uv', file), join('public/uv', file));
 	}
 
 	console.log('Copied local scripts');
@@ -66,7 +63,7 @@ void (async function () {
 		mode: 'production',
 		entry: 'ultraviolet/rewrite/index.js',
 		output: {
-			path: UV_OUTPUT,
+			path: resolve('public/uv'),
 			filename: 'uv.bundle.js',
 		},
 	});
