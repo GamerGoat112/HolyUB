@@ -1,74 +1,70 @@
-'use strict';
-
-const { copyFile, mkdir, rm } = require('fs/promises');
-const { join, resolve } = require('path');
-const { promisify } = require('util');
-const webpack = require('webpack');
+import { copyFile, mkdir, rm } from 'fs/promises';
+import { join, resolve } from 'path';
+import { promisify } from 'util';
+import webpack from 'webpack';
 
 const EXTRACT = ['uv.handler.js', 'uv.sw.js'];
 const COPY = ['sw.js', 'uv.config.js'];
 
-void (async function () {
-	{
-		let remove = false;
+{
+	let remove = false;
 
-		while (true) {
-			try {
-				if (remove) {
-					await rm('public/uv', { recursive: true });
-				}
-
-				await mkdir('public/uv');
-				break;
-			} catch (error) {
-				if (error.code === 'EEXIST') {
-					remove = true;
-				} else {
-					console.error(error);
-					process.exit(1);
-				}
-			}
-		}
-	}
-
-	for (const file of EXTRACT) {
+	while (true) {
 		try {
-			await copyFile(
-				join('scripts/Ultraviolet-Core', file),
-				join('public/uv', file)
-			);
+			if (remove) {
+				await rm('public/uv', { recursive: true });
+			}
+
+			await mkdir('public/uv');
+			break;
 		} catch (error) {
-			if (error.code === 'ENOENT') {
-				console.error(
-					`Unable to copy ${file}. Did you forget synchronize the Ultraviolet-Core submodule?`
-				);
-				process.exit(1);
+			if (error.code === 'EEXIST') {
+				remove = true;
 			} else {
-				throw error;
+				console.error(error);
+				process.exit(1);
 			}
 		}
 	}
+}
 
-	console.log('Extracted scripts from Ultraviolet-Core');
-
-	for (const file of COPY) {
-		await copyFile(resolve('uv', file), join('public/uv', file));
+for (const file of EXTRACT) {
+	try {
+		await copyFile(
+			join('scripts/Ultraviolet-Core', file),
+			join('public/uv', file)
+		);
+	} catch (error) {
+		if (error.code === 'ENOENT') {
+			console.error(
+				`Unable to copy ${file}. Did you forget synchronize the Ultraviolet-Core submodule?`
+			);
+			process.exit(1);
+		} else {
+			throw error;
+		}
 	}
+}
 
-	console.log('Copied local scripts');
+console.log('Extracted scripts from Ultraviolet-Core');
 
-	console.log('Bundling UltraViolet...');
+for (const file of COPY) {
+	await copyFile(resolve('uv', file), join('public/uv', file));
+}
 
-	const compiler = webpack({
-		mode: 'production',
-		entry: 'ultraviolet/rewrite/index.js',
-		output: {
-			path: resolve('public/uv'),
-			filename: 'uv.bundle.js',
-		},
-	});
+console.log('Copied local scripts');
 
-	await promisify(compiler.run.bind(compiler))();
+console.log('Bundling UltraViolet...');
 
-	console.log('Bundle created');
-})();
+const compiler = webpack({
+	mode: 'production',
+	entry: 'ultraviolet/rewrite/index.js',
+	output: {
+		path: resolve('public/uv'),
+		filename: 'uv.bundle.js',
+	},
+});
+
+await promisify(compiler.run.bind(compiler))();
+
+console.log('Bundle created');
