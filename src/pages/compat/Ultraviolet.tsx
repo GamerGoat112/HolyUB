@@ -21,11 +21,11 @@ interface UVConfig {
 
 declare const __uv$config: UVConfig;
 
-export default function Ultraviolet({
+const Ultraviolet = ({
 	compatLayout,
 }: {
 	compatLayout: RefObject<CompatLayoutRef>;
-}) {
+}) => {
 	const uvBundle = useRef<ScriptsRef | null>(null);
 
 	useEffect(() => {
@@ -92,4 +92,6 @@ export default function Ultraviolet({
 			Loading <Obfuscated>Ultraviolet</Obfuscated>...
 		</main>
 	);
-}
+};
+
+export default Ultraviolet;

@@ -1,46 +1,66 @@
+import type { CompatLayoutRef, ScriptRef } from '../../CompatLayout';
 import { Script } from '../../CompatLayout';
 import { Obfuscated } from '../../obfuscate';
+import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Flash(props) {
-	const player = useRef();
-	const container = useRef();
+interface RufflePlayerElement extends HTMLElement {
+	load(data: { url: string }): void;
+	remove(): void;
+}
+
+declare const RufflePlayer: {
+	newest(): {
+		createPlayer(): RufflePlayerElement;
+	};
+};
+
+const Flash = ({
+	compatLayout,
+}: {
+	compatLayout: RefObject<CompatLayoutRef>;
+}) => {
+	const container = useRef<HTMLElement | null>(null);
+	const ruffleBundle = useRef<ScriptRef | null>(null);
 	const [ruffleLoaded, setRuffleLoaded] = useState(false);
-	const ruffleBundle = useRef();
 
 	useEffect(() => {
+		let player: RufflePlayerElement | undefined;
+
 		(async function () {
-			let errorCause;
+			if (!ruffleBundle.current || !container.current) return;
+
+			let errorCause: string | undefined;
 
 			try {
 				errorCause = 'Error loading Ruffle player.';
 				await ruffleBundle.current.promise;
 				errorCause = undefined;
 
-				const ruffle = global.RufflePlayer.newest();
-				player.current = ruffle.createPlayer();
-				container.current.append(player.current);
+				const ruffle = RufflePlayer.newest();
+				player = ruffle.createPlayer();
+				container.current.append(player);
 
-				player.current.addEventListener('loadeddata', () => {
+				player.addEventListener('loadeddata', () => {
 					setRuffleLoaded(true);
 				});
 
-				player.current.addEventListener('error', (event) => {
+				player.addEventListener('error', (event) => {
 					throw event.error;
 				});
 
-				player.current.load({
-					url: props.compatLayout.current.destination.toString(),
+				player.load({
+					url: compatLayout.current!.destination.toString(),
 				});
 			} catch (error) {
-				props.compatLayout.current.report(error, errorCause, 'Rammerhead');
+				compatLayout.current!.report(error, errorCause, 'Rammerhead');
 			}
 		})();
 
 		return () => {
-			player.current.remove();
+			player?.remove();
 		};
-	}, [props.compatLayout, ruffleBundle]);
+	}, [compatLayout, ruffleBundle]);
 
 	return (
 		<main
@@ -56,4 +76,6 @@ export default function Flash(props) {
 			)}
 		</main>
 	);
-}
+};
+
+export default Flash;

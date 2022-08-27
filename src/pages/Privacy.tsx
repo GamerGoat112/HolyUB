@@ -2,7 +2,7 @@ import { ThemeLink } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
 
-export default function Privacy() {
+const Privacy = () => {
 	return (
 		<main>
 			<p>
@@ -56,4 +56,6 @@ export default function Privacy() {
 			</p>
 		</main>
 	);
-}
+};
+
+export default Privacy;

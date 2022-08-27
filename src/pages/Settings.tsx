@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { Outlet } from 'react-router-dom';
 
-export default function Settings() {
+const Settings = () => {
 	return (
 		<>
 			<main className="settings">
@@ -39,4 +39,6 @@ export default function Settings() {
 			</main>
 		</>
 	);
-}
+};
+
+export default Settings;
