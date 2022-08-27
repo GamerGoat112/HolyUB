@@ -22,13 +22,7 @@ import {
 	WebAsset,
 } from '@mui/icons-material';
 import type { ComponentType, ReactNode, SVGAttributes } from 'react';
-import {
-	forwardRef,
-	useEffect,
-	useImperativeHandle,
-	useRef,
-	useState,
-} from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 function Hat(props: ComponentType<SVGAttributes<{}>>) {
@@ -98,7 +92,6 @@ export default forwardRef<{
 	expanded: boolean;
 	setExpanded: (state: boolean | ((prevState: boolean) => boolean)) => void;
 }>(function Layout(props, ref) {
-	const nav = useRef();
 	const [expanded, setExpanded] = useState(false);
 
 	useImperativeHandle(
@@ -133,7 +126,7 @@ export default forwardRef<{
 	return (
 		<>
 			<ObfuscateLayout />
-			<nav ref={nav} className="fixed-wide">
+			<nav className="fixed-wide">
 				<div className="button" onClick={() => setExpanded(true)}>
 					<Menu />
 				</div>
