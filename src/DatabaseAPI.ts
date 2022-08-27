@@ -1,20 +1,16 @@
+export interface DatabaseError extends Error {
+	statusCode: number;
+}
+
 export default class DatabaseAPI {
-	/**
-	 *
-	 * @param {string} server
-	 * @param {AbortSignal} [signal]
-	 */
-	constructor(server, signal) {
+	private server: string;
+	private signal?: AbortSignal;
+	constructor(server: string, signal?: AbortSignal) {
 		this.server = server;
 		this.signal = signal;
 	}
-	/**
-	 *
-	 * @param {object} params
-	 * @returns {object}
-	 */
-	sortParams(params) {
-		const result = {};
+	sortParams(params: Record<string, string>) {
+		const result: Record<string, string> = {};
 
 		for (const param in params) {
 			switch (typeof params[param]) {
@@ -29,13 +25,7 @@ export default class DatabaseAPI {
 
 		return result;
 	}
-	/**
-	 *
-	 * @param {string} url
-	 * @param {object} init
-	 * @returns
-	 */
-	async fetch(url, init = {}) {
+	async fetch<JSONData>(url: string, init: RequestInit = {}) {
 		const outgoing = await fetch(new URL(url, this.server), {
 			...init,
 			signal: this.signal,
@@ -44,11 +34,11 @@ export default class DatabaseAPI {
 		const json = await outgoing.json();
 
 		if (!outgoing.ok) {
-			const error = new Error(json.message);
+			const error: Partial<DatabaseError> = new Error(json.message);
 			error.statusCode = json.statusCode;
 			throw error;
 		}
 
-		return json;
+		return json as JSONData;
 	}
 }

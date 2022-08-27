@@ -1,9 +1,9 @@
 import './styles/App.scss';
-import CompatLayout from './CompatLayout.js';
-import Layout from './Layout.js';
-import MainLayout from './MainLayout.js';
-import categories from './pages/theatre/games/categories.js';
-import resolveRoute from './resolveRoute.js';
+import CompatLayout from './CompatLayout';
+import Layout from './Layout';
+import MainLayout from './MainLayout';
+import categories from './pages/theatre/games/categories';
+import resolveRoute from './resolveRoute';
 import { Suspense, createRef, lazy } from 'react';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 

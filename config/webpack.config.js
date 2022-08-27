@@ -148,7 +148,7 @@ module.exports = function (webpackEnv) {
 			: isEnvDevelopment && 'cheap-module-source-map',
 		// These are the "entry points" to our application.
 		// This means they will be the "root" imports that are included in JS bundle.
-		entry: paths.appIndexJs,
+		entry: './src/index.tsx',
 		output: {
 			// The build folder.
 			path: paths.appBuild,
@@ -288,6 +288,11 @@ module.exports = function (webpackEnv) {
 		module: {
 			strictExportPresence: true,
 			rules: [
+				{
+					test: /\.tsx?$/,
+					use: 'ts-loader',
+					exclude: /node_modules/,
+				},
 				// Handle node_modules packages that contain sourcemaps
 				shouldUseSourceMap && {
 					enforce: 'pre',

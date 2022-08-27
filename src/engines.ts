@@ -1,4 +1,9 @@
-const engines = [
+export interface Engine {
+	name: string;
+	format: string;
+}
+
+const engines: Engine[] = [
 	{
 		name: 'Google',
 		format: 'https://www.google.com/search?q=%s',

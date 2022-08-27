@@ -1,9 +1,12 @@
-import routes from './routes.js';
-import process from 'process';
+import routes from './routes.mjs';
 
-export default function resolveRoute(dir, page, absolute = true) {
-	let pages;
-	let routeI;
+export default function resolveRoute(
+	dir: string,
+	page: string,
+	absolute = true
+) {
+	let pages: string[] | void;
+	let routeI: number;
 
 	for (routeI = 0; routeI < routes.length; routeI++) {
 		const route = routes[routeI];

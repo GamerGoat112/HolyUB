@@ -1,6 +1,6 @@
 import '../styles/Settings.scss';
-import { MenuTab } from '../MainLayout.js';
-import resolveRoute from '../resolveRoute.js';
+import { MenuTab } from '../MainLayout';
+import resolveRoute from '../resolveRoute';
 import {
 	Brush,
 	BrushOutlined,

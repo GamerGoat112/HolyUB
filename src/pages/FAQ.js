@@ -1,6 +1,6 @@
-import { ThemeLink } from '../ThemeElements.js';
-import faq from '../faq.js';
-import resolveRoute from '../resolveRoute.js';
+import { ThemeLink } from '../ThemeElements';
+import faq from '../faq';
+import resolveRoute from '../resolveRoute';
 
 export default function FAQ() {
 	const sections = [];

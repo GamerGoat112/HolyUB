@@ -1,8 +1,8 @@
-import { ObfuscatedThemeA } from '../ThemeElements.js';
-import { HU_DISCORD_URL } from '../consts.js';
-import { Obfuscated } from '../obfuscate.js';
+import { ObfuscatedThemeA } from '../ThemeElements';
+import { HU_DISCORD_URL } from '../consts';
+import { Obfuscated } from '../obfuscate';
 
-export default function Contact(props) {
+export default function Contact() {
 	return (
 		<main className="legal contact">
 			<h1>Contact:</h1>

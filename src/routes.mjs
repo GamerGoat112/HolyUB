@@ -1,4 +1,4 @@
-module.exports = [
+const routes = [
 	{
 		dir: '/',
 		pages: ['', 'faq', 'contact', 'privacy', 'terms', 'credits', 'proxy'],
@@ -20,3 +20,5 @@ module.exports = [
 		pages: ['search', 'appearance', 'tabcloak'],
 	},
 ];
+
+export default routes;

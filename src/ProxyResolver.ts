@@ -1,15 +1,9 @@
-import CompatAPI from './CompatAPI.js';
-import { DB_API, DEFAULT_PROXY } from './consts.js';
-import { encryptURL } from './cryptURL.js';
-import resolveRoute from './resolveRoute.js';
+import CompatAPI from './CompatAPI';
+import { DB_API, DEFAULT_PROXY } from './consts';
+import { encryptURL } from './cryptURL';
+import resolveRoute from './resolveRoute';
 
-/**
- *
- * @param {string} src
- * @param {string} setting
- * @returns {string}
- */
-export default async function resolveProxy(src, setting) {
+export default async function resolveProxy(src: string, setting: string) {
 	if (setting === 'automatic') {
 		const { host } = new URL(src);
 		const api = new CompatAPI(DB_API);

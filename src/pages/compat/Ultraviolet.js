@@ -1,6 +1,6 @@
-import { Script, ScriptsOrder } from '../../CompatLayout.js';
-import { BARE_API } from '../../consts.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { Script, ScriptsOrder } from '../../CompatLayout';
+import { BARE_API } from '../../consts';
+import { Obfuscated } from '../../obfuscate';
 import { useEffect, useRef } from 'react';
 
 /**

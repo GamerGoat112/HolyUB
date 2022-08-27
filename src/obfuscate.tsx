@@ -1,6 +1,8 @@
 import clsx from 'clsx';
+import type { RandomSeed } from 'random-seed';
 import { create } from 'random-seed';
-import { memo, useEffect, useRef } from 'react';
+import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 const rand = create(navigator.userAgent + global.location.origin);
 
@@ -40,31 +42,32 @@ const charClass = unusedChar();
 const stringClass = unusedChar();
 
 export function ObfuscateLayout() {
-	const style = useRef();
+	const [style, setStyle] = useState<HTMLStyleElement | null>(null);
 
 	useEffect(() => {
-		const { sheet } = style.current;
+		if (!style || !style.sheet) return;
 
 		for (const junk of junkClasses) {
-			sheet.insertRule(
+			style.sheet.insertRule(
 				`.${stringClass} .${junk}{position:absolute;z-index:-10;opacity:0}`
 			);
 		}
 
 		// word
-		sheet.insertRule(`.${stringClass}>span{display:inline-block}`);
+		style.sheet.insertRule(`.${stringClass}>span{display:inline-block}`);
 
 		for (const ellipsis of ellipsisClasses) {
-			sheet.insertRule(`.${stringClass} .${ellipsis}{display:inline}`);
+			style.sheet.insertRule(`.${stringClass} .${ellipsis}{display:inline}`);
 		}
-	}, []);
+	}, [style]);
 
-	return <style ref={style}></style>;
+	return <style ref={setStyle}></style>;
 }
 
 class ObfuscateContext {
-	constructor(text) {
-		this.rand = create(text + navigator.userAgent + global.location.origin);
+	rand: RandomSeed;
+	constructor(seed: string) {
+		this.rand = create(seed + navigator.userAgent + global.location.origin);
 	}
 	ellipsisClass() {
 		return ellipsisClasses[this.rand(ellipsisClasses.length)];
@@ -75,7 +78,7 @@ class ObfuscateContext {
 	realClass() {
 		return realClasses[this.rand(realClasses.length)];
 	}
-	random(chars, i, ci) {
+	random(chars: string[], i: number, ci: number) {
 		const r = this.rand(2);
 
 		switch (r) {
@@ -91,123 +94,137 @@ class ObfuscateContext {
 			case 1:
 				return (
 					<span key={i} className={this.junkClass()}>
-						{String.fromCharCode(chars[chars.length - ci - 1].charCodeAt() ^ i)}
+						{String.fromCharCode(
+							chars[chars.length - ci - 1].charCodeAt(0) ^ i
+						)}
 					</span>
 				);
 		}
 	}
 }
 
-/**
- *
- * @param {{text:string,ellipsis:boolean}} props
- * @returns {JSX.Element}
- */
-export const ObfuscatedText = memo(function ObfuscatedText(props) {
-	const context = new ObfuscateContext(props.text);
+export const ObfuscatedText = memo<{ text: string; ellipsis?: boolean }>(
+	function ObfuscatedText({ text, ellipsis }) {
+		const context = new ObfuscateContext(text);
 
-	const output = [];
-	const words = props.text.split(' ');
+		const output = [];
+		const words = text.split(' ');
 
-	for (let wi = 0; wi < words.length; wi++) {
-		const word = words[wi];
-		const chars = word.split('');
+		for (let wi = 0; wi < words.length; wi++) {
+			const word = words[wi];
+			const chars = word.split('');
 
-		const added = [];
+			const added = [];
 
-		for (let ci = 0; ci < chars.length; ci++) {
-			const char = chars[ci];
+			for (let ci = 0; ci < chars.length; ci++) {
+				const char = chars[ci];
 
-			const content = [];
+				const content = [];
 
-			const addChars = context.rand.intBetween(1, 2);
-			const realAtI = context.rand(addChars);
+				const addChars = context.rand.intBetween(1, 2);
+				const realAtI = context.rand(addChars);
 
-			for (let i = 0; i < addChars; i++) {
-				if (i === realAtI) {
-					content.push(
-						<span key={`${wi}${ci}${i}`} className={context.realClass()}>
-							{char}
-						</span>
-					);
-				} else {
-					content.push(context.random(chars, i, ci));
+				for (let i = 0; i < addChars; i++) {
+					if (i === realAtI) {
+						content.push(
+							<span key={`${wi}${ci}${i}`} className={context.realClass()}>
+								{char}
+							</span>
+						);
+					} else {
+						content.push(context.random(chars, i, ci));
+					}
 				}
+
+				added.push(
+					<span key={`${wi}${ci}`} className={charClass}>
+						{content}
+					</span>
+				);
 			}
 
-			added.push(
-				<span key={`${wi}${ci}`} className={charClass}>
-					{content}
+			output.push(
+				<span
+					className={clsx(ellipsis && context.ellipsisClass())}
+					key={`${wi}`}
+				>
+					{added}
 				</span>
 			);
+
+			if (wi !== words.length - 1) {
+				output.push(' ');
+			}
 		}
 
-		output.push(
-			<span
-				className={clsx(props.ellipsis && context.ellipsisClass())}
-				key={`${wi}`}
-			>
-				{added}
-			</span>
-		);
-
-		if (wi !== words.length - 1) {
-			output.push(' ');
-		}
+		return <span className={stringClass}>{output}</span>;
 	}
+);
 
-	return <span className={stringClass}>{output}</span>;
-});
+type JSXDataSome = JSXData | JSXData[];
+
+interface JSXData {
+	props: { children: JSXDataSome };
+}
 
 /**
  * @description A obfuscated text block. This will strip the input of all non-text elements.
  */
-export const Obfuscated = memo(function Obfuscated(props) {
-	let string = '';
+export const Obfuscated = memo<{ ellipsis?: boolean; children: ReactNode }>(
+	function Obfuscated({ ellipsis, children }) {
+		let string = '';
 
-	const stack = [
-		{
-			props,
-		},
-	];
+		const stack: JSXData[] = [
+			{
+				props: {
+					children: children as JSXData,
+				},
+			},
+		];
 
-	let toclone;
-	while ((toclone = stack.pop())) {
-		if (typeof toclone === 'string') {
-			string += toclone;
-		} else if (typeof toclone === 'object' && toclone !== undefined) {
-			let children = toclone.props.children;
+		let toclone;
+		while ((toclone = stack.pop())) {
+			if (typeof toclone === 'string') {
+				string += toclone;
+			} else if (typeof toclone === 'object' && toclone !== undefined) {
+				let children = toclone.props.children;
 
-			if (!(children instanceof Array)) {
-				children = [children];
-			}
+				if (!Array.isArray(children)) children = [children];
 
-			const max = children.length;
-			for (let i = 0; i < max; i++) {
-				// append in reverse order
-				const child = children[max - i - 1];
-				stack.push(child);
+				const max = children.length;
+				for (let i = 0; i < max; i++) {
+					// append in reverse order
+					const child = children[max - i - 1];
+					stack.push(child);
+				}
 			}
 		}
+
+		return <ObfuscatedText text={string} ellipsis={ellipsis}></ObfuscatedText>;
 	}
+);
 
+export interface ObfuscatedAProps extends HTMLAttributes<HTMLSpanElement> {
+	href: string;
+	target?: string;
+	onClick?: MouseEventHandler<HTMLSpanElement>;
+	onMouseUp?: MouseEventHandler<HTMLSpanElement>;
+}
+
+export function ObfuscatedA({
+	children,
+	href,
+	onClick,
+	onMouseUp,
+	target,
+	...attributes
+}: ObfuscatedAProps) {
 	return (
-		<ObfuscatedText text={string} ellipsis={props.ellipsis}></ObfuscatedText>
-	);
-});
-
-export function ObfuscatedA(props) {
-	const { href, children, onClick, onMouseUp, target, ...attributes } = props;
-
-	return (
-		// eslint-disable-next-line jsx-a11y/anchor-is-valid
 		<span
 			{...attributes}
 			onMouseUp={(event) => {
 				if (event.button === 1) {
-					if (typeof onMouseUp === 'function') {
-						onMouseUp(event);
-					}
+					if (onMouseUp) onMouseUp(event);
 
 					event.preventDefault();
 
@@ -215,9 +232,7 @@ export function ObfuscatedA(props) {
 				}
 			}}
 			onClick={(event) => {
-				if (typeof onClick === 'function') {
-					onClick(event);
-				}
+				if (onClick) onClick(event);
 
 				event.preventDefault();
 

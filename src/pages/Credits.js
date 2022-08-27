@@ -1,5 +1,5 @@
-import { ObfuscatedThemeA } from '../ThemeElements.js';
-import { Obfuscated } from '../obfuscate.js';
+import { ObfuscatedThemeA } from '../ThemeElements';
+import { Obfuscated } from '../obfuscate';
 
 export default function Credits() {
 	return (

@@ -1,6 +1,6 @@
-import { ThemeSelect } from '../../ThemeElements.js';
-import engines from '../../engines.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { ThemeSelect } from '../../ThemeElements';
+import engines from '../../engines';
+import { Obfuscated } from '../../obfuscate';
 
 export default function Search(props) {
 	return (

@@ -2,10 +2,11 @@ export const whitespace = /\s/;
 export const http_s_protocol = /^https?:\/\//;
 
 export default class SearchBuilder {
-	constructor(template) {
-		this.template = String(template);
+	private template: string;
+	constructor(template: string) {
+		this.template = template;
 	}
-	query(input) {
+	query(input: string) {
 		input = String(input);
 
 		if (input.match(http_s_protocol)) {

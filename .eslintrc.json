@@ -1,9 +1,18 @@
 {
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
 	"env": {
 		"browser": true,
+		"node": true,
 		"es2021": true
 	},
-	"extends": ["eslint:recommended", "react-app", "prettier"],
+	"extends": [
+		"eslint:recommended",
+		"react-app",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
 	"parserOptions": {
 		"ecmaVersion": "latest",
 		"sourceType": "module"
@@ -12,12 +21,25 @@
 		"global": true
 	},
 	"rules": {
-		"no-unused-vars": "error",
-		"no-constant-condition": ["error", { "checkLoops": false }],
-		"react/jsx-uses-react": "off",
-		"react/react-in-jsx-scope": "off",
-		"no-lone-blocks": "off",
+		"indent": "off",
 		"quotes": "off",
-		"prefer-const": "error"
+		"no-mixed-spaces-and-tabs": "off",
+		"no-lone-blocks": "off",
+		"eqeqeq": "error",
+		"prefer-const": "error",
+		"no-var": "error",
+		"@typescript-eslint/consistent-type-imports": "error",
+		"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/ban-ts-comment": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/adjacent-overload-signatures": "off",
+		"@typescript-eslint/ban-types": "off",
+		"no-constant-condition": [
+			"error",
+			{
+				"checkLoops": false
+			}
+		]
 	}
 }

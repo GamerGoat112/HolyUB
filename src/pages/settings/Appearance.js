@@ -1,4 +1,4 @@
-import { ThemeSelect } from '../../ThemeElements.js';
+import { ThemeSelect } from '../../ThemeElements';
 
 export default function Appearance(props) {
 	return (

@@ -1,9 +1,13 @@
 export class RammerheadAPI {
-	constructor(server, signal) {
+	private server: string;
+	private signal?: AbortSignal;
+	private password?: string;
+	constructor(server: string, signal?: AbortSignal, password?: string) {
 		this.server = server;
 		this.signal = signal;
+		this.password = password;
 	}
-	async get(url) {
+	async get(url: string) {
 		if (this.password) {
 			// really cheap way of adding a query parameter
 			if (url.includes('?')) {
@@ -36,7 +40,11 @@ export class RammerheadAPI {
 	async newSession() {
 		return await this.get('newsession');
 	}
-	async editSession(id, httpProxy, enableShuffling) {
+	async editSession(
+		id: string,
+		httpProxy: string | undefined,
+		enableShuffling: string
+	) {
 		const res = await this.get(
 			'editsession?id=' +
 				encodeURIComponent(id) +
@@ -49,7 +57,7 @@ export class RammerheadAPI {
 			throw new Error(`unexpected response from server. received ${res}`);
 		}
 	}
-	async sessionExists(id) {
+	async sessionExists(id: string) {
 		const res = await this.get('sessionexists?id=' + encodeURIComponent(id));
 
 		switch (res) {
@@ -61,7 +69,7 @@ export class RammerheadAPI {
 				throw new Error(`unexpected response from server. received ${res}`);
 		}
 	}
-	async deleteSession(id) {
+	async deleteSession(id: string) {
 		if (await this.sessionExists(id)) {
 			const res = await this.get('deletesession?id=' + id);
 
@@ -70,19 +78,24 @@ export class RammerheadAPI {
 			}
 		}
 	}
-	async shuffleDict(id) {
+	async shuffleDict(id: string) {
 		const res = await this.get('api/shuffleDict?id=' + encodeURIComponent(id));
 		return JSON.parse(res);
 	}
 }
 
 export class StrShuffler {
-	mod(n, m) {
-		return ((n % m) + m) % m;
-	}
+	private dictionary: string;
 	baseDictionary =
 		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~-';
 	shuffledIndicator = '_rhs';
+	constructor(dictionary?: string) {
+		dictionary ||= this.generateDictionary();
+		this.dictionary = dictionary;
+	}
+	mod(n: number, m: number) {
+		return ((n % m) + m) % m;
+	}
 	generateDictionary() {
 		let str = '';
 		const split = this.baseDictionary.split('');
@@ -91,11 +104,7 @@ export class StrShuffler {
 
 		return str;
 	}
-	constructor(dictionary = this.generateDictionary()) {
-		this.dictionary = dictionary;
-	}
-	shuffle(str) {
-		str = str.toString();
+	shuffle(str: string) {
 		if (str.startsWith(this.shuffledIndicator)) return str;
 		let shuffledStr = '';
 		for (let i = 0; i < str.length; i++) {
@@ -113,7 +122,7 @@ export class StrShuffler {
 		}
 		return this.shuffledIndicator + shuffledStr;
 	}
-	unshuffle(str) {
+	unshuffle(str: string) {
 		if (!str.startsWith(this.shuffledIndicator)) return str;
 
 		str = str.slice(this.shuffledIndicator.length);

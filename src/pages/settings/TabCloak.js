@@ -1,7 +1,7 @@
-import { Notification } from '../../Notifications.js';
-import { ThemeButton, ThemeInputBar } from '../../ThemeElements.js';
-import { BARE_API } from '../../consts.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { Notification } from '../../Notifications';
+import { ThemeButton, ThemeInputBar } from '../../ThemeElements';
+import { BARE_API } from '../../consts';
+import { Obfuscated } from '../../obfuscate';
 import { Check } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
 import { useRef } from 'react';

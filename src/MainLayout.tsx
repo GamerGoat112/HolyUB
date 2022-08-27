@@ -1,12 +1,13 @@
 import './styles/Navigation.scss';
 import './styles/Footer.scss';
-import Footer from './Footer.js';
+import Footer from './Footer';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
-import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate.js';
-import categories from './pages/theatre/games/categories.js';
-import resolveRoute from './resolveRoute.js';
+import type { ObfuscatedAProps } from './obfuscate';
+import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate';
+import categories from './pages/theatre/games/categories';
+import resolveRoute from './resolveRoute';
 import {
 	Apps,
 	Home,
@@ -20,7 +21,7 @@ import {
 	StarRounded,
 	WebAsset,
 } from '@mui/icons-material';
-import process from 'process';
+import type { ComponentType, ReactNode, SVGAttributes } from 'react';
 import {
 	forwardRef,
 	useEffect,
@@ -30,21 +31,31 @@ import {
 } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
-function Hat(props) {
-	const { children, ...attributes } = props;
-
+function Hat(props: ComponentType<SVGAttributes<{}>>) {
 	switch (process.env.REACT_APP_HAT_BADGE) {
 		case 'DEV':
-			return <HatDev {...attributes}>{children}</HatDev>;
+			return <HatDev {...props} />;
 		case 'BETA':
-			return <HatBeta {...attributes}>{children}</HatBeta>;
+			return <HatBeta {...props} />;
 		default:
-			return <HatPlain {...attributes}>{children}</HatPlain>;
+			return <HatPlain {...props} />;
 	}
 }
 
-export function MenuTab(props) {
-	const { route, href, iconFilled, iconOutlined, name, ...attributes } = props;
+export function MenuTab({
+	route,
+	href,
+	name,
+	iconFilled,
+	iconOutlined,
+	...attributes
+}: {
+	route: string;
+	href: string;
+	name: string;
+	iconFilled: ReactNode;
+	iconOutlined?: ReactNode;
+} & ObfuscatedAProps) {
 	const location = useLocation();
 	const selected = location.pathname === route;
 	const content = (
@@ -83,7 +94,10 @@ export function MenuTab(props) {
 	}
 }
 
-export default forwardRef(function Layout(props, ref) {
+export default forwardRef<{
+	expanded: boolean;
+	setExpanded: (state: boolean | ((prevState: boolean) => boolean)) => void;
+}>(function Layout(props, ref) {
 	const nav = useRef();
 	const [expanded, setExpanded] = useState(false);
 
@@ -97,7 +111,7 @@ export default forwardRef(function Layout(props, ref) {
 	);
 
 	useEffect(() => {
-		function keydown(event) {
+		function keydown(event: KeyboardEvent) {
 			if (expanded && event.key === 'Escape') {
 				setExpanded(false);
 			}
@@ -109,7 +123,7 @@ export default forwardRef(function Layout(props, ref) {
 	}, [expanded]);
 
 	useEffect(() => {
-		document.documentElement.dataset.expanded = Number(expanded);
+		document.documentElement.dataset.expanded = Number(expanded).toString();
 	}, [expanded]);
 
 	function closeMenu() {
