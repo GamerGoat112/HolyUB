@@ -13,10 +13,10 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 const ANIMATION = 0.3e3;
 
 interface NotificationStubProps {
-	title: ReactNode;
-	description: ReactNode;
-	type: 'warning' | 'error' | 'success' | 'info';
-	duration: number;
+	title?: ReactNode;
+	description?: ReactNode;
+	type?: 'warning' | 'error' | 'success' | 'info';
+	duration?: number;
 }
 
 function RealNotification({
@@ -85,15 +85,15 @@ function RealNotification({
 	);
 }
 
-export interface NotificationsManagerRef {
-	add(notification: ReactElement<Notification>): void;
-	delete(id: string): void;
-}
-
 export function Notification(props: NotificationStubProps): JSX.Element {
 	throw new Error(
 		'<Notifications> is an abstract component, it should never be rendered.'
 	);
+}
+
+export interface NotificationsManagerRef {
+	add(notification: ReactElement<Notification>): void;
+	delete(id: string): void;
 }
 
 const NotificationsManager = forwardRef<NotificationsManagerRef>(
