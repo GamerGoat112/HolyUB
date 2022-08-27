@@ -1,6 +1,5 @@
 import type { HolyPage } from '../../App';
 import '../../styles/TheatrePlayer.scss';
-import type { LayoutRef } from '../../Layout';
 import resolveProxy from '../../ProxyResolver';
 import { TheatreAPI } from '../../TheatreCommon';
 import type { TheatreEntry } from '../../TheatreCommon';
@@ -22,7 +21,6 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
-import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 async function resolveSrc(
