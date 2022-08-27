@@ -169,11 +169,19 @@ export default function App() {
 					<Route path={resolveRoute('/theatre/', '')}>
 						<Route
 							path={resolveRoute('/theatre/', 'player', false)}
-							element={<TheatrePlayer {...layouts} />}
+							element={
+								<Suspense fallback={<></>}>
+									<TheatrePlayer {...layouts} />
+								</Suspense>
+							}
 						/>
 						<Route
 							path={resolveRoute('/theatre/', 'category', false)}
-							element={<TheatreCategory {...layouts} />}
+							element={
+								<Suspense fallback={<></>}>
+									<TheatreCategory {...layouts} />
+								</Suspense>
+							}
 						/>
 						<Route
 							path={resolveRoute('/theatre/', 'favorites', false)}
