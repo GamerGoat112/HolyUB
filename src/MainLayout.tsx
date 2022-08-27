@@ -4,8 +4,8 @@ import Footer from './Footer';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
+import categories from './gameCategories';
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate';
-import categories from './pages/theatre/games/categories';
 import resolveRoute from './resolveRoute';
 import {
 	Apps,
@@ -39,15 +39,16 @@ export function MenuTab({
 	route,
 	href,
 	name,
+	onClick,
 	iconFilled,
 	iconOutlined,
 }: {
 	route?: string;
 	href?: string;
 	name: string;
+	onClick?: MouseEventHandler;
 	iconFilled: ReactNode;
 	iconOutlined?: ReactNode;
-	onClick?: MouseEventHandler;
 }) {
 	const location = useLocation();
 	const selected = location.pathname === route;
@@ -68,13 +69,19 @@ export function MenuTab({
 				href={href!}
 				data-selected={Number(selected)}
 				className="entry"
+				onClick={onClick}
 			>
 				{content}
 			</ObfuscatedA>
 		);
 	} else {
 		return (
-			<Link to={route} data-selected={Number(selected)} className="entry">
+			<Link
+				to={route}
+				data-selected={Number(selected)}
+				className="entry"
+				onClick={onClick}
+			>
 				{content}
 			</Link>
 		);

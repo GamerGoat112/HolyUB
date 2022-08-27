@@ -1,5 +1,5 @@
 import './styles/Service.scss';
-import type { LayoutRef } from './Layout';
+import type { LayoutDump } from './App';
 import { Notification } from './Notifications';
 import resolveProxy from './ProxyResolver';
 import { BARE_API } from './consts';
@@ -12,7 +12,6 @@ import {
 	Public,
 } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
-import type { RefObject } from 'react';
 import { useRef } from 'react';
 import {
 	forwardRef,
@@ -24,11 +23,13 @@ import {
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-export default forwardRef<
-	{
-		proxy(src: string): void;
-	},
-	{ layout: RefObject<LayoutRef> }
+export interface ServiceFrameRef {
+	proxy(src: string): void;
+}
+
+const ServiceFrame = forwardRef<
+	ServiceFrameRef,
+	{ layout: LayoutDump['layout'] }
 >(function ServiceFrame({ layout }, ref) {
 	const iframe = useRef<HTMLIFrameElement | null>(null);
 	const [search, setSearch] = useSearchParams();
@@ -214,3 +215,5 @@ export default forwardRef<
 		</div>
 	);
 });
+
+export default ServiceFrame;

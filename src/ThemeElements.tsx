@@ -12,10 +12,10 @@ export function ThemeButton({
 	children,
 	className,
 	...attributes
-}: {
+}: JSX.IntrinsicElements['button'] & {
 	children: ReactNode;
 	className?: string;
-} & JSX.IntrinsicElements['button']) {
+}) {
 	return (
 		<button
 			type="button"
@@ -101,7 +101,7 @@ export function ThemeSelect({
 	value,
 	defaultValue,
 	...attributes
-}: {
+}: Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
 	children?:
 		| ReactElement<JSX.IntrinsicElements['option']>
 		| ReactElement<JSX.IntrinsicElements['option']>[];

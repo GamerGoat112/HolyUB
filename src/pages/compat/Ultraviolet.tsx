@@ -1,8 +1,8 @@
-import type { CompatLayoutRef, ScriptsRef } from '../../CompatLayout';
+import type { HolyPage } from '../../App';
+import type { ScriptsRef } from '../../CompatLayout';
 import { Script, Scripts } from '../../CompatLayout';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
-import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
 type UVEncode = (encoded: string) => string;
@@ -21,11 +21,7 @@ interface UVConfig {
 
 declare const __uv$config: UVConfig;
 
-const Ultraviolet = ({
-	compatLayout,
-}: {
-	compatLayout: RefObject<CompatLayoutRef>;
-}) => {
+const Ultraviolet: HolyPage = ({ compatLayout }) => {
 	const uvBundle = useRef<ScriptsRef | null>(null);
 
 	useEffect(() => {

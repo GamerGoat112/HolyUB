@@ -1,7 +1,8 @@
+import type { HolyPage } from '../App';
 import { ObfuscatedThemeA } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 
-const Credits = () => {
+const Credits: HolyPage = () => {
 	return (
 		<main className="legal credits">
 			<h2>Credits</h2>

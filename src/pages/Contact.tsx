@@ -1,8 +1,9 @@
+import type { HolyPage } from '../App';
 import { ObfuscatedThemeA } from '../ThemeElements';
 import { HU_DISCORD_URL } from '../consts';
 import { Obfuscated } from '../obfuscate';
 
-const Contact = () => {
+const Contact: HolyPage = () => {
 	return (
 		<main className="legal contact">
 			<h1>Contact:</h1>

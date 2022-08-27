@@ -1,8 +1,9 @@
+import type { HolyPage } from '../App';
 import { ThemeLink } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
 
-const Privacy = () => {
+const Privacy: HolyPage = () => {
 	return (
 		<main>
 			<p>

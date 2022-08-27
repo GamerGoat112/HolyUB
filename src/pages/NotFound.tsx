@@ -1,7 +1,8 @@
+import type { HolyPage } from '../App';
 import { ThemeLink } from '../ThemeElements';
 import resolveRoute from '../resolveRoute';
 
-const NotFound = () => {
+const NotFound: HolyPage = () => {
 	return (
 		<main>
 			<h1>The page you are looking for is not available.</h1>

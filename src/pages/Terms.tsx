@@ -1,8 +1,9 @@
+import type { HolyPage } from '../App';
 import { ThemeLink } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
 
-const Terms = () => {
+const Terms: HolyPage = () => {
 	return (
 		<main>
 			<h2>Security</h2>

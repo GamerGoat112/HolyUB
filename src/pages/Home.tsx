@@ -1,10 +1,9 @@
 import '../styles/Home.scss';
-import type { MainLayoutRef } from '../MainLayout';
+import type { HolyPage } from '../App';
 import { ThemeButton } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
-import type { RefObject } from 'react';
 
-const Home = ({ mainLayout }: { mainLayout: RefObject<MainLayoutRef> }) => {
+const Home: HolyPage = ({ mainLayout }) => {
 	return (
 		<main className="home">
 			<h1>

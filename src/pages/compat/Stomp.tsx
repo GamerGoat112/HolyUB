@@ -1,8 +1,8 @@
-import type { CompatLayoutRef, ScriptRef } from '../../CompatLayout';
+import type { HolyPage } from '../../App';
+import type { ScriptRef } from '../../CompatLayout';
 import { Script } from '../../CompatLayout';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
-import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
 declare interface StompBootConfig {
@@ -26,11 +26,7 @@ declare class StompBoot {
 	ready: Promise<void>;
 }
 
-const Stomp = ({
-	compatLayout,
-}: {
-	compatLayout: RefObject<CompatLayoutRef>;
-}) => {
+const Stomp: HolyPage = ({ compatLayout }) => {
 	const bootstrapper = useRef<ScriptRef | null>(null);
 
 	useEffect(() => {

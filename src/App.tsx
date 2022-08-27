@@ -1,80 +1,86 @@
 import './styles/App.scss';
+import type { CompatLayoutRef } from './CompatLayout';
 import CompatLayout from './CompatLayout';
+import type { LayoutRef } from './Layout';
 import Layout from './Layout';
+import type { MainLayoutRef } from './MainLayout';
 import MainLayout from './MainLayout';
-import categories from './pages/theatre/games/categories';
+import categories from './gameCategories';
 import resolveRoute from './resolveRoute';
-import { Suspense, createRef, lazy } from 'react';
+import type { ComponentType, RefObject } from 'react';
+import { Suspense, lazy, useRef } from 'react';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 
-const GamesPopular = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular')
+const GamesPopular = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/theatre/games/Popular')
 );
-const TheatreFavorites = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Favorites')
+const TheatreFavorites = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/theatre/Favorites')
 );
-const TheatreCategory = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Category')
+const TheatreCategory = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/theatre/Category')
 );
-const TheatrePlayer = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Player')
+const TheatrePlayer = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/theatre/Player')
 );
 const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home'));
-const Settings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Settings')
+const Settings = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/Settings')
 );
-const SearchSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/Search')
+const SearchSettings = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/settings/Search')
 );
-const AppearanceSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/Appearance')
+const AppearanceSettings = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/settings/Appearance')
 );
-const TabCloakSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/TabCloak')
+const TabCloakSettings = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/settings/TabCloak')
 );
 const FAQ = lazy(() => import(/* webpackPrefetch: true */ './pages/FAQ'));
-const Contact = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Contact')
+const Contact = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/Contact')
 );
-const Privacy = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Privacy')
+const Privacy = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/Privacy')
 );
-const NotFound = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/NotFound')
+const NotFound = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/NotFound')
 );
 const Proxy = lazy(() => import(/* webpackPrefetch: true */ './pages/Proxy'));
-const Credits = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Credits')
+const Credits = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/Credits')
 );
 const Terms = lazy(() => import(/* webpackPrefetch: true */ './pages/Terms'));
-const Ultraviolet = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Ultraviolet')
+const Ultraviolet = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/compat/Ultraviolet')
 );
-const Rammerhead = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Rammerhead')
+const Rammerhead = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/compat/Rammerhead')
 );
-const Stomp = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Stomp')
+const Stomp = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/compat/Stomp')
 );
-const Flash = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Flash')
+const Flash = lazy(
+	() => import(/* webpackPrefetch: true */ './pages/compat/Flash')
 );
 
-function PlayerProxy(props) {
+const PlayerProxy: HolyPage = (props) => {
 	const [searchParams] = useSearchParams();
-	const id = searchParams.get('id');
+	const id = searchParams.get('id')!;
 
 	return (
 		<Suspense fallback={<></>}>
 			<TheatrePlayer {...props} key={id} id={id} />
 		</Suspense>
 	);
-}
+};
 
-function CategoryProxy(props) {
+const CategoryProxy: HolyPage = (props) => {
 	const [searchParams] = useSearchParams();
-	const id = searchParams.get('id');
+	const id = searchParams.get('id')!;
 	const category = categories.find((category) => category.id === id);
+
+	if (!category) return <>Bad category ID</>;
 
 	return (
 		<Suspense fallback={<></>}>
@@ -88,15 +94,23 @@ function CategoryProxy(props) {
 			/>
 		</Suspense>
 	);
+};
+
+export interface LayoutDump {
+	layout: RefObject<LayoutRef | null>;
+	mainLayout: RefObject<MainLayoutRef | null>;
+	compatLayout: RefObject<CompatLayoutRef | null>;
 }
+
+export type HolyPage<T extends object = {}> = ComponentType<LayoutDump & T>;
 
 // https://reactrouter.com/docs/en/v6/getting-started/overview
 export default function App() {
-	const layout = createRef();
-	const mainLayout = createRef();
-	const compatLayout = createRef();
+	const layout = useRef<LayoutRef | null>(null);
+	const mainLayout = useRef<MainLayoutRef | null>(null);
+	const compatLayout = useRef<CompatLayoutRef | null>(null);
 
-	const layouts = {
+	const layouts: LayoutDump = {
 		layout,
 		mainLayout,
 		compatLayout,
@@ -106,10 +120,7 @@ export default function App() {
 		<>
 			<Layout ref={layout} />
 			<Routes>
-				<Route
-					path={resolveRoute('/', '')}
-					element={<MainLayout ref={mainLayout} />}
-				>
+				<Route path={resolveRoute('/', '')} element={<MainLayout />}>
 					<Route
 						index
 						element={

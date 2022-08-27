@@ -1,11 +1,12 @@
-import '../../styles/TheatreSearch.scss';
-import { TheatreAPI } from '../../TheatreCommon';
-import { ThemeInputBar } from '../../ThemeElements';
-import { DB_API } from '../../consts';
-import isAbortError from '../../isAbortError';
-import { Obfuscated } from '../../obfuscate';
-import resolveRoute from '../../resolveRoute';
-import categories from './games/categories';
+import './styles/TheatreSearch.scss';
+import type { CategoryData } from './TheatreCommon';
+import { TheatreAPI } from './TheatreCommon';
+import { ThemeInputBar } from './ThemeElements';
+import { DB_API } from './consts';
+import categories from './gameCategories';
+import isAbortError from './isAbortError';
+import { Obfuscated } from './obfuscate';
+import resolveRoute from './resolveRoute';
 import { Search } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
@@ -13,23 +14,28 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const LIMIT = 8;
 
-export default function SearchBar({ category, placeholder, showCategory }) {
+const SearchBar = ({
+	category,
+	placeholder,
+	showCategory,
+}: {
+	category: string;
+	placeholder?: string;
+	showCategory?: boolean;
+}) => {
 	const navigate = useNavigate();
-	const input = useRef();
-	const [categoryData, setCategoryData] = useState({
+	const input = useRef<HTMLInputElement | null>(null);
+	const bar = useRef<HTMLDivElement | null>(null);
+	const [categoryData, setCategoryData] = useState<CategoryData>({
 		total: 0,
 		entries: [],
 	});
 	const [lastSelect, setLastSelect] = useState(-1);
 	const [inputFocused, setInputFocused] = useState(false);
-	const searchAbort = useRef();
-	const bar = useRef();
+	const searchAbort = useRef(new AbortController());
 
-	async function search(query) {
-		if (searchAbort.current !== undefined) {
-			searchAbort.current.abort();
-		}
-
+	async function search(query: string) {
+		searchAbort.current.abort();
 		searchAbort.current = new AbortController();
 
 		const api = new TheatreAPI(DB_API, searchAbort.current.signal);
@@ -39,12 +45,12 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 				sort: 'search',
 				search: query,
 				limit: LIMIT,
-				category: category,
+				category,
 			});
 
 			setCategoryData(categoryData);
 		} catch (error) {
-			if (!isAbortError(error)) {
+			if (error instanceof Error && !isAbortError(error)) {
 				console.error(error);
 			}
 		}
@@ -59,7 +65,7 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 			data-suggested={Number(renderSuggested)}
 			ref={bar}
 			onBlur={(event) => {
-				if (!bar.current.contains(event.relatedTarget)) {
+				if (!bar.current!.contains(event.relatedTarget)) {
 					setInputFocused(false);
 				}
 			}}
@@ -74,12 +80,12 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 					onFocus={(event) => {
 						setInputFocused(true);
 						setLastSelect(-1);
-						search(event.target.value);
+						search(input.current!.value);
 					}}
 					onClick={(event) => {
 						setInputFocused(true);
 						setLastSelect(-1);
-						search(event.target.value);
+						search(input.current!.value);
 					}}
 					onKeyDown={(event) => {
 						let preventDefault = true;
@@ -97,7 +103,7 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 
 									switch (event.code) {
 										case 'ArrowDown':
-											if (lastI >= categoryData.length - 1) {
+											if (lastI >= categoryData.entries.length - 1) {
 												next = 0;
 											} else {
 												next = lastI + 1;
@@ -105,7 +111,7 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 											break;
 										case 'ArrowUp':
 											if (lastI <= 0) {
-												next = categoryData.length - 1;
+												next = categoryData.entries.length - 1;
 											} else {
 												next = lastI - 1;
 											}
@@ -121,7 +127,7 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 									const entry = categoryData.entries[lastSelect];
 
 									if (entry) {
-										input.current.blur();
+										input.current!.blur();
 										setInputFocused(false);
 										navigate(
 											`${resolveRoute('/theatre/', 'player')}?id=${entry.id}`
@@ -178,4 +184,6 @@ export default function SearchBar({ category, placeholder, showCategory }) {
 			</div>
 		</div>
 	);
-}
+};
+
+export default SearchBar;
