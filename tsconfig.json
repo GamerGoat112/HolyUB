@@ -7,8 +7,8 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"noEmit": true,
-		"sourceMap": true
+		"sourceMap": true,
+		"allowJs": true
 	},
-	"include": ["src/global.d.ts", "src/**/{*.ts,*.d.ts}"],
-	"exclude": ["node_modules"]
+	"include": ["env.d.ts", "src/**/*"]
 }

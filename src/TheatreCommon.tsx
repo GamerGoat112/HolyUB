@@ -26,13 +26,15 @@ export class TheatreAPI extends DatabaseAPI {
 			}
 		);
 	}
-	/**
-	 *
-	 * @param {{leastGreatest?:boolean,category?:string[],sort?:string,search?:string,offset?:number,limit?:number,limitPerCategory:?number}} params
-	 * @returns {{total:number,entries:LimitedEntry[]}}
-	 */
-	async category(params) {
-		return await this.fetch(
+	async category(params: {
+		leastGreatest?: boolean;
+		category?: string[];
+		search?: string;
+		offset?: number;
+		limit?: number;
+		limitPerCategory?: number;
+	}) {
+		return await this.fetch<{ total: number; entries: LimitedEntry[] }>(
 			'./theatre/?' + new URLSearchParams(this.sortParams(params))
 		);
 	}
@@ -72,8 +74,8 @@ function LoadingItem() {
 
 export interface TheatreItem {
 	id: string;
-	name?: string;
-	loading: boolean;
+	name: string;
+	loading?: boolean;
 }
 
 export function ItemList({

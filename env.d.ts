@@ -1,5 +1,3 @@
-import type { ComponentType, SVGAttributes } from 'react';
-
 declare interface process {
 	env: Record<string, string>;
 }
@@ -50,6 +48,6 @@ declare module '*.png' {
 
 declare module '*.svg' {
 	const url: string;
-	export const ReactComponent: ComponentType<SVGAttributes<{}>>;
+	export const ReactComponent: React.ComponentType<React.SVGAttributes<{}>>;
 	export default url;
 }

@@ -9,7 +9,7 @@ export default class DatabaseAPI {
 		this.server = server;
 		this.signal = signal;
 	}
-	sortParams(params: Record<string, string>) {
+	protected sortParams(params: Record<string, any>): Record<string, string> {
 		const result: Record<string, string> = {};
 
 		for (const param in params) {
@@ -18,7 +18,7 @@ export default class DatabaseAPI {
 				case 'object':
 					break;
 				default:
-					result[param] = params[param];
+					result[param] = params[param].toString();
 					break;
 			}
 		}

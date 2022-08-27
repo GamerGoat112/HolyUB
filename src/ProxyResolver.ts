@@ -10,8 +10,8 @@ export default async function resolveProxy(src: string, setting: string) {
 
 		try {
 			setting = (await api.compat(host)).proxy;
-		} catch (error) {
-			if (error.message === 'Not Found') {
+		} catch (error: any) {
+			if (error && error.message === 'Not Found') {
 				setting = DEFAULT_PROXY;
 			} else {
 				console.error(error);
