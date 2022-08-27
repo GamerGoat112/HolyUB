@@ -1,8 +1,10 @@
+import type { LayoutRef } from '../../Layout';
 import { ThemeSelect } from '../../ThemeElements';
 import engines from '../../engines';
 import { Obfuscated } from '../../obfuscate';
+import type { RefObject } from 'react';
 
-export default function Search(props) {
+const Search = ({ layout }: { layout: RefObject<LayoutRef> }) => {
 	return (
 		<section>
 			<div>
@@ -11,12 +13,12 @@ export default function Search(props) {
 				</span>
 				<ThemeSelect
 					onChange={(event) =>
-						props.layout.current.setSettings({
-							...props.layout.current.settings,
+						layout.current!.setSettings({
+							...layout.current!.settings,
 							proxy: event.target.value,
 						})
 					}
-					defaultValue={props.layout.current.settings.proxy}
+					defaultValue={layout.current!.settings.proxy}
 				>
 					<option value="automatic">Automatic (Default)</option>
 					<option value="ultraviolet">Ultraviolet</option>
@@ -30,12 +32,12 @@ export default function Search(props) {
 				</span>
 				<ThemeSelect
 					onChange={(event) =>
-						props.layout.current.setSettings({
-							...props.layout.current.settings,
+						layout.current!.setSettings({
+							...layout.current!.settings,
 							search: event.target.value,
 						})
 					}
-					defaultValue={props.layout.current.settings.search}
+					defaultValue={layout.current!.settings.search}
 				>
 					{engines.map(({ name, format }) => (
 						<option key={format} value={format}>
@@ -46,4 +48,6 @@ export default function Search(props) {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Search;

@@ -2,7 +2,7 @@ import { ThemeLink } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
 
-export default function Terms() {
+const Terms = () => {
 	return (
 		<main>
 			<h2>Security</h2>
@@ -53,4 +53,6 @@ export default function Terms() {
 			</p>
 		</main>
 	);
-}
+};
+
+export default Terms;

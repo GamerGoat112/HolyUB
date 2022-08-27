@@ -26,11 +26,11 @@ declare class StompBoot {
 	ready: Promise<void>;
 }
 
-export default function Stomp({
+const Stomp = ({
 	compatLayout,
 }: {
 	compatLayout: RefObject<CompatLayoutRef>;
-}) {
+}) => {
 	const bootstrapper = useRef<ScriptRef | null>(null);
 
 	useEffect(() => {
@@ -98,4 +98,6 @@ export default function Stomp({
 			Loading <Obfuscated>Stomp</Obfuscated>...
 		</main>
 	);
-}
+};
+
+export default Stomp;

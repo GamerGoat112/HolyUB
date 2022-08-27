@@ -48,25 +48,19 @@ export default forwardRef<
 	useEffect(() => {
 		if (src) {
 			(async function () {
-				if (
-					!layout.current ||
-					!layout.current.notifications.current ||
-					!iframe.current ||
-					!iframe.current.contentWindow
-				)
-					return;
+				if (!iframe.current || !iframe.current.contentWindow) return;
 
 				try {
 					const proxiedSrc = await resolveProxy(
 						src,
-						layout.current.settings.proxy
+						layout.current!.settings.proxy
 					);
 
 					iframe.current.contentWindow.location.href = proxiedSrc;
 					setLastSrc(proxiedSrc);
 				} catch (error) {
 					console.error(error);
-					layout.current.notifications.current.add(
+					layout.current!.notifications.current!.add(
 						<Notification
 							title="Unable to find compatible proxy"
 							description={
@@ -134,7 +128,7 @@ export default forwardRef<
 				setTitle(currentTitle || location.toString());
 				const selector = contentWindow.document.querySelector(
 					'link[rel*="icon"]'
-				) as HTMLLinkElement | undefined;
+				) as HTMLLinkElement | null;
 
 				const icon =
 					selector && selector.href !== ''

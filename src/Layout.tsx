@@ -80,7 +80,7 @@ function TabMode() {
 }
 
 export interface CloakSettings {
-	value: string;
+	url: string;
 	title: string;
 	icon: string;
 }
@@ -128,7 +128,7 @@ const Layout = forwardRef<LayoutRef>(function Layout(props, ref) {
 	const [cloak, setCloak] = useSettings<CloakSettings>(
 		'cloak settings',
 		() => ({
-			value: '',
+			url: '',
 			title: '',
 			icon: '',
 		})

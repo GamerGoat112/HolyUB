@@ -42,8 +42,8 @@ export class RammerheadAPI {
 	}
 	async editSession(
 		id: string,
-		httpProxy: string | undefined,
-		enableShuffling: string
+		httpProxy: string | false,
+		enableShuffling: boolean
 	) {
 		const res = await this.get(
 			'editsession?id=' +

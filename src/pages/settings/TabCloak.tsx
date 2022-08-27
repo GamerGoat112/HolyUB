@@ -1,19 +1,22 @@
+import type { LayoutRef } from '../../Layout';
 import { Notification } from '../../Notifications';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
 import { Check } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
+import type { RefObject } from 'react';
 import { useRef } from 'react';
 
 const bare = new BareClient(BARE_API);
 
-/**
- *
- * @param {string} url
- * @returns {{title:string,icon:string,url:string}}
- */
-async function extractData(url) {
+interface ExtractedData {
+	title: string;
+	icon: string;
+	url: string;
+}
+
+async function extractData(url: string): Promise<ExtractedData> {
 	const response = await bare.fetch(url, { redirect: 'follow' });
 
 	if (!response.ok) {
@@ -29,36 +32,32 @@ async function extractData(url) {
 
 	dom.head.append(base);
 
-	let icon;
-	let title;
+	let icon: string;
 
-	{
-		const selector = dom.querySelector('link[rel*="icon"]');
+	const iconSelector = dom.querySelector(
+		'link[rel*="icon"]'
+	) as HTMLLinkElement | null;
 
-		if (selector !== null && selector.href !== '') {
-			icon = selector.href;
-		} else {
-			icon = new URL('/favicon.ico', url).toString();
-		}
-	}
+	if (iconSelector && iconSelector.href !== '') icon = iconSelector.href;
+	else icon = new URL('/favicon.ico', url).toString();
 
 	const outgoing = await bare.fetch(icon);
 
 	icon = await blobToDataURL(
 		new Blob([await outgoing.arrayBuffer()], {
-			type: outgoing.headers.get('content-type'),
+			type: outgoing.headers.get('content-type')!,
 		})
 	);
 
-	{
-		const selector = dom.querySelector('title');
+	const titleSelector = dom.querySelector('title');
 
-		if (selector !== null && selector.textContent !== '') {
-			title = selector.textContent;
-		} else {
-			const url = response.finalURL;
-			title = `${url.host}${url.pathname}${url.search}`;
-		}
+	let title: string;
+
+	if (titleSelector && titleSelector.textContent !== '')
+		title = titleSelector.textContent!;
+	else {
+		const url = new URL(response.finalURL);
+		title = `${url.host}${url.pathname}${url.search}`;
 	}
 
 	return { icon, title, url: response.finalURL };
@@ -67,7 +66,7 @@ async function extractData(url) {
 const whitespace = /\s+/;
 const protocol = /^\w+:/;
 
-function resolveURL(input) {
+function resolveURL(input: string) {
 	if (input.match(protocol)) {
 		return input;
 	} else if (input.includes('.') && !input.match(whitespace)) {
@@ -77,22 +76,22 @@ function resolveURL(input) {
 	}
 }
 
-async function blobToDataURL(blob) {
+async function blobToDataURL(blob: Blob) {
 	const reader = new FileReader();
 
-	return new Promise((resolve, reject) => {
-		reader.addEventListener('load', () => resolve(reader.result));
+	return new Promise<string>((resolve, reject) => {
+		reader.addEventListener('load', () => resolve(reader.result as string));
 		reader.addEventListener('error', reject);
 		reader.readAsDataURL(blob);
 	});
 }
 
-export default function TabCloak(props) {
-	const input = useRef();
+const TabCloak = ({ layout }: { layout: RefObject<LayoutRef> }) => {
+	const input = useRef<HTMLInputElement | null>(null);
 
 	async function onSubmit() {
 		try {
-			const resolved = resolveURL(input.current.value);
+			const resolved = resolveURL(input.current!.value);
 
 			let title, icon, url;
 
@@ -103,7 +102,7 @@ export default function TabCloak(props) {
 					url = 'about:blank';
 					break;
 				default:
-					props.layout.current.notifications.current.add(
+					layout.current!.notifications.current!.add(
 						<Notification description="Fetching..." type="info" />
 					);
 
@@ -112,22 +111,24 @@ export default function TabCloak(props) {
 					break;
 			}
 
-			input.current.value = url;
+			input.current!.value = url;
 
-			props.layout.current.setCloak({
-				title,
-				icon,
-				url,
+			layout.current!.setCloak({
+				title: title!,
+				icon: icon!,
+				url: url!,
 			});
 
-			props.layout.current.notifications.current.add(
+			layout.current!.notifications.current!.add(
 				<Notification description="Cloak set" type="success" />
 			);
-		} catch (error) {
-			props.layout.current.notifications.current.add(
+		} catch (err) {
+			console.error(err);
+
+			layout.current!.notifications.current!.add(
 				<Notification
 					title="Unable to fetch cloak"
-					description={error.message}
+					description={err instanceof Error ? err.message : 'Unknown error'}
 					type="error"
 				/>
 			);
@@ -155,7 +156,7 @@ export default function TabCloak(props) {
 					<ThemeInputBar>
 						<input
 							className="thin-pad-right"
-							defaultValue={props.layout.current.cloak.url}
+							defaultValue={layout.current!.cloak.url}
 							placeholder="https://example.org/"
 							ref={input}
 						/>
@@ -166,15 +167,15 @@ export default function TabCloak(props) {
 			<div>
 				<ThemeButton
 					onClick={() => {
-						props.layout.current.setCloak({
+						layout.current!.setCloak({
 							title: '',
 							icon: '',
 							url: '',
 						});
 
-						input.current.value = '';
+						input.current!.value = '';
 
-						props.layout.current.notifications.current.add(
+						layout.current!.notifications.current!.add(
 							<Notification description="Cloak reset" type="info" />
 						);
 					}}
@@ -184,4 +185,6 @@ export default function TabCloak(props) {
 			</div>
 		</section>
 	);
-}
+};
+
+export default TabCloak;

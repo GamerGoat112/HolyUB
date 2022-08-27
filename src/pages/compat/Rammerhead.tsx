@@ -1,20 +1,26 @@
+import type { CompatLayoutRef } from '../../CompatLayout';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI';
 import { RH_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
 import Cookies from 'js-cookie';
+import type { RefObject } from 'react';
 import { useEffect } from 'react';
 
-export default function Rammerhead(props) {
+const Rammerhead = ({
+	compatLayout,
+}: {
+	compatLayout: RefObject<CompatLayoutRef>;
+}) => {
 	useEffect(() => {
 		(async function () {
-			let errorCause;
+			let errorCause: string | undefined;
 
 			try {
 				const api = new RammerheadAPI(RH_API);
 
 				// according to our NGINX config
 				if (process.env.NODE_ENV === 'production')
-					Cookies.set('auth_proxy', 1, {
+					Cookies.set('auth_proxy', '1', {
 						domain: `.${global.location.host}`,
 						expires: 1000 * 60 * 60 * 24 * 7, // 1 week
 						secure: global.location.protocol === 'https:',
@@ -52,21 +58,21 @@ export default function Rammerhead(props) {
 
 				global.location.replace(
 					new URL(
-						`${session}/${shuffler.shuffle(
-							props.compatLayout.current.destination
-						)}`,
+						`${session}/${shuffler.shuffle(compatLayout.current!.destination)}`,
 						RH_API
 					)
 				);
 			} catch (error) {
-				props.compatLayout.current.report(error, errorCause, 'Rammerhead');
+				compatLayout.current!.report(error, errorCause, 'Rammerhead');
 			}
 		})();
-	}, [props.compatLayout]);
+	}, [compatLayout]);
 
 	return (
 		<main className="compat">
 			Loading <Obfuscated>Rammerhead</Obfuscated>...
 		</main>
 	);
-}
+};
+
+export default Rammerhead;

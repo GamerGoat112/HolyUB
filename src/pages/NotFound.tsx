@@ -1,7 +1,7 @@
 import { ThemeLink } from '../ThemeElements';
 import resolveRoute from '../resolveRoute';
 
-export default function NotFound() {
+const NotFound = () => {
 	return (
 		<main>
 			<h1>The page you are looking for is not available.</h1>
@@ -14,4 +14,6 @@ export default function NotFound() {
 			</p>
 		</main>
 	);
-}
+};
+
+export default NotFound;

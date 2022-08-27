@@ -1,15 +1,17 @@
+import type { LayoutRef } from '../../Layout';
 import { ThemeSelect } from '../../ThemeElements';
+import type { RefObject } from 'react';
 
-export default function Appearance(props) {
+const Appearance = ({ layout }: { layout: RefObject<LayoutRef> }) => {
 	return (
 		<section>
 			<div>
 				<span>Theme:</span>
 				<ThemeSelect
-					defaultValue={props.layout.current.settings.theme}
+					defaultValue={layout.current!.settings.theme}
 					onChange={(event) => {
-						props.layout.current.setSettings({
-							...props.layout.current.settings,
+						layout.current!.setSettings({
+							...layout.current!.settings,
 							theme: event.target.value,
 						});
 					}}
@@ -20,4 +22,6 @@ export default function Appearance(props) {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Appearance;
