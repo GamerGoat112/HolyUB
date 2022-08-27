@@ -2,10 +2,11 @@ import { ObfuscatedThemeA, ThemeLink } from './ThemeElements';
 import { TN_DISCORD_URL } from './consts';
 import { Obfuscated } from './obfuscate';
 import resolveRoute from './resolveRoute';
+import type { ReactNode } from 'react';
 
 interface FAQ {
-	q: JSX.Element;
-	a: JSX.Element;
+	q: ReactNode;
+	a: ReactNode;
 }
 
 const faq: FAQ[] = [
