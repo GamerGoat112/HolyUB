@@ -1,5 +1,3 @@
-// import { StrictMode } from 'react';
-// @ts-ignore
 import App from './App';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
