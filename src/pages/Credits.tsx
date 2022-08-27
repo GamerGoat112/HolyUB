@@ -6,9 +6,7 @@ const Credits: HolyPage = () => {
 	return (
 		<main className="legal credits">
 			<h2>Credits</h2>
-
 			<h4>Development</h4>
-
 			<ul>
 				<li>
 					<Obfuscated>
