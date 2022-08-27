@@ -1,7 +1,7 @@
 import '../../styles/TheatreCategory.scss';
-import { ItemList, TheatreAPI } from '../../TheatreCommon.js';
-import { DB_API } from '../../consts.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { ItemList, TheatreAPI } from '../../TheatreCommon';
+import { DB_API } from '../../consts';
+import { Obfuscated } from '../../obfuscate';
 import { useEffect, useState } from 'react';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;

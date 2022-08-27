@@ -1,8 +1,8 @@
-import { ThemeLink } from '../ThemeElements.js';
-import { Obfuscated } from '../obfuscate.js';
-import resolveRoute from '../resolveRoute.js';
+import { ThemeLink } from '../ThemeElements';
+import { Obfuscated } from '../obfuscate';
+import resolveRoute from '../resolveRoute';
 
-export default function Terms(props) {
+export default function Terms() {
 	return (
 		<main>
 			<h2>Security</h2>

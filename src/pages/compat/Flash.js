@@ -1,5 +1,5 @@
-import { Script } from '../../CompatLayout.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { Script } from '../../CompatLayout';
+import { Obfuscated } from '../../obfuscate';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Flash(props) {

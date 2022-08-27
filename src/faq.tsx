@@ -1,9 +1,14 @@
-import { ObfuscatedThemeA, ThemeLink } from './ThemeElements.js';
-import { TN_DISCORD_URL } from './consts.js';
-import { Obfuscated } from './obfuscate.js';
-import resolveRoute from './resolveRoute.js';
+import { ObfuscatedThemeA, ThemeLink } from './ThemeElements';
+import { TN_DISCORD_URL } from './consts';
+import { Obfuscated } from './obfuscate';
+import resolveRoute from './resolveRoute';
 
-const faq = [
+interface FAQ {
+	q: JSX.Element;
+	a: JSX.Element;
+}
+
+const faq: FAQ[] = [
 	{
 		q: (
 			<>

@@ -1,34 +1,57 @@
-import { Obfuscated } from './obfuscate.js';
-import { CheckCircle, Error, Info, Warning } from '@mui/icons-material';
+import { Obfuscated } from './obfuscate';
+import {
+	CheckCircle,
+	Error as ErrorIcon,
+	Info,
+	Warning,
+} from '@mui/icons-material';
+import type SvgIcon from '@mui/material/SvgIcon';
 import clsx from 'clsx';
+import type { ReactElement, ReactNode, RefObject } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 const ANIMATION = 0.3e3;
 
-/**
- *
- * @param {{manager: import('react').RefObject<NotificationsManager>, id: string, type: 'warning'|'error'|'sucess'|'info', duration: number, title: JSX.Element, description: JSX.Element}} props
- */
-export function Notification(props) {
+interface NotificationStubProps {
+	title: ReactNode;
+	description: ReactNode;
+	type: 'warning' | 'error' | 'success' | 'info';
+	duration: number;
+}
+
+function RealNotification({
+	id,
+	title,
+	description,
+	manager,
+	duration,
+	type,
+}: NotificationStubProps & {
+	manager: RefObject<NotificationsManagerRef>;
+	id: string;
+}) {
 	const [hide, setHide] = useState(false);
 
-	const duration = props.duration || 5e3;
+	duration ||= 5e3;
 
 	useEffect(() => {
 		setTimeout(() => {
 			setHide(true);
-			setTimeout(() => props.manager.current.delete(props.id), ANIMATION);
+			setTimeout(() => {
+				if (!manager.current) return;
+				manager.current.delete(id);
+			}, ANIMATION);
 		}, duration);
-	}, [duration, props.id, props.manager]);
+	}, [duration, id, manager]);
 
-	let Icon;
+	let Icon: typeof SvgIcon;
 
-	switch (props.type) {
+	switch (type) {
 		case 'warning':
 			Icon = Warning;
 			break;
 		case 'error':
-			Icon = Error;
+			Icon = ErrorIcon;
 			break;
 		case 'success':
 			Icon = CheckCircle;
@@ -40,19 +63,17 @@ export function Notification(props) {
 	}
 
 	return (
-		<div
-			className={clsx('notification', hide && 'hide', props.title && 'title')}
-		>
-			<Icon className={`icon ${props.type}`} />
+		<div className={clsx('notification', hide && 'hide', title && 'title')}>
+			<Icon className={`icon $.type}`} />
 			<div className="content">
-				{props.title && (
+				{title && (
 					<div className="title">
-						<Obfuscated>{props.title}</Obfuscated>
+						<Obfuscated>{title}</Obfuscated>
 					</div>
 				)}
-				{props.description && (
+				{description && (
 					<div className="description">
-						<Obfuscated>{props.description}</Obfuscated>
+						<Obfuscated>{description}</Obfuscated>
 					</div>
 				)}
 			</div>
@@ -64,59 +85,65 @@ export function Notification(props) {
 	);
 }
 
-export default forwardRef(function NotificationsManager(_props, ref) {
-	/**
-	 * @type {Notification[]}
-	 */
-	const [notifications, setNotifications] = useState([]);
+export interface NotificationsManagerRef {
+	add(notification: ReactElement<Notification>): void;
+	delete(id: string): void;
+}
 
-	useImperativeHandle(
-		ref,
-		() => ({
-			/**
-			 *
-			 * @param {Notification} notification
-			 */
-			add(notification) {
-				const id = Math.random().toString(36);
-				const _notifications = [...notifications];
+export function Notification(props: NotificationStubProps): JSX.Element {
+	throw new Error(
+		'<Notifications> is an abstract component, it should never be rendered.'
+	);
+}
 
-				_notifications.push(
-					<Notification
-						{...notification.props}
-						key={id}
-						id={id}
-						manager={ref}
-					/>
-				);
+const NotificationsManager = forwardRef<NotificationsManagerRef>(
+	function NotificationsManager(props, ref) {
+		const [notifications, setNotifications] = useState<
+			ReactElement<Notification>[]
+		>([]);
 
-				setNotifications(_notifications);
-			},
-			/**
-			 *
-			 * @param {string} id
-			 */
-			delete(id) {
-				const _notifications = [...notifications];
+		useImperativeHandle(
+			ref,
+			() => ({
+				add(notification: ReactElement<Notification>) {
+					const id = Math.random().toString(36);
+					const _notifications = [...notifications];
 
-				for (let i = 0; i < _notifications.length; i++) {
-					const notification = _notifications[i];
+					_notifications.push(
+						<RealNotification
+							{...notification.props}
+							key={id}
+							id={id}
+							manager={ref as RefObject<NotificationsManagerRef>}
+						/>
+					);
 
-					if (notification.props.id !== id) {
-						continue;
+					setNotifications(_notifications);
+				},
+				delete(id: string) {
+					const _notifications = [...notifications];
+
+					for (let i = 0; i < _notifications.length; i++) {
+						const notification = _notifications[i];
+
+						if (notification.props.id !== id) {
+							continue;
+						}
+
+						_notifications.splice(i, 1);
+						setNotifications(_notifications);
+
+						return true;
 					}
 
-					_notifications.splice(i, 1);
-					setNotifications(_notifications);
+					return false;
+				},
+			}),
+			[notifications, ref]
+		);
 
-					return true;
-				}
+		return <div className="notifications">{notifications}</div>;
+	}
+);
 
-				return false;
-			},
-		}),
-		[notifications, ref]
-	);
-
-	return <div className="notifications">{notifications}</div>;
-});
+export default NotificationsManager;

@@ -1,7 +1,7 @@
-import { ThemeLink } from '../ThemeElements.js';
-import resolveRoute from '../resolveRoute.js';
+import { ThemeLink } from '../ThemeElements';
+import resolveRoute from '../resolveRoute';
 
-export default function NotFound(props) {
+export default function NotFound() {
 	return (
 		<main>
 			<h1>The page you are looking for is not available.</h1>

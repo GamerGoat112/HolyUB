@@ -1,35 +1,22 @@
-import DatabaseAPI from './DatabaseAPI.js';
-import { THEATRE_CDN } from './consts.js';
-import { Obfuscated } from './obfuscate.js';
-import resolveRoute from './resolveRoute.js';
+import DatabaseAPI from './DatabaseAPI';
+import { THEATRE_CDN } from './consts';
+import { Obfuscated } from './obfuscate';
+import resolveRoute from './resolveRoute';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-/**
- *
- * @typedef {object} LimitedEntry
- * @property {string} name
- * @property {string} id
- * @property {string} category
- */
+interface LimitedEntry {
+	name: string;
+	id: string;
+	category: string;
+}
 
 export class TheatreAPI extends DatabaseAPI {
-	/**
-	 *
-	 * @param {string} id
-	 * @returns {LimitedEntry}
-	 */
-	async show(id) {
-		return await this.fetch(`./theatre/${id}/`);
+	async show(id: String) {
+		return await this.fetch<LimitedEntry>(`./theatre/${id}/`);
 	}
-	/**
-	 *
-	 * @param {string} id
-	 * @param {string} token
-	 * @returns {LimitedEntry}
-	 */
-	async plays(id, token) {
-		return await this.fetch(
+	async plays(id: string, token: string) {
+		return await this.fetch<LimitedEntry>(
 			`./theatre/${id}/plays?` +
 				new URLSearchParams({
 					token,
@@ -51,24 +38,24 @@ export class TheatreAPI extends DatabaseAPI {
 	}
 }
 
-function Item(props) {
+function Item({ id, name }: { id: string; name: string }) {
 	const [loaded, setLoaded] = useState(false);
 
 	return (
 		<Link
 			className="item"
-			to={`${resolveRoute('/theatre/', 'player')}?id=${props.id}`}
+			to={`${resolveRoute('/theatre/', 'player')}?id=${id}`}
 		>
 			<div className="thumbnail" data-loaded={Number(loaded)}>
 				<img
 					alt=""
 					loading="lazy"
 					onLoad={() => setLoaded(true)}
-					src={new URL(`./thumbnails/${props.id}.webp`, THEATRE_CDN)}
+					src={new URL(`./thumbnails/${id}.webp`, THEATRE_CDN).toString()}
 				></img>
 			</div>
 			<div className="name">
-				<Obfuscated ellipsis>{props.name}</Obfuscated>
+				<Obfuscated ellipsis>{name}</Obfuscated>
 			</div>
 		</Link>
 	);
@@ -83,18 +70,21 @@ function LoadingItem() {
 	);
 }
 
-/**
- * @param {React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {items: {id:string,name?:string,loading:boolean}}} props
- * @returns
- */
-export function ItemList(props) {
-	const { items, ...attributes } = props;
+export interface TheatreItem {
+	id: string;
+	name?: string;
+	loading: boolean;
+}
 
+export function ItemList({
+	items,
+	...attributes
+}: { items: TheatreItem[] } & JSX.IntrinsicElements['div']) {
 	const children = [];
 
 	for (const item of items) {
 		if (item.loading) {
-			children.push(<LoadingItem key={item.id} id={item.id} />);
+			children.push(<LoadingItem />);
 		} else {
 			children.push(<Item key={item.id} id={item.id} name={item.name} />);
 		}

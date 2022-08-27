@@ -4,10 +4,6 @@ const messages = [
 	'The user aborted a request.',
 ];
 
-/**
- *
- * @param {Error} error
- */
-export default function isAbortError(error) {
+export default function isAbortError(error: Error) {
 	return messages.includes(error.message);
 }

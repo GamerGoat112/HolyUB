@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-export default class Settings {
-	constructor(key, defaultSettings) {
+export default class Settings<T> {
+	private defaultSettings: T;
+	private key: string;
+	value: T;
+	constructor(key: string, defaultSettings: T) {
 		this.key = key;
 		this.defaultSettings = defaultSettings;
-		this.load();
-	}
-	load() {
+
 		if (localStorage[this.key] === undefined) {
 			localStorage[this.key] = '{}';
 		}
@@ -19,7 +20,7 @@ export default class Settings {
 			parsed = {};
 		}
 
-		const settings = {};
+		const settings: Partial<T> = {};
 		Reflect.setPrototypeOf(settings, null);
 
 		let updated = false;
@@ -33,19 +34,19 @@ export default class Settings {
 			}
 		}
 
-		this.value = settings;
+		this.value = settings as T;
 
 		if (updated) {
 			localStorage[this.key] = JSON.stringify(this.value);
 		}
 	}
-	validValue(key, value) {
+	validValue<K extends keyof T>(key: K, value: T[K]) {
 		return typeof value === typeof this.defaultSettings[key];
 	}
-	get(key) {
+	get<K extends keyof T>(key: K): T[K] {
 		return this.value[key];
 	}
-	setObject(object) {
+	setObject(object: { [K in keyof T]: T[K] }) {
 		let updated = false;
 
 		for (const key in object) {
@@ -59,7 +60,7 @@ export default class Settings {
 
 		return updated;
 	}
-	set(key, value) {
+	set<K extends keyof T>(key: K, value: T[K]) {
 		if (typeof key === 'object') return this.setObject(key);
 
 		if (!this.validValue(key, value)) return false;
@@ -70,15 +71,30 @@ export default class Settings {
 	}
 }
 
-export function useSettings(key, create) {
+export function useSettings<T>(
+	key: string,
+	create: () => T
+): [T, (state: T | ((prevState: T) => T)) => void] {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const settings = useMemo(() => new Settings(key, create()), []);
-	const [current, setCurrent] = useState({ ...settings.value });
+	const [current, setCurrent] = useState<{ [K in keyof T]: T[K] }>({
+		...settings.value,
+	});
 	const oldCurrent = useRef(current);
 
 	useEffect(() => {
-		if (oldCurrent.current !== current) settings.set(current);
+		if (oldCurrent.current !== current) settings.setObject(current);
 	}, [settings, current]);
 
 	return [current, setCurrent];
+}
+
+export function Component() {
+	const [settings, setSettings] = useSettings('test', () => ({
+		someReactData: 1,
+	}));
+
+	console.log(settings, settings.someReactData);
+
+	setSettings({ someReactData: 2 });
 }

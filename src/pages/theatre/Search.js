@@ -1,10 +1,10 @@
 import '../../styles/TheatreSearch.scss';
-import { TheatreAPI } from '../../TheatreCommon.js';
-import { ThemeInputBar } from '../../ThemeElements.js';
-import { DB_API } from '../../consts.js';
-import isAbortError from '../../isAbortError.js';
-import { Obfuscated } from '../../obfuscate.js';
-import resolveRoute from '../../resolveRoute.js';
+import { TheatreAPI } from '../../TheatreCommon';
+import { ThemeInputBar } from '../../ThemeElements';
+import { DB_API } from '../../consts';
+import isAbortError from '../../isAbortError';
+import { Obfuscated } from '../../obfuscate';
+import resolveRoute from '../../resolveRoute';
 import categories from './games/categories';
 import { Search } from '@mui/icons-material';
 import clsx from 'clsx';

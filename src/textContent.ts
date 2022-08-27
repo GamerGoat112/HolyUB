@@ -1,6 +1,11 @@
 const buffer = /*#__PURE__*/ document.createElement('div');
 
-export default function textContent(html) {
+/**
+ * Sanitizes raw HTML using native APIs
+ * @param html
+ * @returns
+ */
+export default function textContent(html: string) {
 	buffer.innerHTML = html;
 	const { textContent } = buffer;
 	buffer.innerHTML = '';

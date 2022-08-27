@@ -1,13 +1,23 @@
 import './styles/ThemeElements.scss';
-import { ObfuscatedA } from './obfuscate.js';
+import { ObfuscatedA } from './obfuscate';
+import type { ObfuscatedAProps } from './obfuscate';
 import { ExpandMore } from '@mui/icons-material';
 import clsx from 'clsx';
-import { forwardRef, useRef, useState } from 'react';
+import type {
+	AnchorHTMLAttributes,
+	PropsWithChildren,
+	ReactElement,
+	ReactNode,
+} from 'react';
+import { forwardRef, useState } from 'react';
+import type { LinkProps } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-export function ThemeButton(props) {
-	const { children, className, ...attributes } = props;
-
+export function ThemeButton({
+	children,
+	className,
+	...attributes
+}: PropsWithChildren<{ className?: string }>) {
 	return (
 		<button
 			type="button"
@@ -19,9 +29,11 @@ export function ThemeButton(props) {
 	);
 }
 
-export function ThemeInputBar(props) {
-	const { children, className, ...attributes } = props;
-
+export function ThemeInputBar({
+	children,
+	className,
+	...attributes
+}: PropsWithChildren<{ className?: string }>) {
 	return (
 		<div className={clsx('theme-input-bar', className)} {...attributes}>
 			{children}
@@ -29,9 +41,11 @@ export function ThemeInputBar(props) {
 	);
 }
 
-export function ObfuscatedThemeA(props) {
-	const { children, className, ...attributes } = props;
-
+export function ObfuscatedThemeA({
+	children,
+	className,
+	...attributes
+}: PropsWithChildren<{ className?: string } & ObfuscatedAProps>) {
 	return (
 		<ObfuscatedA className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -39,9 +53,14 @@ export function ObfuscatedThemeA(props) {
 	);
 }
 
-export function ThemeA(props) {
-	const { children, className, ...attributes } = props;
-
+export function ThemeA({
+	children,
+	className,
+	...attributes
+}: {
+	className?: string;
+	children: ReactNode;
+} & AnchorHTMLAttributes<HTMLAnchorElement>) {
 	return (
 		<a className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -49,9 +68,11 @@ export function ThemeA(props) {
 	);
 }
 
-export function ThemeLink(props) {
-	const { children, className, ...attributes } = props;
-
+export function ThemeLink({
+	children,
+	className,
+	...attributes
+}: PropsWithChildren<{ className?: string } & LinkProps>) {
 	return (
 		<Link className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -59,9 +80,10 @@ export function ThemeLink(props) {
 	);
 }
 
-export const ThemeInput = forwardRef(function ThemeInput(props, ref) {
-	const { children, className, ...attributes } = props;
-
+export const ThemeInput = forwardRef<
+	HTMLInputElement,
+	PropsWithChildren<{ className?: string }>
+>(function ThemeInput({ children, className, ...attributes }, ref) {
 	return (
 		<input ref={ref} className={clsx('theme-input', className)} {...attributes}>
 			{children}
@@ -71,39 +93,53 @@ export const ThemeInput = forwardRef(function ThemeInput(props, ref) {
 
 // <select ref={dummy_ref} forwardRef={ref}>
 
-export function ThemeSelect(props) {
+export function ThemeSelect({
+	className,
+	onChange,
+	children,
+	value,
+	defaultValue,
+	...attributes
+}: {
+	children?:
+		| ReactElement<JSX.IntrinsicElements['option']>
+		| ReactElement<JSX.IntrinsicElements['option']>[];
+	className?: string;
+	onChange?: (mockEvent: { target: HTMLInputElement }) => void;
+	value?: string;
+	defaultValue?: string;
+}) {
 	// ref target
-	const input = useRef();
-	const container = useRef();
+	const [input, setInput] = useState<HTMLInputElement | null>(null);
+	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 	const [lastSelect, setLastSelect] = useState(-1);
 	const [open, setOpen] = useState(false);
 
-	function setSelected(value) {
-		_setSelected(value);
-		setOpen(false);
-
-		if (typeof props.onChange === 'function')
-			setTimeout(() => props.onChange({ target: input.current }));
-	}
-
-	const { className, onChange, children, ...attributes } = props;
-
 	const list = [];
 
-	const options = [];
-	const availableOptions = [];
+	interface Option {
+		name: string;
+		value: string;
+		disabled: boolean;
+	}
+
+	const options: Option[] = [];
+	const availableOptions: number[] = [];
 
 	let defaultSelected = 0;
 
+	if (!children) children = [];
+	else if (!Array.isArray(children)) children = [children];
+
 	for (const child of children) {
 		if (child.type === 'option') {
-			const option = {
-				name: child.props.children,
-				value: child.props.value,
-				disabled: 'disabled' in child.props,
+			const option: Option = {
+				name: child.props.children as string,
+				value: child.props.value as string,
+				disabled: child.props.disabled === true,
 			};
 
-			if (option.value === (props.value || props.defaultValue)) {
+			if (option.value === (value || defaultValue)) {
 				defaultSelected = options.length;
 			}
 
@@ -116,6 +152,14 @@ export function ThemeSelect(props) {
 	}
 
 	const [selected, _setSelected] = useState(defaultSelected);
+
+	function setSelected(value: number) {
+		_setSelected(value);
+		setOpen(false);
+
+		if (typeof onChange === 'function')
+			setTimeout(() => onChange({ target: input! }));
+	}
 
 	for (let i = 0; i < options.length; i++) {
 		const option = options[i];
@@ -150,7 +194,7 @@ export function ThemeSelect(props) {
 			tabIndex={0}
 			className={clsx('theme-select', className)}
 			data-open={Number(open)}
-			ref={container}
+			ref={setContainer}
 			onKeyDown={(event) => {
 				let preventDefault = true;
 
@@ -219,13 +263,13 @@ export function ThemeSelect(props) {
 				if (!event.target.contains(event.relatedTarget)) setOpen(false);
 			}}
 		>
-			<input ref={input} value={options[selected]?.value} readOnly hidden />
+			<input ref={setInput} value={options[selected]?.value} readOnly hidden />
 			<div
 				className="toggle"
 				onClick={() => {
 					setOpen(!open);
 					setLastSelect(selected);
-					container.current.focus();
+					container!.focus();
 				}}
 			>
 				{options[selected]?.name}

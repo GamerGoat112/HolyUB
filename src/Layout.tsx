@@ -1,5 +1,6 @@
-import NotificationsManager from './Notifications.js';
-import { useSettings } from './Settings.js';
+import NotificationsManager from './Notifications';
+import type { NotificationsManagerRef } from './Notifications';
+import { useSettings } from './Settings';
 import {
 	forwardRef,
 	useEffect,
@@ -10,9 +11,11 @@ import {
 } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export const THEMES = ['night', 'day'];
+export const THEMES: string[] = ['night', 'day'];
 
 class Scroll {
+	x: number;
+	y: number;
 	constructor(
 		x = document.documentElement.scrollLeft,
 		y = document.documentElement.scrollTop
@@ -31,18 +34,19 @@ function ScrollManager() {
 	const { current: scrolls } = _scrolls;
 
 	// lastPage === undefined on refresh
-	const lastPage = useRef();
+	// is this basically just a useLocation hook??
+	const [lastPage, setLastPage] = useState(location.pathname);
 
-	if (lastPage.current !== location.pathname) {
-		if (lastPage.current) {
-			scrolls.set(lastPage.current, new Scroll());
+	if (lastPage !== location.pathname) {
+		if (lastPage) {
+			scrolls.set(lastPage, new Scroll());
 		}
 
 		if (scrolls.has(location.pathname)) {
 			scrolls.get(location.pathname).scroll();
 		}
 
-		lastPage.current = location.pathname;
+		setLastPage(location.pathname);
 	}
 
 	return <></>;
@@ -58,11 +62,9 @@ function TabMode() {
 			}
 		}
 
-		function mousedown() {
-			setTab(false);
-		}
+		const mousedown = () => setTab(false);
 
-		document.documentElement.dataset.tab = Number(tab);
+		document.documentElement.dataset.tab = Number(tab).toString();
 
 		document.addEventListener('keydown', keydown);
 		document.addEventListener('mousedown', mousedown);
@@ -76,8 +78,33 @@ function TabMode() {
 	return <></>;
 }
 
-export default forwardRef(function Layout(props, ref) {
-	const notifications = useRef();
+export interface CloakSettings {
+	value: string;
+	title: string;
+	icon: string;
+}
+
+export interface GlobalSettings {
+	theme: string;
+	proxy: string;
+	search: string;
+	favorites: string[];
+	seen_games: string[];
+}
+
+export default forwardRef<{
+	notifications: NotificationsManagerRef | null;
+	settings: GlobalSettings;
+	setSettings: (
+		state: GlobalSettings | ((prevState: GlobalSettings) => GlobalSettings)
+	) => void;
+	cloak: CloakSettings;
+	setCloak: (
+		state: CloakSettings | ((prevState: CloakSettings) => CloakSettings)
+	) => void;
+}>(function Layout(props, ref) {
+	const [notifications, setNotifications] =
+		useState<NotificationsManagerRef | null>(null);
 
 	const theme = useMemo(
 		() =>
@@ -85,42 +112,52 @@ export default forwardRef(function Layout(props, ref) {
 		[]
 	);
 
-	const [settings, setSettings] = useSettings('global settings', () => ({
-		theme,
-		proxy: 'automatic',
-		search: 'https://www.google.com/search?q=%s',
-		favorites: [],
-		seen_games: [],
-	}));
+	const [settings, setSettings] = useSettings<GlobalSettings>(
+		'global settings',
+		() => ({
+			theme,
+			proxy: 'automatic',
+			search: 'https://www.google.com/search?q=%s',
+			favorites: [],
+			seen_games: [],
+		})
+	);
 
-	const [cloak, setCloak] = useSettings('cloak settings', () => ({
-		value: '',
-		title: '',
-		icon: '',
-	}));
+	const [cloak, setCloak] = useSettings<CloakSettings>(
+		'cloak settings',
+		() => ({
+			value: '',
+			title: '',
+			icon: '',
+		})
+	);
 
-	useImperativeHandle(ref, () => ({
-		notifications,
-		settings,
-		setSettings,
-		cloak,
-		setCloak,
-	}));
+	useImperativeHandle(
+		ref,
+		() => ({
+			notifications,
+			settings,
+			setSettings,
+			cloak,
+			setCloak,
+		}),
+		[cloak, notifications, setCloak, setSettings, settings]
+	);
 
 	useEffect(() => {
 		document.documentElement.dataset.theme = settings.theme;
 	}, [settings.theme]);
 
 	useEffect(() => {
-		const icon = document.querySelector('link[rel="icon"]');
+		const icon = document.querySelector('link[rel="icon"]') as
+			| HTMLLinkElement
+			| undefined;
 
-		if (cloak.title === '') {
-			document.title = 'Holy Unblocker';
-		} else {
-			document.title = cloak.title;
-		}
+		if (!icon) return;
 
-		let href;
+		document.title = cloak.title === '' ? 'Holy Unblocker' : cloak.title;
+
+		let href: string;
 
 		switch (cloak.icon) {
 			case '':
@@ -141,7 +178,7 @@ export default forwardRef(function Layout(props, ref) {
 	return (
 		<>
 			<TabMode />
-			<NotificationsManager ref={notifications} />
+			<NotificationsManager ref={setNotifications} />
 			<ScrollManager />
 		</>
 	);

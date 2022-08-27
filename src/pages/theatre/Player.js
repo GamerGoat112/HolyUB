@@ -1,11 +1,11 @@
 import '../../styles/TheatrePlayer.scss';
-import resolveProxy from '../../ProxyResolver.js';
-import { TheatreAPI } from '../../TheatreCommon.js';
-import { DB_API, THEATRE_CDN } from '../../consts.js';
-import { encryptURL } from '../../cryptURL.js';
-import isAbortError from '../../isAbortError.js';
-import { Obfuscated } from '../../obfuscate.js';
-import resolveRoute from '../../resolveRoute.js';
+import resolveProxy from '../../ProxyResolver';
+import { TheatreAPI } from '../../TheatreCommon';
+import { DB_API, THEATRE_CDN } from '../../consts';
+import { encryptURL } from '../../cryptURL';
+import isAbortError from '../../isAbortError';
+import { Obfuscated } from '../../obfuscate';
+import resolveRoute from '../../resolveRoute';
 import {
 	ArrowDropDown,
 	ArrowDropUp,

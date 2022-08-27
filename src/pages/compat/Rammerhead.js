@@ -1,6 +1,6 @@
-import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI.js';
-import { RH_API } from '../../consts.js';
-import { Obfuscated } from '../../obfuscate.js';
+import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI';
+import { RH_API } from '../../consts';
+import { Obfuscated } from '../../obfuscate';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 

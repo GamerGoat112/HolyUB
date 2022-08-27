@@ -1,9 +1,10 @@
 import './styles/Service.scss';
-import { Notification } from './Notifications.js';
-import resolveProxy from './ProxyResolver.js';
-import { BARE_API } from './consts.js';
-import { decryptURL, encryptURL } from './cryptURL.js';
-import { Obfuscated } from './obfuscate.js';
+// import type Layout from './Layout';
+import { Notification } from './Notifications';
+import resolveProxy from './ProxyResolver';
+import { BARE_API } from './consts';
+import { decryptURL, encryptURL } from './cryptURL';
+import { Obfuscated } from './obfuscate';
 import {
 	ChevronLeft,
 	Fullscreen,
@@ -17,13 +18,17 @@ import {
 	useEffect,
 	useImperativeHandle,
 	useMemo,
-	useRef,
 	useState,
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-export default forwardRef(function ServiceFrame(props, ref) {
-	const iframe = useRef();
+export default forwardRef<
+	{
+		proxy(src: string): void;
+	},
+	{ layout: any }
+>(function ServiceFrame({ layout }, ref) {
+	const [iframe, setIFrame] = useState<HTMLIFrameElement | null>(null);
 	const [search, setSearch] = useSearchParams();
 	const [firstLoad, setFirstLoad] = useState(false);
 	const [revokeIcon, setRevokeIcon] = useState(false);
@@ -31,32 +36,29 @@ export default forwardRef(function ServiceFrame(props, ref) {
 	const bare = useMemo(() => new BareClient(BARE_API), []);
 	const linksTried = useMemo(() => new WeakMap(), []);
 
-	const src = useMemo(() => {
-		if (search.has('query')) {
-			return decryptURL(search.get('query'));
-		} else {
-			return '';
-		}
-	}, [search]);
+	const src = useMemo(
+		() => (search.has('query') ? decryptURL(search.get('query')!) : ''),
+		[search]
+	);
 	const [title, setTitle] = useState(src);
 	const [icon, setIcon] = useState('');
 
 	useEffect(() => {
-		window.ifr = iframe.current;
-
 		if (src) {
 			(async function () {
+				if (!iframe || !iframe.contentWindow) return;
+
 				try {
 					const proxiedSrc = await resolveProxy(
 						src,
-						props.layout.current.settings.proxy
+						layout.current.settings.proxy
 					);
 
-					iframe.current.contentWindow.location.href = proxiedSrc;
+					iframe.contentWindow.location.href = proxiedSrc;
 					setLastSrc(proxiedSrc);
 				} catch (error) {
 					console.error(error);
-					props.layout.current.notifications.current.add(
+					layout.current.notifications.current.add(
 						<Notification
 							title="Unable to find compatible proxy"
 							description={error.message}
@@ -66,17 +68,19 @@ export default forwardRef(function ServiceFrame(props, ref) {
 				}
 			})();
 		} else {
+			if (!iframe || !iframe.contentWindow) return;
+
 			setFirstLoad(false);
 			setTitle('');
 			setIcon('');
-			iframe.current.contentWindow.location.href = 'about:blank';
+			iframe.contentWindow.location.href = 'about:blank';
 			setLastSrc('about:blank');
 		}
-	}, [props.layout, src]);
+	}, [iframe, layout, src]);
 
 	useImperativeHandle(ref, () => ({
-		proxy(src) {
-			search.has('query') && decryptURL(search.get('query'));
+		proxy(src: string) {
+			search.has('query') && decryptURL(search.get('query')! as string);
 			setSearch({
 				...Object.fromEntries(search),
 				query: encryptURL(src),
@@ -86,27 +90,22 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 	useEffect(() => {
 		function focusListener() {
-			if (!iframe.current) {
-				return;
-			}
+			if (!iframe || !iframe.contentWindow) return;
 
-			iframe.current.contentWindow.focus();
+			iframe.contentWindow.focus();
 		}
 
 		window.addEventListener('focus', focusListener);
 
-		return () => {
-			window.removeEventListener('focus', focusListener);
-		};
+		return () => window.removeEventListener('focus', focusListener);
 	}, [iframe]);
 
 	const testProxyUpdate = useCallback(
 		async function testProxyUpdate() {
-			if (!iframe.current) {
-				return;
-			}
+			if (!iframe || !iframe.contentWindow) return;
 
-			const { contentWindow } = iframe.current;
+			const contentWindow =
+				iframe.contentWindow as unknown as typeof globalThis;
 
 			// * didn't hook our call to new Function
 			try {
@@ -118,33 +117,21 @@ export default forwardRef(function ServiceFrame(props, ref) {
 
 			const location = new contentWindow.Function('return location')();
 
-			let title;
-
-			if (location === contentWindow.location) {
-				title = src;
-			} else {
+			if (location === contentWindow.location) setTitle(src);
+			else {
 				const currentTitle = contentWindow.document.title;
 
-				if (currentTitle) {
-					title = currentTitle;
-				} else {
-					title = location.toString();
-				}
+				setTitle(currentTitle || location.toString());
+				const selector = contentWindow.document.querySelector(
+					'link[rel*="icon"]'
+				) as HTMLLinkElement | undefined;
 
-				const selector =
-					contentWindow.document.querySelector('link[rel*="icon"]');
+				const icon =
+					selector && selector.href !== ''
+						? selector.href
+						: new URL('/favicon.ico', location).toString();
 
-				let icon;
-
-				if (selector !== null && selector.href !== '') {
-					icon = selector.href;
-				} else {
-					icon = new URL('/favicon.ico', location).toString();
-				}
-
-				if (!linksTried.has(location)) {
-					linksTried.set(location, new Set());
-				}
+				if (!linksTried.has(location)) linksTried.set(location, new Set());
 
 				if (!linksTried.get(location).has(icon)) {
 					linksTried.get(location).add(icon);
@@ -155,10 +142,8 @@ export default forwardRef(function ServiceFrame(props, ref) {
 					setRevokeIcon(true);
 				}
 			}
-
-			setTitle(title);
 		},
-		[bare, linksTried, src]
+		[bare, iframe, linksTried, src]
 	);
 
 	useEffect(() => {
@@ -168,7 +153,7 @@ export default forwardRef(function ServiceFrame(props, ref) {
 	}, [testProxyUpdate]);
 
 	useEffect(() => {
-		document.documentElement.dataset.service = Number(Boolean(src));
+		document.documentElement.dataset.service = Number(Boolean(src)).toString();
 	}, [src]);
 
 	return (
@@ -212,7 +197,7 @@ export default forwardRef(function ServiceFrame(props, ref) {
 			<iframe
 				className="embed"
 				title="embed"
-				ref={iframe}
+				ref={setIFrame}
 				data-first-load={Number(firstLoad)}
 				onLoad={() => {
 					testProxyUpdate();
