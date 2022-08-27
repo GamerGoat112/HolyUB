@@ -3,12 +3,7 @@ import { ObfuscatedA } from './obfuscate';
 import type { ObfuscatedAProps } from './obfuscate';
 import { ExpandMore } from '@mui/icons-material';
 import clsx from 'clsx';
-import type {
-	AnchorHTMLAttributes,
-	PropsWithChildren,
-	ReactElement,
-	ReactNode,
-} from 'react';
+import type { AnchorHTMLAttributes, ReactElement, ReactNode } from 'react';
 import { forwardRef, useState } from 'react';
 import type { LinkProps } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -17,7 +12,10 @@ export function ThemeButton({
 	children,
 	className,
 	...attributes
-}: PropsWithChildren<{ className?: string }>) {
+}: {
+	children: ReactNode;
+	className?: string;
+} & JSX.IntrinsicElements['button']) {
 	return (
 		<button
 			type="button"
@@ -33,7 +31,10 @@ export function ThemeInputBar({
 	children,
 	className,
 	...attributes
-}: PropsWithChildren<{ className?: string }>) {
+}: {
+	children: ReactNode;
+	className?: string;
+}) {
 	return (
 		<div className={clsx('theme-input-bar', className)} {...attributes}>
 			{children}
@@ -45,7 +46,7 @@ export function ObfuscatedThemeA({
 	children,
 	className,
 	...attributes
-}: PropsWithChildren<{ className?: string } & ObfuscatedAProps>) {
+}: { className?: string; children: ReactNode } & ObfuscatedAProps) {
 	return (
 		<ObfuscatedA className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -72,7 +73,7 @@ export function ThemeLink({
 	children,
 	className,
 	...attributes
-}: PropsWithChildren<{ className?: string } & LinkProps>) {
+}: { className?: string; children: ReactNode } & LinkProps) {
 	return (
 		<Link className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -82,7 +83,7 @@ export function ThemeLink({
 
 export const ThemeInput = forwardRef<
 	HTMLInputElement,
-	PropsWithChildren<{ className?: string }>
+	{ className?: string; children: ReactNode }
 >(function ThemeInput({ children, className, ...attributes }, ref) {
 	return (
 		<input ref={ref} className={clsx('theme-input', className)} {...attributes}>

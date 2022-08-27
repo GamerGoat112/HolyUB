@@ -1,6 +1,7 @@
 import NotificationsManager from './Notifications';
 import type { NotificationsManagerRef } from './Notifications';
 import { useSettings } from './Settings';
+import type { RefObject } from 'react';
 import {
 	forwardRef,
 	useEffect,
@@ -93,7 +94,7 @@ export interface GlobalSettings {
 }
 
 export interface LayoutRef {
-	notifications: NotificationsManagerRef | null;
+	notifications: RefObject<NotificationsManagerRef>;
 	settings: GlobalSettings;
 	setSettings: (
 		state: GlobalSettings | ((prevState: GlobalSettings) => GlobalSettings)
@@ -104,9 +105,8 @@ export interface LayoutRef {
 	) => void;
 }
 
-export default forwardRef<LayoutRef>(function Layout(props, ref) {
-	const [notifications, setNotifications] =
-		useState<NotificationsManagerRef | null>(null);
+const Layout = forwardRef<LayoutRef>(function Layout(props, ref) {
+	const notifications = useRef<NotificationsManagerRef | null>(null);
 
 	const theme = useMemo(
 		() =>
@@ -180,8 +180,10 @@ export default forwardRef<LayoutRef>(function Layout(props, ref) {
 	return (
 		<>
 			<TabMode />
-			<NotificationsManager ref={setNotifications} />
+			<NotificationsManager ref={notifications} />
 			<ScrollManager />
 		</>
 	);
 });
+
+export default Layout;

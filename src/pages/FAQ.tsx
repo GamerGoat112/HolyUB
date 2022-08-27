@@ -2,7 +2,7 @@ import { ThemeLink } from '../ThemeElements';
 import faq from '../faq';
 import resolveRoute from '../resolveRoute';
 
-export default function FAQ() {
+const FAQ = () => {
 	const sections = [];
 
 	for (let i = 0; i < faq.length; i++) {
@@ -25,4 +25,6 @@ export default function FAQ() {
 			</p>
 		</main>
 	);
-}
+};
+
+export default FAQ;

@@ -81,10 +81,12 @@ export function MenuTab({
 	}
 }
 
-export default forwardRef<{
+export interface MainLayoutRef {
 	expanded: boolean;
 	setExpanded: (state: boolean | ((prevState: boolean) => boolean)) => void;
-}>(function Layout(props, ref) {
+}
+
+const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 	const [expanded, setExpanded] = useState(false);
 
 	useImperativeHandle(
@@ -221,3 +223,5 @@ export default forwardRef<{
 		</>
 	);
 });
+
+export default MainLayout;

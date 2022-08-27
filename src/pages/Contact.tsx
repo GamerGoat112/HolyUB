@@ -2,7 +2,7 @@ import { ObfuscatedThemeA } from '../ThemeElements';
 import { HU_DISCORD_URL } from '../consts';
 import { Obfuscated } from '../obfuscate';
 
-export default function Contact() {
+const Contact = () => {
 	return (
 		<main className="legal contact">
 			<h1>Contact:</h1>
@@ -28,4 +28,6 @@ export default function Contact() {
 			</ul>
 		</main>
 	);
-}
+};
+
+export default Contact;

@@ -8,60 +8,56 @@ import { Suspense, createRef, lazy } from 'react';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 
 const GamesPopular = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/games/Popular')
 );
 const TheatreFavorites = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Favorites.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/Favorites')
 );
 const TheatreCategory = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Category.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/Category')
 );
 const TheatrePlayer = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/theatre/Player.js')
+	import(/* webpackPrefetch: true */ './pages/theatre/Player')
 );
-const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home.js'));
+const Home = lazy(() => import(/* webpackPrefetch: true */ './pages/Home'));
 const Settings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Settings.js')
+	import(/* webpackPrefetch: true */ './pages/Settings')
 );
 const SearchSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/Search.js')
+	import(/* webpackPrefetch: true */ './pages/settings/Search')
 );
 const AppearanceSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/Appearance.js')
+	import(/* webpackPrefetch: true */ './pages/settings/Appearance')
 );
 const TabCloakSettings = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/settings/TabCloak.js')
+	import(/* webpackPrefetch: true */ './pages/settings/TabCloak')
 );
-const FAQ = lazy(() => import(/* webpackPrefetch: true */ './pages/FAQ.js'));
+const FAQ = lazy(() => import(/* webpackPrefetch: true */ './pages/FAQ'));
 const Contact = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Contact.js')
+	import(/* webpackPrefetch: true */ './pages/Contact')
 );
 const Privacy = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Privacy.js')
+	import(/* webpackPrefetch: true */ './pages/Privacy')
 );
 const NotFound = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/NotFound.js')
+	import(/* webpackPrefetch: true */ './pages/NotFound')
 );
-const Proxy = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Proxy.js')
-);
+const Proxy = lazy(() => import(/* webpackPrefetch: true */ './pages/Proxy'));
 const Credits = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Credits.js')
+	import(/* webpackPrefetch: true */ './pages/Credits')
 );
-const Terms = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/Terms.js')
-);
+const Terms = lazy(() => import(/* webpackPrefetch: true */ './pages/Terms'));
 const Ultraviolet = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Ultraviolet.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Ultraviolet')
 );
 const Rammerhead = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Rammerhead.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Rammerhead')
 );
 const Stomp = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Stomp.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Stomp')
 );
 const Flash = lazy(() =>
-	import(/* webpackPrefetch: true */ './pages/compat/Flash.js')
+	import(/* webpackPrefetch: true */ './pages/compat/Flash')
 );
 
 function PlayerProxy(props) {

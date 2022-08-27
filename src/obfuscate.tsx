@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import type { RandomSeed } from 'random-seed';
 import { create } from 'random-seed';
 import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
-import { memo, useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { memo, useEffect } from 'react';
 
 const rand = create(navigator.userAgent + global.location.origin);
 
@@ -42,26 +43,30 @@ const charClass = unusedChar();
 const stringClass = unusedChar();
 
 export function ObfuscateLayout() {
-	const [style, setStyle] = useState<HTMLStyleElement | null>(null);
+	const style = useRef<HTMLStyleElement | null>(null);
 
 	useEffect(() => {
-		if (!style || !style.sheet) return;
+		if (!style.current || !style.current.sheet) return;
 
 		for (const junk of junkClasses) {
-			style.sheet.insertRule(
+			style.current.sheet.insertRule(
 				`.${stringClass} .${junk}{position:absolute;z-index:-10;opacity:0}`
 			);
 		}
 
 		// word
-		style.sheet.insertRule(`.${stringClass}>span{display:inline-block}`);
+		style.current.sheet.insertRule(
+			`.${stringClass}>span{display:inline-block}`
+		);
 
 		for (const ellipsis of ellipsisClasses) {
-			style.sheet.insertRule(`.${stringClass} .${ellipsis}{display:inline}`);
+			style.current.sheet.insertRule(
+				`.${stringClass} .${ellipsis}{display:inline}`
+			);
 		}
 	}, [style]);
 
-	return <style ref={setStyle}></style>;
+	return <style ref={style}></style>;
 }
 
 class ObfuscateContext {

@@ -50,92 +50,105 @@ function createPromiseExternal<T>(): [Promise<T>, ExternalPromise<T>] {
 	return [promise, promiseExternal!];
 }
 
-export const ScriptsOrder = forwardRef<
-	{ promise: Promise<void> },
-	{ children: ReactNode }
->(function ScriptsOrder({ children }, ref) {
-	const [promise, promiseExternal] = useMemo(
-		() => createPromiseExternal<void>(),
-		[]
-	);
+export interface ScriptsRef {
+	promise: Promise<void>;
+}
 
-	useImperativeHandle(ref, () => ({
-		promise,
-	}));
-
-	useEffect(() => {
-		const abort = new AbortController();
-		const scripts: HTMLScriptElement[] = [];
-
-		(async function () {
-			const iterableChildren = !children
-				? []
-				: Array.isArray(children)
-				? children
-				: [children];
-
-			for (const child of iterableChildren) {
-				if (child.type !== Script) {
-					continue;
-				}
-
-				const [load, script] = loadScript(child.props.src);
-
-				scripts.push(script);
-
-				try {
-					await load;
-				} catch (error) {
-					promiseExternal.reject();
-				}
-			}
-
-			promiseExternal.resolve();
-		})();
-
-		return () => {
-			abort.abort();
-			for (const script of scripts) {
-				script.remove();
-			}
-		};
-	}, [promise, promiseExternal, children]);
-
-	return <></>;
-});
-
-export const Script = forwardRef<{ promise: Promise<void> }, { src: string }>(
-	function Script(props, ref) {
+/**
+ * Loads multiple scripts
+ */
+export const Scripts = forwardRef<ScriptsRef, { children: ReactNode }>(
+	function Scripts({ children }, ref) {
 		const [promise, promiseExternal] = useMemo(
 			() => createPromiseExternal<void>(),
 			[]
 		);
 
-		useImperativeHandle(
-			ref,
-			() => ({
-				promise,
-			}),
-			[promise]
-		);
+		useImperativeHandle(ref, () => ({
+			promise,
+		}));
 
 		useEffect(() => {
-			const [promise, script] = loadScript(props.src);
+			const abort = new AbortController();
+			const scripts: HTMLScriptElement[] = [];
 
-			promise.then(promiseExternal.resolve).catch(promiseExternal.reject);
+			(async function () {
+				const iterableChildren = !children
+					? []
+					: Array.isArray(children)
+					? children
+					: [children];
+
+				for (const child of iterableChildren) {
+					if (child.type !== Script) continue;
+
+					const [load, script] = loadScript(child.props.src);
+
+					scripts.push(script);
+
+					try {
+						await load;
+					} catch (error) {
+						promiseExternal.reject();
+					}
+				}
+
+				promiseExternal.resolve();
+			})();
 
 			return () => {
-				script.remove();
+				abort.abort();
+				for (const script of scripts) {
+					script.remove();
+				}
 			};
-		}, [promise, promiseExternal, props.src]);
+		}, [promise, promiseExternal, children]);
 
 		return <></>;
 	}
 );
 
+export interface ScriptRef {
+	promise: Promise<void>;
+}
+
+/**
+ * Load a script
+ * For loading multiple scripts (in order), use <Scripts>
+ */
+export const Script = forwardRef<ScriptRef, { src: string }>(function Script(
+	props,
+	ref
+) {
+	const [promise, promiseExternal] = useMemo(
+		() => createPromiseExternal<void>(),
+		[]
+	);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			promise,
+		}),
+		[promise]
+	);
+
+	useEffect(() => {
+		const [promise, script] = loadScript(props.src);
+
+		promise.then(promiseExternal.resolve).catch(promiseExternal.reject);
+
+		return () => {
+			script.remove();
+		};
+	}, [promise, promiseExternal, props.src]);
+
+	return <></>;
+});
+
 export interface CompatLayoutRef {
-	destination: URL;
-	report(error: string, cause: string, origin: string): void;
+	destination: string;
+	report(error: unknown, cause: string | undefined, origin: string): void;
 }
 
 export default forwardRef<{}>(function CompatLayout(props, ref) {
@@ -155,14 +168,14 @@ export default forwardRef<{}>(function CompatLayout(props, ref) {
 					throw new Error('No hash was provided');
 				}
 
-				return new URL(decryptURL(location.hash.slice(1)));
+				return decryptURL(location.hash.slice(1));
 			},
-			report(error: string, cause: string, origin: string) {
+			report(error: unknown, cause: string | undefined, origin: string) {
 				console.error(error);
 
 				setError({
-					error,
-					cause,
+					error: String(error),
+					cause: cause || 'unknown',
 					origin,
 				});
 			},
@@ -180,7 +193,7 @@ export default forwardRef<{}>(function CompatLayout(props, ref) {
 						An error occured when loading{' '}
 						<Obfuscated>{error.origin}</Obfuscated>:
 						<br />
-						<pre>{error.cause || error.error.toString()}</pre>
+						<pre>{error.cause || error.error}</pre>
 					</span>
 					<p>
 						Try again by clicking{' '}

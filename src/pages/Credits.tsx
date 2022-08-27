@@ -1,7 +1,7 @@
 import { ObfuscatedThemeA } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
 
-export default function Credits() {
+const Credits = () => {
 	return (
 		<main className="legal credits">
 			<h2>Credits</h2>
@@ -59,4 +59,6 @@ export default function Credits() {
 			</ul>
 		</main>
 	);
-}
+};
+
+export default Credits;

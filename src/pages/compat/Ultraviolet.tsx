@@ -1,36 +1,38 @@
-import { Script, ScriptsOrder } from '../../CompatLayout';
+import type { CompatLayoutRef, ScriptsRef } from '../../CompatLayout';
+import { Script, Scripts } from '../../CompatLayout';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
+import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
-/**
- * @callback UVEncode
- * @argument {string} decoded
- * @returns {string} encoded
- */
+type UVEncode = (encoded: string) => string;
+type UVDecode = (encoded: string) => string;
 
-/**
- * @callback UVDecode
- * @argument {string} encoded
- * @returns {string} decoded
- */
+interface UVConfig {
+	bare: string;
+	prefix: string;
+	handler: string;
+	bundle: string;
+	config: string;
+	sw: string;
+	encodeUrl: UVEncode;
+	decodeUrl: UVDecode;
+}
 
-/**
- * @typedef {object} UVConfig
- * @property {string} bare
- * @property {string} handler
- * @property {string} bundle
- * @property {string} config
- * @property {string} sw
- * @property {UVEncode} encodeUrl
- * @property {UVDecode} decodeUrl
- */
-export default function Ultraviolet(props) {
-	const uvBundle = useRef();
+declare const __uv$config: UVConfig;
+
+export default function Ultraviolet({
+	compatLayout,
+}: {
+	compatLayout: RefObject<CompatLayoutRef>;
+}) {
+	const uvBundle = useRef<ScriptsRef | null>(null);
 
 	useEffect(() => {
 		(async function () {
-			let errorCause;
+			if (!compatLayout.current || !uvBundle.current) return;
+
+			let errorCause: string | undefined;
 
 			try {
 				if (
@@ -50,10 +52,7 @@ export default function Ultraviolet(props) {
 				await uvBundle.current.promise;
 				errorCause = undefined;
 
-				/**
-				 * @type {UVConfig}
-				 */
-				const config = global.__uv$config;
+				const config = __uv$config;
 
 				// register sw
 				errorCause = 'Failure registering the Ultraviolet Service Worker.';
@@ -74,22 +73,22 @@ export default function Ultraviolet(props) {
 
 				global.location.replace(
 					new URL(
-						config.encodeUrl(props.compatLayout.current.destination),
-						new URL(config.prefix, global.location)
+						config.encodeUrl(compatLayout.current.destination),
+						new URL(config.prefix, global.location.toString())
 					)
 				);
 			} catch (error) {
-				props.compatLayout.current.report(error, errorCause, 'Ultraviolet');
+				compatLayout.current.report(error, errorCause, 'Ultraviolet');
 			}
 		})();
-	}, [props.compatLayout]);
+	}, [compatLayout]);
 
 	return (
 		<main className="compat">
-			<ScriptsOrder ref={uvBundle}>
+			<Scripts ref={uvBundle}>
 				<Script src="/uv/uv.bundle.js" />
 				<Script src="/uv/uv.config.js" />
-			</ScriptsOrder>
+			</Scripts>
 			Loading <Obfuscated>Ultraviolet</Obfuscated>...
 		</main>
 	);
