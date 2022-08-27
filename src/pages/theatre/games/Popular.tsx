@@ -1,37 +1,48 @@
 import '../../../styles/TheatreCategory.scss';
+import type { HolyPage } from '../../../App';
+import type {
+	CategoryData,
+	LoadingCategoryData,
+	LoadingTheatreEntry,
+	TheatreEntry,
+} from '../../../TheatreCommon';
 import { ItemList, TheatreAPI } from '../../../TheatreCommon';
+import SearchBar from '../../../TheatreSearchBar';
 import { ThemeLink } from '../../../ThemeElements';
 import { DB_API } from '../../../consts';
+import categories from '../../../gameCategories';
+import type { Category } from '../../../gameCategories';
 import isAbortError from '../../../isAbortError';
 import { Obfuscated } from '../../../obfuscate';
 import resolveRoute from '../../../resolveRoute';
-import SearchBar from '../Search';
-import categories from './categories';
 import { ArrowForward } from '@mui/icons-material';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const entryLimit = 8;
-const loadingCategories = {
-	total: NaN,
+const loadingCategories: LoadingCategoryData = {
+	total: 0,
 	entries: [],
+	loading: true,
 };
 
 for (const category of categories)
 	for (let i = 0; i < entryLimit; i++)
 		loadingCategories.entries.push({
-			id: i,
+			id: i.toString(),
 			loading: true,
-			category: category.id,
+			category: [category.id],
 		});
 
-export default function Popular() {
-	const category = categories.map((category) => category.id).join(',');
+const categoryQuery = categories.map((category) => category.id).join(',');
 
-	const [data, setData] = useState(loadingCategories);
+const Popular: HolyPage = () => {
+	const [data, setData] = useState<LoadingCategoryData | CategoryData>(
+		loadingCategories
+	);
 
-	const [error, setError] = useState();
-	const main = useRef();
+	const [error, setError] = useState<string | null>(null);
+	const main = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -42,21 +53,21 @@ export default function Popular() {
 			try {
 				const data = await api.category({
 					sort: 'plays',
-					category,
+					category: categoryQuery,
 					limitPerCategory: entryLimit,
 				});
 
 				setData(data);
 			} catch (error) {
-				if (!isAbortError(error)) {
+				if (error instanceof Error && !isAbortError(error)) {
 					console.error(error);
-					setError(error);
+					setError(error.toString());
 				}
 			}
 		})();
 
 		return () => abort.abort();
-	}, [category]);
+	}, []);
 
 	if (error) {
 		return (
@@ -65,7 +76,7 @@ export default function Popular() {
 					An error occured when loading popular <Obfuscated>games</Obfuscated>
 					:
 					<br />
-					<pre>{error.toString()}</pre>
+					<pre>{error}</pre>
 				</span>
 				<p>
 					Try again by clicking{' '}
@@ -94,29 +105,32 @@ export default function Popular() {
 		);
 	}
 
-	const _categories = {};
+	const _categories: Record<
+		string,
+		{ entries: (TheatreEntry | LoadingTheatreEntry)[]; category: Category }
+	> = {};
 
 	for (const category of categories)
 		_categories[category.id] = {
 			entries: [],
-			category,
+			category: category,
 		};
 
 	for (const item of data.entries)
-		_categories[item.category].entries.push(item);
+		_categories[item.category[0]].entries.push(item);
 
 	return (
 		<main ref={main} className="theatre-category">
 			<SearchBar
 				showCategory
-				category={category}
+				category={categoryQuery}
 				placeholder="Search by game name"
 			/>
 			{Object.values(_categories).map((section) => {
 				return (
 					<section className="expand" key={section.category.id}>
 						<div className="name">
-							<h1>{category.name}</h1>
+							<h1>{section.category.name}</h1>
 							<Link
 								to={`${resolveRoute('/theatre/', 'category')}?id=${
 									section.category.id
@@ -133,4 +147,6 @@ export default function Popular() {
 			})}
 		</main>
 	);
-}
+};
+
+export default Popular;

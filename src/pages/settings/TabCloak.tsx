@@ -1,11 +1,10 @@
-import type { LayoutRef } from '../../Layout';
+import type { HolyPage } from '../../App';
 import { Notification } from '../../Notifications';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
 import { Check } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
-import type { RefObject } from 'react';
 import { useRef } from 'react';
 
 const bare = new BareClient(BARE_API);
@@ -86,7 +85,7 @@ async function blobToDataURL(blob: Blob) {
 	});
 }
 
-const TabCloak = ({ layout }: { layout: RefObject<LayoutRef> }) => {
+const TabCloak: HolyPage = ({ layout }) => {
 	const input = useRef<HTMLInputElement | null>(null);
 
 	async function onSubmit() {

@@ -1,10 +1,9 @@
-import type { LayoutRef } from '../../Layout';
+import type { HolyPage } from '../../App';
 import { ThemeSelect } from '../../ThemeElements';
 import engines from '../../engines';
 import { Obfuscated } from '../../obfuscate';
-import type { RefObject } from 'react';
 
-const Search = ({ layout }: { layout: RefObject<LayoutRef> }) => {
+const Search: HolyPage = ({ layout }) => {
 	return (
 		<section>
 			<div>

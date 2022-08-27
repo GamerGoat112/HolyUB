@@ -1,16 +1,11 @@
-import type { CompatLayoutRef } from '../../CompatLayout';
+import type { HolyPage } from '../../App';
 import { RammerheadAPI, StrShuffler } from '../../RammerheadAPI';
 import { RH_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
 import Cookies from 'js-cookie';
-import type { RefObject } from 'react';
 import { useEffect } from 'react';
 
-const Rammerhead = ({
-	compatLayout,
-}: {
-	compatLayout: RefObject<CompatLayoutRef>;
-}) => {
+const Rammerhead: HolyPage = ({ compatLayout }) => {
 	useEffect(() => {
 		(async function () {
 			let errorCause: string | undefined;

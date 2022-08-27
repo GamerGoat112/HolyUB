@@ -1,8 +1,7 @@
-import type { LayoutRef } from '../../Layout';
+import type { HolyPage } from '../../App';
 import { ThemeSelect } from '../../ThemeElements';
-import type { RefObject } from 'react';
 
-const Appearance = ({ layout }: { layout: RefObject<LayoutRef> }) => {
+const Appearance: HolyPage = ({ layout }) => {
 	return (
 		<section>
 			<div>

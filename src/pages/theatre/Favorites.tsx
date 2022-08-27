@@ -1,4 +1,6 @@
 import '../../styles/TheatreCategory.scss';
+import type { HolyPage } from '../../App';
+import type { LoadingTheatreEntry, TheatreEntry } from '../../TheatreCommon';
 import { ItemList, TheatreAPI } from '../../TheatreCommon';
 import { DB_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
@@ -6,11 +8,12 @@ import { useEffect, useState } from 'react';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
 
-export default function Favorites(props) {
-	const [data, setData] = useState(() =>
-		props.layout.current.settings.favorites.map((id) => ({
+const Favorites: HolyPage = ({ layout }) => {
+	const [data, setData] = useState<(TheatreEntry | LoadingTheatreEntry)[]>(() =>
+		layout.current!.settings.favorites.map((id) => ({
 			loading: true,
 			id,
+			category: [],
 		}))
 	);
 
@@ -21,15 +24,15 @@ export default function Favorites(props) {
 			const api = new TheatreAPI(DB_API, abort.signal);
 			const data = [];
 
-			for (const id of props.layout.current.settings.favorites) {
+			for (const id of layout.current!.settings.favorites) {
 				try {
 					data.push(await api.show(id));
 				} catch (error) {
 					// cancelled? page unload?
-					if (!FETCH_FAILED.test(error)) {
+					if (error instanceof Error && !FETCH_FAILED.test(error.toString())) {
 						console.warn('Unable to fetch entry:', id, error);
-						props.layout.current.settings.favorites.splice(
-							props.layout.current.settings.favorites.indexOf(id),
+						layout.current!.settings.favorites.splice(
+							layout.current!.settings.favorites.indexOf(id),
 							1
 						);
 					}
@@ -37,17 +40,17 @@ export default function Favorites(props) {
 			}
 
 			// update settings
-			props.layout.current.setSettings({
-				...props.layout.current.settings,
+			layout.current!.setSettings({
+				...layout.current!.settings,
 			});
 
 			setData(data);
 		})();
 
 		return () => abort.abort();
-	}, [props.layout]);
+	}, [layout]);
 
-	if (props.layout.current.settings.favorites.length === 0) {
+	if (layout.current!.settings.favorites.length === 0) {
 		return (
 			<main className="error">
 				<p>You haven't added any favorites.</p>
@@ -69,4 +72,6 @@ export default function Favorites(props) {
 			</main>
 		);
 	}
-}
+};
+
+export default Favorites;

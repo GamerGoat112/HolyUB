@@ -1,12 +1,15 @@
 import '../../styles/TheatreCategory.scss';
+import type { HolyPage } from '../../App';
 import { useSettings } from '../../Settings';
+import type { CategoryData, LoadingCategoryData } from '../../TheatreCommon';
+import { isLoading } from '../../TheatreCommon';
 import { ItemList, TheatreAPI } from '../../TheatreCommon';
+import SearchBar from '../../TheatreSearchBar';
 import { ThemeSelect } from '../../ThemeElements';
 import { DB_API } from '../../consts';
 import isAbortError from '../../isAbortError';
 import { Obfuscated } from '../../obfuscate';
 import resolveRoute from '../../resolveRoute';
-import SearchBar from './Search';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
@@ -14,8 +17,8 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 const LIMIT = 30;
 
-function createLoading(total) {
-	const loading = {
+function createLoading(total: number) {
+	const loading: LoadingCategoryData = {
 		total,
 		entries: [],
 		loading: true,
@@ -23,30 +26,33 @@ function createLoading(total) {
 
 	for (let i = 0; i < LIMIT; i++) {
 		loading.entries.push({
-			id: i,
+			id: i.toString(),
 			loading: true,
+			category: [],
 		});
 	}
 
 	return loading;
 }
 
-export default function Category({
-	name,
-	category,
-	placeholder,
-	id,
-	showCategory,
-}) {
+const Category: HolyPage<{
+	name: string;
+	category: string;
+	placeholder?: string;
+	id: string;
+	showCategory?: boolean;
+}> = ({ name, category, placeholder, id, showCategory }) => {
 	const [search, setSearch] = useSearchParams({
-		page: 0,
+		page: '0',
 	});
-	const page = parseInt(search.get('page'));
+	const page = parseInt(search.get('page')!);
 	const [lastTotal, setLastTotal] = useState(LIMIT * 2);
-	const [data, setData] = useState(() => createLoading(lastTotal));
+	const [data, setData] = useState<LoadingCategoryData | CategoryData>(() =>
+		createLoading(lastTotal)
+	);
 	const maxPage = Math.floor(data.total / LIMIT);
-	const errorCause = useRef();
-	const [error, setError] = useState();
+	const errorCause = useRef<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	const [settings, setSettings] = useSettings(
 		`theatre category ${id} settings`,
 		() => ({
@@ -99,11 +105,14 @@ export default function Category({
 					limit: LIMIT,
 				});
 
-				errorCause.current = undefined;
+				errorCause.current = null;
 				setData(data);
 				setLastTotal(data.total);
 			} catch (error) {
-				if (isAbortError(error)) setError(error);
+				if (error instanceof Error && isAbortError(error)) {
+					console.error(error);
+					setError(error.toString());
+				}
 			}
 		})();
 
@@ -176,7 +185,7 @@ export default function Category({
 							});
 							setSearch({
 								...Object.fromEntries(search),
-								page: 0,
+								page: '0',
 							});
 						}}
 					>
@@ -192,10 +201,10 @@ export default function Category({
 				<ChevronLeft
 					className={clsx('button', !page && 'disabled')}
 					onClick={() => {
-						if (!data.loading && page) {
+						if (!isLoading(data) && page) {
 							setSearch({
 								...Object.fromEntries(search),
-								page: Math.max(page - 1, 0),
+								page: Math.max(page - 1, 0).toString(),
 							});
 						}
 					}}
@@ -203,10 +212,10 @@ export default function Category({
 				<ChevronRight
 					className={clsx('button', page >= maxPage && 'disabled')}
 					onClick={() => {
-						if (!data.loading && page < maxPage) {
+						if (!isLoading(data) && page < maxPage) {
 							setSearch({
 								...Object.fromEntries(search),
-								page: page + 1,
+								page: (page + 1).toString(),
 							});
 						}
 					}}
@@ -214,4 +223,6 @@ export default function Category({
 			</div>
 		</main>
 	);
-}
+};
+
+export default Category;

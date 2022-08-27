@@ -1,4 +1,5 @@
 import '../styles/Settings.scss';
+import type { HolyPage } from '../App';
 import { MenuTab } from '../MainLayout';
 import resolveRoute from '../resolveRoute';
 import {
@@ -10,7 +11,7 @@ import {
 } from '@mui/icons-material';
 import { Outlet } from 'react-router-dom';
 
-const Settings = () => {
+const Settings: HolyPage = () => {
 	return (
 		<>
 			<main className="settings">

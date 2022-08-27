@@ -5,36 +5,106 @@ import resolveRoute from './resolveRoute';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-interface LimitedEntry {
-	name: string;
+/**
+ * one of the above types or a letter/key such as A,B,TAB,SPACE,SHIFT
+ */
+export type KeyLike =
+	| 'mouseleft'
+	| 'mouseright'
+	| 'scrollup'
+	| 'scrolldown'
+	| 'wasd'
+	| 'arrows'
+	| string;
+
+export interface Control {
+	keys: KeyLike[];
+	label: string;
+}
+
+export interface TheatreEntry {
+	type:
+		| 'emulator.nes'
+		| 'emulator.gba'
+		| 'emulator.genesis'
+		| 'flash'
+		| 'embed'
+		| 'proxy'
+		| string;
+	controls: Control[];
+	category: string[];
 	id: string;
-	category: string;
+	name: string;
+	plays: number;
+	src: string;
+}
+
+export interface LoadingTheatreEntry {
+	id: string;
+	loading: true;
+	category: string[];
+}
+
+export interface CategoryData {
+	total: number;
+	entries: TheatreEntry[];
+}
+
+export interface LoadingCategoryData {
+	total: number;
+	entries: (TheatreEntry | LoadingTheatreEntry)[];
+	loading: true;
+}
+
+export interface TheatreEntry {
+	type:
+		| 'emulator.nes'
+		| 'emulator.gba'
+		| 'emulator.genesis'
+		| 'flash'
+		| 'embed'
+		| 'proxy'
+		| string;
+	controls: Control[];
+	category: string[];
+	id: string;
+	name: string;
+	plays: number;
+	src: string;
+}
+export function isLoading(
+	data: CategoryData | LoadingCategoryData
+): data is LoadingCategoryData;
+
+export function isLoading(
+	data: TheatreEntry | LoadingTheatreEntry
+): data is LoadingTheatreEntry;
+
+export function isLoading(
+	data: TheatreEntry | LoadingTheatreEntry | CategoryData | LoadingCategoryData
+): data is LoadingTheatreEntry | LoadingCategoryData {
+	return 'loading' in data && data.loading === true;
 }
 
 export class TheatreAPI extends DatabaseAPI {
 	async show(id: String) {
-		return await this.fetch<LimitedEntry>(`./theatre/${id}/`);
+		return await this.fetch<TheatreEntry>(`./theatre/${id}/`);
 	}
-	async plays(id: string, token: string) {
-		return await this.fetch<LimitedEntry>(
-			`./theatre/${id}/plays?` +
-				new URLSearchParams({
-					token,
-				}),
-			{
-				method: 'PUT',
-			}
-		);
+	async plays(id: string) {
+		return await this.fetch<TheatreEntry>(`./theatre/${id}/plays`, {
+			method: 'PUT',
+		});
 	}
 	async category(params: {
 		leastGreatest?: boolean;
-		category?: string[];
+		sort?: string;
+		category?: string;
 		search?: string;
 		offset?: number;
 		limit?: number;
 		limitPerCategory?: number;
 	}) {
-		return await this.fetch<{ total: number; entries: LimitedEntry[] }>(
+		return await this.fetch<CategoryData>(
 			'./theatre/?' + new URLSearchParams(this.sortParams(params))
 		);
 	}
@@ -72,21 +142,17 @@ function LoadingItem() {
 	);
 }
 
-export interface TheatreItem {
-	id: string;
-	name: string;
-	loading?: boolean;
-}
-
 export function ItemList({
 	items,
 	...attributes
-}: { items: TheatreItem[] } & JSX.IntrinsicElements['div']) {
+}: JSX.IntrinsicElements['div'] & {
+	items: (TheatreEntry | LoadingTheatreEntry)[];
+}) {
 	const children = [];
 
 	for (const item of items) {
-		if (item.loading) {
-			children.push(<LoadingItem />);
+		if (isLoading(item)) {
+			children.push(<LoadingItem key={item.id} />);
 		} else {
 			children.push(<Item key={item.id} id={item.id} name={item.name} />);
 		}

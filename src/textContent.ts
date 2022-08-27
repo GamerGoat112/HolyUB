@@ -9,5 +9,5 @@ export default function textContent(html: string) {
 	buffer.innerHTML = html;
 	const { textContent } = buffer;
 	buffer.innerHTML = '';
-	return textContent;
+	return textContent!;
 }

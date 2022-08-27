@@ -4,7 +4,7 @@ import { ReactComponent as Waves } from './assets/waves.svg';
 import { Obfuscated } from './obfuscate';
 import resolveRoute from './resolveRoute';
 
-export default function Footer() {
+const Footer = () => {
 	return (
 		<footer>
 			<Waves />
@@ -23,4 +23,6 @@ export default function Footer() {
 			</div>
 		</footer>
 	);
-}
+};
+
+export default Footer;

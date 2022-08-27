@@ -1,7 +1,7 @@
-import type { CompatLayoutRef, ScriptRef } from '../../CompatLayout';
+import type { HolyPage } from '../../App';
+import type { ScriptRef } from '../../CompatLayout';
 import { Script } from '../../CompatLayout';
 import { Obfuscated } from '../../obfuscate';
-import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 interface RufflePlayerElement extends HTMLElement {
@@ -15,11 +15,7 @@ declare const RufflePlayer: {
 	};
 };
 
-const Flash = ({
-	compatLayout,
-}: {
-	compatLayout: RefObject<CompatLayoutRef>;
-}) => {
+const Flash: HolyPage = ({ compatLayout }) => {
 	const container = useRef<HTMLElement | null>(null);
 	const ruffleBundle = useRef<ScriptRef | null>(null);
 	const [ruffleLoaded, setRuffleLoaded] = useState(false);

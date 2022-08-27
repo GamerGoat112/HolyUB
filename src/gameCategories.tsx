@@ -1,4 +1,10 @@
-const categories = [
+export interface Category {
+	id: string;
+	name: string;
+	short?: string;
+}
+
+const categories: Category[] = [
 	{
 		id: 'action',
 		short: 'Action',

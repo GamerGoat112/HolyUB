@@ -1,6 +1,9 @@
+import type { HolyPage } from '../../App';
 import '../../styles/TheatrePlayer.scss';
+import type { LayoutRef } from '../../Layout';
 import resolveProxy from '../../ProxyResolver';
 import { TheatreAPI } from '../../TheatreCommon';
+import type { TheatreEntry } from '../../TheatreCommon';
 import { DB_API, THEATRE_CDN } from '../../consts';
 import { encryptURL } from '../../cryptURL';
 import isAbortError from '../../isAbortError';
@@ -19,9 +22,14 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
+import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-async function resolveSrc(src, type, setting) {
+async function resolveSrc(
+	src: TheatreEntry['src'],
+	type: TheatreEntry['type'],
+	setting: string
+) {
 	switch (type) {
 		case 'proxy':
 			return await resolveProxy(src, setting);
@@ -46,38 +54,40 @@ async function resolveSrc(src, type, setting) {
 	}
 }
 
-export default function Player(props) {
+const Player: HolyPage<{
+	id: string;
+}> = ({ layout, id }) => {
 	const [favorited, setFavorited] = useState(() =>
-		props.layout.current.settings.favorites.includes(props.id)
+		layout.current!.settings.favorites.includes(id)
 	);
 	const [panorama, setPanorama] = useState(false);
 	const [controlsExpanded, setControlsExpanded] = useState(false);
-	const [error, setError] = useState();
-	const errorCause = useRef();
-	const [data, setData] = useState();
-	const iframe = useRef();
-	const controlsOpen = useRef();
-	const [resolvedSrc, setResolvedSrc] = useState();
-	const controlsPopup = useRef();
+	const [error, setError] = useState<string | null>(null);
+	const errorCause = useRef<string | null>(null);
+	const [data, setData] = useState<TheatreEntry | null>(null);
+	const iframe = useRef<HTMLIFrameElement | null>(null);
+	const controlsOpen = useRef<HTMLDivElement | null>(null);
+	const [resolvedSrc, setResolvedSrc] = useState<string | null>(null);
+	const controlsPopup = useRef<HTMLDivElement | null>(null);
 	const [seen, _setSeen] = useState(() =>
-		props.layout.current.settings.seen_games.includes(props.id)
+		layout.current!.settings.seen_games.includes(id)
 	);
 
 	useEffect(() => {
 		const abort = new AbortController();
 
-		async function setSeen(value) {
-			const seen = props.layout.current.settings.seen_games;
+		async function setSeen(value: boolean) {
+			const seen = layout.current!.settings.seen_games;
 
 			if (value) {
-				seen.push(props.id);
+				seen.push(id);
 			} else {
-				const i = seen.indexOf(props.id);
+				const i = seen.indexOf(id);
 				seen.splice(i, 1);
 			}
 
-			props.layout.current.setSettings({
-				...props.layout.current.settings,
+			layout.current!.setSettings({
+				...layout.current!.settings,
 				seen_games: seen,
 			});
 
@@ -89,44 +99,45 @@ export default function Player(props) {
 
 			try {
 				errorCause.current = 'Unable to fetch game info';
-				const data = await api.show(props.id);
-				errorCause.current = undefined;
+				const data = await api.show(id);
+				errorCause.current = null;
 				errorCause.current = 'Unable to resolve game location';
 				const resolvedSrc = await resolveSrc(
 					new URL(data.src, THEATRE_CDN).toString(),
 					data.type,
-					props.layout.current.settings.proxy
+					layout.current!.settings.proxy
 				);
-				errorCause.current = undefined;
+				errorCause.current = null;
 				setData(data);
 				setResolvedSrc(resolvedSrc);
 
 				if (!seen) {
 					errorCause.current = 'Unable to update plays';
-					await api.plays(props.id);
+					await api.plays(id);
 					setSeen(true);
-					errorCause.current = undefined;
+					errorCause.current = null;
 				}
 			} catch (error) {
-				if (!isAbortError(error)) {
+				if (error instanceof Error && !isAbortError(error)) {
 					console.error(error);
-					setError(error);
+					setError(error.toString());
 				}
 			}
 		})();
 
 		return () => abort.abort();
-	}, [seen, props.id, props.layout]);
+	}, [seen, id, layout]);
 
 	function focusListener() {
 		if (!iframe.current) {
 			return;
 		}
 
-		iframe.current.contentWindow.focus();
+		iframe.current!.contentWindow?.focus();
 
 		if (
 			document.activeElement &&
+			document.activeElement instanceof HTMLElement &&
 			!iframe.current.contains(document.activeElement)
 		) {
 			document.activeElement.blur();
@@ -147,7 +158,7 @@ export default function Player(props) {
 			<main className="error">
 				<p>An error occurreds when loading the entry:</p>
 				<pre>
-					<Obfuscated>{errorCause.current || error.toString()}</Obfuscated>
+					<Obfuscated>{errorCause.current || error}</Obfuscated>
 				</pre>
 			</main>
 		);
@@ -232,11 +243,11 @@ export default function Player(props) {
 					ref={iframe}
 					title="Embed"
 					onLoad={() => {
-						iframe.current.contentWindow.addEventListener(
+						iframe.current!.contentWindow?.addEventListener(
 							'keydown',
 							(event) => {
 								if (
-									event.target === iframe.current.contentWindow.document.body
+									event.target === iframe.current!.contentWindow?.document.body
 								) {
 									switch (event.code) {
 										case 'Space':
@@ -254,7 +265,7 @@ export default function Player(props) {
 					}}
 					onClick={focusListener}
 					onFocus={focusListener}
-					src={resolvedSrc}
+					src={resolvedSrc || undefined}
 				/>
 				<div
 					tabIndex={0}
@@ -263,7 +274,7 @@ export default function Player(props) {
 					onBlur={(event) => {
 						if (
 							!event.target.contains(event.relatedTarget) &&
-							!controlsOpen.current.contains(event.relatedTarget)
+							!controlsOpen.current!.contains(event.relatedTarget)
 						) {
 							setControlsExpanded(false);
 						}
@@ -282,7 +293,7 @@ export default function Player(props) {
 					className="button"
 					onClick={() => {
 						focusListener();
-						iframe.current.requestFullscreen();
+						iframe.current!.requestFullscreen();
 					}}
 				>
 					<Fullscreen />
@@ -294,7 +305,7 @@ export default function Player(props) {
 						ref={controlsOpen}
 						onClick={async () => {
 							setControlsExpanded(!controlsExpanded);
-							controlsPopup.current.focus();
+							controlsPopup.current!.focus();
 						}}
 					>
 						<VideogameAsset />
@@ -303,21 +314,21 @@ export default function Player(props) {
 				<div
 					className="button"
 					onClick={() => {
-						const favorites = props.layout.current.settings.favorites;
-						const i = favorites.indexOf(props.id);
+						const favorites = layout.current!.settings.favorites;
+						const i = favorites.indexOf(id);
 
 						if (i === -1) {
-							favorites.push(props.id);
+							favorites.push(id);
 						} else {
 							favorites.splice(i, 1);
 						}
 
-						props.layout.current.setSettings({
-							...props.layout.current.settings,
+						layout.current!.setSettings({
+							...layout.current!.settings,
 							favorites,
 						});
 
-						setFavorited(favorites.includes(props.id));
+						setFavorited(favorites.includes(id));
 					}}
 				>
 					{favorited ? <Star /> : <StarBorder />}
@@ -337,4 +348,6 @@ export default function Player(props) {
 			</div>
 		</main>
 	);
-}
+};
+
+export default Player;

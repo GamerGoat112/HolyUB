@@ -1,6 +1,8 @@
 import '../styles/Proxy.scss';
+import type { HolyPage, LayoutDump } from '../App';
 import SearchBuilder from '../SearchBuilder';
 import ServiceFrame from '../ServiceFrame';
+import type { ServiceFrameRef } from '../ServiceFrame';
 import { ThemeInputBar, ThemeLink } from '../ThemeElements';
 import { BARE_API } from '../consts';
 import engines from '../engines';
@@ -13,41 +15,38 @@ import BareClient from '@tomphttp/bare-client';
 import clsx from 'clsx';
 import { createRef, useMemo, useRef, useState } from 'react';
 
-function SearchBar(props) {
-	const input = useRef();
-	const inputValue = useRef();
-	const lastInput = useRef();
+const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
+	const input = useRef<HTMLInputElement | null>(null);
+	const inputValue = useRef<string | null>(null);
+	const lastInput = useRef<'select' | 'input' | null>(null);
 	const [lastSelect, setLastSelect] = useState(-1);
-	const [omniboxEntries, setOmniboxEntries] = useState([]);
+	const [omniboxEntries, setOmniboxEntries] = useState<string[]>([]);
 	const [inputFocused, setInputFocused] = useState(false);
-	const serviceFrame = useRef();
-	const abort = useRef();
+	const serviceFrame = useRef<ServiceFrameRef | null>(null);
+	const abort = useRef(new AbortController());
 	const bare = useMemo(() => new BareClient(BARE_API), []);
 
 	const engine =
 		engines.find(
-			(engine) => engine.format === props.layout.current.settings.search
+			(engine) => engine.format === layout.current!.settings.search
 		) || engines[0];
 
 	async function onInput() {
-		if (inputValue.current !== input.current.value) {
-			inputValue.current = input.current.value;
+		if (inputValue.current !== input.current!.value) {
+			inputValue.current = input.current!.value;
 
-			const entries = [];
+			const entries: string[] = [];
 
 			try {
-				if (abort.current !== undefined) {
-					abort.current.abort();
-				}
-
+				abort.current.abort();
 				abort.current = new AbortController();
 
 				const outgoing = await bare.fetch(
 					'https://www.bing.com/AS/Suggestions?' +
 						new URLSearchParams({
-							qry: input.current.value,
+							qry: input.current!.value,
 							cvid: '\u0001',
-							bareServer: true,
+							bareServer: '',
 						}),
 					{
 						signal: abort.current.signal,
@@ -65,11 +64,13 @@ function SearchBar(props) {
 				))
 					entries.push(phrase);
 			} catch (error) {
-				// likely abort error
-				if (error.message === 'Failed to fetch') {
-					console.error('Error fetching Bare server.');
-				} else if (!isAbortError(error)) {
-					throw error;
+				if (error instanceof Error) {
+					// likely abort error
+					if (error.message === 'Failed to fetch') {
+						console.error('Error fetching Bare server.');
+					} else if (!isAbortError(error)) {
+						throw error;
+					}
 				}
 			}
 
@@ -78,30 +79,28 @@ function SearchBar(props) {
 	}
 
 	function searchSubmit() {
-		let value;
+		const value =
+			lastSelect === -1 || lastInput.current === 'input'
+				? input.current!.value
+				: textContent(omniboxEntries[lastSelect]);
 
-		if (lastSelect === -1 || lastInput.current === 'input') {
-			value = input.current.value;
-		} else {
-			value = textContent(omniboxEntries[lastSelect]);
-			input.current.value = value;
-		}
+		input.current!.value = value;
 
-		const builder = new SearchBuilder(props.layout.current.settings.search);
+		const builder = new SearchBuilder(layout.current!.settings.search);
 
 		setInputFocused(false);
-		serviceFrame.current.proxy(builder.query(input.current.value));
+		serviceFrame.current!.proxy(builder.query(input.current!.value));
 		onInput();
 	}
 
 	const renderSuggested = inputFocused && omniboxEntries.length !== 0;
 
-	const form = useRef();
-	const suggested = useRef();
+	const form = useRef<HTMLFormElement | null>(null);
+	const suggested = useRef<HTMLDivElement | null>(null);
 
 	return (
 		<>
-			<ServiceFrame ref={serviceFrame} layout={props.layout} />
+			<ServiceFrame ref={serviceFrame} layout={layout} />
 			<form
 				className="omnibox"
 				data-suggested={Number(renderSuggested)}
@@ -111,7 +110,7 @@ function SearchBar(props) {
 					searchSubmit();
 				}}
 				onBlur={(event) => {
-					if (!form.current.contains(event.relatedTarget)) {
+					if (!form.current!.contains(event.relatedTarget)) {
 						setInputFocused(false);
 					}
 				}}
@@ -154,7 +153,7 @@ function SearchBar(props) {
 									{
 										const lastI = lastSelect;
 
-										let next;
+										let next: number | undefined;
 
 										switch (event.code) {
 											case 'ArrowDown':
@@ -170,9 +169,6 @@ function SearchBar(props) {
 												} else {
 													next = lastI - 1;
 												}
-												break;
-											case 'Enter':
-												searchSubmit();
 												break;
 											// no default
 										}
@@ -203,7 +199,7 @@ function SearchBar(props) {
 				>
 					{renderSuggested &&
 						omniboxEntries.map((entry, i) => {
-							const text = createRef();
+							const text = createRef<HTMLSpanElement>();
 
 							return (
 								<div
@@ -212,7 +208,7 @@ function SearchBar(props) {
 									className={clsx('option', i === lastSelect && 'hover')}
 									onClick={() => {
 										lastInput.current = 'select';
-										input.current.value = text.current.textContent;
+										input.current!.value = text.current!.textContent!;
 										searchSubmit();
 									}}
 									onMouseOver={() => {
@@ -235,12 +231,12 @@ function SearchBar(props) {
 			</form>
 		</>
 	);
-}
+};
 
-export default function Proxies(props) {
+const Proxies: HolyPage = ({ layout }) => {
 	return (
 		<main className="proxy">
-			<SearchBar layout={props.layout} />
+			<SearchBar layout={layout} />
 			<p>
 				<Obfuscated>
 					If you're having issues with the proxy, try troubleshooting your
@@ -253,4 +249,6 @@ export default function Proxies(props) {
 			</p>
 		</main>
 	);
-}
+};
+
+export default Proxies;
