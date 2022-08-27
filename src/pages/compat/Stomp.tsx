@@ -1,14 +1,43 @@
+import type { CompatLayoutRef, ScriptRef } from '../../CompatLayout';
 import { Script } from '../../CompatLayout';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
+import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
-export default function Rammerhead(props) {
-	const bootstrapper = useRef();
+declare interface StompBootConfig {
+	bare: string;
+	directory: string;
+	loglevel: number;
+	codec: number;
+}
+
+declare class StompBoot {
+	static readonly CODEC_PLAIN: number;
+	static readonly CODEC_XOR: number;
+	static readonly LOG_DEBUG: number;
+	static readonly LOG_ERROR: number;
+	static readonly LOG_INFO: number;
+	static readonly LOG_SILENT: number;
+	static readonly LOG_TRACE: number;
+	static readonly LOG_WARN: number;
+	constructor(config: StompBootConfig);
+	html(url: string): string;
+	ready: Promise<void>;
+}
+
+export default function Stomp({
+	compatLayout,
+}: {
+	compatLayout: RefObject<CompatLayoutRef>;
+}) {
+	const bootstrapper = useRef<ScriptRef | null>(null);
 
 	useEffect(() => {
 		(async function () {
-			let errorCause;
+			if (!compatLayout.current || !bootstrapper.current) return;
+
+			let errorCause: string | undefined;
 
 			try {
 				if (
@@ -28,12 +57,10 @@ export default function Rammerhead(props) {
 				await bootstrapper.current.promise;
 				errorCause = undefined;
 
-				const { StompBoot } = global;
-
 				const config = {
 					bare: BARE_API,
 					directory: '/stomp/',
-				};
+				} as Partial<StompBootConfig>;
 
 				if (process.env.NODE_ENV === 'development') {
 					config.loglevel = StompBoot.LOG_TRACE;
@@ -43,7 +70,7 @@ export default function Rammerhead(props) {
 					config.codec = StompBoot.CODEC_XOR;
 				}
 
-				const boot = new StompBoot(config);
+				const boot = new StompBoot(config as StompBootConfig);
 
 				errorCause = 'Failure registering the Stomp Service Worker.';
 				await boot.ready;
@@ -58,14 +85,12 @@ export default function Rammerhead(props) {
 				}
 				errorCause = undefined;
 
-				global.location.replace(
-					boot.html(props.compatLayout.current.destination)
-				);
+				global.location.replace(boot.html(compatLayout.current.destination));
 			} catch (error) {
-				props.compatLayout.current.report(error, errorCause, 'Stomp');
+				compatLayout.current.report(error, errorCause, 'Stomp');
 			}
 		})();
-	}, [props.compatLayout, bootstrapper]);
+	}, [compatLayout, bootstrapper]);
 
 	return (
 		<main className="compat">

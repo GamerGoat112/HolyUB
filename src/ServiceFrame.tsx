@@ -13,6 +13,7 @@ import {
 } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
 import type { RefObject } from 'react';
+import { useRef } from 'react';
 import {
 	forwardRef,
 	useCallback,
@@ -29,7 +30,7 @@ export default forwardRef<
 	},
 	{ layout: RefObject<LayoutRef> }
 >(function ServiceFrame({ layout }, ref) {
-	const [iframe, setIFrame] = useState<HTMLIFrameElement | null>(null);
+	const iframe = useRef<HTMLIFrameElement | null>(null);
 	const [search, setSearch] = useSearchParams();
 	const [firstLoad, setFirstLoad] = useState(false);
 	const [revokeIcon, setRevokeIcon] = useState(false);
@@ -49,9 +50,9 @@ export default forwardRef<
 			(async function () {
 				if (
 					!layout.current ||
-					!layout.current.notifications ||
-					!iframe ||
-					!iframe.contentWindow
+					!layout.current.notifications.current ||
+					!iframe.current ||
+					!iframe.current.contentWindow
 				)
 					return;
 
@@ -61,11 +62,11 @@ export default forwardRef<
 						layout.current.settings.proxy
 					);
 
-					iframe.contentWindow.location.href = proxiedSrc;
+					iframe.current.contentWindow.location.href = proxiedSrc;
 					setLastSrc(proxiedSrc);
 				} catch (error) {
 					console.error(error);
-					layout.current.notifications.add(
+					layout.current.notifications.current.add(
 						<Notification
 							title="Unable to find compatible proxy"
 							description={
@@ -77,12 +78,12 @@ export default forwardRef<
 				}
 			})();
 		} else {
-			if (!iframe || !iframe.contentWindow) return;
+			if (!iframe.current || !iframe.current.contentWindow) return;
 
 			setFirstLoad(false);
 			setTitle('');
 			setIcon('');
-			iframe.contentWindow.location.href = 'about:blank';
+			iframe.current.contentWindow.location.href = 'about:blank';
 			setLastSrc('about:blank');
 		}
 	}, [iframe, layout, src]);
@@ -99,9 +100,9 @@ export default forwardRef<
 
 	useEffect(() => {
 		function focusListener() {
-			if (!iframe || !iframe.contentWindow) return;
+			if (!iframe.current || !iframe.current.contentWindow) return;
 
-			iframe.contentWindow.focus();
+			iframe.current.contentWindow.focus();
 		}
 
 		window.addEventListener('focus', focusListener);
@@ -111,10 +112,10 @@ export default forwardRef<
 
 	const testProxyUpdate = useCallback(
 		async function testProxyUpdate() {
-			if (!iframe || !iframe.contentWindow) return;
+			if (!iframe.current || !iframe.current.contentWindow) return;
 
-			const contentWindow =
-				iframe.contentWindow as unknown as typeof globalThis;
+			const contentWindow = iframe.current
+				.contentWindow as unknown as typeof globalThis;
 
 			// * didn't hook our call to new Function
 			try {
@@ -200,13 +201,13 @@ export default forwardRef<
 				</a>
 				<Fullscreen
 					className="button"
-					onClick={() => iframe && iframe.requestFullscreen()}
+					onClick={() => iframe.current && iframe.current.requestFullscreen()}
 				/>
 			</div>
 			<iframe
 				className="embed"
 				title="embed"
-				ref={setIFrame}
+				ref={iframe}
 				data-first-load={Number(firstLoad)}
 				onLoad={() => {
 					testProxyUpdate();

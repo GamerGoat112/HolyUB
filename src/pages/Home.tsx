@@ -1,8 +1,10 @@
 import '../styles/Home.scss';
+import type { MainLayoutRef } from '../MainLayout';
 import { ThemeButton } from '../ThemeElements';
 import { Obfuscated } from '../obfuscate';
+import type { RefObject } from 'react';
 
-export default function Home(props) {
+const Home = ({ mainLayout }: { mainLayout: RefObject<MainLayoutRef> }) => {
 	return (
 		<main className="home">
 			<h1>
@@ -11,9 +13,15 @@ export default function Home(props) {
 			<h2>
 				<Obfuscated>Privacy right at your fingertips.</Obfuscated>
 			</h2>
-			<ThemeButton onClick={() => props.mainLayout.current.setExpanded(true)}>
+			<ThemeButton
+				onClick={() =>
+					mainLayout.current && mainLayout.current.setExpanded(true)
+				}
+			>
 				<Obfuscated>Get Started</Obfuscated>
 			</ThemeButton>
 		</main>
 	);
-}
+};
+
+export default Home;

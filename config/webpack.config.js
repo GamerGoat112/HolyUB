@@ -367,6 +367,12 @@ module.exports = function (webpackEnv) {
 								),
 								presets: [
 									[
+										require.resolve('@babel/preset-typescript'),
+										{
+											allowDeclareFields: true,
+										},
+									],
+									[
 										require.resolve('babel-preset-react-app'),
 										{
 											runtime: hasJsxRuntime ? 'automatic' : 'classic',
