@@ -1,5 +1,5 @@
 import './styles/Service.scss';
-// import type Layout from './Layout';
+import type { LayoutRef } from './Layout';
 import { Notification } from './Notifications';
 import resolveProxy from './ProxyResolver';
 import { BARE_API } from './consts';
@@ -12,6 +12,7 @@ import {
 	Public,
 } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
+import type { RefObject } from 'react';
 import {
 	forwardRef,
 	useCallback,
@@ -26,7 +27,7 @@ export default forwardRef<
 	{
 		proxy(src: string): void;
 	},
-	{ layout: any }
+	{ layout: RefObject<LayoutRef> }
 >(function ServiceFrame({ layout }, ref) {
 	const [iframe, setIFrame] = useState<HTMLIFrameElement | null>(null);
 	const [search, setSearch] = useSearchParams();
@@ -46,7 +47,13 @@ export default forwardRef<
 	useEffect(() => {
 		if (src) {
 			(async function () {
-				if (!iframe || !iframe.contentWindow) return;
+				if (
+					!layout.current ||
+					!layout.current.notifications ||
+					!iframe ||
+					!iframe.contentWindow
+				)
+					return;
 
 				try {
 					const proxiedSrc = await resolveProxy(
@@ -58,10 +65,12 @@ export default forwardRef<
 					setLastSrc(proxiedSrc);
 				} catch (error) {
 					console.error(error);
-					layout.current.notifications.current.add(
+					layout.current.notifications.add(
 						<Notification
 							title="Unable to find compatible proxy"
-							description={error.message}
+							description={
+								error instanceof Error ? error.message : String(error)
+							}
 							type="error"
 						/>
 					);
@@ -191,7 +200,7 @@ export default forwardRef<
 				</a>
 				<Fullscreen
 					className="button"
-					onClick={() => iframe.current.requestFullscreen()}
+					onClick={() => iframe && iframe.requestFullscreen()}
 				/>
 			</div>
 			<iframe

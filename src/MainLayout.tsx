@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
 import { ReactComponent as HatPlain } from './assets/hat.svg';
-import type { ObfuscatedAProps } from './obfuscate';
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate';
 import categories from './pages/theatre/games/categories';
 import resolveRoute from './resolveRoute';
@@ -21,11 +20,11 @@ import {
 	StarRounded,
 	WebAsset,
 } from '@mui/icons-material';
-import type { ComponentType, ReactNode, SVGAttributes } from 'react';
+import type { MouseEventHandler, ReactNode, SVGAttributes } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
-function Hat(props: ComponentType<SVGAttributes<{}>>) {
+function Hat(props: SVGAttributes<{}>) {
 	switch (process.env.REACT_APP_HAT_BADGE) {
 		case 'DEV':
 			return <HatDev {...props} />;
@@ -42,14 +41,14 @@ export function MenuTab({
 	name,
 	iconFilled,
 	iconOutlined,
-	...attributes
 }: {
-	route: string;
-	href: string;
+	route?: string;
+	href?: string;
 	name: string;
 	iconFilled: ReactNode;
 	iconOutlined?: ReactNode;
-} & ObfuscatedAProps) {
+	onClick?: MouseEventHandler;
+}) {
 	const location = useLocation();
 	const selected = location.pathname === route;
 	const content = (
@@ -66,22 +65,16 @@ export function MenuTab({
 	if (route === undefined) {
 		return (
 			<ObfuscatedA
-				href={href}
+				href={href!}
 				data-selected={Number(selected)}
 				className="entry"
-				{...attributes}
 			>
 				{content}
 			</ObfuscatedA>
 		);
 	} else {
 		return (
-			<Link
-				to={route}
-				data-selected={Number(selected)}
-				className="entry"
-				{...attributes}
-			>
+			<Link to={route} data-selected={Number(selected)} className="entry">
 				{content}
 			</Link>
 		);

@@ -56,7 +56,7 @@ function TabMode() {
 	const [tab, setTab] = useState(false);
 
 	useEffect(() => {
-		function keydown(event) {
+		function keydown(event: KeyboardEvent) {
 			if (event.code === 'Tab') {
 				setTab(true);
 			}
@@ -92,7 +92,7 @@ export interface GlobalSettings {
 	seen_games: string[];
 }
 
-export default forwardRef<{
+export interface LayoutRef {
 	notifications: NotificationsManagerRef | null;
 	settings: GlobalSettings;
 	setSettings: (
@@ -102,7 +102,9 @@ export default forwardRef<{
 	setCloak: (
 		state: CloakSettings | ((prevState: CloakSettings) => CloakSettings)
 	) => void;
-}>(function Layout(props, ref) {
+}
+
+export default forwardRef<LayoutRef>(function Layout(props, ref) {
 	const [notifications, setNotifications] =
 		useState<NotificationsManagerRef | null>(null);
 
