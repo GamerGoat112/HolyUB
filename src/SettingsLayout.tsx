@@ -1,4 +1,4 @@
-import '../styles/Settings.scss';
+import './styles/Settings.scss';
 import type { HolyPage } from './App';
 import { MenuTab } from './MainLayout';
 import resolveRoute from './resolveRoute';

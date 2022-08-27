@@ -1,4 +1,4 @@
-import '../../styles/TheatreCategory.scss';
+import './styles/TheatreCategory.scss';
 import type { HolyPage } from './App';
 import { useSettings } from './Settings';
 import type { CategoryData, LoadingCategoryData } from './TheatreCommon';
