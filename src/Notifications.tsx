@@ -19,6 +19,11 @@ interface NotificationStubProps {
 	duration?: number;
 }
 
+interface RealNotificationProps extends NotificationStubProps {
+	manager: RefObject<NotificationsManagerRef>;
+	id: string;
+}
+
 function RealNotification({
 	id,
 	title,
@@ -26,10 +31,7 @@ function RealNotification({
 	manager,
 	duration,
 	type,
-}: NotificationStubProps & {
-	manager: RefObject<NotificationsManagerRef>;
-	id: string;
-}) {
+}: RealNotificationProps) {
 	const [hide, setHide] = useState(false);
 
 	duration ||= 5e3;
@@ -99,7 +101,7 @@ export interface NotificationsManagerRef {
 const NotificationsManager = forwardRef<NotificationsManagerRef>(
 	function NotificationsManager(props, ref) {
 		const [notifications, setNotifications] = useState<
-			ReactElement<Notification>[]
+			ReactElement<RealNotificationProps>[]
 		>([]);
 
 		useImperativeHandle(
@@ -126,9 +128,7 @@ const NotificationsManager = forwardRef<NotificationsManagerRef>(
 					for (let i = 0; i < _notifications.length; i++) {
 						const notification = _notifications[i];
 
-						if (notification.props.id !== id) {
-							continue;
-						}
+						if (notification.props.id !== id) continue;
 
 						_notifications.splice(i, 1);
 						setNotifications(_notifications);
