@@ -2,6 +2,7 @@ import type { HolyPage } from '../../App';
 import type { ScriptRef } from '../../CompatLayout';
 import { Script } from '../../CompatLayout';
 import { Obfuscated } from '../../obfuscate';
+import styles from '../../styles/CompatFlash.module.scss';
 import { useEffect, useRef, useState } from 'react';
 
 interface RufflePlayerElement extends HTMLElement {
@@ -60,7 +61,7 @@ const Flash: HolyPage = ({ compatLayout }) => {
 
 	return (
 		<main
-			className="compat-flash"
+			className={styles.main}
 			data-loaded={Number(ruffleLoaded)}
 			ref={container}
 		>

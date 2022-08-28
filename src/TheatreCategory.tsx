@@ -1,18 +1,18 @@
-import './styles/TheatreCategory.scss';
 import type { HolyPage } from './App';
 import type { CategoryData, LoadingCategoryData } from './TheatreCommon';
 import { isLoading } from './TheatreCommon';
 import { ItemList, TheatreAPI } from './TheatreCommon';
 import SearchBar from './TheatreSearchBar';
-import { ThemeSelect } from './ThemeElements';
+import { ThemeLink, ThemeSelect } from './ThemeElements';
 import { DB_API } from './consts';
 import isAbortError from './isAbortError';
 import { Obfuscated } from './obfuscate';
 import resolveRoute from './resolveRoute';
+import styles from './styles/TheatreCategory.module.scss';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const LIMIT = 30;
 
@@ -128,42 +128,33 @@ const Category: HolyPage<{
 					.
 					<br />
 					If this problem still occurs, check{' '}
-					<Link
-						className="theme-link"
-						to={resolveRoute('/', 'faq')}
-						target="_parent"
-					>
+					<ThemeLink to={resolveRoute('/', 'faq')} target="_parent">
 						Support
-					</Link>{' '}
+					</ThemeLink>{' '}
 					or{' '}
-					<Link
-						className="theme-link"
-						to={resolveRoute('/', 'contact')}
-						target="_parent"
-					>
+					<ThemeLink to={resolveRoute('/', 'contact')} target="_parent">
 						Contact Us
-					</Link>
+					</ThemeLink>
 					.
 				</p>
 			</main>
 		);
 
 	return (
-		<main className={clsx('theatre-category')}>
+		<main className={styles.main}>
 			<SearchBar
 				showCategory={showCategory}
 				category={category}
 				placeholder={placeholder}
 			/>
 			<section>
-				<div className="name">
+				<div className={styles.name}>
 					<h1>
 						<Obfuscated ellipsis>{name}</Obfuscated>
 					</h1>
 					<ThemeSelect
-						className="sort"
+						className={styles.sort}
 						defaultValue={search.get('sort')!}
-						style={{ width: 160, flex: 'none' }}
 						onChange={(event) => {
 							setData(createLoading(lastTotal));
 							setSearch({
@@ -178,11 +169,11 @@ const Category: HolyPage<{
 						<option value="Name (Z-A)">Name (Z-A)</option>
 					</ThemeSelect>
 				</div>
-				<ItemList className="items" items={data.entries} />
+				<ItemList className={styles.items} items={data.entries} />
 			</section>
-			<div className={clsx('pages', maxPage === 0 && 'useless')}>
+			<div className={clsx(styles.pages, maxPage === 0 && styles.useless)}>
 				<ChevronLeft
-					className={clsx('button', !page && 'disabled')}
+					className={clsx(styles.button, !page && styles.disabled)}
 					onClick={() => {
 						if (!isLoading(data) && page) {
 							setSearch({
@@ -193,7 +184,7 @@ const Category: HolyPage<{
 					}}
 				/>
 				<ChevronRight
-					className={clsx('button', page >= maxPage && 'disabled')}
+					className={clsx(styles.button, page >= maxPage && styles.disabled)}
 					onClick={() => {
 						if (!isLoading(data) && page < maxPage) {
 							setSearch({

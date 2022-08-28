@@ -2,6 +2,8 @@ import DatabaseAPI from './DatabaseAPI';
 import { THEATRE_CDN } from './consts';
 import { Obfuscated } from './obfuscate';
 import resolveRoute from './resolveRoute';
+import styles from './styles/TheatreCategory.module.scss';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -110,15 +112,15 @@ export class TheatreAPI extends DatabaseAPI {
 	}
 }
 
-function Item({ id, name }: { id: string; name: string }) {
+export function Item({ id, name }: { id: string; name: string }) {
 	const [loaded, setLoaded] = useState(false);
 
 	return (
 		<Link
-			className="item"
+			className={styles.item}
 			to={`${resolveRoute('/theatre/', 'player')}?id=${id}`}
 		>
-			<div className="thumbnail" data-loaded={Number(loaded)}>
+			<div className={styles.thumbnail} data-loaded={Number(loaded)}>
 				<img
 					alt=""
 					loading="lazy"
@@ -126,18 +128,18 @@ function Item({ id, name }: { id: string; name: string }) {
 					src={new URL(`./thumbnails/${id}.webp`, THEATRE_CDN).toString()}
 				></img>
 			</div>
-			<div className="name">
+			<div className={styles.name}>
 				<Obfuscated ellipsis>{name}</Obfuscated>
 			</div>
 		</Link>
 	);
 }
 
-function LoadingItem() {
+export function LoadingItem() {
 	return (
-		<div className="item loading">
-			<div className="thumbnail" />
-			<div className="name" />
+		<div className={clsx(styles.item, styles.loading)}>
+			<div className={styles.thumbnail} />
+			<div className={styles.name} />
 		</div>
 	);
 }

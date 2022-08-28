@@ -1,4 +1,3 @@
-import '../../../styles/TheatreCategory.scss';
 import type { HolyPage } from '../../../App';
 import Category from '../../../TheatreCategory';
 import categories from '../../../gameCategories';

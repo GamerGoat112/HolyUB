@@ -1,5 +1,6 @@
 import type { HolyPage } from '../../App';
 import { ThemeSelect } from '../../ThemeElements';
+import styles from '../../styles/Settings.module.scss';
 
 const Appearance: HolyPage = ({ layout }) => {
 	return (
@@ -7,6 +8,7 @@ const Appearance: HolyPage = ({ layout }) => {
 			<div>
 				<span>Theme:</span>
 				<ThemeSelect
+					className={styles.themeSelect}
 					defaultValue={layout.current!.settings.theme}
 					onChange={(event) => {
 						layout.current!.setSettings({

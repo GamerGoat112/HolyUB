@@ -2,6 +2,7 @@ import type { HolyPage } from '../../App';
 import { ThemeSelect } from '../../ThemeElements';
 import engines from '../../engines';
 import { Obfuscated } from '../../obfuscate';
+import styles from '../../styles/Settings.module.scss';
 
 const Search: HolyPage = ({ layout }) => {
 	return (
@@ -11,6 +12,7 @@ const Search: HolyPage = ({ layout }) => {
 					<Obfuscated>Proxy</Obfuscated>:
 				</span>
 				<ThemeSelect
+					className={styles.themeSelect}
 					onChange={(event) =>
 						layout.current!.setSettings({
 							...layout.current!.settings,
@@ -30,6 +32,7 @@ const Search: HolyPage = ({ layout }) => {
 					<Obfuscated>Search Engine</Obfuscated>:
 				</span>
 				<ThemeSelect
+					className={styles.themeSelect}
 					onChange={(event) =>
 						layout.current!.setSettings({
 							...layout.current!.settings,

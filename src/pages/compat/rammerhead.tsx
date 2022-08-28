@@ -64,7 +64,7 @@ const Rammerhead: HolyPage = ({ compatLayout }) => {
 	}, [compatLayout]);
 
 	return (
-		<main className="compat">
+		<main>
 			Loading <Obfuscated>Rammerhead</Obfuscated>...
 		</main>
 	);

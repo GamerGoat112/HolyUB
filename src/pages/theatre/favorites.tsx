@@ -1,9 +1,9 @@
-import '../../styles/TheatreCategory.scss';
 import type { HolyPage } from '../../App';
 import type { LoadingTheatreEntry, TheatreEntry } from '../../TheatreCommon';
 import { ItemList, TheatreAPI } from '../../TheatreCommon';
 import { DB_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
+import styles from '../../styles/TheatreCategory.module.scss';
 import { useEffect, useState } from 'react';
 
 const FETCH_FAILED = /TypeError: Failed to fetch/;
@@ -58,14 +58,14 @@ const Favorites: HolyPage = ({ layout }) => {
 		);
 	} else {
 		return (
-			<main className="theatre-category">
+			<main className={styles.main}>
 				<section>
-					<div className="name">
+					<div className={styles.name}>
 						<h1>
 							<Obfuscated>Favorites</Obfuscated>
 						</h1>
 					</div>
-					<div className="items">
+					<div className={styles.items}>
 						<ItemList items={data} />
 					</div>
 				</section>

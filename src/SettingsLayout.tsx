@@ -1,7 +1,7 @@
-import './styles/Settings.scss';
 import type { HolyPage } from './App';
 import { MenuTab } from './MainLayout';
 import resolveRoute from './resolveRoute';
+import styles from './styles/Settings.module.scss';
 import {
 	Brush,
 	BrushOutlined,
@@ -9,14 +9,15 @@ import {
 	DriveFileRenameOutlineOutlined,
 	Public,
 } from '@mui/icons-material';
+import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
 
 const SettingsLayout: HolyPage = () => {
 	return (
 		<>
-			<main className="settings">
-				<div className="menu fixed-wide">
-					<div className="menu-list">
+			<main className={styles.main}>
+				<div className={clsx('menu', 'fixed-wide', styles.menu)}>
+					<div className={clsx('menu-list', styles.menuList)}>
 						<MenuTab
 							route={resolveRoute('/settings/', 'search')}
 							name="Search"
