@@ -1,6 +1,5 @@
 import './styles/TheatreCategory.scss';
 import type { HolyPage } from './App';
-import { useSettings } from './Settings';
 import type { CategoryData, LoadingCategoryData } from './TheatreCommon';
 import { isLoading } from './TheatreCommon';
 import { ItemList, TheatreAPI } from './TheatreCommon';
@@ -42,10 +41,9 @@ const Category: HolyPage<{
 	id: string;
 	showCategory?: boolean;
 }> = ({ name, category, placeholder, id, showCategory }) => {
-	const [search, setSearch] = useSearchParams({
-		page: '0',
-	});
-	const page = parseInt(search.get('page')!);
+	const [search, setSearch] = useSearchParams();
+	let page = parseInt(search.get('page')!);
+	if (isNaN(page)) page = 0;
 	const [lastTotal, setLastTotal] = useState(LIMIT * 2);
 	const [data, setData] = useState<LoadingCategoryData | CategoryData>(() =>
 		createLoading(lastTotal)
@@ -53,12 +51,6 @@ const Category: HolyPage<{
 	const maxPage = Math.floor(data.total / LIMIT);
 	const errorCause = useRef<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
-	const [settings, setSettings] = useSettings(
-		`theatre category ${id} settings`,
-		() => ({
-			sort: 'Most Popular',
-		})
-	);
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -68,7 +60,7 @@ const Category: HolyPage<{
 			let leastGreatest = false;
 			let sort;
 
-			switch (settings.sort) {
+			switch (search.get('sort')) {
 				case 'Least Popular':
 					leastGreatest = true;
 				// falls through
@@ -87,11 +79,6 @@ const Category: HolyPage<{
 				case 'Name (A-Z)':
 					sort = 'name';
 					break;
-				default:
-					return setSettings({
-						...settings,
-						sort: 'Most Popular',
-					});
 			}
 
 			try {
@@ -117,7 +104,7 @@ const Category: HolyPage<{
 		})();
 
 		return () => abort.abort();
-	}, [page, category, setSettings, settings, settings.sort]);
+	}, [page, category, search]);
 
 	if (error)
 		return (
@@ -175,17 +162,13 @@ const Category: HolyPage<{
 					</h1>
 					<ThemeSelect
 						className="sort"
-						defaultValue={settings.sort}
+						defaultValue={search.get('sort')!}
 						style={{ width: 160, flex: 'none' }}
 						onChange={(event) => {
 							setData(createLoading(lastTotal));
-							setSettings({
-								...settings,
-								sort: event.target.value,
-							});
 							setSearch({
 								...Object.fromEntries(search),
-								page: '0',
+								sort: event.target.value,
 							});
 						}}
 					>
