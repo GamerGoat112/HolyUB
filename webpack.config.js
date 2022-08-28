@@ -2,6 +2,7 @@ import HolyUnblockerRouterPlugin from './router.js';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import BasicWebpackObfuscator from 'basic-webpack-obfuscator';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { createHash } from 'crypto';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
@@ -537,6 +538,15 @@ const webpackConfig = {
 		].filter(Boolean),
 	},
 	plugins: [
+		new CleanWebpackPlugin(),
+		new CopyPlugin({
+			patterns: [
+				{
+					from: './public',
+					filter: (file) => file !== path.resolve('public/index.html'),
+				},
+			],
+		}),
 		// Generates an `index.html` file with the <script> injected.
 		new HtmlWebpackPlugin({
 			inject: true,
@@ -557,14 +567,6 @@ const webpackConfig = {
 						},
 				  }
 				: {}),
-		}),
-		new CopyPlugin({
-			patterns: [
-				{
-					from: './public',
-					filter: (file) => file !== path.resolve('public/index.html'),
-				},
-			],
 		}),
 		// Inlines the webpack runtime script. This script is too small to warrant
 		// a network request.
