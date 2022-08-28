@@ -66,7 +66,7 @@ function RealNotification({
 
 	return (
 		<div className={clsx('notification', hide && 'hide', title && 'title')}>
-			<Icon className={`icon $.type}`} />
+			<Icon className={`icon ${type}`} />
 			<div className="content">
 				{title && (
 					<div className="title">
