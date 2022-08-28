@@ -61,10 +61,29 @@
 		width: 100%;
 		height: 100%;
 
-		> iframe {
-			border: none;
+		> .iframeContainer {
+			position: relative;
 			width: 100%;
 			height: 100%;
+
+			> .iframeCover {
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				background-color: rgba(0, 0, 0, 0.5);
+				transition: opacity 0.2s, visibility 0.2s;
+				cursor: pointer;
+				visibility: hidden;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			> iframe {
+				border: none;
+				width: 100%;
+				height: 100%;
+			}
 		}
 
 		> .controls {
@@ -242,4 +261,16 @@
 			}
 		}
 	}
+}
+
+html[data-lock-frame-scroll='1'] {
+	body {
+		margin-right: 16px;
+		overflow: hidden;
+	}
+}
+
+html[data-lock-frame-scroll='0'] .frame > .iframeContainer > .iframeCover {
+	opacity: 1;
+	visibility: visible;
 }
