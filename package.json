@@ -15,6 +15,7 @@
 		"crypto-js": "^4.1.1",
 		"css-loader": "^6.7.1",
 		"dotenv-flow": "^3.2.0",
+		"holy-dump": "https://git.holy.how/attachments/b505cd34-f43e-40ee-a1a7-8ff12e56ceb7",
 		"http-server": "^14.1.1",
 		"js-cookie": "^3.0.1",
 		"nord": "^0.2.1",
