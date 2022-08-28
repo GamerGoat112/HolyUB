@@ -35,15 +35,13 @@ const faq: {
 				<ObfuscatedThemeA href={TN_DISCORD_URL}>
 					<Obfuscated>TitaniumNetwork Discord Server</Obfuscated>
 				</ObfuscatedThemeA>{' '}
-				<Obfuscated>to receive more links. Go to</Obfuscated>{' '}
-				<ObfuscatedThemeA href="https://discord.com/channels/419123358698045453/743648232717942805">
-					<Obfuscated>#proxy-commands</Obfuscated>
-				</ObfuscatedThemeA>{' '}
-				and type:
-				<code className="obfuscated">
-					<Obfuscated>/proxy</Obfuscated>
-				</code>
-				<Obfuscated>, select HolyUnblocker, then enter.</Obfuscated>
+				<Obfuscated>
+					to receive more links. In any channel, run the{' '}
+					<code className="obfuscated">
+						<Obfuscated>/proxy</Obfuscated>
+					</code>{' '}
+					command and select Holy Unblocker.
+				</Obfuscated>
 			</>
 		),
 	},
