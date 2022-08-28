@@ -1,4 +1,3 @@
-import '../styles/Proxy.scss';
 import type { HolyPage, LayoutDump } from '../App';
 import SearchBuilder from '../SearchBuilder';
 import ServiceFrame from '../ServiceFrame';
@@ -9,6 +8,7 @@ import engines from '../engines';
 import isAbortError from '../isAbortError';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
+import styles from '../styles/Proxy.module.scss';
 import textContent from '../textContent';
 import { NorthWest, Search } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
@@ -102,7 +102,7 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 		<>
 			<ServiceFrame ref={serviceFrame} layout={layout} />
 			<form
-				className="omnibox"
+				className={styles.omnibox}
 				data-suggested={Number(renderSuggested)}
 				data-focused={Number(inputFocused)}
 				onSubmit={(event) => {
@@ -111,12 +111,12 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 				}}
 				onBlur={(event) => {
 					if (!form.current!.contains(event.relatedTarget)) {
-						setInputFocused(false);
+						//setInputFocused(false);
 					}
 				}}
 				ref={form}
 			>
-				<ThemeInputBar>
+				<ThemeInputBar className={styles.themeInputBar}>
 					<Search className="icon" />
 					<input
 						type="text"
@@ -192,7 +192,7 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 				</ThemeInputBar>
 				<div
 					ref={suggested}
-					className="suggested"
+					className={styles.suggested}
 					onMouseLeave={() => {
 						setLastSelect(-1);
 					}}
@@ -205,7 +205,10 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 								<div
 									key={i}
 									tabIndex={0}
-									className={clsx('option', i === lastSelect && 'hover')}
+									className={clsx(
+										styles.option,
+										i === lastSelect && styles.hover
+									)}
 									onClick={() => {
 										lastInput.current = 'select';
 										input.current!.value = text.current!.textContent!;
@@ -215,15 +218,15 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 										setLastSelect(i);
 									}}
 								>
-									<Search className="search" />
+									<Search className={styles.search} />
 									<span
-										className="text"
+										className={styles.text}
 										ref={text}
 										dangerouslySetInnerHTML={{
 											__html: entry,
 										}}
 									/>
-									<NorthWest className="open" />
+									<NorthWest className={styles.open} />
 								</div>
 							);
 						})}
@@ -235,7 +238,7 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 
 const Proxies: HolyPage = ({ layout }) => {
 	return (
-		<main className="proxy">
+		<main className={styles.main}>
 			<SearchBar layout={layout} />
 			<p>
 				<Obfuscated>
