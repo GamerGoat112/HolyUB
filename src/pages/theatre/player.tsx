@@ -36,7 +36,7 @@ async function resolveSrc(
 		case 'embed':
 			return src;
 		case 'flash':
-			return `${resolveRoute('/compat/', 'flash')}#${encryptURL(src)} `;
+			return `${resolveRoute('/compat/', 'flash')}#${encryptURL(src)}`;
 		case 'emulator':
 		case 'emulator.gba':
 		case 'emulator.nes':
@@ -73,6 +73,7 @@ const Player: HolyPage = ({ layout }) => {
 	const [seen, _setSeen] = useState(() =>
 		layout.current!.settings.seen_games.includes(id)
 	);
+	const [iframeFocused, setIFrameFocused] = useState(false);
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -129,32 +130,45 @@ const Player: HolyPage = ({ layout }) => {
 		return () => abort.abort();
 	}, [seen, id, layout]);
 
-	function focusListener() {
-		if (!iframe.current) {
-			return;
-		}
-
-		iframe.current!.contentWindow?.focus();
-
-		if (
-			document.activeElement &&
-			document.activeElement instanceof HTMLElement &&
-			!iframe.current.contains(document.activeElement)
-		) {
-			document.activeElement.blur();
-			document.activeElement.dispatchEvent(new Event('blur'));
-		}
-	}
-
 	useEffect(() => {
+		console.log('dataset for scroll lock updated', iframeFocused);
+
+		function focusListener() {
+			if (iframeFocused && iframe.current) iframe.current.focus();
+		}
+
+		document.documentElement.dataset.lockFrameScroll =
+			Number(iframeFocused).toString();
 		window.addEventListener('focus', focusListener);
 
-		focusListener();
+		return () => {
+			window.removeEventListener('focus', focusListener);
+			delete document.documentElement.dataset.scroll;
+		};
+	}, [iframeFocused]);
 
-		return () => window.removeEventListener('focus', focusListener);
-	}, [data]);
+	useEffect(() => {
+		function clickListener(event: Event) {
+			console.log('window.click triggered focus to be lost!', event.target);
+			if (iframeFocused) setIFrameFocused(false);
+		}
 
-	if (error) {
+		if (!iframeFocused && iframe.current) iframe.current!.blur();
+
+		// window.addEventListener('blur', blurListener);
+		window.addEventListener('click', clickListener);
+		console.log('update', Number(!iframeFocused).toString());
+		document.documentElement.dataset.lockFrameScroll =
+			Number(iframeFocused).toString();
+
+		return () => {
+			// window.removeEventListener('focus', blurListener);
+			delete document.documentElement.dataset.scroll;
+			window.removeEventListener('click', clickListener);
+		};
+	}, [data, iframeFocused]);
+
+	if (error)
 		return (
 			<main className="error">
 				<p>An error occurreds when loading the entry:</p>
@@ -163,7 +177,6 @@ const Player: HolyPage = ({ layout }) => {
 				</pre>
 			</main>
 		);
-	}
 
 	if (!data) {
 		return (
@@ -243,34 +256,18 @@ const Player: HolyPage = ({ layout }) => {
 			data-controls={Number(controlsExpanded)}
 		>
 			<div className={styles.frame}>
-				<iframe
-					ref={iframe}
-					title="Embed"
-					onLoad={() => {
-						iframe.current!.contentWindow?.addEventListener(
-							'keydown',
-							(event) => {
-								if (
-									event.target === iframe.current!.contentWindow?.document.body
-								) {
-									switch (event.code) {
-										case 'Space':
-										case 'ArrowUp':
-										case 'ArrowDown':
-										case 'ArrowLeft':
-										case 'ArrowRight':
-											event.preventDefault();
-											break;
-										// no default
-									}
-								}
-							}
-						);
-					}}
-					onClick={focusListener}
-					onFocus={focusListener}
-					src={resolvedSrc || undefined}
-				/>
+				<div className={styles.iframeContainer}>
+					<div
+						className={styles.iframeCover}
+						onClick={(event) => {
+							event.stopPropagation();
+							console.log('K FOCUSED');
+							setIFrameFocused(true);
+							iframe.current!.focus();
+						}}
+					/>
+					<iframe ref={iframe} title="Embed" src={resolvedSrc || undefined} />
+				</div>
 				<div
 					tabIndex={0}
 					className={styles.controls}
@@ -299,7 +296,6 @@ const Player: HolyPage = ({ layout }) => {
 				<div
 					className={styles.button}
 					onClick={() => {
-						focusListener();
 						iframe.current!.requestFullscreen();
 					}}
 				>
@@ -344,10 +340,6 @@ const Player: HolyPage = ({ layout }) => {
 					className={styles.button}
 					onClick={async () => {
 						setPanorama(!panorama);
-
-						if (!panorama) {
-							focusListener();
-						}
 					}}
 				>
 					{panorama ? <ChevronLeft /> : <Panorama />}
