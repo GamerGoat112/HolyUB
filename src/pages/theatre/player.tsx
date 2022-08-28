@@ -131,13 +131,12 @@ const Player: HolyPage = ({ layout }) => {
 	}, [seen, id, layout]);
 
 	useEffect(() => {
-		console.log('dataset for scroll lock updated', iframeFocused);
-
 		function focusListener() {
 			if (iframeFocused && iframe.current) iframe.current.focus();
 		}
 
 		if (iframeFocused && iframe.current) iframe.current.focus();
+
 		document.documentElement.dataset.lockFrameScroll =
 			Number(iframeFocused).toString();
 		window.addEventListener('focus', focusListener);
@@ -149,22 +148,21 @@ const Player: HolyPage = ({ layout }) => {
 	}, [iframeFocused, iframe]);
 
 	useEffect(() => {
+		if (!iframe.current) return;
+
 		function clickListener(event: Event) {
-			console.log('window.click triggered focus to be lost!', event.target);
 			if (iframeFocused) setIFrameFocused(false);
 		}
 
-		if (!iframeFocused && iframe.current) iframe.current!.blur();
+		if (!iframeFocused) iframe.current!.blur();
 
 		// window.addEventListener('blur', blurListener);
 		window.addEventListener('click', clickListener);
-		console.log('update', Number(!iframeFocused).toString());
 		document.documentElement.dataset.lockFrameScroll =
 			Number(iframeFocused).toString();
 
 		return () => {
-			// window.removeEventListener('focus', blurListener);
-			delete document.documentElement.dataset.scroll;
+			delete document.documentElement.dataset.lockFrameScroll;
 			window.removeEventListener('click', clickListener);
 		};
 	}, [data, iframeFocused]);
