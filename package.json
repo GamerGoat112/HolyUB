@@ -10,16 +10,17 @@
 	},
 	"dependencies": {
 		"@tomphttp/bare-client": "^1.0.5",
+		"clean-webpack-plugin": "^4.0.0",
 		"clsx": "^1.2.1",
 		"crypto-js": "^4.1.1",
 		"css-loader": "^6.7.1",
 		"dotenv-flow": "^3.2.0",
+		"http-server": "^14.1.1",
 		"js-cookie": "^3.0.1",
 		"nord": "^0.2.1",
 		"random-seed": "^0.3.0",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"serve": "^14.0.1"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.13",
@@ -85,7 +86,7 @@
 	"scripts": {
 		"build-stomp": "node scripts/build-stomp.js",
 		"build-ultraviolet": "node scripts/build-ultraviolet.js",
-		"start": "serve ./build/",
+		"start": "http-server ./build/ --port 3000",
 		"dev": "NODE_ENV=development webpack serve",
 		"build": "NODE_ENV=production webpack",
 		"lint": "eslint ./src/"

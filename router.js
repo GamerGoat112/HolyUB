@@ -2,6 +2,48 @@ import routes from './src/routes.js';
 import path from 'path';
 import webpack from 'webpack';
 
+function pathsID() {
+	/**
+	 * @type {string[]}
+	 */
+	const paths = [];
+
+	for (const dirI in routes) {
+		const { dir, pages } = routes[dirI];
+		const dirName = dir === '/' ? '' : dirI;
+
+		for (const pageI in pages) {
+			// const page = pages[pageI];
+			const pageName = pages[pageI] === '' ? 'index.html' : `${pageI}.html`;
+			const pageAbs = path.join(dirName, pageName);
+
+			paths.push(pageAbs);
+		}
+	}
+
+	return paths;
+}
+
+function filesID() {
+	/**
+	 * @type {string[]}
+	 */
+	const paths = [];
+
+	for (const { dir, pages } of routes) {
+		const dirName = dir;
+
+		for (const page of pages) {
+			const pageName = page === '' ? 'index.html' : `${page}.html`;
+			const pageAbs = path.join(dirName, pageName);
+
+			paths.push(pageAbs);
+		}
+	}
+
+	return paths;
+}
+
 export default class HolyUnblockerRouterPlugin {
 	/**
 	 *
@@ -19,41 +61,15 @@ export default class HolyUnblockerRouterPlugin {
 					(assets) => {
 						const index = assets['index.html'];
 
-						if (index) {
-							assets['404.html'] = index;
+						if (!index) return;
 
-							switch (process.env.REACT_APP_ROUTER) {
-								case 'id':
-									for (const dirI in routes) {
-										const { dir, pages } = routes[dirI];
-										const dirName = dir === '/' ? '' : dirI;
-
-										for (const pageI in pages) {
-											// const page = pages[pageI];
-											const pageName =
-												pages[pageI] === '' ? 'index.html' : `${pageI}.html`;
-											const pageAbs = path.join(dirName, pageName);
-
-											assets[pageAbs] = index;
-										}
-									}
-									break;
-								default:
-								case 'file':
-									for (const { dir, pages } of routes) {
-										const dirName = dir;
-
-										for (const page of pages) {
-											const pageName =
-												page === '' ? 'index.html' : `${page}.html`;
-											const pageAbs = path.join(dirName, pageName);
-
-											assets[pageAbs] = index;
-										}
-									}
-									break;
-							}
-						}
+						for (const file of [
+							'404.html',
+							...(process.env.REACT_APP_ROUTER === 'id'
+								? pathsID()
+								: filesID()),
+						])
+							assets[file] = index;
 					}
 				);
 			}
