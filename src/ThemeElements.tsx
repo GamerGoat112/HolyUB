@@ -13,7 +13,7 @@ export function ThemeButton({
 	className,
 	...attributes
 }: JSX.IntrinsicElements['button'] & {
-	children: ReactNode;
+	children?: ReactNode;
 	className?: string;
 }) {
 	return (
@@ -31,8 +31,8 @@ export function ThemeInputBar({
 	children,
 	className,
 	...attributes
-}: {
-	children: ReactNode;
+}: JSX.IntrinsicElements['div'] & {
+	children?: ReactNode;
 	className?: string;
 }) {
 	return (
@@ -46,7 +46,7 @@ export function ObfuscatedThemeA({
 	children,
 	className,
 	...attributes
-}: { className?: string; children: ReactNode } & ObfuscatedAProps) {
+}: ObfuscatedAProps & { className?: string; children?: ReactNode }) {
 	return (
 		<ObfuscatedA className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -58,10 +58,10 @@ export function ThemeA({
 	children,
 	className,
 	...attributes
-}: {
+}: AnchorHTMLAttributes<HTMLAnchorElement> & {
 	className?: string;
-	children: ReactNode;
-} & AnchorHTMLAttributes<HTMLAnchorElement>) {
+	children?: ReactNode;
+}) {
 	return (
 		<a className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -73,7 +73,7 @@ export function ThemeLink({
 	children,
 	className,
 	...attributes
-}: { className?: string; children: ReactNode } & LinkProps) {
+}: LinkProps & { className?: string; children?: ReactNode }) {
 	return (
 		<Link className={clsx('theme-link', className)} {...attributes}>
 			{children}
@@ -83,7 +83,7 @@ export function ThemeLink({
 
 export const ThemeInput = forwardRef<
 	HTMLInputElement,
-	{ className?: string; children: ReactNode }
+	JSX.IntrinsicElements['input'] & { className?: string; children?: ReactNode }
 >(function ThemeInput({ children, className, ...attributes }, ref) {
 	return (
 		<input ref={ref} className={clsx('theme-input', className)} {...attributes}>
