@@ -182,6 +182,7 @@ const webpackConfig = {
 	target: ['browserslist'],
 	devServer: {
 		port: 3000,
+		hot: false,
 	},
 	// Webpack noise constrained to errors and warnings
 	// stats: 'errors-warnings',
