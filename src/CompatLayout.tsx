@@ -1,5 +1,3 @@
-import './styles/Compat.scss';
-import './styles/ThemeElements.scss';
 import { ThemeA, ThemeLink } from './ThemeElements';
 import { decryptURL } from './cryptURL';
 import { ObfuscateLayout, Obfuscated } from './obfuscate';

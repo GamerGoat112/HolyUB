@@ -1,4 +1,3 @@
-import '../../../styles/TheatreCategory.scss';
 import type { HolyPage } from '../../../App';
 import type {
 	CategoryData,
@@ -15,8 +14,10 @@ import type { Category } from '../../../gameCategories';
 import isAbortError from '../../../isAbortError';
 import { Obfuscated } from '../../../obfuscate';
 import resolveRoute from '../../../resolveRoute';
+import styles from '../../../styles/TheatreCategory.module.scss';
 import { ArrowForward } from '@mui/icons-material';
-import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const entryLimit = 8;
@@ -42,7 +43,6 @@ const Popular: HolyPage = () => {
 	);
 
 	const [error, setError] = useState<string | null>(null);
-	const main = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -120,7 +120,7 @@ const Popular: HolyPage = () => {
 		_categories[item.category[0]].entries.push(item);
 
 	return (
-		<main ref={main} className="theatre-category">
+		<main className={styles.main}>
 			<SearchBar
 				showCategory
 				category={categoryQuery}
@@ -128,8 +128,8 @@ const Popular: HolyPage = () => {
 			/>
 			{Object.values(_categories).map((section) => {
 				return (
-					<section className="expand" key={section.category.id}>
-						<div className="name">
+					<section className={styles.expand} key={section.category.id}>
+						<div className={styles.name}>
 							<h1>{section.category.name}</h1>
 							<Link
 								to={`${resolveRoute('/theatre/', 'category')}?id=${
@@ -141,7 +141,10 @@ const Popular: HolyPage = () => {
 								<ArrowForward />
 							</Link>
 						</div>
-						<ItemList className="items flex" items={section.entries} />
+						<ItemList
+							className={clsx(styles.items, styles.flex)}
+							items={section.entries}
+						/>
 					</section>
 				);
 			})}

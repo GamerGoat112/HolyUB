@@ -1,4 +1,6 @@
-main.theatre-player {
+@import './Common.scss';
+
+.main {
 	border-radius: 10px;
 	margin: calc(var(--nav-height-border) / 4) auto;
 	background-color: var(--background-accent);
@@ -29,7 +31,7 @@ main.theatre-player {
 			height: fit-content;
 		}
 
-		> .shift-right {
+		> .shiftRight {
 			margin-left: auto;
 		}
 
@@ -124,12 +126,12 @@ main.theatre-player {
 							align-items: center;
 							flex-wrap: wrap;
 
-							> .control-key:nth-child(1) {
+							> .controlKey:nth-child(1) {
 								margin: 0 100%;
 							}
 						}
 
-						.control-key {
+						.controlKey {
 							min-width: 25px;
 							height: 25px;
 							padding: 5px 7px;
@@ -141,11 +143,11 @@ main.theatre-player {
 							justify-content: center;
 							align-items: center;
 
-							&.key-Space {
+							&.keySpace {
 								width: 75px;
 							}
 
-							&.key-Enter {
+							&.keyEnter {
 								width: 75px;
 							}
 						}

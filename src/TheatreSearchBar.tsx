@@ -1,4 +1,3 @@
-import './styles/TheatreSearch.scss';
 import type { CategoryData } from './TheatreCommon';
 import { TheatreAPI } from './TheatreCommon';
 import { ThemeInputBar } from './ThemeElements';
@@ -7,6 +6,7 @@ import categories from './gameCategories';
 import isAbortError from './isAbortError';
 import { Obfuscated } from './obfuscate';
 import resolveRoute from './resolveRoute';
+import styles from './styles/TheatreSearch.module.scss';
 import { Search } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
@@ -60,7 +60,7 @@ const SearchBar = ({
 
 	return (
 		<div
-			className="theatre-search-bar"
+			className={styles.search}
 			data-focused={Number(inputFocused)}
 			data-suggested={Number(renderSuggested)}
 			ref={bar}
@@ -70,19 +70,19 @@ const SearchBar = ({
 				}
 			}}
 		>
-			<ThemeInputBar>
+			<ThemeInputBar className={styles.themeInputBar}>
 				<Search className="icon" />
 				<input
 					ref={input}
 					type="text"
 					className="thin-pad-left"
 					placeholder={placeholder}
-					onFocus={(event) => {
+					onFocus={() => {
 						setInputFocused(true);
 						setLastSelect(-1);
 						search(input.current!.value);
 					}}
-					onClick={(event) => {
+					onClick={() => {
 						setInputFocused(true);
 						setLastSelect(-1);
 						search(input.current!.value);
@@ -152,7 +152,7 @@ const SearchBar = ({
 				></input>
 			</ThemeInputBar>
 			<div
-				className="suggested"
+				className={styles.suggested}
 				onMouseLeave={() => {
 					setLastSelect(-1);
 				}}
@@ -165,13 +165,13 @@ const SearchBar = ({
 							onClick={() => setInputFocused(false)}
 							onMouseOver={() => setLastSelect(i)}
 							to={`${resolveRoute('/theatre/', 'player')}?id=${entry.id}`}
-							className={clsx('option', i === lastSelect && 'hover')}
+							className={clsx(styles.option, i === lastSelect && styles.hover)}
 						>
-							<div className="name">
+							<div className={styles.name}>
 								<Obfuscated ellipsis>{entry.name}</Obfuscated>
 							</div>
 							{showCategory && entry.category[0] && (
-								<div className="category">
+								<div className={styles.category}>
 									{
 										categories.find(
 											(category) => category.id === entry.category[0]

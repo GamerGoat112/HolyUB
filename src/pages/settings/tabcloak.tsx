@@ -3,6 +3,7 @@ import { Notification } from '../../Notifications';
 import { ThemeButton, ThemeInputBar } from '../../ThemeElements';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
+import styles from '../../styles/Settings.module.scss';
 import { Check } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
 import { useRef } from 'react';
@@ -152,7 +153,7 @@ const TabCloak: HolyPage = ({ layout }) => {
 						onSubmit();
 					}}
 				>
-					<ThemeInputBar>
+					<ThemeInputBar className={styles.ThemeInputBar}>
 						<input
 							className="thin-pad-right"
 							defaultValue={layout.current!.cloak.url}

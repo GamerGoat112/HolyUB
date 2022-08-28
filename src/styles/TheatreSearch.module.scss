@@ -1,6 +1,6 @@
 @import './Common.scss';
 
-.theatre-search-bar {
+.search {
 	display: flex;
 	$border: 1px;
 	$height: 44px;
@@ -29,7 +29,7 @@
 		}
 	}
 
-	> .theme-input-bar {
+	> .themeInputBar {
 		width: 100%;
 	}
 
@@ -98,7 +98,7 @@
 			display: flex;
 		}
 
-		> .theme-input-bar {
+		> .themeInputBar {
 			border-bottom-left-radius: 0px;
 			border-bottom-right-radius: 0px;
 		}

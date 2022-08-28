@@ -1,8 +1,6 @@
-html[data-page='theatre-category'][data-service='1'] {
-	overflow: hidden;
-}
+@import './Common.scss';
 
-main.theatre-category {
+.main {
 	display: flex;
 	flex-direction: column;
 
@@ -41,7 +39,8 @@ main.theatre-category {
 	> .sort {
 		display: block;
 		margin-left: auto;
-		width: 150px;
+		width: 160px;
+		flex: none;
 	}
 
 	> section {

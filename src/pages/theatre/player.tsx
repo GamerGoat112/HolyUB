@@ -1,5 +1,4 @@
 import type { HolyPage } from '../../App';
-import '../../styles/TheatrePlayer.scss';
 import resolveProxy from '../../ProxyResolver';
 import { TheatreAPI } from '../../TheatreCommon';
 import type { TheatreEntry } from '../../TheatreCommon';
@@ -8,6 +7,7 @@ import { encryptURL } from '../../cryptURL';
 import isAbortError from '../../isAbortError';
 import { Obfuscated } from '../../obfuscate';
 import resolveRoute from '../../resolveRoute';
+import styles from '../../styles/TheatrePlayer.module.scss';
 import {
 	ArrowDropDown,
 	ArrowDropUp,
@@ -21,6 +21,7 @@ import {
 	StarBorder,
 	VideogameAsset,
 } from '@mui/icons-material';
+import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -167,21 +168,21 @@ const Player: HolyPage = ({ layout }) => {
 	if (!data) {
 		return (
 			<main
-				className="theatre-player loading"
+				className={clsx(styles.main, styles.loading)}
 				data-panorama={Number(panorama)}
 				data-controls={Number(controlsExpanded)}
 			>
-				<div className="frame"></div>
-				<div className="title">
+				<div className={styles.frame}></div>
+				<div className={styles.title}>
 					{
 						// eslint-disable-next-line jsx-a11y/heading-has-content
-						<h3 className="name" />
+						<h3 className={styles.name} />
 					}
-					<div className="shift-right"></div>
-					<div className="button" />
-					<div className="button" />
-					<div className="button" />
-					<div className="button" />
+					<div className={styles.shiftRight}></div>
+					<div className={styles.button} />
+					<div className={styles.button} />
+					<div className={styles.button} />
+					<div className={styles.button} />
 				</div>
 			</main>
 		);
@@ -196,27 +197,30 @@ const Player: HolyPage = ({ layout }) => {
 			switch (key) {
 				case 'arrows':
 					visuals.push(
-						<div key={key} className="move">
-							<ArrowDropUp className="control-key" />
-							<ArrowLeft className="control-key" />
-							<ArrowDropDown className="control-key" />
-							<ArrowRight className="control-key" />
+						<div key={key} className={styles.move}>
+							<ArrowDropUp className={styles.controlKey} />
+							<ArrowLeft className={styles.controlKey} />
+							<ArrowDropDown className={styles.controlKey} />
+							<ArrowRight className={styles.controlKey} />
 						</div>
 					);
 					break;
 				case 'wasd':
 					visuals.push(
-						<div key={key} className="move">
-							<div className="control-key">W</div>
-							<div className="control-key">A</div>
-							<div className="control-key">S</div>
-							<div className="control-key">D</div>
+						<div key={key} className={styles.move}>
+							<div className={styles.controlKey}>W</div>
+							<div className={styles.controlKey}>A</div>
+							<div className={styles.controlKey}>S</div>
+							<div className={styles.controlKey}>D</div>
 						</div>
 					);
 					break;
 				default:
 					visuals.push(
-						<div key={key} className={`control-key key-${key}`}>
+						<div
+							key={key}
+							className={clsx(styles.controlKey, styles[`key${key}`])}
+						>
 							{key}
 						</div>
 					);
@@ -225,20 +229,20 @@ const Player: HolyPage = ({ layout }) => {
 		}
 
 		controls.push(
-			<div key={control.label} className="control">
-				<div className="visuals">{visuals}</div>
-				<span className="label">{control.label}</span>
+			<div key={control.label} className={styles.control}>
+				<div className={styles.visuals}>{visuals}</div>
+				<span className={styles.label}>{control.label}</span>
 			</div>
 		);
 	}
 
 	return (
 		<main
-			className="theatre-player"
+			className={styles.main}
 			data-panorama={Number(panorama)}
 			data-controls={Number(controlsExpanded)}
 		>
-			<div className="frame">
+			<div className={styles.frame}>
 				<iframe
 					ref={iframe}
 					title="Embed"
@@ -269,7 +273,7 @@ const Player: HolyPage = ({ layout }) => {
 				/>
 				<div
 					tabIndex={0}
-					className="controls"
+					className={styles.controls}
 					ref={controlsPopup}
 					onBlur={(event) => {
 						if (
@@ -280,17 +284,20 @@ const Player: HolyPage = ({ layout }) => {
 						}
 					}}
 				>
-					<Close className="close" onClick={() => setControlsExpanded(false)} />
-					<div className="controls">{controls}</div>
+					<Close
+						className={styles.close}
+						onClick={() => setControlsExpanded(false)}
+					/>
+					<div className={styles.controls}>{controls}</div>
 				</div>
 			</div>
-			<div className="title">
-				<h3 className="name">
+			<div className={styles.title}>
+				<h3 className={styles.name}>
 					<Obfuscated>{data.name}</Obfuscated>
 				</h3>
-				<div className="shift-right"></div>
+				<div className={styles.shiftRight}></div>
 				<div
-					className="button"
+					className={styles.button}
 					onClick={() => {
 						focusListener();
 						iframe.current!.requestFullscreen();
@@ -300,7 +307,7 @@ const Player: HolyPage = ({ layout }) => {
 				</div>
 				{controls.length !== 0 && (
 					<div
-						className="button"
+						className={styles.button}
 						tabIndex={0}
 						ref={controlsOpen}
 						onClick={async () => {
@@ -312,7 +319,7 @@ const Player: HolyPage = ({ layout }) => {
 					</div>
 				)}
 				<div
-					className="button"
+					className={styles.button}
 					onClick={() => {
 						const favorites = layout.current!.settings.favorites;
 						const i = favorites.indexOf(id);
@@ -334,7 +341,7 @@ const Player: HolyPage = ({ layout }) => {
 					{favorited ? <Star /> : <StarBorder />}
 				</div>
 				<div
-					className="button"
+					className={styles.button}
 					onClick={async () => {
 						setPanorama(!panorama);
 
