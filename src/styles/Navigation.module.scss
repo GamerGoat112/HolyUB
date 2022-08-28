@@ -1,155 +1,157 @@
 @import './Common.scss';
 
-#root {
-	nav,
-	> .content > .menu,
-	> .content > .cover {
-		z-index: 2;
+.fixedWide {
+	width: calc(100vw - $scrollbar-width);
+}
+
+.nav,
+.content > .menu,
+.content > .cover {
+	z-index: 2;
+}
+
+.nav > .logo,
+.content > .menu > .top > .logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: var(--nav-height);
+	padding: 0px 15px;
+	color: inherit;
+	white-space: nowrap;
+	user-select: none;
+
+	> svg {
+		width: inherit;
+		height: inherit;
 	}
 
-	nav > .logo,
-	> .content > .menu > .top > .logo {
+	width: 35px;
+
+	@include screen_mobile {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		margin: auto;
+	}
+}
+
+.nav > .button,
+.content > .menu > .top > .button {
+	box-sizing: content-box;
+	border: none;
+	background: none;
+	width: 20px;
+	height: 20px;
+	margin: auto 5px;
+	border-radius: 2px;
+	padding: 5px;
+	position: relative;
+	flex: none;
+	cursor: pointer;
+	color: var(--text);
+
+	> svg {
+		font-size: 20px;
+	}
+
+	&:hover {
+		background: var(--background-accent);
+	}
+}
+
+.nav {
+	display: flex;
+	height: var(--nav-height);
+	box-sizing: border-box;
+	align-content: center;
+	position: fixed;
+	color: var(--text);
+	border-bottom: var(--border) 1px solid;
+	padding: 0px 18px;
+	text-align: center;
+	background: var(--background);
+	align-items: center;
+
+	> .collapsable {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: var(--nav-height);
-		padding: 0px 15px;
-		color: inherit;
-		white-space: nowrap;
-		user-select: none;
-
-		> svg {
-			width: inherit;
-			height: inherit;
-		}
-
-		width: 35px;
-
-		@include screen_mobile {
-			position: absolute;
-			left: 0px;
-			right: 0px;
-			margin: auto;
-		}
+		flex-direction: row;
 	}
 
-	nav > .button,
-	> .content > .menu > .top > .button {
-		box-sizing: content-box;
-		border: none;
-		background: none;
-		width: 20px;
-		height: 20px;
-		margin: auto 5px;
-		border-radius: 2px;
-		padding: 5px;
-		position: relative;
-		flex: none;
-		cursor: pointer;
-		color: var(--text);
-
-		> svg {
-			font-size: 20px;
+	@include screen_mobile {
+		> .shiftRight {
+			display: none;
 		}
 
-		&:hover {
-			background: var(--background-accent);
-		}
+		justify-content: space-between;
 	}
 
-	nav {
-		display: flex;
-		height: var(--nav-height);
-		box-sizing: border-box;
-		align-content: center;
+	> .shiftRight {
+		margin-left: auto;
+	}
+}
+
+.content {
+	padding-top: var(--nav-height-border);
+	flex-direction: column;
+	min-height: calc(100vh - var(--nav-height-border));
+	overflow: hidden;
+	display: flex;
+
+	> .cover {
+		background-color: rgba(0, 0, 0, 0.5);
 		position: fixed;
-		color: var(--text);
-		border-bottom: var(--border) 1px solid;
-		padding: 0px 18px;
-		text-align: center;
-		background: var(--background);
-		align-items: center;
-
-		> .collapsable {
-			display: flex;
-			flex-direction: row;
-		}
-
-		@include screen_mobile {
-			> .shift-right {
-				display: none;
-			}
-
-			justify-content: space-between;
-		}
-
-		> .shift-right {
-			margin-left: auto;
-		}
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transition: opacity 0.3s, visibility 0.3s;
+		opacity: 0;
+		visibility: hidden;
 	}
 
-	> .content {
-		padding-top: var(--nav-height-border);
+	> .menu {
+		position: fixed;
 		flex-direction: column;
-		min-height: calc(100vh - var(--nav-height-border));
-		overflow: hidden;
 		display: flex;
+		visibility: visible;
+		background-color: var(--background);
+		border-right: 1px solid var(--border);
+		left: 0;
+		top: 0;
+		width: 300px;
+		height: 100vh;
+		box-sizing: border-box;
+		transform: translateX(-100%);
+		transition: transform 0.3s, visibility 0.3s 0.3s;
+		overflow: hidden;
 
-		> .cover {
-			background-color: rgba(0, 0, 0, 0.5);
-			position: fixed;
-			top: 0;
-			left: 0;
+		@include screen_mobile {
 			width: 100%;
-			height: 100%;
-			transition: opacity 0.3s, visibility 0.3s;
-			opacity: 0;
-			visibility: hidden;
-		}
-
-		> .menu {
-			position: fixed;
-			flex-direction: column;
-			display: flex;
-			visibility: visible;
-			background-color: var(--background);
-			border-right: 1px solid var(--border);
-			left: 0;
-			top: 0;
-			width: 300px;
 			height: 100vh;
-			box-sizing: border-box;
-			transform: translateX(-100%);
-			transition: transform 0.3s, visibility 0.3s 0.3s;
-			overflow: hidden;
 
-			@include screen_mobile {
-				width: 100%;
-				height: 100vh;
+			> .menuList {
+				padding: 6px 5px;
 
-				> .menu-list {
-					padding: 6px 5px;
-
-					> .entry {
-						border-radius: 5px;
-					}
+				> .entry {
+					border-radius: 5px;
 				}
 			}
+		}
 
-			> .top {
-				padding-left: 18px;
-				height: var(--nav-height);
-				box-sizing: border-box;
-				border-bottom: var(--border) 1px solid;
-				width: 100%;
-				display: flex;
-				flex-direction: row;
-			}
+		> .top {
+			padding-left: 18px;
+			height: var(--nav-height);
+			box-sizing: border-box;
+			border-bottom: var(--border) 1px solid;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
 		}
 	}
 }
 
-.menu-list {
+.menuList {
 	padding: 6px 5px 0px 0px;
 	flex-direction: column;
 	overflow-y: auto;
@@ -248,16 +250,14 @@ html[data-expanded='1'] {
 		overflow: hidden;
 	}
 
-	#root {
-		> .content {
-			> .menu {
-				transform: translateX(0%);
-			}
+	.content {
+		> .menu {
+			transform: translateX(0%);
+		}
 
-			> .cover {
-				opacity: 1;
-				visibility: visible;
-			}
+		> .cover {
+			opacity: 1;
+			visibility: visible;
 		}
 	}
 }

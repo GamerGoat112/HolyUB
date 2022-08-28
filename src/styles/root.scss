@@ -49,11 +49,6 @@ $scrollbar-width: 16px;
 	}
 }
 
-#root,
-.fixed-wide {
-	width: calc(100vw - $scrollbar-width);
-}
-
 /*@include screen_mobile {
 	#root {
 		width: 100%;
@@ -65,6 +60,7 @@ $scrollbar-width: 16px;
 }*/
 
 #root {
+	width: calc(100vw - $scrollbar-width);
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);

@@ -1,4 +1,3 @@
-import './styles/Navigation.scss';
 import Footer from './Footer';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
@@ -6,6 +5,7 @@ import { ReactComponent as HatPlain } from './assets/hat.svg';
 import categories from './gameCategories';
 import { ObfuscateLayout, Obfuscated, ObfuscatedA } from './obfuscate';
 import resolveRoute from './resolveRoute';
+import styles from './styles/Navigation.module.scss';
 import {
 	Apps,
 	Home,
@@ -19,6 +19,7 @@ import {
 	StarRounded,
 	WebAsset,
 } from '@mui/icons-material';
+import clsx from 'clsx';
 import type { MouseEventHandler, ReactNode, SVGAttributes } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -53,10 +54,10 @@ export function MenuTab({
 	const selected = location.pathname === route;
 	const content = (
 		<>
-			<span className="icon">
+			<span className={styles.icon}>
 				{(selected && iconFilled) || iconOutlined || iconFilled}
 			</span>
-			<span className="name">
+			<span className={styles.name}>
 				<Obfuscated ellipsis>{name}</Obfuscated>
 			</span>
 		</>
@@ -67,7 +68,7 @@ export function MenuTab({
 			<ObfuscatedA
 				href={href!}
 				data-selected={Number(selected)}
-				className="entry"
+				className={styles.entry}
 				onClick={onClick}
 			>
 				{content}
@@ -78,7 +79,7 @@ export function MenuTab({
 			<Link
 				to={route}
 				data-selected={Number(selected)}
-				className="entry"
+				className={styles.entry}
 				onClick={onClick}
 			>
 				{content}
@@ -127,30 +128,40 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 	return (
 		<>
 			<ObfuscateLayout />
-			<nav className="fixed-wide">
-				<div className="button" onClick={() => setExpanded(true)}>
+			<nav className={clsx(styles.fixedWide, styles.nav)}>
+				<div className={styles.button} onClick={() => setExpanded(true)}>
 					<Menu />
 				</div>
-				<Link to="/" className="entry logo">
+				<Link to="/" className={clsx(styles.entry, styles.logo)}>
 					<Hat />
 				</Link>
-				<div className="shift-right"></div>
-				<Link className="button" to={resolveRoute('/settings/', 'search')}>
+				<div className={styles.shiftRight}></div>
+				<Link
+					className={styles.button}
+					to={resolveRoute('/settings/', 'search')}
+				>
 					<Settings />
 				</Link>
 			</nav>
-			<div className="content">
-				<div className="cover fixed-wide" onClick={closeMenu}></div>
-				<div tabIndex={0} className="menu">
-					<div className="top">
-						<div className="button" onClick={closeMenu}>
+			<div className={styles.content}>
+				<div
+					className={clsx(styles.cover, styles.fixedWide)}
+					onClick={closeMenu}
+				></div>
+				<div tabIndex={0} className={styles.menu}>
+					<div className={styles.top}>
+						<div className={styles.button} onClick={closeMenu}>
 							<Menu />
 						</div>
-						<Link to="/" className="entry logo" onClick={closeMenu}>
+						<Link
+							to="/"
+							className={clsx(styles.entry, styles.logo)}
+							onClick={closeMenu}
+						>
 							<Hat />
 						</Link>
 					</div>
-					<div className="menu-list">
+					<div className={styles.menuList}>
 						<MenuTab
 							route={resolveRoute('/', '')}
 							name="Home"
@@ -171,7 +182,7 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 							onClick={closeMenu}
 						/>
 
-						<div className="bar" />
+						<div className={styles.bar} />
 
 						<MenuTab
 							route={resolveRoute('/theatre/', 'apps')}
@@ -188,9 +199,9 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 							onClick={closeMenu}
 						/>
 
-						<div className="bar" />
+						<div className={styles.bar} />
 
-						<div className="title">
+						<div className={styles.title}>
 							<Obfuscated>Games</Obfuscated>
 						</div>
 
@@ -206,15 +217,15 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 							iconFilled={<List />}
 							onClick={closeMenu}
 						/>
-						<div className="title">Genre</div>
-						<div className="genres">
+						<div className={styles.title}>Genre</div>
+						<div className={styles.genres}>
 							{categories.map((category) => (
 								<Link
 									key={category.id}
 									to={`${resolveRoute('/theatre/', 'category')}?id=${
 										category.id
 									}`}
-									className="entry text"
+									className={clsx(styles.entry, styles.text)}
 									onClick={() => setExpanded(false)}
 								>
 									<Obfuscated>{category.short || category.name}</Obfuscated>
@@ -229,5 +240,7 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 		</>
 	);
 });
+
+export { styles as navStyles };
 
 export default MainLayout;

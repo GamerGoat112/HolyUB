@@ -1,5 +1,5 @@
 import type { HolyPage } from './App';
-import { MenuTab } from './MainLayout';
+import { MenuTab, navStyles } from './MainLayout';
 import resolveRoute from './resolveRoute';
 import styles from './styles/Settings.module.scss';
 import {
@@ -16,8 +16,8 @@ const SettingsLayout: HolyPage = () => {
 	return (
 		<>
 			<main className={styles.main}>
-				<div className={clsx('menu', 'fixed-wide', styles.menu)}>
-					<div className={clsx('menu-list', styles.menuList)}>
+				<div className={clsx('menu', navStyles.fixedWide, styles.menu)}>
+					<div className={clsx(navStyles.menuList, styles.menuList)}>
 						<MenuTab
 							route={resolveRoute('/settings/', 'search')}
 							name="Search"
