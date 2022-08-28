@@ -9,6 +9,7 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import { expand } from 'dotenv-expand';
 import { config } from 'dotenv-flow';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import { stompPath, rufflePath, uvPath } from 'holy-dump';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -543,8 +544,24 @@ const webpackConfig = {
 		new CopyPlugin({
 			patterns: [
 				{
+					from: stompPath,
+					to: 'stomp',
+				},
+				{
+					from: uvPath,
+					to: 'uv',
+				},
+				{
+					from: rufflePath,
+					to: 'ruffle',
+				},
+				{
 					from: './public',
 					filter: (file) => file !== path.resolve('public/index.html'),
+				},
+				{
+					from: './uv',
+					to: 'uv',
 				},
 			],
 		}),
