@@ -16,20 +16,23 @@ const SettingsLayout: HolyPage = () => {
 	return (
 		<>
 			<main className={styles.main}>
-				<div className={clsx('menu', navStyles.fixedWide, styles.menu)}>
+				<div className={clsx('menu', styles.menu)}>
 					<div className={clsx(navStyles.menuList, styles.menuList)}>
 						<MenuTab
+							className={styles.entry}
 							route={resolveRoute('/settings/', 'search')}
 							name="Search"
 							iconFilled={<Public />}
 						/>
 						<MenuTab
+							className={styles.entry}
 							route={resolveRoute('/settings/', 'appearance')}
 							name="Appearance"
 							iconFilled={<Brush />}
 							iconOutlined={<BrushOutlined />}
 						/>
 						<MenuTab
+							className={styles.entry}
 							route={resolveRoute('/settings/', 'tabcloak')}
 							name="Tab Cloak"
 							iconFilled={<DriveFileRenameOutline />}

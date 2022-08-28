@@ -1,4 +1,5 @@
 $scrollbar-width: 16px;
+$fixed-width: calc(100vw - $scrollbar-width);
 
 @mixin screen_mobile {
 	@media only screen and (max-width: 650px) {

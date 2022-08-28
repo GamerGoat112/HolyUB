@@ -39,6 +39,7 @@ export function MenuTab({
 	route,
 	href,
 	name,
+	className,
 	onClick,
 	iconFilled,
 	iconOutlined,
@@ -46,6 +47,7 @@ export function MenuTab({
 	route?: string;
 	href?: string;
 	name: string;
+	className?: string;
 	onClick?: MouseEventHandler;
 	iconFilled: ReactNode;
 	iconOutlined?: ReactNode;
@@ -68,7 +70,7 @@ export function MenuTab({
 			<ObfuscatedA
 				href={href!}
 				data-selected={Number(selected)}
-				className={styles.entry}
+				className={clsx(styles.entry, className)}
 				onClick={onClick}
 			>
 				{content}
@@ -79,7 +81,7 @@ export function MenuTab({
 			<Link
 				to={route}
 				data-selected={Number(selected)}
-				className={styles.entry}
+				className={clsx(styles.entry, className)}
 				onClick={onClick}
 			>
 				{content}
@@ -128,7 +130,7 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 	return (
 		<>
 			<ObfuscateLayout />
-			<nav className={clsx(styles.fixedWide, styles.nav)}>
+			<nav className={styles.nav}>
 				<div className={styles.button} onClick={() => setExpanded(true)}>
 					<Menu />
 				</div>
@@ -144,10 +146,7 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 				</Link>
 			</nav>
 			<div className={styles.content}>
-				<div
-					className={clsx(styles.cover, styles.fixedWide)}
-					onClick={closeMenu}
-				></div>
+				<div className={clsx(styles.cover)} onClick={closeMenu}></div>
 				<div tabIndex={0} className={styles.menu}>
 					<div className={styles.top}>
 						<div className={styles.button} onClick={closeMenu}>
