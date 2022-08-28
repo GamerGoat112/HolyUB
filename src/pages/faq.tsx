@@ -20,7 +20,7 @@ const faq: {
 				<Obfuscated>
 					You can self-host/deploy Holy Unblocker by using our all-in-one script
 				</Obfuscated>{' '}
-				<ObfuscatedThemeA href="https://github.com/e9x/website-aio#website-aio">
+				<ObfuscatedThemeA href="https://github.com/holy-unblocker/website-aio#website-aio">
 					here
 				</ObfuscatedThemeA>
 				.
