@@ -1,9 +1,8 @@
 import type { HolyPage } from '../App';
-import { ObfuscatedThemeA, ThemeLink, themeStyles } from '../ThemeElements';
+import { ObfuscatedThemeA, ThemeLink } from '../ThemeElements';
 import { TN_DISCORD_URL } from '../consts';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
-import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 const faq: {
