@@ -73,7 +73,7 @@ const Player: HolyPage = ({ layout }) => {
 	const [seen, _setSeen] = useState(() =>
 		layout.current!.settings.seen_games.includes(id)
 	);
-	const [iframeFocused, setIFrameFocused] = useState(false);
+	const [iframeFocused, setIFrameFocused] = useState(true);
 
 	useEffect(() => {
 		const abort = new AbortController();
@@ -137,6 +137,7 @@ const Player: HolyPage = ({ layout }) => {
 			if (iframeFocused && iframe.current) iframe.current.focus();
 		}
 
+		if (iframeFocused && iframe.current) iframe.current.focus();
 		document.documentElement.dataset.lockFrameScroll =
 			Number(iframeFocused).toString();
 		window.addEventListener('focus', focusListener);
@@ -145,7 +146,7 @@ const Player: HolyPage = ({ layout }) => {
 			window.removeEventListener('focus', focusListener);
 			delete document.documentElement.dataset.scroll;
 		};
-	}, [iframeFocused]);
+	}, [iframeFocused, iframe]);
 
 	useEffect(() => {
 		function clickListener(event: Event) {
@@ -261,9 +262,7 @@ const Player: HolyPage = ({ layout }) => {
 						className={styles.iframeCover}
 						onClick={(event) => {
 							event.stopPropagation();
-							console.log('K FOCUSED');
 							setIFrameFocused(true);
-							iframe.current!.focus();
 						}}
 					/>
 					<iframe ref={iframe} title="Embed" src={resolvedSrc || undefined} />
