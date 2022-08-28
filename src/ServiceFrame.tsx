@@ -1,10 +1,10 @@
-import './styles/Service.scss';
 import type { LayoutDump } from './App';
 import { Notification } from './Notifications';
 import resolveProxy from './ProxyResolver';
 import { BARE_API } from './consts';
 import { decryptURL, encryptURL } from './cryptURL';
 import { Obfuscated } from './obfuscate';
+import styles from './styles/Service.module.scss';
 import {
 	ChevronLeft,
 	Fullscreen,
@@ -162,10 +162,10 @@ const ServiceFrame = forwardRef<
 	}, [src]);
 
 	return (
-		<div className="service">
-			<div className="buttons">
+		<div className={styles.service}>
+			<div className={styles.buttons}>
 				<ChevronLeft
-					className="button"
+					className={styles.button}
 					onClick={() => {
 						search.delete('query');
 						setSearch(search);
@@ -173,7 +173,7 @@ const ServiceFrame = forwardRef<
 				/>
 				{icon ? (
 					<img
-						className="icon"
+						className={styles.icon}
 						alt=""
 						src={icon}
 						onError={() => setIcon('')}
@@ -185,22 +185,22 @@ const ServiceFrame = forwardRef<
 						}}
 					/>
 				) : (
-					<Public className="icon" />
+					<Public className={styles.icon} />
 				)}
-				<p className="title">
+				<p className={styles.title}>
 					<Obfuscated ellipsis>{title}</Obfuscated>
 				</p>
-				<div className="shift-right"></div>
-				<a href={lastSrc} className="button">
+				<div className={styles.shiftRight}></div>
+				<a href={lastSrc} className={styles.button}>
 					<OpenInNew />
 				</a>
 				<Fullscreen
-					className="button"
+					className={styles.button}
 					onClick={() => iframe.current && iframe.current.requestFullscreen()}
 				/>
 			</div>
 			<iframe
-				className="embed"
+				className={styles.embed}
 				title="embed"
 				ref={iframe}
 				data-first-load={Number(firstLoad)}
