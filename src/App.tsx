@@ -91,7 +91,10 @@ export default function App() {
 		<>
 			<Layout ref={layout} />
 			<Routes>
-				<Route path={resolveRoute('/', '')} element={<MainLayout />}>
+				<Route
+					path={resolveRoute('/', '')}
+					element={<MainLayout ref={mainLayout} />}
+				>
 					<Route
 						index
 						element={

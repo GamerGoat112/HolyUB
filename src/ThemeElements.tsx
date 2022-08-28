@@ -1,6 +1,6 @@
-import './styles/ThemeElements.scss';
 import { ObfuscatedA } from './obfuscate';
 import type { ObfuscatedAProps } from './obfuscate';
+import styles from './styles/ThemeElements.module.scss';
 import { ExpandMore } from '@mui/icons-material';
 import clsx from 'clsx';
 import type { AnchorHTMLAttributes, ReactElement, ReactNode } from 'react';
@@ -19,7 +19,7 @@ export function ThemeButton({
 	return (
 		<button
 			type="button"
-			className={clsx('theme-button', className)}
+			className={clsx(styles.themeButton, className)}
 			{...attributes}
 		>
 			{children}
@@ -36,7 +36,7 @@ export function ThemeInputBar({
 	className?: string;
 }) {
 	return (
-		<div className={clsx('theme-input-bar', className)} {...attributes}>
+		<div className={clsx(styles.themeInputBar, className)} {...attributes}>
 			{children}
 		</div>
 	);
@@ -48,7 +48,7 @@ export function ObfuscatedThemeA({
 	...attributes
 }: ObfuscatedAProps & { className?: string; children?: ReactNode }) {
 	return (
-		<ObfuscatedA className={clsx('theme-link', className)} {...attributes}>
+		<ObfuscatedA className={clsx(styles.themeLink, className)} {...attributes}>
 			{children}
 		</ObfuscatedA>
 	);
@@ -63,7 +63,7 @@ export function ThemeA({
 	children?: ReactNode;
 }) {
 	return (
-		<a className={clsx('theme-link', className)} {...attributes}>
+		<a className={clsx(styles.themeLink, className)} {...attributes}>
 			{children}
 		</a>
 	);
@@ -75,7 +75,7 @@ export function ThemeLink({
 	...attributes
 }: LinkProps & { className?: string; children?: ReactNode }) {
 	return (
-		<Link className={clsx('theme-link', className)} {...attributes}>
+		<Link className={clsx(styles.themeLink, className)} {...attributes}>
 			{children}
 		</Link>
 	);
@@ -86,7 +86,11 @@ export const ThemeInput = forwardRef<
 	JSX.IntrinsicElements['input'] & { className?: string; children?: ReactNode }
 >(function ThemeInput({ children, className, ...attributes }, ref) {
 	return (
-		<input ref={ref} className={clsx('theme-input', className)} {...attributes}>
+		<input
+			ref={ref}
+			className={clsx(styles.themeInput, className)}
+			{...attributes}
+		>
 			{children}
 		</input>
 	);
@@ -158,8 +162,7 @@ export function ThemeSelect({
 		_setSelected(value);
 		setOpen(false);
 
-		if (typeof onChange === 'function')
-			setTimeout(() => onChange({ target: input! }));
+		if (onChange) setTimeout(() => onChange({ target: input! }));
 	}
 
 	for (let i = 0; i < options.length; i++) {
@@ -168,9 +171,9 @@ export function ThemeSelect({
 		list.push(
 			<div
 				className={clsx(
-					'plain-option',
-					i === lastSelect && 'hover',
-					option.disabled && 'disabled'
+					styles.plainOption,
+					i === lastSelect && styles.hover,
+					option.disabled && styles.disabled
 				)}
 				key={i}
 				onClick={() => {
@@ -193,7 +196,7 @@ export function ThemeSelect({
 		<div
 			{...attributes}
 			tabIndex={0}
-			className={clsx('theme-select', className)}
+			className={clsx(styles.themeSelect, className)}
 			data-open={Number(open)}
 			ref={setContainer}
 			onKeyDown={(event) => {
@@ -266,7 +269,7 @@ export function ThemeSelect({
 		>
 			<input ref={setInput} value={options[selected]?.value} readOnly hidden />
 			<div
-				className="toggle"
+				className={styles.toggle}
 				onClick={() => {
 					setOpen(!open);
 					setLastSelect(selected);
@@ -277,7 +280,7 @@ export function ThemeSelect({
 				<ExpandMore />
 			</div>
 			<div
-				className="list"
+				className={styles.list}
 				onMouseLeave={() => {
 					setLastSelect(-1);
 				}}
@@ -287,3 +290,5 @@ export function ThemeSelect({
 		</div>
 	);
 }
+
+export { styles as themeStyles };

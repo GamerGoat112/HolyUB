@@ -1,11 +1,12 @@
 import type { HolyPage } from '../../App';
 import { Notification } from '../../Notifications';
-import { ThemeButton, ThemeInputBar } from '../../ThemeElements';
+import { ThemeButton, ThemeInputBar, themeStyles } from '../../ThemeElements';
 import { BARE_API } from '../../consts';
 import { Obfuscated } from '../../obfuscate';
 import styles from '../../styles/Settings.module.scss';
 import { Check } from '@mui/icons-material';
 import BareClient from '@tomphttp/bare-client';
+import clsx from 'clsx';
 import { useRef } from 'react';
 
 const bare = new BareClient(BARE_API);
@@ -155,12 +156,15 @@ const TabCloak: HolyPage = ({ layout }) => {
 				>
 					<ThemeInputBar className={styles.ThemeInputBar}>
 						<input
-							className="thin-pad-right"
+							className={themeStyles.themePadRight}
 							defaultValue={layout.current!.cloak.url}
 							placeholder="https://example.org/"
 							ref={input}
 						/>
-						<Check onClick={onSubmit} className="button right" />
+						<Check
+							onClick={onSubmit}
+							className={clsx(themeStyles.button, themeStyles.right)}
+						/>
 					</ThemeInputBar>
 				</form>
 			</div>

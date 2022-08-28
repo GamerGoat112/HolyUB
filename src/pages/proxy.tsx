@@ -2,7 +2,7 @@ import type { HolyPage, LayoutDump } from '../App';
 import SearchBuilder from '../SearchBuilder';
 import ServiceFrame from '../ServiceFrame';
 import type { ServiceFrameRef } from '../ServiceFrame';
-import { ThemeInputBar, ThemeLink } from '../ThemeElements';
+import { ThemeInputBar, ThemeLink, themeStyles } from '../ThemeElements';
 import { BARE_API } from '../consts';
 import engines from '../engines';
 import isAbortError from '../isAbortError';
@@ -117,13 +117,13 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 				ref={form}
 			>
 				<ThemeInputBar className={styles.themeInputBar}>
-					<Search className="icon" />
+					<Search className={themeStyles.icon} />
 					<input
 						type="text"
 						placeholder={`Search ${engine.name} or type a URL`}
 						required={lastSelect === -1}
 						autoComplete="off"
-						className="thin-pad-left"
+						className={themeStyles.thinPadLeft}
 						list="proxy-omnibox"
 						ref={input}
 						onInput={onInput}

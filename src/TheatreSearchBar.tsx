@@ -1,6 +1,6 @@
 import type { CategoryData } from './TheatreCommon';
 import { TheatreAPI } from './TheatreCommon';
-import { ThemeInputBar } from './ThemeElements';
+import { ThemeInputBar, themeStyles } from './ThemeElements';
 import { DB_API } from './consts';
 import categories from './gameCategories';
 import isAbortError from './isAbortError';
@@ -71,11 +71,11 @@ const SearchBar = ({
 			}}
 		>
 			<ThemeInputBar className={styles.themeInputBar}>
-				<Search className="icon" />
+				<Search className={themeStyles.icon} />
 				<input
 					ref={input}
 					type="text"
-					className="thin-pad-left"
+					className={themeStyles.thinPadLeft}
 					placeholder={placeholder}
 					onFocus={() => {
 						setInputFocused(true);
