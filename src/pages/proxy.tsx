@@ -124,7 +124,6 @@ const SearchBar = ({ layout }: { layout: LayoutDump['layout'] }) => {
 						required={lastSelect === -1}
 						autoComplete="off"
 						className={themeStyles.thinPadLeft}
-						list="proxy-omnibox"
 						ref={input}
 						onInput={onInput}
 						onFocus={() => {
