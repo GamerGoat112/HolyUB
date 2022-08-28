@@ -192,7 +192,7 @@ const webpackConfig = {
 		? shouldUseSourceMap
 			? 'source-map'
 			: false
-		: 'cheap-module-source-map',
+		: 'eval',
 	// These are the "entry points" to our application.
 	// This means they will be the "root" imports that are included in JS bundle.
 	entry: './src/index.tsx',
@@ -224,7 +224,7 @@ const webpackConfig = {
 			: !isEnvProduction &&
 			  ((info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
 	},
-	/*cache: {
+	cache: {
 		type: 'filesystem',
 		version: envRawHash,
 		cacheDirectory: path.resolve('node_modules/.cache'),
@@ -234,7 +234,7 @@ const webpackConfig = {
 			config: [path.resolve('webpack.config.js')],
 			tsconfig: [path.resolve('tsconfig.json')],
 		},
-	},*/
+	},
 	infrastructureLogging: {
 		level: 'none',
 	},
