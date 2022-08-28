@@ -14,9 +14,7 @@ const Home: HolyPage = ({ mainLayout }) => {
 			</h2>
 			<ThemeButton
 				className={styles.button}
-				onClick={() =>
-					mainLayout.current && mainLayout.current.setExpanded(true)
-				}
+				onClick={() => mainLayout.current!.setExpanded(true)}
 			>
 				<Obfuscated>Get Started</Obfuscated>
 			</ThemeButton>

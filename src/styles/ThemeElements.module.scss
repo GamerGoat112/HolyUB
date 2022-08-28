@@ -1,4 +1,4 @@
-.theme-link {
+.themeLink {
 	color: var(--link);
 	text-decoration: none;
 	cursor: pointer;
@@ -9,28 +9,28 @@
 	}
 }
 
-.theme-input-bar[data-disabled='1'],
-.theme-input[disabled],
-.theme-button[disabled] {
+.themeInputBar[data-disabled='1'],
+.themeInput[disabled],
+.themeButton[disabled] {
 	cursor: not-allowed !important;
 	background-color: var(--background-accent-disabled) !important;
 }
 
-.theme-input-bar[data-disabled='1'] input {
+.themeInputBar[data-disabled='1'] input {
 	cursor: not-allowed !important;
 }
 
 html[data-tab='1'] {
-	.theme-input,
-	.theme-button,
-	.theme-input-bar .button,
-	.theme-input-bar input {
+	.themeInput,
+	.themeButton,
+	.themeInputBar .button,
+	.themeInputBar input {
 		&:focus-visible {
 			outline: var(--action) solid 2px;
 		}
 	}
 
-	.theme-input-bar > input:focus {
+	.themeInputBar > input:focus {
 		outline-offset: 2px;
 	}
 
@@ -40,13 +40,13 @@ html[data-tab='1'] {
 	}
 }
 
-/*.theme-input,
-.theme-button:required,
-.theme-input-bar input:required {
+/*.themeInput,
+.themeButton:required,
+.themeInputBar input:required {
 	outline: var(--error) solid 2px;
 }*/
 
-.theme-input {
+.themeInput {
 	width: 500px;
 	height: 44px;
 	background: var(--background-accent);
@@ -59,7 +59,7 @@ html[data-tab='1'] {
 	padding: 0px 15px;
 }
 
-.theme-input-bar {
+.themeInputBar {
 	height: 44px;
 	background: var(--background-accent);
 	color: var(--text-accent);
@@ -137,17 +137,17 @@ html[data-tab='1'] {
 		border-radius: 5px;
 		z-index: 1;
 
-		&.thin-pad-left {
+		&.thinPadLeft {
 			padding-left: 0;
 		}
 
-		&.thin-pad-right {
+		&.thinPadRight {
 			padding-right: 0;
 		}
 	}
 }
 
-.theme-button {
+.themeButton {
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -171,7 +171,7 @@ html[data-tab='1'] {
 	}
 }
 
-.theme-select {
+.themeSelect {
 	color: var(--text);
 	position: relative;
 	user-select: none;
@@ -210,7 +210,7 @@ html[data-tab='1'] {
 		background-color: var(--background-accent);
 		overflow: hidden;
 
-		> .plain-option {
+		> .plainOption {
 			border-top: 1px solid var(--border);
 			height: 40px;
 			line-height: 40px;
