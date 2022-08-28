@@ -1,8 +1,9 @@
 import type { HolyPage } from '../App';
-import { ObfuscatedThemeA, ThemeLink } from '../ThemeElements';
+import { ObfuscatedThemeA, ThemeLink, themeStyles } from '../ThemeElements';
 import { TN_DISCORD_URL } from '../consts';
 import { Obfuscated } from '../obfuscate';
 import resolveRoute from '../resolveRoute';
+import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 const faq: {
@@ -37,7 +38,7 @@ const faq: {
 				</ObfuscatedThemeA>{' '}
 				<Obfuscated>
 					to receive more links. In any channel, run the{' '}
-					<code className="obfuscated">
+					<code className={clsx(themeStyles.code, themeStyles.obfuscatedCode)}>
 						<Obfuscated>/proxy</Obfuscated>
 					</code>{' '}
 					command and select Holy Unblocker.
