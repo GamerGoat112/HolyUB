@@ -88,13 +88,3 @@ export function useSettings<T>(
 
 	return [current, setCurrent];
 }
-
-export function Component() {
-	const [settings, setSettings] = useSettings('test', () => ({
-		someReactData: 1,
-	}));
-
-	console.log(settings, settings.someReactData);
-
-	setSettings({ someReactData: 2 });
-}
