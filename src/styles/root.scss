@@ -60,7 +60,7 @@ $scrollbar-width: 16px;
 }*/
 
 #root {
-	width: calc(100vw - $scrollbar-width);
+	width: $fixed-width;
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	color: var(--text);
