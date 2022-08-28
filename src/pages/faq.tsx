@@ -37,11 +37,8 @@ const faq: {
 					<Obfuscated>TitaniumNetwork Discord Server</Obfuscated>
 				</ObfuscatedThemeA>{' '}
 				<Obfuscated>
-					to receive more links. In any channel, run the{' '}
-					<code className={clsx(themeStyles.code, themeStyles.obfuscatedCode)}>
-						<Obfuscated>/proxy</Obfuscated>
-					</code>{' '}
-					command and select Holy Unblocker.
+					to receive more links. In any channel, enter /proxy and select Holy
+					Unblocker.
 				</Obfuscated>
 			</>
 		),
