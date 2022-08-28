@@ -1,5 +1,4 @@
 import './styles/Navigation.scss';
-import './styles/Footer.scss';
 import Footer from './Footer';
 import { ReactComponent as HatBeta } from './assets/hat-beta.svg';
 import { ReactComponent as HatDev } from './assets/hat-dev.svg';
