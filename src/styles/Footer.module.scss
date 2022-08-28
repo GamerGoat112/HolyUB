@@ -66,7 +66,7 @@ footer {
 			font-size: 12px;
 			line-height: 16px;
 
-			> .shift-right {
+			> .shiftRight {
 				margin-left: auto;
 			}
 
@@ -85,7 +85,7 @@ footer {
 			@include screen_mobile {
 				justify-content: space-around;
 
-				> .shift-right {
+				> .shiftRight {
 					display: none;
 				}
 			}

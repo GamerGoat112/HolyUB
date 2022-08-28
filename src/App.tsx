@@ -1,4 +1,4 @@
-import './styles/App.scss';
+import './styles/root.scss';
 import type { CompatLayoutRef } from './CompatLayout';
 import CompatLayout from './CompatLayout';
 import type { LayoutRef } from './Layout';
