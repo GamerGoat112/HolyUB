@@ -66,11 +66,11 @@ function TabMode() {
 		const mousedown = () => setTab(false);
 
 		document.documentElement.dataset.tab = Number(tab).toString();
-
 		document.addEventListener('keydown', keydown);
 		document.addEventListener('mousedown', mousedown);
 
 		return () => {
+			delete document.documentElement.dataset.tab;
 			document.removeEventListener('keydown', keydown);
 			document.removeEventListener('mousedown', mousedown);
 		};
@@ -148,6 +148,10 @@ const Layout = forwardRef<LayoutRef>(function Layout(props, ref) {
 
 	useEffect(() => {
 		document.documentElement.dataset.theme = settings.theme;
+
+		return () => {
+			delete document.documentElement.dataset.theme;
+		};
 	}, [settings.theme]);
 
 	useEffect(() => {

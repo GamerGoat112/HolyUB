@@ -159,6 +159,10 @@ const ServiceFrame = forwardRef<
 
 	useEffect(() => {
 		document.documentElement.dataset.service = Number(Boolean(src)).toString();
+
+		return () => {
+			delete document.documentElement.dataset.service;
+		};
 	}, [src]);
 
 	return (
