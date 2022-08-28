@@ -121,6 +121,10 @@ const MainLayout = forwardRef<MainLayoutRef>(function MainLayout(props, ref) {
 
 	useEffect(() => {
 		document.documentElement.dataset.expanded = Number(expanded).toString();
+
+		return () => {
+			delete document.documentElement.dataset.expanded;
+		};
 	}, [expanded]);
 
 	function closeMenu() {
